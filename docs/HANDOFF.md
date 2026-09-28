@@ -1,6 +1,6 @@
 # Handoff — Phase 0 closed, Phase 1 next
 
-Branch: `claude/nifty-gates-ux5xvt`. Last updated 2026-09-28.
+Mainline: `main` (default). Phase 0 work was done on `claude/nifty-gates-ux5xvt`; both point at the same commit. New work goes in PRs against `main`. Last updated 2026-09-28.
 
 ## Where things stand
 
