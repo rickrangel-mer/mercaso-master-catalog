@@ -11,8 +11,8 @@ Alcohol, beer and wine are out of scope.
 1. Soft drinks (SCD) — draft below
 2. Water, energy, sports, juice, tea/coffee RTD — draft below
 3. Candy & snacks — draft below
-4. Tobacco accessories & lighters — pending
-5. Ice, mixers, cups, bags — pending
+4. Tobacco accessories & lighters — draft below
+5. Ice, mixers, cups, bags — draft below
 6. Household & kitchen — pending (assortment)
 7. Health & beauty — pending (assortment)
 8. Grocery staples — pending (mostly assortment)
@@ -108,7 +108,7 @@ Department 5 (Mixers) will cross-reference these rather than duplicate them.
 
 ---
 
-## 2. Water, energy, sports, juice, RTD tea & coffee — `draft`
+## 2. Water, energy, sports, juice, RTD tea & coffee — `discussed`
 
 Kind: **branded** throughout. Brands below are the ones Mercaso stocks per the old sheet; sizes are retail units. Single-serve is the liquor-store core; 1L/1.5L for water only.
 
@@ -142,7 +142,9 @@ Guardrail: one value still water, one premium still (Smartwater or Fiji), one sp
 | Rockstar | Original, Sugar Free | 16oz | should |
 | Bang | top 4–5 flavors | 16oz | nice |
 | Ghost | top 3–4 flavors | 16oz | nice |
-| Celsius / Alani (not in old sheet, confirm stocked) | — | 12oz | nice, check sales data |
+| Celsius | Original top flavors, Essentials | 12oz, 16oz | should (fast mover, rank by data) |
+| Alani Nu | top flavors | 12oz | should |
+| C4 | top flavors | 16oz | nice |
 
 ### 2.3 Sports & electrolytes
 
@@ -168,8 +170,8 @@ Guardrail: one value still water, one premium still (Smartwater or Fiji), one sp
 | Sunny D | Tangy Original, Orange Tangerine | 16oz, 40oz, 64oz | 16oz nice |
 | Dole | Orange, Apple | 15.2oz | nice |
 | Martinelli's | Apple Juice, Sparkling Cider | 10oz glass, 8.4oz | Apple 10oz should |
-| Visvita / OKF (aloe) | Original, Mango, Strawberry, Pineapple, Coconut, Guava, Tamarindo | 16.9oz, 1.5L | Original + Mango should; one aloe brand only |
-| Vita Coco / Parrot (coconut water) | Original, Pineapple / with Pulp | 11.5oz, 16.9oz | one coconut water should |
+| Visvita / OKF (aloe) | Original, Mango, Strawberry, Pineapple, Coconut, Guava, Tamarindo | 16.9oz, 1.5L | Original + Mango should; brand decided by sales data |
+| Vita Coco / Parrot (coconut water) | Original, Pineapple / with Pulp | 11.5oz, 16.9oz | should; brand decided by sales data |
 
 ### 2.5 RTD tea, coffee & dairy drinks
 
@@ -188,17 +190,17 @@ Guardrail: one value still water, one premium still (Smartwater or Fiji), one sp
 | Baja Micheladas (cup) | Original, Mango, Hot, Pineapple | 24oz cup | Original + Hot should (LA market) |
 | Clamato | see 2.4 | | |
 
-### Open questions
+### Decisions log
 
-1. Energy drinks are a top-velocity category for liquor stores. Confirm Celsius, Alani Nu, C4, Prime are stocked by Mercaso; the old sheet has none of them.
-2. Aloe and coconut water: one brand each, or list both stocked brands? Proposal: one slot each, brand chosen in matching by velocity.
-3. Arizona 23.5oz is a "99¢" price-point item. Do we want price-point as an attribute anywhere? Proposal: no, not in v1.
+- Mercaso stocks Celsius, Alani Nu and C4; Prime is not stocked and is left out (Rick, 2026-09-28).
+- Aloe and coconut water: both stocked brands listed; which one leads is decided by sales data in Phase 2.
+- Price-point (99¢ items) is not an attribute in v1 (assumed, not objected to).
 
 ---
 
-## 3. Candy & snacks — `draft`
+## 3. Candy & snacks — `discussed`
 
-Kind: **branded**, but with a lighter tree than beverages. Leaf = brand line → variant (flavor) → size class (`single` = standard bar/bag, `king` = king/share size, `peg` = peg bag 4–5oz). No 12oz/2L logic here. Candy priority reflects LA liquor-store checkout counters: chocolate bars, gum, Mexican candy and peg-bag gummies.
+Kind: **branded**, but with a lighter tree than beverages. Leaf = brand line → variant (flavor) → size class. Size classes are **defined per subcategory**, not globally: chocolate bars and chewy singles use `single` / `king`; gummies use `peg`; gum and mints use their pack count; chips use `xvl` only; nuts, jerky, cookies and snack cakes use the retail unit (e.g. 5.25oz, 3.25oz, 6ct). No 12oz/2L logic here. Candy priority reflects LA liquor-store checkout counters: chocolate bars, gum, Mexican candy and peg-bag gummies.
 
 ### 3.1 Chocolate bars
 
@@ -267,14 +269,20 @@ Kind: **branded**, but with a lighter tree than beverages. Leaf = brand line →
 | Vero | Mango con Chile, Elotes, Rebanaditas | single | Mango + Elotes must |
 | Jovy | Revolcaditas, Ricas Mango | single | should |
 | Limón 7 | Salt & Lemon powder | single | should |
-| Indy / Hola / Ravi / Lorena / Pica | — | single | 1–2 nice, choose by velocity |
+| Indy | Chamoy, Tamarindo | single | should |
+| Hola | Tamarind candies | single | should |
+| Ravi | Tamarind, Chamoy | single | should |
+| Lorena | Pelón-style, Chamoy | single | should |
+| Pica | Fresa, Pica Gomas | single | should |
+
+Priority within Mexican candy to be re-ranked from sales data; all stocked brands stay in the tree.
 
 ### 3.6 Salty snacks (chips, corn, popcorn)
 
 | Brand line | Variants | Sizes | Priority |
 |---|---|---|---|
-| Frito-Lay XVL / big bags | Cheetos Flamin' Hot, Cheetos Xxtra Flamin' Hot, Cheetos Crunchy, Doritos Nacho, Doritos Dinamita, Fritos Turbos Flamas, Funyuns Flamin' Hot, Munchies Flamin' Hot, Lay's Classic, Ruffles Cheddar | 2.5–3.5oz XVL, 1oz single | Cheetos Flamin' Hot + Doritos Nacho + Lay's Classic must; the rest should |
-| Takis | Fuego, Blue Heat | 4oz, 9.9oz | Fuego 4oz must |
+| Frito-Lay XVL | Cheetos Flamin' Hot, Cheetos Xxtra Flamin' Hot, Cheetos Crunchy, Doritos Nacho, Doritos Dinamita, Fritos Turbos Flamas, Funyuns Flamin' Hot, Munchies Flamin' Hot, Lay's Classic, Ruffles Cheddar | XVL (2.5–3.5oz) | Cheetos Flamin' Hot + Doritos Nacho + Lay's Classic must; the rest should |
+| Takis | Fuego, Blue Heat, Crunchy Fajitas | 4oz | Fuego must; Blue Heat should |
 | Pringles | Original, Sour Cream & Onion, Cheddar, BBQ | 1.3oz, 2.5oz | Original + SC&O 2.5oz should |
 | Cheez-It | Original, Extra Cheesy, Hot & Spicy | 3oz | Original should |
 | Chex Mix | Traditional, Cheddar, Bold | 3.75oz | Traditional nice |
@@ -332,16 +340,130 @@ Kind: **branded**, but with a lighter tree than beverages. Leaf = brand line →
 - Chip rack: 3 Flamin' Hot items, Doritos, Lay's, Takis. Flamin' Hot dominates LA velocity.
 - Beer-adjacent: David seeds, Japanese peanuts, chili-lime peanuts, jerky, Slim Jim, Clamato.
 
+### Decisions log
+
+- Size classes are per subcategory, not one global candy scheme (Rick, 2026-09-28).
+- Chips: XVL only, no 1oz single-serve. Takis stays as its own brand line with Fuego as must.
+- Mexican candy is not capped; every stocked brand is listed, priority set by sales data.
+
+## 4. Tobacco accessories & lighters — `draft`
+
+Kind: **mixed**. Lighters are branded (Bic is the recommendation). Rolling papers, wraps and butane are branded because customers ask by name. Tobacco products themselves (cigarettes, cigars, vapes, nicotine pouches) are **out of scope** for v1: licensing and pricing vary, and Mercaso's old sheet has no tobacco department. Only the accessories that sit at the counter are here.
+
+### 4.1 Lighters & matches
+
+| Brand line | Variants | Unit | Priority |
+|---|---|---|---|
+| Bic | Classic assorted, Mini | single (50-tray) | Classic must; Mini should |
+| Clipper (not in old sheet, confirm stocked) | Classic assorted | single | should |
+| King / Neon / Clickit (value disposables) | assorted | single (50-tray) | one value line must |
+| Eagle Torch | Small, Large | single | Small must; Large should |
+| Newport Mini Torch | assorted | single | nice |
+| Zippo | lighter fluid 4oz | single | nice |
+| Neon / Ronson butane refill | 300ml 5X, 7X | single | one butane refill should |
+| D.D. Bean matchbooks | 50ct | box | nice |
+
+### 4.2 Rolling papers, wraps & cones
+
+Not in the old sheet. Confirm which of these Mercaso stocks before Phase 2. Listed from LA liquor-store norms.
+
+| Brand line | Variants | Unit | Priority |
+|---|---|---|---|
+| Zig-Zag | Orange 1¼, White, King Slim | booklet | Orange must |
+| RAW | Classic 1¼, King Slim, Cones 3pk | booklet / cone pack | Classic must; Cones should |
+| OCB / Elements / Juicy Jay's | 1¼, flavored | booklet | one nice |
+| Backwoods / Swisher Sweets / Game (cigarillos) | — | — | **tobacco: out of scope v1**, note for later |
+| Blunt wraps (Zig-Zag / High Hemp) | assorted | pack | nice |
+
+### 4.3 Counter accessories
+
+Kind: **assortment**.
+
+| Slot | Target | Notes | Priority |
+|---|---|---|---|
+| Glass tubes / one-hitters | 1–2 options | counter jar | nice |
+| Grinders | 1 option | | nice |
+| Rolling trays | 1 option | | nice |
+| Lighter leashes / keychain lighters | 1 option | | nice |
+
 ### Open questions
 
-1. Size classes for candy: is `single / king / peg` enough, or do we need `theater box` and `share bag`?
-2. Chips: XVL (2.5–3.5oz) vs 1oz single-serve; does a liquor store carry both? Proposal: XVL must, 1oz nice.
-3. Mexican candy brand list is long and low-value per item; do we cap at the top 5 brands?
+1. Does Mercaso stock rolling papers and wraps at all? If not, 4.2 becomes a gap report item rather than a catalog section.
+2. Should tobacco products get a placeholder department now (empty, marked out of scope) so the tree shows the gap, or leave them out entirely? Proposal: placeholder, so the family tree is honest about what a liquor store carries.
 
-## 4. Tobacco accessories & lighters — `pending`
+---
 
-## 5. Ice, mixers, cups, bags — `pending`
+## 5. Ice, mixers, cups & bags — `draft`
 
+Kind: **mixed**. Mixers are branded (see also SCD 1.5 for ginger ale, club soda, tonic and 2.4 for Clamato, cranberry, lemonade). Ice, cups, bags and party disposables are **assortment** slots: the recommendation is "carry a 16oz red cup", not a brand.
+
+### 5.1 Ice
+
+| Slot | Target | Notes | Priority |
+|---|---|---|---|
+| Bagged ice 7lb | 1 supplier | Mercaso sells ice bags (7×4×21, 1000ct) for stores that bag their own; packaged ice itself is likely a local ice vendor, not Mercaso. Confirm. | must (as a gap report item if not stocked) |
+| Bagged ice 20lb | 1 supplier | same | should |
+| Styrofoam cooler | 1 option | in old sheet | should (summer) |
+
+### 5.2 Mixers (cross-references)
+
+| Brand line | Where | Priority |
+|---|---|---|
+| Canada Dry / Schweppes club soda, tonic, ginger ale | SCD 1.5 | must |
+| Mott's Clamato 16oz / 32oz | Juice 2.4 | must |
+| Ocean Spray Cranberry 15.2oz | Juice 2.4 | should |
+| Minute Maid Lemonade 20oz | Juice 2.4 | must |
+| Topo Chico 12oz | Water 2.1 | must |
+| Squirt 20oz / 2L | SCD 1.3 | must |
+| Baja Micheladas cups | 2.6 | should |
+| Rose's Grenadine / Lime Juice, sweet & sour (not in old sheet, confirm) | new branded rows if stocked | should |
+| Tajín / Chamoy rimming (Tajín 5oz, Chamoy Mega) | Grocery 8 (seasonings) | must (LA market) |
+
+### 5.3 Cups, shot glasses & party disposables
+
+Kind: **assortment**.
+
+| Slot | Target | Mix | Priority |
+|---|---|---|---|
+| 16oz plastic party cup (red/blue) | 1–2 | Reyma, Imperial, Axxion in old sheet | must |
+| 1oz plastic shot glass | 1 | Table King in old sheet | must |
+| 12oz foam cup | 1 | Dart, Wincup, Axxion | should |
+| 8oz plastic cup | 1 | Axxion | nice |
+| Paper/foam plates 9" | 1 | Axxion, Good Time | should |
+| Foam bowls | 1 | | nice |
+| Plastic cutlery (forks, spoons) | 1 each | Table King, Sunset | should |
+| Bamboo skewers, toothpicks | 1 each | | nice |
+
+### 5.4 Bags (store operating supplies, resold to store)
+
+Kind: **assortment**. These are supplies the store uses, not shelf items, but every liquor store orders them and Mercaso stocks them.
+
+| Slot | Target | Mix | Priority |
+|---|---|---|---|
+| T-shirt bag black 10×5×19 ("Thank You") | 1 | heavy-duty and standard | must |
+| T-shirt bag black 8×4×16 / 6×4×15 (single-bottle) | 1 | | must |
+| T-shirt bag 12×7×22 (large, black or white) | 1 | | should |
+| Kraft paper bag 2lb / 4lb (bottle bag) | 1 each | Duro | must |
+| Ice bag 7lb | 1 | | should |
+| Reusable bag 13×7×21 | 1 | | nice (SB 270 compliance in CA; confirm current rule) |
+
+### 5.5 Trash & storage bags (household overlap)
+
+Kind: **assortment**. Listed here because liquor stores stock a small set; full household treatment in department 6.
+
+| Slot | Target | Mix | Priority |
+|---|---|---|---|
+| Kitchen trash bag 13gal | 1–2 | one value (Sure-Tuff/Ri-Pac), one name brand (Glad/Hefty) | must |
+| Large trash bag 30–33gal | 1 | | should |
+| Sandwich / zipper bags | 1 | Glad, Kitchen & Beyond | should |
+
+### Open questions
+
+1. Is packaged ice something Mercaso delivers, or should ice be a "gap by design" entry that the cheat sheet still shows?
+2. Bags: keep store operating supplies (5.4) in the master catalog, or split them into a separate "store supplies" list? Proposal: keep in the tree under a clearly labeled node, since the store owner orders them in the same trip.
+3. Confirm Rose's, sweet & sour, Tajín and Chamoy are stocked.
+
+---
 ## 6. Household & kitchen — `pending` (assortment)
 
 ## 7. Health & beauty — `pending` (assortment)
