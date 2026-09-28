@@ -13,9 +13,9 @@ Alcohol, beer and wine are out of scope. Tobacco is in scope (Mercaso sells it n
 3. Candy & snacks — discussed
 4. Tobacco & accessories — discussed
 5. Mixers, bar tools, cups, bags — discussed
-6. Household & kitchen — draft below (assortment)
-7. Health & beauty — draft below (assortment)
-8. Grocery staples — pending (mostly assortment)
+6. Household & kitchen — discussed (assortment)
+7. Health & beauty — discussed (assortment)
+8. Grocery staples — draft below (mostly assortment)
 
 Before drafting 2 onward, review the prior attempt (see `prior-attempt.md`) and carry forward what holds up.
 
@@ -426,7 +426,7 @@ Kind: **assortment**.
 ### Decisions log
 
 - Tobacco products are in scope; Mercaso sells them now (Rick, 2026-09-28).
-- Lines 4.1–4.4 and 4.6 are market-knowledge drafts pending an Athena stock check.
+- Rolling papers and wraps (4.6) confirmed in scope. Lines 4.1–4.4 are market-knowledge drafts pending an Athena stock check.
 
 ---
 
@@ -446,7 +446,6 @@ Kind: **mixed**. Mixers are branded and cross-reference SCD 1.5 and Juice 2.4. B
 | Squirt 20oz / 2L | SCD 1.3 | must |
 | Baja Micheladas cups (Original, Hot, Mango, Pineapple) | 2.6 | must |
 | Tajín Clásico 5oz / Chamoy (Mega, Tajín) | Grocery 8 seasonings | must (LA market) |
-| Rose's Grenadine / Lime Juice, sweet & sour (confirm stocked) | new branded rows if stocked | should |
 
 ### 5.2 Bar tools & openers
 
@@ -504,11 +503,11 @@ Kind: **assortment**. Small set liquor stores stock; full household treatment in
 - Packaged ice is out: Mercaso does not carry it and the catalog does not mention it (Rick, 2026-09-28).
 - Bar tools (corkscrews, bottle openers), cups, Tajín and michelada cups stay and are must.
 - Store operating supplies stay in the tree under a labeled node (assumed, not objected to).
-- Rose's / sweet & sour still to confirm.
+- Rose's and sweet & sour mix are not carried and are out (Rick, 2026-09-28).
 
 ---
 
-## 6. Household & kitchen — `draft` (assortment)
+## 6. Household & kitchen — `discussed` (assortment)
 
 Kind: **assortment**. This is the first fully assortment department, so the slot rules are stated here and apply to 7 and 8 too.
 
@@ -583,7 +582,7 @@ Kind: **assortment**. This is the first fully assortment department, so the slot
 
 ---
 
-## 7. Health & beauty — `draft` (assortment)
+## 7. Health & beauty — `discussed` (assortment)
 
 Kind: **assortment**. Same slot rules as department 6. The liquor-store version is a single "trial size / emergency" rack, so `size_class: small` everywhere unless noted.
 
@@ -600,7 +599,6 @@ Kind: **assortment**. Same slot rules as department 6. The liquor-store version 
 | Antifungal / foot | 1 | Derman | nice |
 | Energy shot | 1–2 | 5-Hour Energy, Lipovitan | must (counter) |
 | Vitamin C / Emergen-C | 1 | | nice |
-| Male enhancement (Rhino etc.) | per store | | store decision; flag `sensitive` |
 
 ### 7.2 Oral care & lip
 
@@ -656,11 +654,96 @@ Kind: **assortment**. Same slot rules as department 6. The liquor-store version 
 | Hair ties / combs / brushes | 1–2 | should |
 | Lashes / nail polish | 1 | nice |
 
-### Open questions (departments 6–7)
+### Decisions log (departments 6–7)
 
-1. `mix` vocabulary: is `value / national / hispanic` the right three, or do you name tiers differently internally?
-2. Male enhancement products: in the tree with a `sensitive` flag, or out entirely?
-3. Energy shots: here under OTC or with energy drinks in 2.2? Proposal: here, since they sit at the counter next to the medicine.
+- Mix vocabulary is `value / national / hispanic` (Rick, 2026-09-28).
+- Male enhancement products are out of the catalog.
+- Energy shots live under OTC medicine (7.1), not with energy drinks.
 
 ---
-## 8. Grocery staples — `pending`
+## 8. Grocery staples — `draft` (assortment)
+
+Kind: **assortment** with a few branded exceptions (hot sauce, ramen, Tajín) where customers ask by name. A liquor store's grocery aisle is a convenience top-up: what someone grabs at 9pm because the market is closed. Small sizes, one or two options per slot, heavy Hispanic mix. Brands in Mix are from the old sheet unless marked.
+
+### 8.1 Instant meals
+
+| Slot | Target | Mix | Priority |
+|---|---|---|---|
+| Ramen cup / bowl | 3–4 | Maruchan, Nissin Cup Noodles, Nongshim, Paldo, Tapatio Big Bowl, Samyang Buldak | must |
+| Ramen packet | 2 | Maruchan, Nissin Top Ramen, Samyang | must |
+| Canned chili / pasta | 1–2 | Hormel, Chef Boyardee, Dinty Moore | should |
+| Vienna sausage / Spam | 1 each | Libby's, Hormel | should |
+| Canned soup | 1–2 | Campbell's, Maggi, Juanita's Menudo | should (Menudo LA market) |
+| Mac & cheese cup | 1 | Kraft (confirm) | nice |
+
+### 8.2 Seasonings, hot sauce & condiments
+
+| Slot | Target | Mix | Priority |
+|---|---|---|---|
+| Tajín | 1–2 | Tajín Clásico 5oz, Fruit (branded) | must |
+| Chamoy | 1 | Mega, Tajín (branded) | must |
+| Hot sauce | 2–3 | Tapatío, Valentina, El Yucateco, Cholula, Tabasco (branded) | must |
+| Salt / pepper | 1 each | Morton, Sal Bahía, McCormick | should |
+| Seasoning blend | 1 | Knorr chicken bouillon, Lawry's | should |
+| Mayo / ketchup / mustard | 1 each | McCormick mayo, Hunt's, French's | should |
+| Salad dressing | 1 | Wish-Bone | nice |
+| Soy sauce | 1 | Kikkoman | nice |
+
+### 8.3 Canned & jarred
+
+| Slot | Target | Mix | Priority |
+|---|---|---|---|
+| Refried / whole beans | 2 | Sun Vista, Rosarita, La Costeña, Goya | must |
+| Jalapeños / chipotle | 1–2 | La Costeña, Embasa, La Morena | must |
+| Pickles (single jar / pouch) | 1 | Van Holten's | should |
+| Tuna | 1 | Bumble Bee, StarKist | should |
+| Sardines / oysters | 1 | Beach Cliff, California Girl | should |
+| Canned fruit | 1 | Dole, Del Monte | nice |
+| Canned vegetables | 1 | Del Monte | nice |
+| Tomato / enchilada sauce | 1 | Las Palmas, El Pato, Hunt's | should |
+| Nacho cheese | 1 | Juanita's | nice |
+
+### 8.4 Dry goods & baking
+
+| Slot | Target | Mix | Priority |
+|---|---|---|---|
+| Rice | 1 | Mahatma, Parrot | should |
+| Dry beans | 1 | Goya, Springfield | should |
+| Pasta | 1–2 | La Moderna | should |
+| Cooking oil | 1 | Mazola, 1-2-3 | should |
+| Sugar | 1 | C&H, Zulka | must |
+| Flour / masa | 1 | Maseca (confirm) | nice |
+| Condensed / evaporated milk | 1 each | La Lechera, Carnation | should |
+| Gelatin / flan | 1 | Royal | nice |
+
+### 8.5 Breakfast, bread & dairy
+
+| Slot | Target | Mix | Priority |
+|---|---|---|---|
+| Cereal | 2 | Kellogg's, General Mills (single-serve or small box) | should |
+| Pop-Tarts / toaster pastry | 1 | Kellogg's | should |
+| Bread | 1 | Bimbo, Oroweat (confirm) | must if stocked |
+| Tortillas | 1 | Guerrero, Mission (confirm) | must (LA market) |
+| Tostadas | 1 | Los Pericos, Charras | should |
+| Milk | 1 | (confirm chilled program) | must if stocked |
+| Eggs | 1 | (confirm chilled program) | must if stocked |
+| Cheese | 1 | American singles (empty in old sheet) | nice |
+| Peanut butter / Nutella | 1 | Skippy, Nutella | nice |
+| Syrup / honey | 1 | | nice |
+
+### 8.6 Pet (nice only)
+
+| Slot | Target | Mix | Priority |
+|---|---|---|---|
+| Dog food, wet single | 1 | Pedigree, Cesar | nice |
+| Dog food, dry small bag | 1 | Pedigree, Field Trial | nice |
+| Cat food, wet single | 1 | 9 Lives | nice |
+| Treats | 1 | Canine Carry Outs | nice |
+
+### Open questions
+
+1. Chilled and frozen (milk, eggs, cheese, ice cream, frozen burritos): does Mercaso deliver a cold chain to liquor stores? If not, remove the rows above rather than list gaps.
+2. Bread and tortillas: DSD (direct store delivery by Bimbo/Mission) or Mercaso? Same treatment as chilled.
+3. Hot sauce is branded here rather than assortment because customers ask for Tapatío or Valentina by name. Confirm that's the right call.
+
+---
