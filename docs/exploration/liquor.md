@@ -15,9 +15,32 @@ Alcohol, beer and wine are out of scope. Tobacco is in scope (Mercaso sells it n
 5. Mixers, bar tools, cups, bags — discussed
 6. Household & kitchen — discussed (assortment)
 7. Health & beauty — discussed (assortment)
-8. Grocery staples — draft below (mostly assortment)
+8. Grocery staples — discussed (mostly assortment)
 
-Before drafting 2 onward, review the prior attempt (see `prior-attempt.md`) and carry forward what holds up.
+Prior attempt reviewed (see `prior-attempt.md`). All eight departments are `discussed`.
+
+**Exit gate for Phase 0:** cross-reference the outline against Mercaso sales data for liquor-store customers (Athena) to catch good movers the outline missed, then mark departments `agreed`. See "Sales cross-check" below.
+
+## Modeling rules (agreed during exploration)
+
+1. Tree: Store type → Department → Category → Subcategory → leaf. Department names reuse the old sheet's.
+2. Two leaf kinds. **Branded** (brand line → variant → size) where the brand is the recommendation: beverages, candy, snacks, tobacco, hot sauce, Tajín/Chamoy. **Assortment** (slot with `target_count`, `mix`, `size_class`) where coverage is the recommendation: household, health & beauty, grocery, cups, bags, bar tools.
+3. Leaf sizes are retail units. Case pack is not a catalog dimension; the match row carries it. A leaf holds more than one case option only when a real scenario exists (Coke 24 vs 35 count).
+4. Size classes are defined per subcategory, not globally. Soda: `single` (12oz, 16oz, 16.9oz, 20oz) and `take_home` (1L–3L); no multipacks for liquor. Candy: `single` / `king` / `peg` where they apply. Chips: `xvl` only. Assortment: `small` / `regular` / `bulk`.
+5. Mix vocabulary for assortment slots: `value`, `national`, `hispanic`.
+6. Priority: `must` / `should` / `nice`, one list per store type, no store-size split. Inherits down the tree unless overridden.
+7. Variants listed only where the brand markets them at scale; no auto-generated diet/zero.
+8. Scope for liquor v1: no alcohol, beer, wine; no chilled or frozen; no packaged ice; no bread or Mission tortillas; no male enhancement; no Auto, Apparel, Baby, Office, Toys, Promo, Store Supplies departments. Pet is `nice` only. Tobacco is in scope. Store operating supplies (bags) stay under a labeled node.
+9. Age-restricted items carry `age_restricted: true`; CA-restricted variants (menthol, flavored tobacco) carry `restricted: CA`.
+10. Cross-references (mixers) point at the canonical node; nothing is duplicated in two places.
+
+## Sales cross-check (Phase 0 exit)
+
+Query Athena for liquor-store customers, trailing 12 months: units and revenue by Mercaso category and by item. Compare against this outline:
+- Items in the top N by velocity that map to no node → candidate additions, reviewed with Rick.
+- Nodes marked `must` with negligible sales → candidate downgrades.
+- Brand-level sanity for aloe, coconut water, Mexican candy, energy drinks, where the outline defers to data.
+Output: `docs/exploration/sales-crosscheck.md` with the two lists and a decision column. Requires Athena access (table names, credentials) from the data team.
 
 ---
 
@@ -661,7 +684,7 @@ Kind: **assortment**. Same slot rules as department 6. The liquor-store version 
 - Energy shots live under OTC medicine (7.1), not with energy drinks.
 
 ---
-## 8. Grocery staples — `draft` (assortment)
+## 8. Grocery staples — `discussed` (assortment)
 
 Kind: **assortment** with a few branded exceptions (hot sauce, ramen, Tajín) where customers ask by name. A liquor store's grocery aisle is a convenience top-up: what someone grabs at 9pm because the market is closed. Small sizes, one or two options per slot, heavy Hispanic mix. Brands in Mix are from the old sheet unless marked.
 
@@ -716,18 +739,13 @@ Kind: **assortment** with a few branded exceptions (hot sauce, ramen, Tajín) wh
 | Condensed / evaporated milk | 1 each | La Lechera, Carnation | should |
 | Gelatin / flan | 1 | Royal | nice |
 
-### 8.5 Breakfast, bread & dairy
+### 8.5 Breakfast & pantry
 
 | Slot | Target | Mix | Priority |
 |---|---|---|---|
 | Cereal | 2 | Kellogg's, General Mills (single-serve or small box) | should |
 | Pop-Tarts / toaster pastry | 1 | Kellogg's | should |
-| Bread | 1 | Bimbo, Oroweat (confirm) | must if stocked |
-| Tortillas | 1 | Guerrero, Mission (confirm) | must (LA market) |
 | Tostadas | 1 | Los Pericos, Charras | should |
-| Milk | 1 | (confirm chilled program) | must if stocked |
-| Eggs | 1 | (confirm chilled program) | must if stocked |
-| Cheese | 1 | American singles (empty in old sheet) | nice |
 | Peanut butter / Nutella | 1 | Skippy, Nutella | nice |
 | Syrup / honey | 1 | | nice |
 
@@ -740,10 +758,10 @@ Kind: **assortment** with a few branded exceptions (hot sauce, ramen, Tajín) wh
 | Cat food, wet single | 1 | 9 Lives | nice |
 | Treats | 1 | Canine Carry Outs | nice |
 
-### Open questions
+### Decisions log
 
-1. Chilled and frozen (milk, eggs, cheese, ice cream, frozen burritos): does Mercaso deliver a cold chain to liquor stores? If not, remove the rows above rather than list gaps.
-2. Bread and tortillas: DSD (direct store delivery by Bimbo/Mission) or Mercaso? Same treatment as chilled.
-3. Hot sauce is branded here rather than assortment because customers ask for Tapatío or Valentina by name. Confirm that's the right call.
+- No chilled or frozen: milk, eggs, cheese, ice cream, frozen are out of the catalog (Rick, 2026-09-28).
+- Mercaso does not deliver Mission tortillas or bread yet; both rows removed. Tostadas stay (Los Pericos in old sheet). Guerrero tortillas appear once in the old sheet; confirm in the sales cross-check.
+- Hot sauce, Tajín and Chamoy are branded, not assortment.
 
 ---
