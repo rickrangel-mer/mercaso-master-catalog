@@ -4,17 +4,17 @@ Working document for Phase 0. One section per department. Each section states wh
 
 Status legend per department: `draft` (proposed, not discussed) · `discussed` (edited with Rick) · `agreed`.
 
-Alcohol, beer and wine are out of scope.
+Alcohol, beer and wine are out of scope. Tobacco is in scope (Mercaso sells it now).
 
 ## Department order
 
 1. Soft drinks (SCD) — draft below
-2. Water, energy, sports, juice, tea/coffee RTD — draft below
-3. Candy & snacks — draft below
-4. Tobacco accessories & lighters — draft below
-5. Ice, mixers, cups, bags — draft below
-6. Household & kitchen — pending (assortment)
-7. Health & beauty — pending (assortment)
+2. Water, energy, sports, juice, tea/coffee RTD — discussed
+3. Candy & snacks — discussed
+4. Tobacco & accessories — discussed
+5. Mixers, bar tools, cups, bags — discussed
+6. Household & kitchen — draft below (assortment)
+7. Health & beauty — draft below (assortment)
 8. Grocery staples — pending (mostly assortment)
 
 Before drafting 2 onward, review the prior attempt (see `prior-attempt.md`) and carry forward what holds up.
@@ -101,7 +101,7 @@ Department 5 (Mixers) will cross-reference these rather than duplicate them.
 ### Decisions log
 
 - Leaf = retail unit; pack size is not a catalog dimension (Rick, 2026-09-28).
-- 16oz can folds into `single` (assumed, not objected to).
+- 16oz can folds into `single` (Rick confirmed, 2026-09-28).
 - One priority list, no store-size split.
 - Mountain Dew under Lemon-lime.
 - Ginger ale, club soda, tonic stay in SCD.
@@ -346,16 +346,56 @@ Priority within Mexican candy to be re-ranked from sales data; all stocked brand
 - Chips: XVL only, no 1oz single-serve. Takis stays as its own brand line with Fuego as must.
 - Mexican candy is not capped; every stocked brand is listed, priority set by sales data.
 
-## 4. Tobacco accessories & lighters — `draft`
+## 4. Tobacco & accessories — `discussed`
 
-Kind: **mixed**. Lighters are branded (Bic is the recommendation). Rolling papers, wraps and butane are branded because customers ask by name. Tobacco products themselves (cigarettes, cigars, vapes, nicotine pouches) are **out of scope** for v1: licensing and pricing vary, and Mercaso's old sheet has no tobacco department. Only the accessories that sit at the counter are here.
+Kind: **branded**. Mercaso now sells tobacco (it did not when the old sheet was made), so tobacco products are in scope. Every line below except lighters and butane is from market knowledge, not the old sheet, and needs a stock check against Athena in Phase 2. Priorities are by LA liquor-store velocity. Age-restricted items should carry an `age_restricted: true` attribute so downstream tools can filter.
 
-### 4.1 Lighters & matches
+### 4.1 Cigarettes
+
+| Brand line | Variants | Unit | Priority |
+|---|---|---|---|
+| Marlboro | Red, Gold, Menthol (where legal), Red 100s, Special Blend | pack, carton | Red + Gold must |
+| Newport | Box, 100s, Non-Menthol | pack, carton | must |
+| Camel | Blue, Crush, Turkish Royal | pack | Blue should |
+| American Spirit | Blue, Yellow | pack | should |
+| Pall Mall / L&M / Maverick (value) | Red, Blue | pack | one value line must |
+| Winston / Kool / Parliament | — | pack | nice |
+
+Note: California banned flavored tobacco including menthol in 2022. Menthol variants stay in the tree marked `restricted: CA` so the model works for other markets; they must not be recommended in CA.
+
+### 4.2 Cigars & cigarillos
+
+| Brand line | Variants | Unit | Priority |
+|---|---|---|---|
+| Swisher Sweets | Original, Grape, Diamond (unflavored only in CA) | 2-pack, 5-pack | must |
+| Backwoods | Original, Honey, Russian Cream | single, 5-pack | Original must |
+| Black & Mild | Original, Wood Tip, Casino | single, 5-pack | Original must |
+| Game / White Owl / Dutch Masters | unflavored variants | 2-pack | one should |
+| Garcia y Vega / Optimo | — | 2-pack | nice |
+
+### 4.3 Vapes & nicotine alternatives
+
+| Brand line | Variants | Unit | Priority |
+|---|---|---|---|
+| Zyn | 3mg, 6mg; Wintergreen, Cool Mint, Spearmint, Citrus | can | Wintergreen + Cool Mint 6mg must |
+| On! / Velo / Rogue (pouches) | — | can | one should |
+| Disposable vapes | FDA-authorized tobacco flavor only in CA | unit | check compliance; nice |
+| Juul | tobacco pods | pack | nice |
+
+### 4.4 Smokeless & pipe tobacco
+
+| Brand line | Variants | Unit | Priority |
+|---|---|---|---|
+| Copenhagen | Long Cut, Wintergreen, Snuff | can | Long Cut should |
+| Grizzly / Skoal | — | can | nice |
+| Bugler / Top / Gambler (roll-your-own) | pouch | pouch | Bugler should |
+
+### 4.5 Lighters & matches
 
 | Brand line | Variants | Unit | Priority |
 |---|---|---|---|
 | Bic | Classic assorted, Mini | single (50-tray) | Classic must; Mini should |
-| Clipper (not in old sheet, confirm stocked) | Classic assorted | single | should |
+| Clipper (confirm stocked) | Classic assorted | single | should |
 | King / Neon / Clickit (value disposables) | assorted | single (50-tray) | one value line must |
 | Eagle Torch | Small, Large | single | Small must; Large should |
 | Newport Mini Torch | assorted | single | nice |
@@ -363,49 +403,38 @@ Kind: **mixed**. Lighters are branded (Bic is the recommendation). Rolling paper
 | Neon / Ronson butane refill | 300ml 5X, 7X | single | one butane refill should |
 | D.D. Bean matchbooks | 50ct | box | nice |
 
-### 4.2 Rolling papers, wraps & cones
-
-Not in the old sheet. Confirm which of these Mercaso stocks before Phase 2. Listed from LA liquor-store norms.
+### 4.6 Rolling papers, wraps & cones
 
 | Brand line | Variants | Unit | Priority |
 |---|---|---|---|
 | Zig-Zag | Orange 1¼, White, King Slim | booklet | Orange must |
 | RAW | Classic 1¼, King Slim, Cones 3pk | booklet / cone pack | Classic must; Cones should |
-| OCB / Elements / Juicy Jay's | 1¼, flavored | booklet | one nice |
-| Backwoods / Swisher Sweets / Game (cigarillos) | — | — | **tobacco: out of scope v1**, note for later |
-| Blunt wraps (Zig-Zag / High Hemp) | assorted | pack | nice |
+| OCB / Elements / Juicy Jay's | 1¼ | booklet | one nice |
+| Blunt wraps (Zig-Zag / High Hemp) | assorted | pack | should |
 
-### 4.3 Counter accessories
+### 4.7 Counter accessories
 
 Kind: **assortment**.
 
-| Slot | Target | Notes | Priority |
-|---|---|---|---|
-| Glass tubes / one-hitters | 1–2 options | counter jar | nice |
-| Grinders | 1 option | | nice |
-| Rolling trays | 1 option | | nice |
-| Lighter leashes / keychain lighters | 1 option | | nice |
+| Slot | Target | Priority |
+|---|---|---|
+| Glass tubes / one-hitters | 1–2 options | nice |
+| Grinders | 1 | nice |
+| Rolling trays | 1 | nice |
+| Lighter leashes / keychain lighters | 1 | nice |
 
-### Open questions
+### Decisions log
 
-1. Does Mercaso stock rolling papers and wraps at all? If not, 4.2 becomes a gap report item rather than a catalog section.
-2. Should tobacco products get a placeholder department now (empty, marked out of scope) so the tree shows the gap, or leave them out entirely? Proposal: placeholder, so the family tree is honest about what a liquor store carries.
+- Tobacco products are in scope; Mercaso sells them now (Rick, 2026-09-28).
+- Lines 4.1–4.4 and 4.6 are market-knowledge drafts pending an Athena stock check.
 
 ---
 
-## 5. Ice, mixers, cups & bags — `draft`
+## 5. Mixers, bar tools, cups & bags — `discussed`
 
-Kind: **mixed**. Mixers are branded (see also SCD 1.5 for ginger ale, club soda, tonic and 2.4 for Clamato, cranberry, lemonade). Ice, cups, bags and party disposables are **assortment** slots: the recommendation is "carry a 16oz red cup", not a brand.
+Kind: **mixed**. Mixers are branded and cross-reference SCD 1.5 and Juice 2.4. Bar tools, cups, bags and party disposables are **assortment** slots: the recommendation is "carry a 16oz red cup", not a brand. Packaged ice is not carried by Mercaso and is not in the catalog.
 
-### 5.1 Ice
-
-| Slot | Target | Notes | Priority |
-|---|---|---|---|
-| Bagged ice 7lb | 1 supplier | Mercaso sells ice bags (7×4×21, 1000ct) for stores that bag their own; packaged ice itself is likely a local ice vendor, not Mercaso. Confirm. | must (as a gap report item if not stocked) |
-| Bagged ice 20lb | 1 supplier | same | should |
-| Styrofoam cooler | 1 option | in old sheet | should (summer) |
-
-### 5.2 Mixers (cross-references)
+### 5.1 Mixers (cross-references)
 
 | Brand line | Where | Priority |
 |---|---|---|
@@ -415,9 +444,21 @@ Kind: **mixed**. Mixers are branded (see also SCD 1.5 for ginger ale, club soda,
 | Minute Maid Lemonade 20oz | Juice 2.4 | must |
 | Topo Chico 12oz | Water 2.1 | must |
 | Squirt 20oz / 2L | SCD 1.3 | must |
-| Baja Micheladas cups | 2.6 | should |
-| Rose's Grenadine / Lime Juice, sweet & sour (not in old sheet, confirm) | new branded rows if stocked | should |
-| Tajín / Chamoy rimming (Tajín 5oz, Chamoy Mega) | Grocery 8 (seasonings) | must (LA market) |
+| Baja Micheladas cups (Original, Hot, Mango, Pineapple) | 2.6 | must |
+| Tajín Clásico 5oz / Chamoy (Mega, Tajín) | Grocery 8 seasonings | must (LA market) |
+| Rose's Grenadine / Lime Juice, sweet & sour (confirm stocked) | new branded rows if stocked | should |
+
+### 5.2 Bar tools & openers
+
+Kind: **assortment**.
+
+| Slot | Target | Priority |
+|---|---|---|
+| Corkscrew / waiter's wine key | 1–2 (one value, one better) | must |
+| Bottle opener (keychain, flat) | 1–2 | must |
+| Flask | 1 | nice |
+| Jigger / shot pourer | 1 | nice |
+| Michelada rimming tray / cup salt | 1 | nice |
 
 ### 5.3 Cups, shot glasses & party disposables
 
@@ -427,16 +468,18 @@ Kind: **assortment**.
 |---|---|---|---|
 | 16oz plastic party cup (red/blue) | 1–2 | Reyma, Imperial, Axxion in old sheet | must |
 | 1oz plastic shot glass | 1 | Table King in old sheet | must |
+| 24oz michelada cup (rimmed) | 1 | Baja | must |
 | 12oz foam cup | 1 | Dart, Wincup, Axxion | should |
 | 8oz plastic cup | 1 | Axxion | nice |
 | Paper/foam plates 9" | 1 | Axxion, Good Time | should |
 | Foam bowls | 1 | | nice |
 | Plastic cutlery (forks, spoons) | 1 each | Table King, Sunset | should |
 | Bamboo skewers, toothpicks | 1 each | | nice |
+| Styrofoam cooler | 1 | in old sheet | should (summer) |
 
-### 5.4 Bags (store operating supplies, resold to store)
+### 5.4 Bags (store operating supplies)
 
-Kind: **assortment**. These are supplies the store uses, not shelf items, but every liquor store orders them and Mercaso stocks them.
+Kind: **assortment**. Supplies the store uses rather than shelves, kept in the tree under a labeled node because the owner orders them in the same trip.
 
 | Slot | Target | Mix | Priority |
 |---|---|---|---|
@@ -444,12 +487,11 @@ Kind: **assortment**. These are supplies the store uses, not shelf items, but ev
 | T-shirt bag black 8×4×16 / 6×4×15 (single-bottle) | 1 | | must |
 | T-shirt bag 12×7×22 (large, black or white) | 1 | | should |
 | Kraft paper bag 2lb / 4lb (bottle bag) | 1 each | Duro | must |
-| Ice bag 7lb | 1 | | should |
-| Reusable bag 13×7×21 | 1 | | nice (SB 270 compliance in CA; confirm current rule) |
+| Reusable bag 13×7×21 | 1 | | nice (CA bag law; confirm current rule) |
 
 ### 5.5 Trash & storage bags (household overlap)
 
-Kind: **assortment**. Listed here because liquor stores stock a small set; full household treatment in department 6.
+Kind: **assortment**. Small set liquor stores stock; full household treatment in department 6.
 
 | Slot | Target | Mix | Priority |
 |---|---|---|---|
@@ -457,15 +499,168 @@ Kind: **assortment**. Listed here because liquor stores stock a small set; full 
 | Large trash bag 30–33gal | 1 | | should |
 | Sandwich / zipper bags | 1 | Glad, Kitchen & Beyond | should |
 
-### Open questions
+### Decisions log
 
-1. Is packaged ice something Mercaso delivers, or should ice be a "gap by design" entry that the cheat sheet still shows?
-2. Bags: keep store operating supplies (5.4) in the master catalog, or split them into a separate "store supplies" list? Proposal: keep in the tree under a clearly labeled node, since the store owner orders them in the same trip.
-3. Confirm Rose's, sweet & sour, Tajín and Chamoy are stocked.
+- Packaged ice is out: Mercaso does not carry it and the catalog does not mention it (Rick, 2026-09-28).
+- Bar tools (corkscrews, bottle openers), cups, Tajín and michelada cups stay and are must.
+- Store operating supplies stay in the tree under a labeled node (assumed, not objected to).
+- Rose's / sweet & sour still to confirm.
 
 ---
-## 6. Household & kitchen — `pending` (assortment)
 
-## 7. Health & beauty — `pending` (assortment)
+## 6. Household & kitchen — `draft` (assortment)
 
+Kind: **assortment**. This is the first fully assortment department, so the slot rules are stated here and apply to 7 and 8 too.
+
+### Assortment slot rules
+
+- A slot is a shelf need, e.g. "Dish soap, small (≤ 28oz)". It is the leaf of the tree.
+- `target_count`: how many distinct SKUs the store should carry in that slot (a range, e.g. 2–3).
+- `mix`: what the target should include. Vocabulary: `value` (private label / Latin value brand: NuValu, LA's Totally Awesome, Fabuloso, Pinalen), `national` (Clorox, Tide, Glad), `hispanic` (Zote, Roma, Foca, Suavitel, Ensueño, Veladora). A liquor store in LA usually wants `value + hispanic`; `national` is the upgrade.
+- `size_class`: `small` (single-use or trial size, the liquor-store default), `regular`, `bulk` (markets only).
+- Priority levels apply to the slot as a whole. Matching attaches every qualifying Mercaso SKU, ranked by velocity; the top `target_count` approved ones are the recommendation.
+- Brands in the Mix column below are hints for matching, not part of the leaf.
+
+### 6.1 Cleaning solutions
+
+| Slot | Target | Mix | Size | Priority |
+|---|---|---|---|---|
+| Multipurpose cleaner | 2 | Fabuloso, Pinalen, LA's Totally Awesome | small, regular | must |
+| Bleach | 1–2 | Cloralen, Clorox | small (16–32oz) | must |
+| Dish soap | 2 | Palmolive, Ajax, value | small | must |
+| Toilet bowl cleaner | 1 | NuValu, Lysol | regular | should |
+| Disinfecting wipes / spray | 1 | Clorox, Lysol | small | should |
+| Glass cleaner | 1 | Windex, value | small | nice |
+| Scouring powder | 1 | Comet, Ajax | regular | nice |
+| Shoe polish / Nugget | 1 | Nugget | single | nice |
+
+### 6.2 Laundry
+
+| Slot | Target | Mix | Size | Priority |
+|---|---|---|---|---|
+| Laundry detergent, liquid | 2 | Tide, Gain, Ariel, Ace; value | small (single-load bottle / pouch) | must |
+| Laundry detergent, powder | 1 | Ariel, Roma, Foca | small bag | must (hispanic) |
+| Bar soap for laundry | 1 | Zote, Lirio | bar | must (hispanic) |
+| Fabric softener | 1–2 | Suavitel, Downy, Ensueño | small | should |
+| Dryer sheets | 1 | Bounce, Gain | small box | nice |
+| Stain remover | 1 | Soilove, Awesome | single | nice |
+
+### 6.3 Paper & disposables
+
+| Slot | Target | Mix | Size | Priority |
+|---|---|---|---|---|
+| Toilet paper | 2 | value (Virtue, Jubilee, Melody, 555), national (Charmin, Scott) | single roll, 4-pack | must |
+| Paper towels | 1–2 | value (Del Rey, Virtue), national (Bounty) | single roll | must |
+| Napkins | 1 | value | pack | should |
+| Facial tissue | 1 | Puffs, Softeen | box | nice |
+| Aluminum foil | 1 | Reynolds, Durable, value | small roll | should |
+| Plastic wrap / sandwich bags | 1 | Glad, Table King | small | nice |
+| Aluminum pans | 1 | Durable | single | nice |
+
+### 6.4 Air care, candles & pest
+
+| Slot | Target | Mix | Size | Priority |
+|---|---|---|---|---|
+| Air freshener spray | 1–2 | Febreze, Air Wick, Glade, Wizard | regular | should |
+| Air freshener beads / car | 1 | Wizard, California Scents, LA's Totally | single | nice |
+| Religious candle (veladora) | 2–3 | Veladora, Vel-Mex | single | must (LA market) |
+| Scented candle | 1 | NuValu | single | nice |
+| Incense | 1 | | pack | nice |
+| Roach / ant / mosquito | 1–2 | Raid, PIC, Kingman | small | should |
+
+### 6.5 Cleaning equipment & home
+
+| Slot | Target | Mix | Priority |
+|---|---|---|---|
+| Sponges / scrubbers | 1–2 | NuValu, Scrub Pro | must |
+| Latex gloves | 1 | Household, Advance | should |
+| Broom / dustpan | 1 | NuValu | nice |
+| Spray bottle | 1 | | nice |
+| Plunger, bath mat, shower curtain | 1 each | NuValu | nice |
+| Batteries AA / AAA / 9V / CR2032 | 1 brand each | Duracell, Panasonic | AA + AAA must; 9V should; CR2032 nice |
+| Chargers & cables (USB-C, Lightning, wall block) | 1 each | value | should |
+| Charcoal / lighter fluid / firewood | 1 each | Kingsford, El Rey, Duraflame | should (summer) |
+
+---
+
+## 7. Health & beauty — `draft` (assortment)
+
+Kind: **assortment**. Same slot rules as department 6. The liquor-store version is a single "trial size / emergency" rack, so `size_class: small` everywhere unless noted.
+
+### 7.1 Medicine (OTC)
+
+| Slot | Target | Mix | Priority |
+|---|---|---|---|
+| Pain reliever (acetaminophen, ibuprofen) | 2 | Tylenol, Advil, Aleve; single-dose 2-packs | must |
+| Antacid | 1–2 | Tums, Pepto-Bismol, Alka-Seltzer | must |
+| Cough drops | 1 | Halls | must |
+| Cold & flu | 1–2 | DayQuil/NyQuil, Alka-Seltzer Plus, Rompe Pecho | must (seasonal) |
+| Vapor rub | 1 | Vicks | should |
+| Allergy | 1 | Benadryl, generic | should |
+| Antifungal / foot | 1 | Derman | nice |
+| Energy shot | 1–2 | 5-Hour Energy, Lipovitan | must (counter) |
+| Vitamin C / Emergen-C | 1 | | nice |
+| Male enhancement (Rhino etc.) | per store | | store decision; flag `sensitive` |
+
+### 7.2 Oral care & lip
+
+| Slot | Target | Mix | Priority |
+|---|---|---|---|
+| Toothpaste | 1 | Colgate | must |
+| Toothbrush | 1 | Colgate, Oral-B | must |
+| Mouthwash | 1 | Listerine, Scope | should |
+| Lip balm | 1–2 | ChapStick, Carmex | must (counter) |
+| Floss | 1 | Oral-B | nice |
+
+### 7.3 Personal care
+
+| Slot | Target | Mix | Priority |
+|---|---|---|---|
+| Bar soap | 1–2 | Dove, Zest, Lucky | must |
+| Body wash / hand soap | 1 | Lucky, Dove | should |
+| Deodorant | 1–2 | Axe, Old Spice, Secret, Speed Stick | must |
+| Shampoo / conditioner | 1 | Head & Shoulders, Suave, VO5 | should |
+| Hair gel / spray | 1–2 | Moco de Gorila, Super Wet, Xtreme, Aqua Net | should (LA market) |
+| Razor, disposable | 1 | Gillette, Dorco, Schick | must |
+| Shaving cream | 1 | Gillette | nice |
+| Petroleum jelly / lotion | 1 | Vaseline, Nivea, Pond's | should |
+| Sunscreen | 1 | Coppertone | nice (summer) |
+| Cologne / body spray | 1 | Axe | nice |
+
+### 7.4 Feminine care & family planning
+
+| Slot | Target | Mix | Priority |
+|---|---|---|---|
+| Pads | 1 | Always | must |
+| Tampons | 1 | Tampax | should |
+| Condoms | 2 | Trojan (ENZ, Magnum, Ultra Thin) | must (counter) |
+| Lubricant | 1 | Trojan | nice |
+| Pregnancy test | 1 | | nice |
+
+### 7.5 First aid & hygiene
+
+| Slot | Target | Mix | Priority |
+|---|---|---|---|
+| Bandages | 1 | Band-Aid, Pure-Aid | must |
+| Rubbing alcohol / peroxide | 1 each | | should |
+| Hand sanitizer | 1 | NuValu | should |
+| Eye drops | 1 | Visine, Clear Eyes | should |
+| Cotton swabs | 1 | | nice |
+| Face masks | 1 | | nice |
+
+### 7.6 Beauty accessories
+
+| Slot | Target | Priority |
+|---|---|---|
+| Nail clipper / file | 1 | should |
+| Hair ties / combs / brushes | 1–2 | should |
+| Lashes / nail polish | 1 | nice |
+
+### Open questions (departments 6–7)
+
+1. `mix` vocabulary: is `value / national / hispanic` the right three, or do you name tiers differently internally?
+2. Male enhancement products: in the tree with a `sensitive` flag, or out entirely?
+3. Energy shots: here under OTC or with energy drinks in 2.2? Proposal: here, since they sit at the counter next to the medicine.
+
+---
 ## 8. Grocery staples — `pending`
