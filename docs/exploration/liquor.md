@@ -25,10 +25,12 @@ Before drafting 2 onward, review the prior attempt (see `prior-attempt.md`) and 
 
 Kind: **branded**. Leaves are brand line → variant → size.
 
-Size classes used here (to be confirmed as a global rule):
-- `single` — 12oz can, 16oz can, 20oz bottle (grab and go, cold box)
-- `take_home` — 1.25L, 2L, 3L
+Size classes used here (to be confirmed as a global rule). Sizes are the **retail unit the store shelves**; the Mercaso SKU is the case (e.g. "20 oz (24 Pack)"), recorded on the match row as `case_pack`.
+- `single` — 12oz can, 16oz can, 16.9oz/500ml bottle, 20oz bottle (grab and go, cold box)
+- `take_home` — 1L, 1.25L, 2L, 3L
 - `multipack` — 6pk 16.9oz, 8pk 12oz mini, 12pk 12oz can
+
+Sizes the old sheet confirms Mercaso stocks for soda: 12oz can, 16oz, 16.9oz, 20oz, 1L, 2L. It does not list retail 12-packs, only 24- and 35-count cases of 12oz cans.
 
 Liquor-store note: single-serve is the core. Take-home 2L is a must for the top two cola lines and lemon-lime. Multipacks are should/nice depending on cooler and shelf space.
 
@@ -40,6 +42,7 @@ Liquor-store note: single-serve is the core. Take-home 2L is a must for the top 
 | Coca-Cola Mexican (glass, cane sugar) | Classic | 355ml, 500ml | must in LA-market liquor stores |
 | Pepsi | Original, Zero Sugar, Diet, Wild Cherry | 12oz can, 20oz, 2L | Original/Zero must; Diet should; Wild Cherry should |
 | Dr Pepper | Original, Zero, Diet, Cherry | 12oz can, 20oz, 2L | Original must; Zero/Diet should; Cherry nice |
+| Shasta (value line, 21 items in old sheet) | Cola, Diet Cola + flavors across 1.2–1.4 | 12oz can, 2L, 3L | should as the value option; confirm with sales data |
 | RC Cola | Original | 12oz can, 20oz | nice (value slot) |
 | Jarritos / Mexican colas | see 1.3 Fruit & Mexican | | |
 
@@ -49,7 +52,8 @@ Open question: should Dr Pepper sit under Cola or its own "Pepper/spiced" subcat
 
 | Brand line | Variants | Sizes | Priority |
 |---|---|---|---|
-| Sprite | Original, Zero Sugar, Tropical Mix / seasonal | 12oz can, 20oz, 2L | Original must; Zero should; seasonal nice |
+| Sprite | Original, Zero Sugar, Lymonade, Tropical Mix / seasonal | 12oz can, 20oz, 2L | Original must; Zero should; Lymonade/seasonal nice |
+| Sprite Mexican (glass) | Original | 12oz, 500ml | should in LA market |
 | 7UP | Original, Zero Sugar | 12oz can, 20oz, 2L | Original should; Zero nice |
 | Starry (Pepsi) | Original, Zero | 12oz can, 20oz | nice |
 | Mountain Dew (citrus, listed here or in 1.3, decide) | Original, Zero, Diet, Code Red, Baja Blast | 12oz can, 20oz, 2L | Original must; Zero/Code Red should; Baja Blast nice |
@@ -59,6 +63,8 @@ Open question: should Dr Pepper sit under Cola or its own "Pepper/spiced" subcat
 | Brand line | Variants | Sizes | Priority |
 |---|---|---|---|
 | Fanta | Orange, Strawberry, Pineapple, Grape, Zero Orange | 12oz can, 20oz, 2L | Orange must; Strawberry/Pineapple should; Grape/Zero nice |
+| Fanta Mexican (glass) | Orange, Pineapple, Strawberry | 12oz, 16.9oz | Orange should; others nice |
+| Cactus Cooler | Orange-Pineapple | 20oz | should (SoCal staple, in old sheet) |
 | Crush | Orange, Grape, Strawberry, Pineapple | 20oz, 2L | Orange should; others nice |
 | Sunkist | Orange, Zero | 20oz, 2L | should |
 | Squirt | Original, Zero | 12oz can, 20oz, 2L | must in LA market (paloma mixer) |
@@ -77,7 +83,7 @@ Open question: should Dr Pepper sit under Cola or its own "Pepper/spiced" subcat
 
 ### 1.5 Ginger ale & club soda / tonic (mixer overlap)
 
-Decide whether these live in SCD or in department 5 (Mixers). Proposal: **Mixers**, since the liquor-store use case is cocktails, and ginger ale/tonic/club soda are bought together. Keep a cross-reference in the SCD section.
+Decide whether these live in SCD or in department 5 (Mixers). Proposal: **Mixers**, since the liquor-store use case is cocktails, and ginger ale/tonic/club soda are bought together. Keep a cross-reference in the SCD section. Old sheet confirms Canada Dry Ginger Ale 20oz is stocked.
 
 ### SCD assortment guardrails (for the cheat sheet)
 
@@ -88,7 +94,7 @@ Decide whether these live in SCD or in department 5 (Mixers). Proposal: **Mixers
 ### Open questions for discussion
 
 1. Size class boundaries: is 16oz can its own class or part of single?
-2. Do we track 12pk/multipacks at all for liquor, or is that market-only?
+2. Should the liquor cheat sheet include take-home multipacks (a retail 12-pack of cans a customer carries out), or only singles from the cooler plus 2L bottles? The old sheet shows Mercaso sells 24- and 35-count cases of 12oz cans, which are for stores selling loose cans, not retail 12-packs. Proposal: singles + 2L only for liquor; multipacks return for markets.
 3. Priority by store size (small vs large liquor store) or one list for now? Proposal: one list, add a `store_size` dimension later if needed.
 4. Where does Mountain Dew go: lemon-lime or citrus?
 

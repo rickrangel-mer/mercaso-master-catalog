@@ -1,0 +1,391 @@
+# Prior attempt — extracted taxonomy
+
+Department → group → subcategory, with item counts from the old sheet. No prices or items included.
+
+## Beverage
+- SODA (2 LITER) (19)
+- SODA (1 LITER) (10)
+- SODA (20 OZ) (22)
+- MEXICAN SODA (8)
+- SODA (16.9 OZ) (5)
+- SODA (16 OZ) (8)
+- SODA (12 OZ) (24 PACK) (31)
+- SODA (12 OZ) (35 PACK) (4)
+- SHASTA (21)
+- **Beverage Brands**
+- **Coffee, Tea & Chocolate Drinks**
+  - ARIZONA (16)
+  - STARBUCKS (6)
+  - SNAPPLE (12)
+  - NESQUIK (5)
+  - LIPTON (10)
+- **Juices, Nectars & Punch**
+  - CALYPSO (11)
+  - LANGERS (6)
+  - PARROT (4)
+  - VISVITA (15)
+  - JUMEX (8)
+  - OCEAN SPRAY (3)
+  - MINUTE MAID (6)
+  - SUNNY D (4)
+  - MOTTS CLAMATO (7)
+  - MARTINELLI'S (3)
+  - KERN'S (7)
+  - OKF (12)
+  - WELCH'S (7)
+  - DOLE (2)
+  - VITA COCO (2)
+- **Mixes & Micheladas**
+  - BAJA MICHELADAS (4)
+- **Sports Drinks & Electrolytes**
+  - GATORADE (22)
+  - ELECTROLIT (7)
+  - POWERADE (12)
+- **Water**
+  - NIAGARA (2)
+  - CRYSTAL GEYSER (4)
+  - PERRIER (5)
+  - FIJI WATER (3)
+  - VITAMINWATER (11)
+  - SMARTWATER (5)
+  - ESSENTIA (3)
+  - ARROWHEAD (7)
+  - AQUAFINA (4)
+  - DASANI (4)
+  - TOPO CHICO (2)
+  - EVIAN (3)
+  - PURE LIFE (1)
+  - SAN PELLEGRINO (2)
+  - SPARKLING ICE (11)
+  - LIQUID DEATH (0)
+  - CORE (4)
+- **Soda & Energy Drinks**
+  - MONSTER (8)
+  - RED BULL (10)
+  - BANG (15)
+  - GHOST (7)
+  - ROCKSTAR (2)
+
+## Candy
+- CHOCOLATES (46)
+- GUM (73)
+- MINTS (30)
+- GUMMY & CHEWY CANDY (157)
+- HARD CANDY & LOLLIPOPS (52)
+- KIDS NOVELTY CANDY (26)
+- MEXICAN CANDY (86)
+- **Chocolate Brands**
+  - REESE'S (17)
+  - SNICKERS (5)
+  - M&M'S (8)
+  - HERSHEY'S (4)
+  - KIT KAT (8)
+  - FERRERO ROCHER (1)
+  - TWIX (2)
+  - KINDER JOY (1)
+  - PAY DAY (3)
+- **Gum Brands**
+  - EXTRA (12)
+  - 5 GUM (7)
+  - TRIDENT (15)
+  - WRIGLEY'S (12)
+  - HUBBA BUBBA (4)
+  - MENTOS (9)
+  - ECLIPSE (5)
+  - ORBIT (7)
+  - DENTYNE (5)
+- **Mints Brands**
+  - ICE BREAKERS (11)
+  - TIC TAC (4)
+  - ALTOIDS (6)
+  - MENTOS (7)
+- **Gummy & Chewy Candy Brands**
+  - HARIBO (25)
+  - TROLLI (7)
+  - SOUR PATCH (6)
+  - LIFE SAVERS (7)
+  - STARBURST (13)
+  - WARHEADS (7)
+  - HI-CHEW (9)
+  - NOW & LATER (19)
+  - SOUR PUNCH (0)
+  - AIRHEADS (6)
+  - JOLLY RANCHER (4)
+  - SNAK CLUB (9)
+  - RIP ROLLS (6)
+  - MIKE & IKE (5)
+  - SOUR POWER (10)
+  - SKITTLES (2)
+  - NERDS (2)
+  - RIPS (6)
+  - RED VINES (2)
+- **Hard Candy & Lollipops Brands**
+  - POP ROCKS (12)
+  - SKITTLES (8)
+  - FERRARA LEMONHEAD (6)
+  - JOLLY RANCHER (4)
+  - CHARMS (8)
+  - NERDS (3)
+- **Kids Novelty Candy Brands**
+  - KIDSMANIA (23)
+  - ICEE (2)
+  - TOPPS (3)
+- **Mexican Candy Brands**
+  - DE LA ROSA (15)
+  - LUCAS (27)
+  - PELON (5)
+  - INDY (2)
+  - LIMON 7 (1)
+  - VERO (6)
+  - JOVY (9)
+  - HOLA (6)
+  - RAVI (3)
+  - LORENA (5)
+  - PICA (1)
+
+## Snacks
+- **Chips, Pretzels & Pop Corn**
+  - FRITO LAY (48)
+  - PRINGLES (19)
+  - TAKIS (2)
+  - CHEEZ-IT (9)
+  - KETTLE (5)
+  - CALIFORNIA SNACK FOODS (1)
+  - CHEX MIX (5)
+  - EL SABROSO (1)
+- **Cookies, Crackers & Biscuits**
+  - YAN YAN (2)
+  - HELLO PANDA (2)
+  - KEEBLER (8)
+  - OREO (6)
+  - POCKY (8)
+  - RICE KRISPIES (7)
+  - RITZ (3)
+  - CHIPS AHOY (4)
+  - LENNY & LARRY (8)
+  - GAMESA (1)
+  - GRANDMA'S COOKIES (4)
+  - PREMIUM (1)
+  - BAUDUCCO (5)
+  - LIL' DUTCH MAID (7)
+  - NUTELLA (1)
+  - KNOTT'S BERRY FARM (1)
+  - FAMOUS AMOS (1)
+- **Fruit Snacks**
+  - WELCH'S (2)
+  - SNAK CLUB (2)
+  - ARIZONA (2)
+- **Meat Snacks**
+  - JACK LINK'S (11)
+  - SLIM JIM (4)
+- **Nutrition Bars**
+  - POWER CRUNCH (6)
+  - CLIF BAR (4)
+  - KIND (3)
+  - NATURE VALLEY (2)
+  - PRIME BITES (3)
+- **Nuts & Seeds**
+  - CORN NUTS (9)
+  - SNAK CLUB (31)
+  - SPITZ (4)
+  - ARACHI (7)
+  - DAVID SEEDS (7)
+  - BLUE DIAMOND ALMONDS (12)
+  - TAPATIO (2)
+  - MANZELA (2)
+  - WONDERFUL (3)
+  - BEER NUTS (4)
+  - MUNCHEROS (2)
+  - PLANTERS (3)
+- **Snack Cakes & Pastries**
+  - HOSTESS (30)
+  - BON APPETIT (16)
+  - NE-MO'S (4)
+  - DOLLY (4)
+  - MOON PIE (4)
+  - CLOVER HILL (1)
+  - GAMESA (1)
+
+## Cleaning
+- AIR FRESHENERS (24)
+- CLEANING EQUIPMENT (30)
+- CLEANING SOLUTIONS (91)
+
+## Laundry
+- **Fabric Softeners & Starches**
+  - DOWNY (19)
+  - SUAVITEL (18)
+  - BOUNCE (1)
+  - GAIN (6)
+  - ENSUEÑO (5)
+  - OTHERS (3)
+- **Laundry Bags & Accessories**
+- **Laundry Detergents & Soaps**
+  - ARIEL (10)
+  - SOILOVE (3)
+  - GAIN (8)
+  - TIDE (19)
+  - FOCA (4)
+  - ROMA (4)
+  - ZOTE (6)
+  - ACE (4)
+  - AWESOME (1)
+  - BLANCA (3)
+  - LIRIO (2)
+  - OTHERS (3)
+
+## Grocery
+- **Breakfast, Breads & Tortillas**
+  - BREAKFAST (15)
+  - TORTILLAS & TOSTADAS (2)
+- **Canned & Jar Foods**
+  - CANNED BEANS (16)
+  - CANNED FRUIT (10)
+  - CANNED MEAT & CHILI (6)
+  - CANNED PASTA (2)
+  - CANNED SEA FOOD (14)
+  - CANNED SOUPS & GRAVY (13)
+  - CANNED VEGETABLES (6)
+  - PEPPERS, PICKLES & OLIVES (28)
+  - SAUCES & PASTES (1)
+- **Cooking & Baking**
+  - BAKING POWDER & SODA (2)
+  - CAKE MIX & CHOCOLATE CHIPS (3)
+  - CONDENSED MILK & GELATIN (7)
+  - COOKING OILS & SPRAYS (12)
+  - FLOUR & STARCH (4)
+  - LEMON & LIME JUICE (4)
+  - VINEGARS (3)
+- SALT, SUGAR & SPICES (1)
+- **Pastas, Rice & Beans**
+  - DRY BEANS (4)
+  - DRY PASTAS (19)
+  - RICE (5)
+- **Ramen & Instant Noodles**
+  - INSTANT NOODLES (4)
+  - RAMEN CUPS & BOWLS (35)
+  - RAMEN PACKETS (14)
+- **Seasoning & Condiments**
+  - SALT & PEPPER (9)
+  - SEASONINGS (10)
+  - SUGAR & SYRUP (11)
+- **Sauces, Condiments & Spreads**
+  - CHEESE (0)
+  - CONDIMENTS & DRESSINGS (13)
+  - SAUCES & PASTES (46)
+  - SPREADS & SYRUPS (6)
+
+## Health & Beauty
+- **Beauty & Cosmetics**
+  - BEAUTY ACCESSORIES (6)
+  - EYEBROWS & LASHES (3)
+  - FACE WIPES & MASKS (3)
+  - HAIR CARE & ACCESSORIES (6)
+  - MAKEUP & ACCESSORIES (1)
+  - NAIL CARE (11)
+- **Health & Medicine**
+  - EYECARE & LIPCARE (3)
+  - FIRST AID, BANDAGES & SUPPORT (6)
+  - MEDICINE (70)
+  - SANITIZERS, DISINFECTANTS & PPE (10)
+  - SEXUAL HEALTH (25)
+  - VITAMINS & SUPPLEMENTS (6)
+- **Personal Care**
+  - DEODORANTS & PERFUMES (14)
+  - FEMININE CARE & ADULT DIAPERS (12)
+  - HAIR CARE (23)
+  - ORAL CARE (39)
+  - SHAVING (15)
+  - SKIN CARE (5)
+  - SOAP & BODY WASH (19)
+
+## Household & Kitchen
+- **Home**
+  - BATHROOM ACCESSORIES (13)
+  - CANDLES & INCENSE (26)
+  - HOME STORAGE & BASKETS (4)
+  - SEWING (2)
+- **Kitchen**
+  - CERAMIC & GLASSWARE (0)
+  - CHARCOAL, GAS & LIGHTERS (30)
+  - KITCHEN ACCESSORIES (1)
+  - KITCHEN GADGETS & TOOLS (5)
+- **Paper, Plastic & Picnic Supplies**
+  - FOIL, WRAP & PANS (7)
+  - FOOD STORAGE AND TRASH BAGS (17)
+  - KITCHEN PLASTICS (3)
+  - PAPER TOWELS, NAPKINS & TISSUES (31)
+  - PICNIC & TABLEWARE (38)
+- **Hardware & Gardening**
+  - GARDENING & OUTDOOR (2)
+  - HARDWARE (12)
+  - KITCHEN (1)
+  - PEST CONTROL (5)
+
+## Auto & Electronics
+- **Auto**
+  - AUTO ACCESSORIES (1)
+  - AUTO CLEANING & LUBRICANTS (21)
+  - AUTO TOOLS & PARTS (5)
+  - MOTOR OILS & FLUIDS (63)
+- **Electronics**
+  - BATTERIES (13)
+  - CHARGERS & CABLES (12)
+  - EXTENSION CORDS & OUTLETS (2)
+  - HEADPHONES & SPEAKERS (0)
+  - LIGHTS (5)
+
+## Apparel & Accessories
+- **Accessories**
+  - BAGS, BELTS & WALLETS (1)
+  - EYEWEAR (5)
+  - HAIR ACCESSORIES (8)
+  - HEADWEAR (1)
+  - KEY CHAINS & LANYARDS (11)
+  - OTHER ACCESSORIES (1)
+  - UMBRELLAS & RAINCOATS (1)
+  - WINTER APPAREL & ACCESSORIES (5)
+- **Apparel**
+  - FOOTWEAR (3)
+  - SOCKS & HOSIERY (2)
+  - UNDERWEAR (8)
+
+## Baby
+- BABY CLOTHES & ACCESSORIES (1)
+- BABY DIAPERS & WIPES (8)
+- BABY FEEDING (3)
+- BABY SKINCARE PRODUCTS (4)
+
+## Pet
+- **Pet Food**
+  - BIRD FOOD (1)
+  - CAT FOOD (7)
+  - DOG FOOD (24)
+- **Pet Grooming & Training**
+  - WASTE BAGS (1)
+- **Pet Supplies**
+  - DOG TOYS (2)
+
+## Office & School Supplies
+- ARTS & CRAFTS (2)
+- COLORING & ACTIVITY BOOKS (0)
+- GLUE & TAPE (9)
+- MAILING & MOVING SUPPLIES (6)
+- NOTEBOOKS & PAPER (7)
+- OTHER STATIONERY TOOLS (5)
+- STAPLERS & STAPLES (1)
+- WRITING TOOLS (4)
+
+## Party & Gift Supplies
+- GIFT SUPPLIES (8)
+- PARTY SUPPLIES (30)
+
+## Store Supplies
+- CASH REGISTER SUPPLIES (3)
+- PAPER TOWELS & ROLLS (3)
+- SHOPPING BAGS (13)
+- STORE SIGNS (1)
+
+## Toys & Games
+- GAMES (6)
+- SPORTING GOODS (2)
