@@ -24,7 +24,7 @@ Goal: agree on the liquor-store taxonomy and where the branded/assortment line f
 - **Step 0a — Review the prior attempt.** You share a document from an earlier attempt at this catalog (Google Drive link, file in the repo, or pasted). I read it first and produce a short assessment in `docs/exploration/prior-attempt.md`: what structure it used, which categories/brands/priorities are worth carrying forward, what to drop, and what it was missing. The department outline below starts from that, not from scratch.
 - Work in `docs/exploration/liquor.md` in the repo (or a shared doc if preferred). One section per department. Each session covers one or two departments: I propose categories, subcategories, brand lines or assortment slots, variants that make sense, and priority; you correct, cut, add.
 - Suggested order for liquor: SCD (worked example, already discussed) → water & energy & juice → candy & snacks → tobacco accessories & lighters → ice, mixers, cups/bags → household & kitchen → health & beauty → grocery staples.
-- Output of Phase 0: an agreed outline plus a short list of modeling rules that came out of it (e.g. which departments are branded vs assortment, how sizes are classed, what priority levels mean). This outline is the input to Phase 2.
+- Output of Phase 0: a discussed outline plus the modeling rules that came out of it. This outline is the input to Phase 2. **Status: done 2026-09-28**, see `docs/exploration/liquor.md`.
 - Alcohol, beer and wine are out of scope per the brief.
 
 ### Phase 1 — Data model + repo scaffold
@@ -41,6 +41,13 @@ Goal: agree on the liquor-store taxonomy and where the branded/assortment line f
 - Translate the Phase 0 outline into `data/taxonomy/*.yaml` (shared structure, reusable by other store types) and `data/store-types/liquor.yaml`.
 - Start with SCD end to end to prove both the model and the validator, then the rest in the Phase 0 order, one PR per department for review.
 - Prioritization pass: `scripts/athena/export-sales.ts` pulls sales by category for liquor-store customers; a ranking script proposes priorities; expert adjusts in PR review.
+
+### Phase 2.5 — Sales cross-check (Athena)
+
+- Query Athena for liquor-store customers, trailing 12 months: units and revenue by category and item.
+- Compare against the encoded catalog: top movers that map to no node → candidate additions; `must` nodes with negligible sales → candidate downgrades; brand-level sanity where the outline defers to data (aloe, coconut water, Mexican candy, energy drinks, tobacco lines 4.1–4.4).
+- Output `docs/exploration/sales-crosscheck.md` with a decision column; Rick reviews; departments move to `agreed`.
+- Needs working AWS credentials, region, and Athena database/table names. The keys in the cloud environment as of 2026-09-28 are rejected by STS.
 
 ### Phase 3 — Family-tree web UI (read-only)
 

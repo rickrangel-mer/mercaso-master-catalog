@@ -1,4 +1,4 @@
-# Handoff — Phase 0 complete, Phase 1 not started
+# Handoff — Phase 0 closed, Phase 1 next
 
 Branch: `claude/nifty-gates-ux5xvt`. Last updated 2026-09-28.
 
@@ -8,9 +8,9 @@ Branch: `claude/nifty-gates-ux5xvt`. Last updated 2026-09-28.
 - `docs/exploration/liquor.md` — the liquor-store outline. All eight departments are `discussed` with Rick. The top of the file has the ten agreed **modeling rules**; each department ends with a **decisions log**. Read the rules before designing the schema.
 - `docs/exploration/prior-attempt.md` and `prior-attempt-taxonomy.md` — review of the old Mercaso order-form spreadsheet and its department tree. The spreadsheet itself (`mercaso_old_sheet.xlsx`) is not committed because it carries prices; ask Rick for it. It is a useful Phase 4 matching fixture: every row is a Mercaso item number with a parseable description.
 
-## Phase 0 exit gate still open
+## Phase 2.5 — sales cross-check (deferred, not a Phase 0 blocker)
 
-**Sales cross-check** (described at the top of `liquor.md`): compare the outline against Athena sales for liquor-store customers to catch good movers the outline missed. Blocked: the AWS keys in this cloud environment are rejected by STS (`InvalidClientTokenId`). Needs working credentials, region, and the Athena database/table names from the data team. Output goes to `docs/exploration/sales-crosscheck.md`; departments move to `agreed` after Rick reviews it.
+Compare the encoded catalog against Athena sales for liquor-store customers to catch good movers the outline missed. Described at the top of `liquor.md` and in `PLAN.md`. Blocked until working AWS credentials, region, and Athena table names are available; the keys in this cloud environment are rejected by STS (`InvalidClientTokenId`). Departments move from `discussed` to `agreed` after Rick reviews the output.
 
 ## Phase 1 starting points
 
@@ -23,6 +23,6 @@ Branch: `claude/nifty-gates-ux5xvt`. Last updated 2026-09-28.
 
 ## Open items for Rick
 
-- Athena credentials and table names for the cross-check.
+- Athena credentials and table names for the Phase 2.5 cross-check.
 - Guerrero tortillas: appear once in the old sheet; confirm stocked or drop.
 - Lines 4.1–4.4 (cigarettes, cigars, pouches, smokeless) are market-knowledge drafts; confirm against stock.

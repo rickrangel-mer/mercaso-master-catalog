@@ -19,7 +19,7 @@ Alcohol, beer and wine are out of scope. Tobacco is in scope (Mercaso sells it n
 
 Prior attempt reviewed (see `prior-attempt.md`). All eight departments are `discussed`.
 
-**Exit gate for Phase 0:** cross-reference the outline against Mercaso sales data for liquor-store customers (Athena) to catch good movers the outline missed, then mark departments `agreed`. See "Sales cross-check" below.
+Phase 0 is closed. The sales cross-check against Athena is deferred to **Phase 2.5** (after the catalog is encoded, before the UI); departments move to `agreed` after it. See "Sales cross-check" below.
 
 ## Modeling rules (agreed during exploration)
 
@@ -34,7 +34,7 @@ Prior attempt reviewed (see `prior-attempt.md`). All eight departments are `disc
 9. Age-restricted items carry `age_restricted: true`; CA-restricted variants (menthol, flavored tobacco) carry `restricted: CA`.
 10. Cross-references (mixers) point at the canonical node; nothing is duplicated in two places.
 
-## Sales cross-check (Phase 0 exit)
+## Sales cross-check (Phase 2.5)
 
 Query Athena for liquor-store customers, trailing 12 months: units and revenue by Mercaso category and by item. Compare against this outline:
 - Items in the top N by velocity that map to no node → candidate additions, reviewed with Rick.
@@ -745,6 +745,7 @@ Kind: **assortment** with a few branded exceptions (hot sauce, ramen, Tajín) wh
 |---|---|---|---|
 | Cereal | 2 | Kellogg's, General Mills (single-serve or small box) | should |
 | Pop-Tarts / toaster pastry | 1 | Kellogg's | should |
+| Tortillas | 1 | Mission | must (LA market) |
 | Tostadas | 1 | Los Pericos, Charras | should |
 | Peanut butter / Nutella | 1 | Skippy, Nutella | nice |
 | Syrup / honey | 1 | | nice |
@@ -761,7 +762,7 @@ Kind: **assortment** with a few branded exceptions (hot sauce, ramen, Tajín) wh
 ### Decisions log
 
 - No chilled or frozen: milk, eggs, cheese, ice cream, frozen are out of the catalog (Rick, 2026-09-28).
-- Mercaso does not deliver Mission tortillas or bread yet; both rows removed. Tostadas stay (Los Pericos in old sheet). Guerrero tortillas appear once in the old sheet; confirm in the sales cross-check.
+- Mission tortillas are in (must). Bread is out; Mercaso does not deliver it yet (Rick, 2026-09-28). Guerrero tortillas appear once in the old sheet; confirm in the sales cross-check.
 - Hot sauce, Tajín and Chamoy are branded, not assortment.
 
 ---
