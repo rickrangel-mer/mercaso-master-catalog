@@ -33,13 +33,13 @@ Mainline: `main` (default). New work goes in PRs against `main`. Last updated 20
 ## Next steps
 
 1. **Rick reviews** the choices above; changes are one-line edits in `data/`.
-2. **Phase 2.5 — sales cross-check.** Tables and queries are ready: see `docs/athena.md` and `scripts/athena/sql/`. Rick confirmed the table facts (recorded in `docs/athena.md`) and added AWS credentials to the environment on 2026-09-29. In a new session run `pnpm athena:check`, then `pnpm athena:export`; results land in `data/raw/` (gitignored). AWS keys in this environment are still rejected by STS (`InvalidClientTokenId`). Nodes with `verify: sales` are the brand-level questions; `verify: stock` nodes need a stock check.
+2. **Phase 2.5 — sales cross-check.** Tables and queries are ready: see `docs/athena.md` and `scripts/athena/sql/`. Rick confirmed the table facts (recorded in `docs/athena.md`) and added AWS credentials to the environment on 2026-09-29. In a new session run `pnpm athena:check`, then `pnpm athena:export`; results land in `data/raw/` (gitignored). The session that wrote this predates those credentials and could not test them; `athena:check` is the first real test. Nodes with `verify: sales` are the brand-level questions; `verify: stock` nodes need a stock check.
 3. **Phase 4 — matching.** Reads the products export; the item table has UPCs. The old order-form spreadsheet (not committed; it carries prices) is a good matching fixture.
 4. **Deploy the viewer** if wanted: `pnpm web:build` writes a static site to `apps/web/out/`.
 
 ## Open items for Rick
 
-- The products and liquor-sales CSVs. Working AWS credentials would let this run directly.
+- Nothing for Athena unless `pnpm athena:check` fails in the new session; its message says what to fix.
 - Guerrero tortillas: appear once in the old sheet; confirm stocked or drop.
 - Lines 4.1–4.4 (cigarettes, cigars, pouches, smokeless) are market-knowledge drafts; confirm against stock.
 - The encoding choices above.
