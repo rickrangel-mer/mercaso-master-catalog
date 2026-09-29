@@ -13,6 +13,7 @@
     "test": "vitest run",
     "web:dev": "pnpm build && pnpm --filter web dev",
     "web:build": "pnpm build && pnpm --filter web build",
+    "web:html": "pnpm build && pnpm --filter web html",
     "athena:check": "tsx scripts/athena/run.ts check",
     "athena:export": "tsx scripts/athena/run.ts export",
     "crosscheck": "tsx scripts/crosscheck/run.ts",

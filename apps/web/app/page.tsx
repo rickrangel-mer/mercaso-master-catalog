@@ -7,6 +7,7 @@ import { OrgChart } from "../components/OrgChart";
 import { Overview } from "../components/Overview";
 import { SkuTable } from "../components/SkuTable";
 import { Toolbar } from "../components/Toolbar";
+import { loadJson } from "../lib/load";
 import { skuRows, withPrices, type PriceFile } from "../lib/table";
 import {
   ancestorIds,
@@ -41,6 +42,7 @@ export default function Page() {
   const [tab, setTabState] = useState<Tab>("overview");
   // Optional: present only when the build had a pricing export (prices never go in git).
   const [prices, setPrices] = useState<PriceFile | null>(null);
+  const [snapshot, setSnapshot] = useState<string | undefined>(undefined);
   const [filters, setFilters] = useState<Filters>(NO_FILTERS);
   const [expanded, setExpanded] = useState<Set<string>>(new Set([ROOT_ID]));
   const [selectedId, setSelectedId] = useState<string | null>(null);
@@ -65,16 +67,17 @@ export default function Page() {
   }, []);
 
   useEffect(() => {
-    fetch("data/prices.json")
-      .then((r) => (r.ok ? r.json() : null))
-      .then((p: PriceFile | null) => setPrices(p))
+    const s = window.__MERCASO_DATA__?.snapshot;
+    if (typeof s === "string") setSnapshot(s);
+    loadJson<PriceFile>("data/prices.json")
+      .then((p) => setPrices(p))
       .catch(() => setPrices(null));
   }, []);
 
   useEffect(() => {
-    fetch("data/index.json")
-      .then((r) => (r.ok ? r.json() : Promise.reject(new Error(`index.json: HTTP ${r.status}`))))
-      .then((list: StoreTypeEntry[]) => {
+    loadJson<StoreTypeEntry[]>("data/index.json")
+      .then((list) => {
+        if (!list) throw new Error("index.json is missing");
         setStoreTypes(list);
         if (list[0]) setStoreType(list[0].store_type);
       })
@@ -85,9 +88,9 @@ export default function Page() {
     const entry = storeTypes.find((s) => s.store_type === storeType);
     if (!entry) return;
     setCatalog(null);
-    fetch(`data/${entry.file}`)
-      .then((r) => (r.ok ? r.json() : Promise.reject(new Error(`${entry.file}: HTTP ${r.status}`))))
-      .then((c: StoreTypeCatalog) => {
+    loadJson<StoreTypeCatalog>(`data/${entry.file}`)
+      .then((c) => {
+        if (!c) throw new Error(`${entry.file} is missing`);
         setCatalog(c);
         setFilters(NO_FILTERS);
         setExpanded(new Set([ROOT_ID]));
@@ -169,7 +172,7 @@ export default function Page() {
 
   return (
     <div className={`app tab-${tab}`}>
-      <Header storeTypes={storeTypes} storeType={storeType} onStoreType={setStoreType} tab={tab} onTab={setTab} />
+      <Header storeTypes={storeTypes} storeType={storeType} onStoreType={setStoreType} tab={tab} onTab={setTab} snapshot={snapshot} />
       {tab === "overview" && <div className="page">{index ? <Overview index={index} rows={rows} onTab={setTab} onJump={jumpTo} /> : loading}</div>}
       {tab === "table" && <div className="page">{index ? <SkuTable rows={rows} pricesAsOf={prices?.as_of} onJump={jumpTo} /> : loading}</div>}
       {tab === "chart" && (
