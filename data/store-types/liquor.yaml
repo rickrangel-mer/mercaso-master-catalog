@@ -13,6 +13,7 @@ include:
   - drinks
   - candy-snacks
   - tobacco
+  - grocery
 
 priority:
   # --- SCD ---------------------------------------------------------------
@@ -372,6 +373,45 @@ priority:
   tobacco.papers.raw.cones: should
   tobacco.papers.blunt-wraps: should
 
+  # --- Grocery staples --------------------------------------------------------
+  # Department default is should; must and nice are set below.
+  grocery: should
+
+  # 8.1 Instant meals
+  grocery.instant-meals.ramen-cup: must
+  grocery.instant-meals.ramen-packet: must
+  grocery.instant-meals.mac-cheese-cup: nice
+
+  # 8.2 Seasonings, hot sauce & condiments
+  grocery.seasonings.tajin.clasico: must
+  grocery.seasonings.mega: must
+  grocery.seasonings.hot-sauce.tapatio: must
+  grocery.seasonings.hot-sauce.valentina: must
+  grocery.seasonings.hot-sauce.cholula: nice
+  grocery.seasonings.hot-sauce.tabasco: nice
+  grocery.seasonings.salad-dressing: nice
+  grocery.seasonings.soy-sauce: nice
+
+  # 8.3 Canned & jarred
+  grocery.canned-jarred.beans: must
+  grocery.canned-jarred.jalapenos: must
+  grocery.canned-jarred.canned-fruit: nice
+  grocery.canned-jarred.canned-vegetables: nice
+  grocery.canned-jarred.nacho-cheese: nice
+
+  # 8.4 Dry goods & baking
+  grocery.dry-goods.sugar: must
+  grocery.dry-goods.flour-masa: nice
+  grocery.dry-goods.gelatin-flan: nice
+
+  # 8.5 Breakfast & pantry
+  grocery.breakfast-pantry.tortillas: must
+  grocery.breakfast-pantry.peanut-butter: nice
+  grocery.breakfast-pantry.syrup-honey: nice
+
+  # 8.6 Pet
+  grocery.pet: nice
+
 notes:
   scd.cola.coca-cola-mexican: Must in the LA market.
   scd.lemon-lime.sprite-mexican: Should in the LA market.
@@ -394,3 +434,8 @@ notes:
   tobacco: Priorities follow LA liquor-store velocity. Lines 4.1–4.4 are drafts to confirm against Mercaso stock.
   tobacco.cigarettes.newport: Newport is must in the outline; in CA only Non-Menthol can be sold.
   tobacco.nicotine.zyn: The outline has Wintergreen and Cool Mint 6mg as must. Every flavored Zyn is dropped in CA; confirm the unflavored Zyn Mercaso sells there.
+  grocery.instant-meals.canned-soup: Juanita's Menudo is for the LA market.
+  grocery.seasonings.tajin: Tajín and chamoy are must in the LA market (department 5 mixers list).
+  grocery.seasonings.mega: The outline wants one chamoy; Mega is the must pick and Tajín Chamoy the backup.
+  grocery.seasonings.hot-sauce: The outline wants 2–3 hot sauces. Tapatío and Valentina are must, El Yucateco should.
+  grocery.breakfast-pantry.tortillas: Must in the LA market (Mission).
