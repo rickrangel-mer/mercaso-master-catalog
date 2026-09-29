@@ -30,5 +30,5 @@ data/store-types/          per store type: what it carries and at what priority
 data/matches/              node to Mercaso SKU rows
 schema/                    JSON Schema for the data files
 scripts/                   validate, build; Athena export and matching come later
-apps/web/                  read-only family-tree viewer (Next.js + D3, static export)
+apps/web/                  read-only org-chart viewer (Next.js + d3-zoom, static export)
 ```
