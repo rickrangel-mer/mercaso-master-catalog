@@ -43,7 +43,7 @@ Goal: agree on the liquor-store taxonomy and where the branded/assortment line f
 
 - Translate the Phase 0 outline into `data/taxonomy/*.yaml` (shared structure, reusable by other store types) and `data/store-types/liquor.yaml`.
 - Start with SCD end to end to prove both the model and the validator, then the rest in the Phase 0 order, one PR per department for review.
-- **Status:** SCD encoded 2026-09-29 together with Phase 1. Next: water, energy, sports, juice (department 2).
+- **Status: done 2026-09-29.** All eight departments are encoded, with one commit per department. The Athena prioritization pass moves to Phase 2.5 because it needs the same credentials.
 - Prioritization pass: `scripts/athena/export-sales.ts` pulls sales by category for liquor-store customers; a ranking script proposes priorities; expert adjusts in PR review.
 
 ### Phase 2.5 — Sales cross-check (Athena)

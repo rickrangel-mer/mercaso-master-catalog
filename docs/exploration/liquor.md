@@ -17,7 +17,7 @@ Alcohol, beer and wine are out of scope. Tobacco is in scope (Mercaso sells it n
 7. Health & beauty — discussed (assortment)
 8. Grocery staples — discussed (mostly assortment)
 
-Prior attempt reviewed (see `prior-attempt.md`). All eight departments are `discussed`.
+Prior attempt reviewed (see `prior-attempt.md`). All eight departments are `discussed` and encoded (see "Encoding conventions" below).
 
 Phase 0 is closed. The sales cross-check against Athena is deferred to **Phase 2.5** (after the catalog is encoded, before the UI); departments move to `agreed` after it. See "Sales cross-check" below.
 
@@ -33,6 +33,17 @@ Phase 0 is closed. The sales cross-check against Athena is deferred to **Phase 2
 8. Scope for liquor v1: no alcohol, beer, wine; no chilled or frozen; no packaged ice; no bread (Mission tortillas are in, see 8.5); no male enhancement; no Auto, Apparel, Baby, Office, Toys, Promo, Store Supplies departments. Pet is `nice` only. Tobacco is in scope. Store operating supplies (bags) stay under a labeled node.
 9. Age-restricted items carry `age_restricted: true`; CA-restricted variants (menthol, flavored tobacco) carry `restricted: CA`.
 10. Cross-references (mixers) point at the canonical node; nothing is duplicated in two places.
+
+## Encoding conventions (Phase 2, 2026-09-29)
+
+All eight departments are encoded in `data/taxonomy/departments/` and `data/store-types/liquor.yaml`. The outline stays the source; these conventions turn its wording into data.
+
+- **"Pick N of these brands"** rows in a branded section (value cigarettes, Japanese peanuts, "top flavors" of Bang or Ghost) are assortment slots inside the branded category, with the brands as `brand_hints`.
+- **Priorities.** A variant listed without a priority is nice. When a must names one size, the variant's other sizes are should. Take-home sizes and cigarette cartons of must variants are should unless the outline makes them must.
+- **Placeholders.** Where the outline wants "the top 3–4 flavors" without naming them, the first ones listed stand in and the node carries `verify: sales`.
+- **Mix.** `mix` is set only where the outline says what the target must include ("one value, one name brand", "(hispanic)"). Brand names alone go in `brand_hints`.
+- **Links.** Mixers, the 24oz michelada cup and sandwich bags are `cross_ref` links to one canonical node.
+- **CA restrictions.** Menthol and flavored tobacco carry `restricted: [CA]` (rule 9). The liquor store type is set to CA, so its build drops them.
 
 ## Sales cross-check (Phase 2.5)
 

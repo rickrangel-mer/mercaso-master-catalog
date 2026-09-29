@@ -9,7 +9,7 @@ The catalog is a tree: Store type → Department → Category → Subcategory �
 
 ## Status
 
-Phase 1 done: data model, validator, build and CI. Soft drinks (SCD) is encoded for liquor stores. The other seven departments follow one PR each. See [docs/HANDOFF.md](docs/HANDOFF.md) for where things stand, [docs/PLAN.md](docs/PLAN.md) for the plan and [docs/data-model.md](docs/data-model.md) for the file formats.
+Phases 1 and 2 done: data model, validator, build and CI, and all eight liquor-store departments encoded. Phase 3 (the tree viewer in `apps/web`) is next. See [docs/HANDOFF.md](docs/HANDOFF.md) for where things stand, [docs/PLAN.md](docs/PLAN.md) for the plan and [docs/data-model.md](docs/data-model.md) for the file formats.
 
 ## Quick start
 
