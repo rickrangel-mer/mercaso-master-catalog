@@ -1,0 +1,4 @@
+# Departments in display order. Each key has a file data/taxonomy/departments/<key>.yaml.
+# Encoded so far: SCD. The rest follow one department per PR, in the Phase 0 order.
+departments:
+  - scd

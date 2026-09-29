@@ -9,16 +9,24 @@ The catalog is a tree: Store type → Department → Category → Subcategory �
 
 ## Status
 
-Phase 0, exploration. See [docs/PLAN.md](docs/PLAN.md) for the full plan and [docs/exploration/liquor.md](docs/exploration/liquor.md) for the working outline.
+Phase 1 done: data model, validator, build and CI. Soft drinks (SCD) is encoded for liquor stores. The other seven departments follow one PR each. See [docs/HANDOFF.md](docs/HANDOFF.md) for where things stand, [docs/PLAN.md](docs/PLAN.md) for the plan and [docs/data-model.md](docs/data-model.md) for the file formats.
 
-## Layout (planned)
+## Quick start
+
+```
+pnpm install
+pnpm validate
+pnpm build     # writes dist/liquor.json
+```
+
+## Layout
 
 ```
 docs/exploration/          Phase 0 working outlines and prior-attempt review
-data/taxonomy/             shared tree (departments, categories)
-data/store-types/          per store type: node picks + priority
-data/matches/              node → Mercaso SKU
-schema/                    JSON Schema for data files
-scripts/                   validate, build, Athena export, matching
-apps/web/                  read-only family-tree viewer (Next.js + D3)
+data/taxonomy/             shared tree: index.yaml plus one file per department
+data/store-types/          per store type: what it carries and at what priority
+data/matches/              node to Mercaso SKU rows
+schema/                    JSON Schema for the data files
+scripts/                   validate, build; Athena export and matching come later
+apps/web/                  read-only family-tree viewer (Phase 3, not built yet)
 ```

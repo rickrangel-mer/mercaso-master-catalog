@@ -1,0 +1,314 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "catalog.schema.json",
+  "title": "Mercaso master catalog data files",
+  "description": "Shapes of the YAML files under data/. Structural rules that need the whole tree (parent/child kinds, id uniqueness, reference resolution, priority coverage) are checked in scripts/validate.ts.",
+  "$defs": {
+    "slug": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$",
+      "description": "Lowercase letters, digits and single hyphens. One segment of a dotted node id."
+    },
+    "size_class_key": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+([_-][a-z0-9]+)*$",
+      "description": "Size class key, e.g. single, take_home, small."
+    },
+    "node_id": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+(-[a-z0-9]+)*(\\.[a-z0-9]+(-[a-z0-9]+)*)*$",
+      "description": "Full node id: the keys from department down to the node, joined by dots, e.g. scd.cola.coca-cola.classic.20oz."
+    },
+    "priority": {
+      "type": "string",
+      "enum": [
+        "must",
+        "should",
+        "nice"
+      ]
+    },
+    "mix": {
+      "type": "string",
+      "enum": [
+        "value",
+        "national",
+        "hispanic"
+      ]
+    },
+    "kind": {
+      "type": "string",
+      "enum": [
+        "department",
+        "category",
+        "subcategory",
+        "brand_line",
+        "variant",
+        "assortment_slot"
+      ],
+      "description": "Authored node kinds. Size nodes are generated from `sizes` and are never authored directly."
+    },
+    "size_def": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "name",
+        "size_class"
+      ],
+      "properties": {
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "size_class": {
+          "$ref": "#/$defs/size_class_key"
+        },
+        "container": {
+          "type": "string",
+          "minLength": 1
+        },
+        "volume_ml": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "unit_count": {
+          "type": "integer",
+          "minimum": 1
+        }
+      }
+    },
+    "node": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "key",
+        "name",
+        "kind"
+      ],
+      "properties": {
+        "key": {
+          "$ref": "#/$defs/slug"
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "kind": {
+          "$ref": "#/$defs/kind"
+        },
+        "note": {
+          "type": "string",
+          "minLength": 1
+        },
+        "verify": {
+          "type": "string",
+          "enum": [
+            "sales",
+            "stock"
+          ],
+          "description": "The outline defers this node to data: `sales` for the Phase 2.5 sales cross-check, `stock` for a check against what Mercaso actually stocks."
+        },
+        "age_restricted": {
+          "type": "boolean"
+        },
+        "restricted": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[A-Z]{2}$"
+          },
+          "uniqueItems": true,
+          "minItems": 1,
+          "description": "US states where this node must not be recommended, e.g. [CA] for menthol."
+        },
+        "cross_ref": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/node_id"
+          },
+          "uniqueItems": true,
+          "minItems": 1,
+          "description": "Canonical nodes this node points at instead of duplicating them."
+        },
+        "size_classes": {
+          "type": "object",
+          "minProperties": 1,
+          "propertyNames": {
+            "$ref": "#/$defs/size_class_key"
+          },
+          "additionalProperties": {
+            "type": "string",
+            "minLength": 1
+          },
+          "description": "Size class vocabulary for this subtree: class key to a short description."
+        },
+        "size_defs": {
+          "type": "object",
+          "minProperties": 1,
+          "propertyNames": {
+            "$ref": "#/$defs/slug"
+          },
+          "additionalProperties": {
+            "$ref": "#/$defs/size_def"
+          },
+          "description": "Retail sizes available to `sizes` lists in this subtree."
+        },
+        "sizes": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/slug"
+          },
+          "uniqueItems": true,
+          "minItems": 1,
+          "description": "Size keys expanded into size leaves. On a brand line it is the default for its variants."
+        },
+        "target_count": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "min",
+            "max"
+          ],
+          "properties": {
+            "min": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "max": {
+              "type": "integer",
+              "minimum": 1
+            }
+          }
+        },
+        "mix": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/mix"
+          },
+          "uniqueItems": true,
+          "minItems": 1
+        },
+        "size_class": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/size_class_key"
+          },
+          "uniqueItems": true,
+          "minItems": 1
+        },
+        "brand_hints": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "uniqueItems": true,
+          "minItems": 1
+        },
+        "children": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/node"
+          },
+          "minItems": 1
+        }
+      }
+    },
+    "taxonomy_index": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "departments"
+      ],
+      "properties": {
+        "departments": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/slug"
+          },
+          "uniqueItems": true,
+          "minItems": 1,
+          "description": "Department keys in display order. Each has a file data/taxonomy/departments/<key>.yaml."
+        }
+      }
+    },
+    "department_file": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/node"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "kind": {
+              "const": "department"
+            }
+          }
+        }
+      ]
+    },
+    "store_type_file": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "store_type",
+        "name",
+        "include",
+        "priority"
+      ],
+      "properties": {
+        "store_type": {
+          "$ref": "#/$defs/slug"
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "description": {
+          "type": "string"
+        },
+        "state": {
+          "type": "string",
+          "pattern": "^[A-Z]{2}$",
+          "description": "US state the store type operates in. Nodes restricted in this state are dropped from the build."
+        },
+        "include": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/node_id"
+          },
+          "uniqueItems": true,
+          "minItems": 1,
+          "description": "Subtrees this store type carries."
+        },
+        "exclude": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/node_id"
+          },
+          "uniqueItems": true,
+          "description": "Subtrees removed from the included ones."
+        },
+        "priority": {
+          "type": "object",
+          "propertyNames": {
+            "$ref": "#/$defs/node_id"
+          },
+          "additionalProperties": {
+            "$ref": "#/$defs/priority"
+          },
+          "description": "Node id to priority. A priority applies to the whole subtree unless a descendant overrides it."
+        },
+        "notes": {
+          "type": "object",
+          "propertyNames": {
+            "$ref": "#/$defs/node_id"
+          },
+          "additionalProperties": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    }
+  }
+}
