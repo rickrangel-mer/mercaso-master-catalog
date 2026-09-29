@@ -204,6 +204,16 @@
           "uniqueItems": true,
           "minItems": 1
         },
+        "match_terms": {
+          "description": "Phrases a Mercaso item title must contain (any one, case-insensitive) to qualify for this assortment slot. Defaults to the slot's name words.",
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 2
+          },
+          "uniqueItems": true,
+          "minItems": 1
+        },
         "children": {
           "type": "array",
           "items": {

@@ -68,6 +68,7 @@ Goal: agree on the liquor-store taxonomy and where the branded/assortment line f
 3. **LLM classification** (`scripts/match/classify.ts`): products with no rule match get name + description + the relevant subtree; the model returns best leaf id and confidence. Batched and cached by SKU.
 4. **Human review**: `review-export.ts` writes low-confidence rows to CSV; reviewer sets status; import back to `data/matches/liquor.csv`.
 5. **Gap report** (`scripts/match/gaps.ts`): must-carry branded leaves with no approved SKU, and assortment leaves below `target_count`. This is a sourcing list and a first-class output.
+- **Status: done 2026-09-29.** `pnpm match` is a rule matcher (brand, variant words, size, sales rank; `match_terms` on slots); no API key was available, so Claude reviewed every top pick in-session instead of an LLM step (52 rejected, 16 added by hand). Rick approved the 1,081 matches at confidence 0.6 or higher. Coverage: 865 of 1,038 items (must 188 of 192, should 89%, nice 72%); 137 items have no Mercaso SKU (`docs/exploration/liquor-gaps.md`). Soft drinks reach 74%, not the 90% target: every miss is a product Mercaso doesn't stock (Schweppes, Mug, RC Cola, Canada Dry club soda and tonic outside 1L). Rule 4 changed the same day: chips carry 2.5–3.25oz bags beside XVL.
 
 ### Later (out of scope now)
 

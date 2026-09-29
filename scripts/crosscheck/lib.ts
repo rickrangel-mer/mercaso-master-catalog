@@ -32,7 +32,7 @@ export const DEPARTMENT_SCOPE: Record<string, string[]> = {
   tobacco: ["Tobacco", "Household & Kitchen", "Auto & Electronics", "Party & Gift Supplies"],
   "mixers-bar": ["Beverage", "Grocery", "Restaurants & Bars", "Store Supplies", "Household & Kitchen", "Party & Gift Supplies", "Cleaning & Laundry"],
   household: ["Household & Kitchen", "Cleaning & Laundry", "Restaurants & Bars", "Stationery & School Supplies", "Auto & Electronics", "Party & Gift Supplies", "Store Supplies"],
-  "health-beauty": ["Health & Beauty", "Baby"],
+  "health-beauty": ["Health & Beauty", "Baby", "Beverage"],
   grocery: ["Grocery", "Pet", "Candy & Snacks"],
 };
 
@@ -54,7 +54,10 @@ export function tokens(text: string): string[] {
     .split(/[^a-z0-9.]+/)
     .map((t) => t.replace(/^\.+|\.+$/g, ""))
     .filter(Boolean)
-    .map((t) => (t.length > 3 && t.endsWith("s") && !t.endsWith("ss") ? t.slice(0, -1) : t));
+    .map((t) => (t.length > 4 && t.endsWith("ies") ? `${t.slice(0, -3)}y` : t))
+    .map((t) => (t.length > 3 && t.endsWith("s") && !t.endsWith("ss") ? t.slice(0, -1) : t))
+    // "Berries", "Berry", "Twinkies" and "Twinkie" all end in "y" so singular and plural agree.
+    .map((t) => (t.length > 4 && t.endsWith("ie") ? `${t.slice(0, -2)}y` : t));
 }
 
 const UNIT_ML: Record<string, number> = { oz: 29.5735, floz: 29.5735, ml: 1, l: 1000, liter: 1000, litre: 1000, gal: 3785.41, gallon: 3785.41 };
@@ -87,6 +90,13 @@ export interface LeafTarget {
   /** Slot name tokens; a slot needs one of them in the SKU's text. */
   slotWords: string[];
   volumeMl?: number;
+  /** The size leaf's display name, e.g. "King size" or "2.5–3.25oz bag". */
+  sizeName?: string;
+  /** Names of all size leaves under the same variant, e.g. ["Single", "King size"]. */
+  variantSizes?: string[];
+  /** Slot sizing and optional title phrases (`match_terms`). */
+  target?: { min: number; max: number };
+  matchTerms?: string[];
 }
 
 /** Flattens the built tree into matchable leaves. */
@@ -110,6 +120,8 @@ export function leafTargets(departments: OutputNode[]): LeafTarget[] {
         siblingVariants: siblings.filter((s) => s.length > 0),
         slotWords: [],
         volumeMl: node.attrs.volume_ml,
+        sizeName: node.name,
+        variantSizes: (variant.children ?? []).map((c) => c.name),
       });
     } else if (node.kind === "assortment_slot") {
       const hints = node.attrs.brand_hints ?? [];
@@ -124,6 +136,8 @@ export function leafTargets(departments: OutputNode[]): LeafTarget[] {
         variant: [],
         siblingVariants: [],
         slotWords: [...tokens(node.name), ...(parent ? tokens(parent.name) : [])].filter((t) => t.length >= 4),
+        ...(node.attrs.target_count ? { target: node.attrs.target_count } : {}),
+        ...(node.attrs.match_terms ? { matchTerms: node.attrs.match_terms } : {}),
       });
     }
     for (const child of node.children ?? []) {
@@ -145,7 +159,7 @@ function distinct(name: string, brand: string[]): string[] {
 }
 
 /** A token matches itself, or a longer word it starts: "tamarind" matches "tamarindo". */
-function has(text: Set<string>, t: string): boolean {
+export function has(text: Set<string>, t: string): boolean {
   if (text.has(t)) return true;
   if (t.length < 5) return false;
   for (const w of text) if (w.startsWith(t)) return true;

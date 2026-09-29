@@ -83,6 +83,7 @@ children:
       - key: value-water
         name: Value still water
         kind: assortment_slot
+        match_terms: ["spring water", "purified", "drinking water"]
         target_count: { min: 1, max: 1 }
         mix: [value]
         size_class: [single, take_home]
@@ -151,7 +152,7 @@ children:
           - { key: kiwi-strawberry, name: Kiwi Strawberry, kind: variant }
           - { key: black-raspberry, name: Black Raspberry, kind: variant }
           - { key: strawberry-watermelon, name: Strawberry Watermelon, kind: variant }
-          - { key: coco-pineapple, name: Coconut Pineapple, kind: variant }
+          - { key: coco-pineapple, name: Coco Pineapple, kind: variant }
           - { key: black-cherry, name: Black Cherry, kind: variant }
           - { key: lemonade, name: Lemonade, kind: variant }
       - key: penafiel
@@ -166,6 +167,7 @@ children:
       - key: premium-water
         name: Premium still or sparkling water
         kind: assortment_slot
+        match_terms: ["sparkling water", "still water", "spring water"]
         target_count: { min: 1, max: 1 }
         brand_hints: [Saratoga, Mountain Valley]
         note: Saratoga 28oz and Mountain Valley 1L each reach about 19% of stores.
@@ -379,7 +381,7 @@ children:
       - key: welchs
         name: Welch's
         kind: brand_line
-        sizes: [16-9oz]
+        sizes: [16oz]
         children:
           - { key: grape, name: Grape, kind: variant }
           - { key: apple, name: Apple, kind: variant }

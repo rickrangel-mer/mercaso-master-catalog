@@ -52,12 +52,14 @@ children:
       - key: corkscrew
         name: Corkscrew / waiter's wine key
         kind: assortment_slot
+        match_terms: ["corkscrew", "wine opener"]
         target_count: { min: 1, max: 2 }
         mix: [value, national]
         note: One value, one better.
       - key: bottle-opener
         name: Bottle opener (keychain, flat)
         kind: assortment_slot
+        match_terms: ["bottle opener", "cap opener"]
         target_count: { min: 1, max: 2 }
       - key: rimming-tray
         name: Michelada rim dip / rimming salt
@@ -79,6 +81,7 @@ children:
       - key: shot-glass-1oz
         name: Plastic shot cup (1–2oz)
         kind: assortment_slot
+        match_terms: ["shot cup", "shot glass"]
         target_count: { min: 1, max: 1 }
         note: Mostly unbranded; red 2oz shot cups reach 10% of stores, clear 1oz 3%.
       - key: michelada-cup
@@ -95,58 +98,70 @@ children:
       - key: plastic-cup-8oz
         name: 8oz plastic cup
         kind: assortment_slot
+        match_terms: ["plastic cups 25 ct", "plastic cup, 9", "9 oz cup"]
         target_count: { min: 1, max: 1 }
         brand_hints: [Axxion]
       - key: plates-9in
         name: Plates 9–10", foam or paper
         kind: assortment_slot
+        match_terms: ["plate"]
         target_count: { min: 1, max: 2 }
         brand_hints: [Axxion, Blue Star]
       - key: foam-bowls
         name: Foam bowls
         kind: assortment_slot
+        match_terms: ["foam bowl", "plastic bowl", "paper bowl"]
         target_count: { min: 1, max: 1 }
         brand_hints: [Axxion]
       - key: plastic-forks
         name: Plastic forks
         kind: assortment_slot
+        match_terms: ["fork"]
         target_count: { min: 1, max: 1 }
         brand_hints: [Blue Star, Heavy Duty Cutlery]
       - key: plastic-spoons
         name: Plastic spoons
         kind: assortment_slot
+        match_terms: ["spoon"]
         target_count: { min: 1, max: 1 }
         brand_hints: [Blue Star, Heavy Duty Cutlery]
       - key: skewers
         name: Bamboo skewers
         kind: assortment_slot
+        match_terms: ["skewer"]
         target_count: { min: 1, max: 1 }
       - key: toothpicks
         name: Toothpicks
         kind: assortment_slot
+        match_terms: ["toothpick"]
         target_count: { min: 1, max: 1 }
       - key: foam-cooler
         name: Styrofoam cooler
         kind: assortment_slot
+        match_terms: ["ice chest", "cooler"]
         target_count: { min: 1, max: 1 }
         brand_hints: [LiFoam, Ariana]
       - key: cocktail-jug
         name: Mixed cocktail jug, 1 gallon
         kind: assortment_slot
+        match_terms: ["cocktail jug"]
         target_count: { min: 1, max: 1 }
         note: Reaches 11% of stores (7% over 90 days); the 2 gallon 5% (slot review B.21).
       - key: wine-gift-bag
         name: Wine bottle gift bag
         kind: assortment_slot
+        match_terms: ["gift bag"]
         target_count: { min: 1, max: 1 }
         note: Hologram wine-bottle bags reach 5% of stores.
       - key: balloons
         name: Party balloons
         kind: assortment_slot
+        match_terms: ["balloon"]
         target_count: { min: 1, max: 1 }
       - key: birthday-candles
         name: Birthday candles
         kind: assortment_slot
+        match_terms: ["birthday candle"]
         target_count: { min: 1, max: 1 }
         note: Summer item. The LiFoam 28qt reaches 16% of stores (sales cross-check 2.14).
 
@@ -159,36 +174,43 @@ children:
       - key: t-shirt-bag-10x5x19
         name: T-shirt bag, black 10×5×19 ("Thank You")
         kind: assortment_slot
+        match_terms: ["10\" x 5\" x 19", "10x5x19"]
         target_count: { min: 1, max: 1 }
         note: Heavy-duty and standard.
       - key: t-shirt-bag-single-bottle
         name: T-shirt bag, black 8×4×16 / 6×4×15 (single bottle)
         kind: assortment_slot
+        match_terms: ["8\" x 5\" x 16", "8\" x 4\" x 16", "6\" x 4\" x 15", "8x4x16", "8x5x16"]
         target_count: { min: 1, max: 1 }
       - key: t-shirt-bag-12x7x22
         name: T-shirt bag, 12×7×22 (large, black or white)
         kind: assortment_slot
+        match_terms: ["12\" x 7\" x 22", "12x7x22", "11.5\" x 6.5\" x 21.5"]
         target_count: { min: 1, max: 1 }
       - key: kraft-bag-2lb
         name: Kraft paper bag 2lb (bottle bag)
         kind: assortment_slot
+        match_terms: ["bag #2", "2 lb capacity"]
         target_count: { min: 1, max: 1 }
         brand_hints: [Daisy, Duro]
         note: Daisy Brown Paper Bag #2 reaches 10% of stores.
       - key: kraft-bag-4lb
         name: Kraft paper bag 4lb (bottle bag)
         kind: assortment_slot
+        match_terms: ["bag #4", "4 lb capacity"]
         target_count: { min: 1, max: 1 }
         brand_hints: [Daisy, Duro]
         note: Daisy Brown Paper Bag #4 reaches 6% of stores.
       - key: reusable-bag
         name: Reusable bag 13×7×21
         kind: assortment_slot
+        match_terms: ["13\" x 7\" x 21", "reusable bag"]
         target_count: { min: 1, max: 1 }
         note: CA bag law; confirm the current rule. The reusable "Thank You" 13×7×21 bag reaches 6.5% of stores.
       - key: six-pack-rings
         name: Six-pack can rings
         kind: assortment_slot
+        match_terms: ["rings for 6 pack", "six pack ring"]
         target_count: { min: 1, max: 1 }
         note: 1000-count rings for 6-pack cans reach 4% of stores.
 
@@ -200,16 +222,19 @@ children:
       - key: kitchen-trash-13gal
         name: Kitchen trash bag 13gal
         kind: assortment_slot
+        match_terms: ["13 gal"]
         target_count: { min: 1, max: 2 }
         mix: [value, national]
         brand_hints: [Sure-Tuff, Ri-Pac, Glad, Hefty]
       - key: trash-30gal
         name: Large trash bag 26–33gal
         kind: assortment_slot
+        match_terms: ["26 gal", "30 gal", "33 gal"]
         target_count: { min: 1, max: 1 }
         brand_hints: [Sure-Tuff, Ri-Pac, Riptie]
       - key: zipper-bags
         name: Sandwich / zipper bags
         kind: assortment_slot
+        match_terms: ["zipper", "sandwich bag", "storage bag"]
         target_count: { min: 1, max: 1 }
         brand_hints: [Glad, Ri-Pac]
