@@ -73,7 +73,12 @@ const decidedKeys = new Set(decided.map((r) => `${r.node_id}|${r.mercaso_sku}`))
 
 const byLeaf = matchCatalog(targets, products);
 const rows: string[][] = [[...MATCH_COLUMNS]];
-for (const r of decided) rows.push(MATCH_COLUMNS.map((c) => r[c] ?? ""));
+// Kept rows get today's store shares; everything else stays as reviewed.
+const shareCell = (x: number | undefined) => (x === undefined ? "" : x.toFixed(4));
+for (const r of decided) {
+  const s = sales.get(r.mercaso_sku ?? "");
+  rows.push(MATCH_COLUMNS.map((c) => (c === "share_12m" ? shareCell(s?.share ?? 0) : c === "share_90d" ? shareCell(s?.share90 ?? 0) : (r[c] ?? ""))));
+}
 let proposed = 0;
 let empty = 0;
 let settled = 0;
@@ -87,7 +92,6 @@ for (const t of targets) {
   else if (list.length === 0) empty++;
   list.forEach((c, i) => {
     proposed++;
-    const share = c.product.store_share;
     rows.push([
       t.id,
       c.product.sku,
@@ -95,10 +99,12 @@ for (const t of targets) {
       String(c.product.package_size),
       String(i + 1),
       c.confidence.toFixed(2),
+      shareCell(c.product.store_share),
+      shareCell(c.product.store_share_90d),
       "auto",
       "rule",
       "",
-      share > 0 ? `Bought by ${(share * 100).toFixed(1)}% of CA liquor stores in 12 months` : "Not bought by liquor stores in 12 months",
+      "",
     ]);
   });
 }

@@ -32,6 +32,7 @@ All in `scripts/athena/sql/`:
 | `products.sql` | Live items with UPCs and attributes, no prices or costs | `data/raw/products.csv` |
 | `liquor_sales_by_sku.sql` | Trailing 12 months, CA liquor stores, one row per SKU: cases, units, revenue, orders, the share of liquor stores that bought it, the same share over the last 90 days, and first and last order dates (so replaced items show up) | `data/raw/liquor_sales_by_sku.csv` |
 | `liquor_reach_by_category.sql` | Same stores and period: the share of liquor stores that bought anything in each Mercaso department, category and sub-category | `data/raw/liquor_reach_by_category.csv` |
+| `pricing.sql` | Today's case price per live item (the promo price when on promo, else the regular price without CRV) and Finale's average case cost with the case CRV taken out (`average_cost - regular_crv * package_size`), for the site's price and margin columns | `data/raw/pricing.csv` |
 | `optional_checks.sql` | Attribute names and item statuses, for tuning the matcher | Not needed for the exports |
 
 `data/raw/` is gitignored, so exports never reach the repo.
@@ -43,7 +44,7 @@ With the credentials in the environment:
 ```
 pnpm athena:check                  # who am I, and can Athena read the item table
 pnpm athena:export                 # all exports into data/raw/
-pnpm athena:export liquor-sales    # or any of: products, liquor-sales, liquor-reach
+pnpm athena:export liquor-sales    # or any of: products, liquor-sales, liquor-reach, pricing
 pnpm crosscheck                    # Phase 2.5 comparison, from the two liquor exports
 ```
 
