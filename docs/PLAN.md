@@ -58,7 +58,7 @@ Goal: agree on the liquor-store taxonomy and where the branded/assortment line f
 - `apps/web` Next.js app loading `dist/<store-type>.json`. D3 hierarchy, collapsible horizontal tree with branches, store-type switcher, search/filter, node detail panel (attrs, priority, matched SKUs or assortment coverage), color by priority, badge by match status. Branded and assortment leaves rendered distinctly.
 - Deploy as static export or Vercel.
 - Built after Phase 2 has at least SCD encoded so the tree has real data; can start in parallel once Phase 1's JSON shape is fixed.
-- **Status: done 2026-09-29.** `pnpm web:dev` runs it; `pnpm web:build` writes a static site to `apps/web/out/`. Not deployed yet; hosting is Rick's call.
+- **Status: done 2026-09-29.** Restyled as a top-down org chart after Rick's Rippling example: cards with a department tint, priority tag and children|leaves badge; closed children in a two-column grid on a spine, open ones beside it; +/× on each card; zoom rail. `pnpm web:dev` runs it; `pnpm web:build` writes a static site to `apps/web/out/`. Not deployed yet; hosting is Rick's call.
 
 ### Phase 4 — Matching to Mercaso's catalog
 

@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { DetailPanel } from "../components/DetailPanel";
 import { Toolbar } from "../components/Toolbar";
-import { TreeView } from "../components/TreeView";
+import { OrgChart } from "../components/OrgChart";
 import {
   ancestorIds,
   expandForHits,
@@ -33,6 +33,7 @@ export default function Page() {
   const [expanded, setExpanded] = useState<Set<string>>(new Set([ROOT_ID]));
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [focus, setFocus] = useState<{ id: string; seq: number }>({ id: ROOT_ID, seq: 0 });
+  const [anchor, setAnchor] = useState<{ id: string; seq: number }>({ id: ROOT_ID, seq: 0 });
 
   // Set by a jump so the search-cleared effect below does not collapse the path it just opened.
   const jumping = useRef(false);
@@ -86,6 +87,7 @@ export default function Page() {
 
   const visible = useMemo(() => (filtered ? visibleTree(filtered.tree, expanded) : null), [filtered, expanded]);
 
+  // Open or close a branch; the chart keeps that card where it is on screen.
   const toggle = useCallback((node: ViewNode) => {
     if (isLeaf(node) || node.children.length === 0) return;
     setExpanded((prev) => {
@@ -94,17 +96,10 @@ export default function Page() {
       else next.add(node.id);
       return next;
     });
+    setAnchor((a) => ({ id: node.id, seq: a.seq + 1 }));
   }, []);
 
-  const onNodeClick = useCallback(
-    (node: ViewNode) => {
-      setSelectedId(node.id);
-      toggle(node);
-      // Follow a branch as it opens; leaves and closing branches keep the view where it is.
-      if (!isLeaf(node) && node.children.length > 0 && !expanded.has(node.id)) focusOn(node.id);
-    },
-    [toggle, focusOn, expanded],
-  );
+  const select = useCallback((node: ViewNode) => setSelectedId(node.id), []);
 
   const jumpTo = useCallback(
     (id: string) => {
@@ -156,13 +151,15 @@ export default function Page() {
             <p className="message">Nothing matches these filters.</p>
           )}
           {visible && index && (
-            <TreeView
+            <OrgChart
               tree={visible}
               index={index}
               selectedId={selectedId}
               hits={filtered?.hits ?? new Set()}
               focus={focus}
-              onNodeClick={onNodeClick}
+              anchor={anchor}
+              onSelect={select}
+              onToggle={toggle}
             />
           )}
         </section>

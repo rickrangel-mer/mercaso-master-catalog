@@ -8,7 +8,7 @@ Mainline: `main` (default). New work goes in PRs against `main`. Last updated 20
 - `docs/data-model.md` — file formats, commands, and what the validator checks. Read this before touching `data/`.
 - `docs/exploration/liquor.md` — the liquor-store outline, the ten **modeling rules**, and the **encoding conventions** used to turn the outline into data.
 - `data/taxonomy/departments/` — all eight departments. `data/store-types/liquor.yaml` — liquor priorities, notes, `state: CA`.
-- `apps/web` — read-only family-tree viewer (Next.js + D3, static export). `pnpm web:dev` to run it.
+- `apps/web` — read-only viewer laid out as a top-down org chart, modeled on the Rippling org diagram (Next.js + d3-zoom, static export). `pnpm web:dev` to run it.
 
 ## Numbers (liquor store, CA build)
 

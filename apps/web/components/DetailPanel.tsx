@@ -1,6 +1,6 @@
 "use client";
 
-import type { ReactNode } from "react";
+import type { CSSProperties, ReactNode } from "react";
 import { isLeaf, KIND_LABEL, type CatalogIndex, type ViewNode } from "../lib/tree";
 
 interface Props {
@@ -13,7 +13,7 @@ export function DetailPanel({ node, index, onJump }: Props) {
   if (!node || !index) {
     return (
       <aside className="detail" aria-label="Node details">
-        <p className="muted">Select a node to see its details. Click a branch to open or close it.</p>
+        <p className="muted">Select a card to see its details. Use + and × on a card to open or close it.</p>
         <Legend />
       </aside>
     );
@@ -118,35 +118,32 @@ function Legend() {
   return (
     <div className="legend section">
       <h3>Legend</h3>
-      <svg width="290" height="96" aria-hidden="true">
-        <g transform="translate(8,12)">
-          <circle className="legend-must" r={4.5} />
-          <text x={12} dy="0.32em">must</text>
-          <circle className="legend-should" r={4.5} cx={70} />
-          <text x={82} dy="0.32em">should</text>
-          <circle className="legend-nice" r={4.5} cx={148} />
-          <text x={160} dy="0.32em">nice</text>
-        </g>
-        <g transform="translate(8,38)">
-          <circle className="legend-neutral" r={4.5} />
-          <text x={12} dy="0.32em">branded size</text>
-          <rect className="legend-neutral" x={115} y={-5} width={10} height={10} rx={2} />
-          <text x={132} dy="0.32em">assortment slot</text>
-        </g>
-        <g transform="translate(10,64)">
-          <circle className="status-ring status-matched" r={7} />
-          <circle className="legend-neutral" r={4} />
-          <text x={14} dy="0.32em">matched</text>
-          <circle className="status-ring status-partial" r={7} cx={90} />
-          <circle className="legend-neutral" r={4} cx={90} />
-          <text x={104} dy="0.32em">partial</text>
-          <circle className="legend-neutral" r={4} cx={170} />
-          <text x={180} dy="0.32em">no ring: gap</text>
-        </g>
-        <g transform="translate(8,88)">
-          <text dy="0.32em">↗ link to the canonical node</text>
-        </g>
-      </svg>
+      <ul className="legend-list">
+        <li>
+          <span className="tag prio prio-must">must</span>
+          <span className="tag prio prio-should">should</span>
+          <span className="tag prio prio-nice">nice</span>
+          priority
+        </li>
+        <li>
+          <span className="tag dept-tag" style={{ "--tint": "var(--cat-1)" } as CSSProperties}>
+            Department
+          </span>
+          tint on the avatar and tag
+        </li>
+        <li>
+          <span className="count">6|187</span> direct children | leaves below
+        </li>
+        <li>
+          <span className="match match-matched">matched</span>
+          <span className="match match-gap">gap</span> Mercaso SKU coverage
+        </li>
+        <li>
+          <span className="tag flag">check</span> needs a sales or stock check
+        </li>
+        <li>↗ dashed card: link to the canonical node</li>
+        <li className="muted">Drag or scroll to pan; pinch or ctrl-scroll to zoom.</li>
+      </ul>
     </div>
   );
 }
