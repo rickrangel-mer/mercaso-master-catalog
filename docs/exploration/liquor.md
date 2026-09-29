@@ -8,25 +8,25 @@ Alcohol, beer and wine are out of scope. Tobacco is in scope (Mercaso sells it n
 
 ## Department order
 
-1. Soft drinks (SCD) — discussed
-2. Water, energy, sports, juice, tea/coffee RTD — discussed
-3. Candy & snacks — discussed
-4. Tobacco & accessories — discussed
-5. Mixers, bar tools, cups, bags — discussed
-6. Household & kitchen — discussed (assortment)
-7. Health & beauty — discussed (assortment)
-8. Grocery staples — discussed (mostly assortment)
+1. Soft drinks (SCD) — agreed
+2. Water, energy, sports, juice, tea/coffee RTD — agreed
+3. Candy & snacks — agreed
+4. Tobacco & accessories — agreed
+5. Mixers, bar tools, cups, bags — agreed
+6. Household & kitchen — agreed (assortment)
+7. Health & beauty — agreed (assortment)
+8. Grocery staples — agreed (mostly assortment)
 
-Prior attempt reviewed (see `prior-attempt.md`). All eight departments are `discussed` and encoded (see "Encoding conventions" below).
+Prior attempt reviewed (see `prior-attempt.md`). All eight departments are encoded (see "Encoding conventions" below) and `agreed` after the sales cross-check (2026-09-29). In tobacco, lines 4.1–4.4 still need a check against store shelves.
 
-Phase 0 is closed. The sales cross-check against Athena is deferred to **Phase 2.5** (after the catalog is encoded, before the UI); departments move to `agreed` after it. See "Sales cross-check" below.
+Phase 0 is closed. The Phase 2.5 sales cross-check is done; its proposals were all accepted and applied on 2026-09-29. See "Sales cross-check" below.
 
 ## Modeling rules (agreed during exploration)
 
 1. Tree: Store type → Department → Category → Subcategory → leaf. Department names reuse the old sheet's.
 2. Two leaf kinds. **Branded** (brand line → variant → size) where the brand is the recommendation: beverages, candy, snacks, tobacco, hot sauce, Tajín/Chamoy. **Assortment** (slot with `target_count`, `mix`, `size_class`) where coverage is the recommendation: household, health & beauty, grocery, cups, bags, bar tools.
 3. Leaf sizes are retail units. Case pack is not a catalog dimension; the match row carries it. A leaf holds more than one case option only when a real scenario exists (Coke 24 vs 35 count).
-4. Size classes are defined per subcategory, not globally. Soda: `single` (12oz, 16oz, 16.9oz, 20oz) and `take_home` (1L–3L); no multipacks for liquor. Candy: `single` / `king` / `peg` where they apply. Chips: `xvl` only. Assortment: `small` / `regular` / `bulk`.
+4. Size classes are defined per subcategory, not globally. Soda: `single` (12oz, 16oz, 16.9oz, 20oz, 24oz) and `take_home` (1L–3L); no multipacks for liquor. Candy: `single` / `king` / `peg` where they apply. Chips: `xvl` only, **under review**: the sales cross-check found XVL bags reach at most 6% of stores while the same flavors in 2.5–3.25oz bags reach 8–24% (row 3.8); revisit before Phase 4. Assortment: `small` / `regular` / `bulk`.
 5. Mix vocabulary for assortment slots: `value`, `national`, `hispanic`.
 6. Priority: `must` / `should` / `nice`, one list per store type, no store-size split. Inherits down the tree unless overridden.
 7. Variants listed only where the brand markets them at scale; no auto-generated diet/zero.
@@ -53,9 +53,11 @@ Query Athena for liquor-store customers, trailing 12 months: units and revenue b
 - Brand-level sanity for aloe, coconut water, Mexican candy, energy drinks, where the outline defers to data.
 Output: `docs/exploration/sales-crosscheck.md` with the two lists and a decision column. Requires Athena access (table names, credentials) from the data team.
 
+**Outcome (2026-09-29).** Run on the trailing 12 months (2025-09-29 to 2026-09-28), with a 90-day share where items changed during the year. Rick accepted all 106 proposals and they are applied in `data/`. Where this outline and the report disagree, the report wins; the sections below are kept as the original reasoning.
+
 ---
 
-## 1. Soft drinks (SCD) — `discussed`
+## 1. Soft drinks (SCD) — `agreed`
 
 Kind: **branded**. Leaves are brand line → variant → size.
 
@@ -144,7 +146,7 @@ Department 5 (Mixers) will cross-reference these rather than duplicate them.
 
 ---
 
-## 2. Water, energy, sports, juice, RTD tea & coffee — `discussed`
+## 2. Water, energy, sports, juice, RTD tea & coffee — `agreed`
 
 Kind: **branded** throughout. Brands below are the ones Mercaso stocks per the old sheet; sizes are retail units. Single-serve is the liquor-store core; 1L/1.5L for water only.
 
@@ -234,7 +236,7 @@ Guardrail: one value still water, one premium still (Smartwater or Fiji), one sp
 
 ---
 
-## 3. Candy & snacks — `discussed`
+## 3. Candy & snacks — `agreed`
 
 Kind: **branded**, but with a lighter tree than beverages. Leaf = brand line → variant (flavor) → size class. Size classes are **defined per subcategory**, not globally: chocolate bars and chewy singles use `single` / `king`; gummies use `peg`; gum and mints use their pack count; chips use `xvl` only; nuts, jerky, cookies and snack cakes use the retail unit (e.g. 5.25oz, 3.25oz, 6ct). No 12oz/2L logic here. Candy priority reflects LA liquor-store checkout counters: chocolate bars, gum, Mexican candy and peg-bag gummies.
 
@@ -382,7 +384,7 @@ Priority within Mexican candy to be re-ranked from sales data; all stocked brand
 - Chips: XVL only, no 1oz single-serve. Takis stays as its own brand line with Fuego as must.
 - Mexican candy is not capped; every stocked brand is listed, priority set by sales data.
 
-## 4. Tobacco & accessories — `discussed`
+## 4. Tobacco & accessories — `agreed`
 
 Kind: **branded**. Mercaso now sells tobacco (it did not when the old sheet was made), so tobacco products are in scope. Every line below except lighters and butane is from market knowledge, not the old sheet, and needs a stock check against Athena in Phase 2. Priorities are by LA liquor-store velocity. Age-restricted items should carry an `age_restricted: true` attribute so downstream tools can filter.
 
@@ -467,7 +469,7 @@ Kind: **assortment**.
 
 ---
 
-## 5. Mixers, bar tools, cups & bags — `discussed`
+## 5. Mixers, bar tools, cups & bags — `agreed`
 
 Kind: **mixed**. Mixers are branded and cross-reference SCD 1.5 and Juice 2.4. Bar tools, cups, bags and party disposables are **assortment** slots: the recommendation is "carry a 16oz red cup", not a brand. Packaged ice is not carried by Mercaso and is not in the catalog.
 
@@ -544,7 +546,7 @@ Kind: **assortment**. Small set liquor stores stock; full household treatment in
 
 ---
 
-## 6. Household & kitchen — `discussed` (assortment)
+## 6. Household & kitchen — `agreed` (assortment)
 
 Kind: **assortment**. This is the first fully assortment department, so the slot rules are stated here and apply to 7 and 8 too.
 
@@ -619,7 +621,7 @@ Kind: **assortment**. This is the first fully assortment department, so the slot
 
 ---
 
-## 7. Health & beauty — `discussed` (assortment)
+## 7. Health & beauty — `agreed` (assortment)
 
 Kind: **assortment**. Same slot rules as department 6. The liquor-store version is a single "trial size / emergency" rack, so `size_class: small` everywhere unless noted.
 
@@ -698,7 +700,7 @@ Kind: **assortment**. Same slot rules as department 6. The liquor-store version 
 - Energy shots live under OTC medicine (7.1), not with energy drinks.
 
 ---
-## 8. Grocery staples — `discussed` (assortment)
+## 8. Grocery staples — `agreed` (assortment)
 
 Kind: **assortment** with a few branded exceptions (hot sauce, ramen, Tajín) where customers ask by name. A liquor store's grocery aisle is a convenience top-up: what someone grabs at 9pm because the market is closed. Small sizes, one or two options per slot, heavy Hispanic mix. Brands in Mix are from the old sheet unless marked.
 
@@ -776,7 +778,7 @@ Kind: **assortment** with a few branded exceptions (hot sauce, ramen, Tajín) wh
 ### Decisions log
 
 - No chilled or frozen: milk, eggs, cheese, ice cream, frozen are out of the catalog (Rick, 2026-09-28).
-- Mission tortillas are in (must). Bread is out; Mercaso does not deliver it yet (Rick, 2026-09-28). Guerrero tortillas appear once in the old sheet; confirm in the sales cross-check.
+- Tortillas are in, now at should after the sales cross-check; the slot's hints are Guerrero, Calidad and Mission. Bread is out; Mercaso does not deliver it yet (Rick, 2026-09-28).
 - Hot sauce, Tajín and Chamoy are branded, not assortment.
 
 ---

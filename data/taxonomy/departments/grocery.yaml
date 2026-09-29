@@ -12,6 +12,7 @@ size_classes:
 size_defs:
   2oz: { name: 2oz bottle, size_class: small, container: bottle }
   4oz: { name: 4oz bottle, size_class: small, container: bottle }
+  0-35oz: { name: 0.35oz mini, size_class: small }
   5oz: { name: 5oz, size_class: small }
   10oz: { name: 10oz bottle, size_class: small, container: bottle }
   12-5oz: { name: 12.5oz bottle, size_class: small, container: bottle }
@@ -57,7 +58,6 @@ children:
         kind: assortment_slot
         target_count: { min: 1, max: 1 }
         brand_hints: [Kraft]
-        verify: stock
 
   # 8.2 Seasonings, hot sauce & condiments
   - key: seasonings
@@ -68,23 +68,22 @@ children:
         name: Tajín
         kind: brand_line
         note: >-
-          Department 5 cross-references Tajín and chamoy. The outline also lists "Fruit" next
-          to Clásico 5oz; which product that means needs confirming.
+          Department 5 cross-references Tajín and chamoy. The outline's "Fruit" is the 5oz
+          Clásico, sold as "Fruit and Snack Seasoning" (sales cross-check 1.12).
         children:
           - { key: clasico, name: Clásico, kind: variant, sizes: [5oz] }
-          - { key: chamoy, name: Chamoy, kind: variant, sizes: [bottle], verify: stock }
+          - { key: mini, name: Clásico Mini, kind: variant, sizes: [0-35oz] }
+          - { key: chamoy, name: Chamoy, kind: variant, sizes: [bottle] }
       - key: mega
         name: Mega
         kind: brand_line
-        verify: stock
         sizes: [bottle]
         children:
           - { key: chamoy, name: Chamoy, kind: variant }
       - key: hot-sauce
         name: Hot sauce
         kind: subcategory
-        verify: stock
-        note: Sizes are the common retail bottles; confirm against Mercaso stock.
+        note: Sizes confirmed against Mercaso stock (sales cross-check 6.1).
         children:
           - key: tapatio
             name: Tapatío
@@ -246,7 +245,6 @@ children:
         kind: assortment_slot
         target_count: { min: 1, max: 1 }
         brand_hints: [Maseca]
-        verify: stock
       - key: condensed-milk
         name: Condensed milk
         kind: assortment_slot
@@ -284,8 +282,8 @@ children:
         name: Tortillas
         kind: assortment_slot
         target_count: { min: 1, max: 1 }
-        brand_hints: [Mission]
-        note: Guerrero appears once in the old sheet; confirm in the sales cross-check.
+        brand_hints: [Guerrero, Calidad, Mission]
+        note: Every brand reaches only 1–2.5% of stores; stores likely buy fresh tortillas locally.
       - key: tostadas
         name: Tostadas
         kind: assortment_slot

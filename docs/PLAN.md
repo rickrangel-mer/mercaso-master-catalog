@@ -52,7 +52,7 @@ Goal: agree on the liquor-store taxonomy and where the branded/assortment line f
 - Compare against the encoded catalog: top movers that map to no node → candidate additions; `must` nodes with negligible sales → candidate downgrades; brand-level sanity where the outline defers to data (aloe, coconut water, Mexican candy, energy drinks, tobacco lines 4.1–4.4).
 - Output `docs/exploration/sales-crosscheck.md` with a decision column; Rick reviews; departments move to `agreed`.
 - Tables and joins are known (2026-09-29); queries are in `scripts/athena/sql/`, see `docs/athena.md`.
-- **Status: report written 2026-09-29, awaiting Rick's decisions.** `pnpm crosscheck` matches sales to leaves (`scripts/crosscheck/`); `docs/exploration/sales-crosscheck.md` holds the proposals, each with an empty Decision cell. Accepted rows become edits in `data/`, then departments move to `agreed`.
+- **Status: done 2026-09-29.** `pnpm crosscheck` matches sales to leaves (`scripts/crosscheck/`). Rick accepted all 106 proposals in `docs/exploration/sales-crosscheck.md`; they are applied in `data/`, and all eight departments are `agreed`. The 12-month store share is the main number, and the 90-day share is the fallback where items changed during the year.
 
 ### Phase 3 — Family-tree web UI (read-only)
 

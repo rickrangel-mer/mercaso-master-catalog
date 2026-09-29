@@ -28,6 +28,7 @@ children:
           - { key: gold, name: Gold, kind: variant }
           - { key: menthol, name: Menthol, kind: variant, restricted: [CA] }
           - { key: red-100s, name: Red 100s, kind: variant }
+          - { key: silver, name: Silver, kind: variant }
           - { key: special-blend, name: Special Blend, kind: variant }
       - key: newport
         name: Newport
@@ -58,7 +59,7 @@ children:
         target_count: { min: 1, max: 1 }
         mix: [value]
         size_class: [single]
-        brand_hints: [Pall Mall, L&M, Maverick]
+        brand_hints: [Seneca, Pall Mall, L&M, Maverick]
         note: One value line, Red and Blue.
       - key: other-cigarettes
         name: Other cigarette lines
@@ -236,7 +237,7 @@ children:
       - key: clipper
         name: Clipper
         kind: brand_line
-        verify: stock
+        note: Mercaso stocks only a 96-count display, with no sales in 12 months (sales cross-check 6.6).
         sizes: [single]
         children:
           - { key: classic, name: Classic assorted, kind: variant }
@@ -318,7 +319,7 @@ children:
         kind: assortment_slot
         target_count: { min: 1, max: 1 }
         size_class: [single]
-        brand_hints: [Zig-Zag, High Hemp]
+        brand_hints: [Grabba Leaf, Zig-Zag, High Hemp]
 
   # 4.7 Counter accessories
   - key: accessories

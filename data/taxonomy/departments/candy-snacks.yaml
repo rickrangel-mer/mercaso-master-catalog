@@ -55,6 +55,30 @@ children:
           - { key: milk-chocolate, name: Milk Chocolate, kind: variant }
           - { key: almond, name: Almond, kind: variant }
           - { key: cookies-n-creme, name: Cookies 'n' Creme, kind: variant }
+      - key: almond-joy
+        name: Almond Joy
+        kind: brand_line
+        sizes: [single]
+        children:
+          - { key: original, name: Original, kind: variant }
+      - key: butterfinger
+        name: Butterfinger
+        kind: brand_line
+        sizes: [single]
+        children:
+          - { key: original, name: Original, kind: variant }
+      - key: nestle-crunch
+        name: Nestlé Crunch
+        kind: brand_line
+        sizes: [single]
+        children:
+          - { key: original, name: Original, kind: variant }
+      - key: milky-way
+        name: Milky Way
+        kind: brand_line
+        sizes: [single]
+        children:
+          - { key: original, name: Original, kind: variant }
       - key: twix
         name: Twix
         kind: brand_line
@@ -195,6 +219,7 @@ children:
     size_defs:
       peg: { name: Peg bag, size_class: peg }
       4oz-peg: { name: 4oz peg bag, size_class: peg }
+      5oz-share: { name: 5oz share bag, size_class: king }
       single: { name: Single, size_class: single }
       king: { name: King size, size_class: king }
     children:
@@ -204,10 +229,49 @@ children:
         note: The outline wants Gold Bears plus two more; the next two listed stand in.
         sizes: [peg]
         children:
-          - { key: gold-bears, name: Gold Bears, kind: variant }
+          - { key: gold-bears, name: Gold Bears, kind: variant, sizes: [5oz-share], note: The 5oz share bag outsells the 4oz peg (29% vs 17% of stores). }
           - { key: sour-gold-bears, name: Sour Gold Bears, kind: variant }
           - { key: happy-cola, name: Happy Cola, kind: variant }
           - { key: twin-snakes, name: Twin Snakes, kind: variant }
+      - key: amos-peelerz
+        name: AMOS Peelerz
+        kind: brand_line
+        sizes: [single]
+        children:
+          - { key: mango, name: Mango, kind: variant }
+      - key: gushers
+        name: Gushers
+        kind: brand_line
+        sizes: [single]
+        children:
+          - { key: super-sour-berry, name: Super Sour Berry, kind: variant }
+          - { key: tropical, name: Tropical, kind: variant }
+      - key: sour-punch
+        name: Sour Punch Straws
+        kind: brand_line
+        sizes: [single]
+        children:
+          - { key: strawberry, name: Strawberry, kind: variant }
+          - { key: blue-raspberry, name: Blue Raspberry, kind: variant }
+      - key: sour-strips
+        name: Sour Strips
+        kind: brand_line
+        sizes: [single]
+        children:
+          - { key: watermelon, name: Watermelon, kind: variant }
+          - { key: strawberry, name: Strawberry, kind: variant }
+      - key: abba-zaba
+        name: Abba-Zaba
+        kind: brand_line
+        sizes: [single]
+        children:
+          - { key: original, name: Original, kind: variant }
+      - key: efrutti
+        name: Efrutti
+        kind: brand_line
+        sizes: [single]
+        children:
+          - { key: mini-burger, name: Mini Burger, kind: variant }
       - key: trolli
         name: Trolli
         kind: brand_line
@@ -314,6 +378,12 @@ children:
         children:
           - { key: original, name: Original hard candy, kind: variant }
           - { key: sour, name: Sour, kind: variant }
+      - key: toxic-waste
+        name: Toxic Waste Slime Licker
+        kind: brand_line
+        sizes: [single]
+        children:
+          - { key: original, name: Original, kind: variant }
       - key: charms-blow-pop
         name: Charms Blow Pop
         kind: brand_line
@@ -340,7 +410,7 @@ children:
   - key: mexican-candy
     name: Mexican candy
     kind: category
-    verify: sales
+    note: Brands and priorities ranked by the sales cross-check (4.16).
     size_classes:
       single: Single piece or pack
     size_defs:
@@ -355,7 +425,8 @@ children:
           - { key: gusano, name: Gusano, kind: variant }
           - { key: bomvaso, name: Bomvaso, kind: variant }
           - { key: salsagheti, name: Salsagheti, kind: variant }
-          - { key: pelucas, name: Pelucas, kind: variant }
+          - { key: baby-mango, name: Baby Sweet Mango, kind: variant }
+          - { key: baby-chamoy, name: Baby Chamoy, kind: variant }
       - key: de-la-rosa
         name: De la Rosa
         kind: brand_line
@@ -398,8 +469,9 @@ children:
         kind: brand_line
         sizes: [single]
         children:
-          - { key: chamoy, name: Chamoy, kind: variant }
-          - { key: tamarindo, name: Tamarindo, kind: variant }
+          - { key: dedos, name: Dedos, kind: variant }
+          - { key: hormigas, name: Hormigas, kind: variant }
+          - { key: marimba, name: Paleta Marimba, kind: variant }
       - key: hola
         name: Hola
         kind: brand_line
@@ -443,6 +515,7 @@ children:
       2oz: { name: 2oz bag, size_class: single }
       3oz: { name: 3oz bag, size_class: single }
       3-75oz: { name: 3.75oz bag, size_class: single }
+      bag: { name: Single bag, size_class: single }
     children:
       - key: frito-lay-xvl
         name: Frito-Lay XVL
@@ -499,6 +572,19 @@ children:
         children:
           - { key: sea-salt, name: Sea Salt, kind: variant }
           - { key: salt-vinegar, name: Salt & Vinegar, kind: variant }
+      - key: el-sabroso-cracklins
+        name: El Sabroso Pork Cracklins
+        kind: brand_line
+        sizes: [bag]
+        children:
+          - { key: hot-sauce, name: With hot sauce packet, kind: variant }
+          - { key: hot-spicy, name: Hot & Spicy, kind: variant }
+      - key: act-ii
+        name: ACT II microwave popcorn
+        kind: brand_line
+        sizes: [bag]
+        children:
+          - { key: butter-lovers, name: Butter Lovers, kind: variant }
       - key: value-chips
         name: Value chips
         kind: assortment_slot
@@ -587,8 +673,14 @@ children:
         kind: assortment_slot
         target_count: { min: 1, max: 1 }
         size_class: [single]
-        brand_hints: [Snak Club, Muncheros, Tapatio]
+        brand_hints: [Arachi, Snak Club]
         note: Chili Lemon peanuts or Tajín seeds, 5oz.
+      - key: arachi
+        name: Arachi
+        kind: brand_line
+        sizes: [single]
+        children:
+          - { key: hot, name: Japanese Peanuts Hot, kind: variant }
       - key: beer-nuts
         name: Beer Nuts
         kind: brand_line
@@ -624,6 +716,7 @@ children:
         kind: brand_line
         sizes: [single]
         children:
+          - { key: snack-size-original, name: Snack Size Original, kind: variant }
           - { key: giant-original, name: Giant Original, kind: variant }
           - { key: monster-original, name: Monster Original, kind: variant }
           - { key: monster-tabasco, name: Monster Tabasco, kind: variant }
@@ -642,6 +735,12 @@ children:
         size_class: [single]
         brand_hints: [Kind, Nature Valley]
         note: One bar brand, its top two items.
+      - key: barebells
+        name: Barebells
+        kind: brand_line
+        sizes: [single]
+        children:
+          - { key: cookies-cream, name: Cookies & Cream, kind: variant }
       - key: protein-bars
         name: Protein bars and bites
         kind: assortment_slot
@@ -762,6 +861,8 @@ children:
           - { key: cupcakes, name: Cupcakes, kind: variant }
           - { key: zingers, name: Zingers, kind: variant }
           - { key: ding-dongs, name: Ding Dongs, kind: variant }
+          - { key: donettes-powdered, name: Donettes Powdered, kind: variant }
+          - { key: donettes-chocolate, name: Donettes Chocolate, kind: variant }
       - key: bon-appetit
         name: Bon Appetit
         kind: brand_line
@@ -771,12 +872,6 @@ children:
           - { key: concha, name: Concha, kind: variant }
           - { key: banana-bread, name: Banana Bread, kind: variant }
           - { key: muffin, name: Muffin, kind: variant }
-      - key: clover-hill
-        name: Clover Hill
-        kind: brand_line
-        sizes: [single]
-        children:
-          - { key: big-texas-cinnamon-roll, name: Big Texas cinnamon roll, kind: variant }
       - key: other-snack-cakes
         name: Other snack cakes
         kind: assortment_slot
