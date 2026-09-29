@@ -6,7 +6,7 @@
  *   pnpm athena:export products    run one export by name
  *
  * Settings come from the environment: AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, optional
- * AWS_SESSION_TOKEN, AWS_REGION, ATHENA_WORKGROUP, ATHENA_S3_STAGING_DIR. Credentials are read
+ * AWS_SESSION_TOKEN (temporary keys only; ignored next to an AKIA key), AWS_REGION, ATHENA_WORKGROUP, ATHENA_S3_STAGING_DIR. Credentials are read
  * from those variables directly, so a stray AWS_PROFILE cannot redirect them.
  */
 import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
@@ -18,13 +18,13 @@ import {
   StartQueryExecutionCommand,
 } from "@aws-sdk/client-athena";
 import { GetCallerIdentityCommand, STSClient } from "@aws-sdk/client-sts";
-import { fromEnv } from "@aws-sdk/credential-provider-env";
-import { configFromEnv, explainAwsError, pageToRows, prepareSql, toCsv, type AthenaConfig } from "./lib.ts";
+import { configFromEnv, credentialsFromEnv, explainAwsError, pageToRows, prepareSql, toCsv, type AthenaConfig } from "./lib.ts";
 
 const ROOT = process.cwd();
 const EXPORTS: Record<string, { sql: string; out: string }> = {
   products: { sql: "scripts/athena/sql/products.sql", out: "data/raw/products.csv" },
   "liquor-sales": { sql: "scripts/athena/sql/liquor_sales_by_sku.sql", out: "data/raw/liquor_sales_by_sku.csv" },
+  "liquor-reach": { sql: "scripts/athena/sql/liquor_reach_by_category.sql", out: "data/raw/liquor_reach_by_category.csv" },
 };
 
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
@@ -72,7 +72,8 @@ async function main() {
     console.error("Add them in the cloud environment settings, then start a new session.");
     process.exit(1);
   }
-  const credentials = fromEnv();
+  const { credentials, warning } = credentialsFromEnv();
+  if (warning) console.warn(warning);
   const athena = new AthenaClient({ region: config.region, credentials });
 
   if (command === "check") {

@@ -35,25 +35,37 @@ priority:
 
   # 1.1 Cola
   scd.cola.coca-cola.classic: must
+  scd.cola.coca-cola.classic.24oz: should
   scd.cola.coca-cola.zero-sugar: must
+  scd.cola.coca-cola.zero-sugar.16oz-can: should
+  scd.cola.coca-cola.zero-sugar.24oz: nice
   scd.cola.coca-cola.diet: must
+  scd.cola.coca-cola.diet.16oz-can: should
+  scd.cola.coca-cola.diet.24oz: nice
   scd.cola.coca-cola.cherry: should
   scd.cola.coca-cola.vanilla: should
   scd.cola.coca-cola.caffeine-free: nice
   scd.cola.coca-cola-mexican: must
   scd.cola.pepsi.original: must
-  scd.cola.pepsi.zero-sugar: must
+  scd.cola.pepsi.original.16oz-can: should
+  scd.cola.pepsi.original.1l: should
+  scd.cola.pepsi.zero-sugar: should
   scd.cola.pepsi.diet: should
   scd.cola.pepsi.wild-cherry: should
   scd.cola.dr-pepper: should
   scd.cola.dr-pepper.original: must
-  scd.cola.dr-pepper.original.2l: should
+  scd.cola.dr-pepper.original.16oz-can: should
+  scd.cola.dr-pepper.original.1l: should
   scd.cola.dr-pepper.cherry: nice
-  scd.cola.shasta: should
+  scd.cola.shasta: nice
+  scd.cola.shasta.cola: should
+  scd.cola.shasta.tiki-punch: should
   scd.cola.rc-cola: nice
 
   # 1.2 Lemon-lime
   scd.lemon-lime.sprite.original: must
+  scd.lemon-lime.sprite.original.16oz-can: should
+  scd.lemon-lime.sprite.original.24oz: nice
   scd.lemon-lime.sprite.zero-sugar: should
   scd.lemon-lime.sprite.lymonade: nice
   scd.lemon-lime.sprite.tropical-mix: nice
@@ -63,6 +75,7 @@ priority:
   scd.lemon-lime.starry: nice
   scd.lemon-lime.mountain-dew: should
   scd.lemon-lime.mountain-dew.original: must
+  scd.lemon-lime.mountain-dew.original.12oz-can: should
   scd.lemon-lime.mountain-dew.original.2l: should
   scd.lemon-lime.mountain-dew.diet: nice
   scd.lemon-lime.mountain-dew.baja-blast: nice
@@ -80,6 +93,9 @@ priority:
   scd.fruit-mexican.crush.orange: should
   scd.fruit-mexican.sunkist: should
   scd.fruit-mexican.squirt: must
+  scd.fruit-mexican.squirt.original.1l: should
+  scd.fruit-mexican.squirt.original.16oz-can: nice
+  scd.fruit-mexican.squirt.zero-sugar: should
   scd.fruit-mexican.jarritos: should
   scd.fruit-mexican.jarritos.mandarin: must
   scd.fruit-mexican.jarritos.mandarin.1-5l: should
@@ -87,29 +103,27 @@ priority:
   scd.fruit-mexican.jarritos.lime.1-5l: should
   scd.fruit-mexican.jarritos.tamarind: must
   scd.fruit-mexican.jarritos.tamarind.1-5l: should
-  scd.fruit-mexican.jarritos.grapefruit: must
-  scd.fruit-mexican.jarritos.grapefruit.1-5l: should
   scd.fruit-mexican.sangria-senorial: should
   scd.fruit-mexican.sidral-mundet: should
-  scd.fruit-mexican.mirinda: nice
-  scd.fruit-mexican.fresca: nice
   scd.fruit-mexican.manzanita-sol: nice
+  scd.fruit-mexican.faygo: nice
 
   # 1.4 Root beer & cream
   scd.root-beer-cream.a-and-w: should
   scd.root-beer-cream.a-and-w.root-beer: must
+  scd.root-beer-cream.a-and-w.root-beer.12oz-can: should
   scd.root-beer-cream.a-and-w.root-beer.2l: should
-  scd.root-beer-cream.barqs: should
   scd.root-beer-cream.mug: nice
 
   # 1.5 Ginger ale, club soda & tonic
   scd.ginger-ale-club-tonic.canada-dry: should
   scd.ginger-ale-club-tonic.canada-dry.ginger-ale.20oz: must
+  scd.ginger-ale-club-tonic.canada-dry.ginger-ale.1l: must
   scd.ginger-ale-club-tonic.canada-dry.ginger-ale-zero: nice
   scd.ginger-ale-club-tonic.canada-dry.club-soda.1l: must
   scd.ginger-ale-club-tonic.canada-dry.tonic.1l: must
-  scd.ginger-ale-club-tonic.schweppes: should
-  scd.ginger-ale-club-tonic.seagrams: nice
+  scd.ginger-ale-club-tonic.schweppes: nice
+  scd.ginger-ale-club-tonic.bundaberg: nice
 
   # --- Water, energy, sports, juice, tea & coffee ---------------------------
   # Section defaults are nice: variants the outline lists without a priority.
@@ -124,50 +138,73 @@ priority:
   drinks.water.value-water: must
   drinks.water.smartwater.original: should
   drinks.water.smartwater.original.1l: must
+  drinks.water.aquafina.original.1l: should
+  drinks.water.evian.original.1l: should
   drinks.water.essentia: should
-  drinks.water.fiji.original.1l: should
+  drinks.water.essentia.original.1l: must
+  drinks.water.fiji.original.1l: must
   drinks.water.topo-chico: must
   drinks.water.perrier.original: should
-  drinks.water.sparkling-ice: should
-  drinks.water.sparkling-ice.lemonade: nice
+  drinks.water.perrier.original.16-9oz: must
+  drinks.water.perrier.lime.16-9oz: should
+  drinks.water.san-pellegrino.original.25-4oz-glass: should
+  drinks.water.penafiel: should
 
   # 2.2 Energy
   drinks.energy: nice
   drinks.energy.red-bull: should
   drinks.energy.red-bull.original.8-4oz-can: must
   drinks.energy.red-bull.original.12oz-can: must
+  drinks.energy.red-bull.original.16oz-can: must
   drinks.energy.red-bull.sugar-free.8-4oz-can: must
   drinks.energy.red-bull.sugar-free.12oz-can: must
   drinks.energy.monster.original: must
-  drinks.energy.monster.original.24oz-can: nice
   drinks.energy.monster.ultra-zero: must
-  drinks.energy.monster.ultra-zero.24oz-can: nice
+  drinks.energy.monster.ultra-zero.24oz-can: should
   drinks.energy.monster.zero-sugar: should
+  drinks.energy.monster.zero-sugar.16oz-can: must
   drinks.energy.monster.zero-sugar.24oz-can: nice
   drinks.energy.monster.lo-carb: should
+  drinks.energy.monster.lo-carb.16oz-can: must
   drinks.energy.monster.lo-carb.24oz-can: nice
   drinks.energy.rockstar: should
-  drinks.energy.celsius: should
-  drinks.energy.alani-nu: should
+  drinks.energy.celsius.watermelon: should
+  drinks.energy.celsius.wild-berry: should
+  drinks.energy.ghost: should
+  drinks.energy.c4: should
 
   # 2.3 Sports & electrolytes
   drinks.sports: nice
   drinks.sports.gatorade.fruit-punch: must
+  drinks.sports.gatorade.fruit-punch.24oz: nice
   drinks.sports.gatorade.fruit-punch.28oz: should
   drinks.sports.gatorade.cool-blue: must
+  drinks.sports.gatorade.cool-blue.24oz: nice
   drinks.sports.gatorade.cool-blue.28oz: should
   drinks.sports.gatorade.lemon-lime: must
+  drinks.sports.gatorade.lemon-lime.24oz: nice
   drinks.sports.gatorade.lemon-lime.28oz: should
   drinks.sports.gatorade.orange: must
+  drinks.sports.gatorade.orange.24oz: nice
   drinks.sports.gatorade.orange.28oz: should
   drinks.sports.gatorade.glacier-freeze: should
+  drinks.sports.gatorade.lime-cucumber.28oz: should
+  drinks.sports.gatorade.fierce-grape: should
   drinks.sports.powerade.mountain-berry-blast: should
   drinks.sports.powerade.fruit-punch: should
   drinks.sports.electrolit: should
   drinks.sports.electrolit.strawberry: must
   drinks.sports.electrolit.coconut: must
   drinks.sports.electrolit.orange-mandarin: must
-  drinks.sports.vitaminwater.xxx: should
+  drinks.sports.electrolit.berry-bliss: nice
+  drinks.sports.electrolit.mango: nice
+  drinks.sports.electrolit.jamaica: nice
+  drinks.sports.vitaminwater.xxx: must
+  drinks.sports.vitaminwater.xxx.28oz: should
+  drinks.sports.vitaminwater.energy: should
+  drinks.sports.vitaminwater.power-c.20oz: should
+  drinks.sports.vitaminwater.focus: should
+  drinks.sports.vitaminwater.refresh.20oz: should
 
   # 2.4 Juice, nectars & punch
   drinks.juice: nice
@@ -181,27 +218,37 @@ priority:
   drinks.juice.kerns.peach: should
   drinks.juice.calypso.strawberry-lemonade: must
   drinks.juice.calypso.ocean-blue: must
-  drinks.juice.calypso.lemonade: should
+  drinks.juice.calypso.lemonade: must
   drinks.juice.calypso.southern-peach: should
   drinks.juice.calypso.kiwi: should
+  drinks.juice.calypso.triple-melon: should
+  drinks.juice.calypso.paradise-punch: should
+  drinks.juice.calypso.island-wave: should
   drinks.juice.minute-maid.lemonade: should
   drinks.juice.minute-maid.lemonade.20oz: must
   drinks.juice.minute-maid.pink-lemonade: should
-  drinks.juice.welchs.grape: should
-  drinks.juice.welchs.apple: should
   drinks.juice.langers.orange: should
   drinks.juice.langers.apple: should
+  drinks.juice.langers.pineapple: should
+  drinks.juice.langers.cranberry: should
+  drinks.juice.langers.mango: should
   drinks.juice.ocean-spray.cranberry.15-2oz: should
   drinks.juice.motts-clamato.original: should
   drinks.juice.motts-clamato.original.16oz: must
   drinks.juice.motts-clamato.original.32oz: must
+  drinks.juice.motts-clamato.picante.16oz: should
+  drinks.juice.motts-clamato.picante.32oz: should
+  drinks.juice.dole.pineapple.8oz-can: should
   drinks.juice.martinellis.apple-juice: should
   drinks.juice.visvita.original: should
+  drinks.juice.visvita.original.16-9oz: must
   drinks.juice.visvita.mango: should
+  drinks.juice.visvita.pomegranate: should
   drinks.juice.okf.original: should
-  drinks.juice.okf.mango: should
   drinks.juice.vita-coco: should
+  drinks.juice.vita-coco.original.16-9oz: must
   drinks.juice.parrot: should
+  drinks.juice.parrot.with-pulp.16-6oz: must
 
   # 2.5 RTD tea, coffee & dairy drinks
   drinks.tea-coffee: nice
@@ -210,6 +257,9 @@ priority:
   drinks.tea-coffee.arizona.mucho-mango: must
   drinks.tea-coffee.arizona.lemon-tea: must
   drinks.tea-coffee.arizona.arnold-palmer: must
+  drinks.tea-coffee.arizona.watermelon: must
+  drinks.tea-coffee.arizona.kiwi-strawberry: must
+  drinks.tea-coffee.arizona.fruit-punch: must
   drinks.tea-coffee.snapple.peach-tea: should
   drinks.tea-coffee.snapple.lemon-tea: should
   drinks.tea-coffee.brisk.lemon: should
@@ -218,9 +268,11 @@ priority:
   drinks.tea-coffee.starbucks-frappuccino.vanilla.13-7oz: should
   drinks.tea-coffee.starbucks-frappuccino.mocha.13-7oz: should
   drinks.tea-coffee.nesquik.chocolate: should
+  drinks.tea-coffee.starbucks-espresso.espresso-cream: should
 
   # 2.6 Michelada mixes
-  drinks.michelada: must
+  drinks.michelada.baja-micheladas: nice
+  drinks.michelada.baja-micheladas.original: should
 
   # --- Candy & snacks --------------------------------------------------------
   # Department default is nice: variants the outline lists without a priority.
@@ -237,6 +289,11 @@ priority:
   candy-snacks.chocolate.hersheys.milk-chocolate: should
   candy-snacks.chocolate.hersheys.milk-chocolate.single: must
   candy-snacks.chocolate.hersheys.almond: should
+  candy-snacks.chocolate.hersheys.cookies-n-creme: should
+  candy-snacks.chocolate.almond-joy: should
+  candy-snacks.chocolate.butterfinger: should
+  candy-snacks.chocolate.nestle-crunch: should
+  candy-snacks.chocolate.milky-way: should
   candy-snacks.chocolate.twix.original: should
   candy-snacks.chocolate.twix.original.single: must
   candy-snacks.chocolate.pay-day: should
@@ -247,13 +304,16 @@ priority:
   candy-snacks.gum-mints.trident.original: must
   candy-snacks.gum-mints.extra.spearmint: must
   candy-snacks.gum-mints.extra.polar-ice: must
+  candy-snacks.gum-mints.extra.peppermint: should
   candy-snacks.gum-mints.orbit.spearmint: should
   candy-snacks.gum-mints.5-gum.spearmint-rain: should
+  candy-snacks.gum-mints.5-gum.peppermint-cobalt: should
+  candy-snacks.gum-mints.hubba-bubba.bubble-tape: should
   candy-snacks.gum-mints.wrigleys.doublemint: should
   candy-snacks.gum-mints.wrigleys.juicy-fruit: should
   candy-snacks.gum-mints.ice-breakers.cool-mint: must
   candy-snacks.gum-mints.ice-breakers.ice-cubes: should
-  candy-snacks.gum-mints.tic-tac.orange: must
+  candy-snacks.gum-mints.tic-tac.orange: should
   candy-snacks.gum-mints.tic-tac.freshmint: must
   candy-snacks.gum-mints.altoids.peppermint: should
   candy-snacks.gum-mints.mentos.mint: should
@@ -274,6 +334,9 @@ priority:
   candy-snacks.gummy-chewy.life-savers: should
   candy-snacks.gummy-chewy.nerds.gummy-clusters: must
   candy-snacks.gummy-chewy.snak-club: should
+  candy-snacks.gummy-chewy.amos-peelerz: should
+  candy-snacks.gummy-chewy.gushers: should
+  candy-snacks.gummy-chewy.sour-punch: should
 
   # 3.4 Hard candy & lollipops
   candy-snacks.hard-candy.jolly-rancher.original: should
@@ -283,29 +346,28 @@ priority:
   candy-snacks.mexican-candy.lucas.muecas: must
   candy-snacks.mexican-candy.lucas.gusano: must
   candy-snacks.mexican-candy.lucas.salsagheti: must
+  candy-snacks.mexican-candy.lucas.baby-mango: should
+  candy-snacks.mexican-candy.lucas.baby-chamoy: should
   candy-snacks.mexican-candy.de-la-rosa.mazapan: must
   candy-snacks.mexican-candy.de-la-rosa.pulparindo: must
   candy-snacks.mexican-candy.pelon.pelo-rico: must
-  candy-snacks.mexican-candy.vero.mango-con-chile: must
-  candy-snacks.mexican-candy.vero.elotes: must
-  candy-snacks.mexican-candy.jovy: should
-  candy-snacks.mexican-candy.limon-7: should
+  candy-snacks.mexican-candy.pelon.pelonazo: should
+  candy-snacks.mexican-candy.vero.mango-con-chile: should
+  candy-snacks.mexican-candy.vero.elotes: should
+  candy-snacks.mexican-candy.jovy.ricas-mango: should
+  candy-snacks.mexican-candy.limon-7: must
   candy-snacks.mexican-candy.indy: should
+  candy-snacks.mexican-candy.indy.dedos: must
   candy-snacks.mexican-candy.hola: should
-  candy-snacks.mexican-candy.ravi: should
-  candy-snacks.mexican-candy.lorena: should
   candy-snacks.mexican-candy.pica: should
 
   # 3.6 Salty snacks
-  candy-snacks.salty-snacks.frito-lay-xvl: should
-  candy-snacks.salty-snacks.frito-lay-xvl.cheetos-flamin-hot: must
-  candy-snacks.salty-snacks.frito-lay-xvl.doritos-nacho: must
-  candy-snacks.salty-snacks.frito-lay-xvl.lays-classic: must
   candy-snacks.salty-snacks.takis.fuego: must
   candy-snacks.salty-snacks.takis.blue-heat: should
   candy-snacks.salty-snacks.pringles.original.2-5oz: should
   candy-snacks.salty-snacks.pringles.sour-cream-onion.2-5oz: should
   candy-snacks.salty-snacks.cheez-it.original: should
+  candy-snacks.salty-snacks.el-sabroso-cracklins: should
 
   # 3.7 Nuts & seeds
   candy-snacks.nuts-seeds.david.original: must
@@ -317,9 +379,12 @@ priority:
   candy-snacks.nuts-seeds.wonderful-pistachios.roasted-salted: should
   candy-snacks.nuts-seeds.japanese-peanuts: must
   candy-snacks.nuts-seeds.chili-lime-peanuts: must
+  candy-snacks.nuts-seeds.spitz.cracked-pepper: should
+  candy-snacks.nuts-seeds.arachi: should
 
   # 3.8 Meat snacks & bars
-  candy-snacks.meat-snacks-bars.jack-links.original: must
+  candy-snacks.meat-snacks-bars.jack-links.original: should
+  candy-snacks.meat-snacks-bars.slim-jim.snack-size-original: must
   candy-snacks.meat-snacks-bars.jack-links.teriyaki: should
   candy-snacks.meat-snacks-bars.slim-jim.giant-original: must
   candy-snacks.meat-snacks-bars.slim-jim.monster-original: should
@@ -336,9 +401,10 @@ priority:
   candy-snacks.cookies-cakes.hostess.honey-bun: must
   candy-snacks.cookies-cakes.hostess.twinkies: must
   candy-snacks.cookies-cakes.hostess.cupcakes: must
+  candy-snacks.cookies-cakes.hostess.donettes-powdered: should
+  candy-snacks.cookies-cakes.hostess.donettes-chocolate: should
   candy-snacks.cookies-cakes.bon-appetit.concha: should
   candy-snacks.cookies-cakes.bon-appetit.danish: should
-  candy-snacks.cookies-cakes.clover-hill: should
   candy-snacks.cookies-cakes.welchs-fruit-snacks: should
 
   # --- Tobacco & accessories -------------------------------------------------
@@ -351,6 +417,7 @@ priority:
   tobacco.cigarettes.marlboro.red.pack: must
   tobacco.cigarettes.marlboro.gold: should
   tobacco.cigarettes.marlboro.gold.pack: must
+  tobacco.cigarettes.marlboro.red-100s: should
   tobacco.cigarettes.newport: should
   tobacco.cigarettes.newport.non-menthol.pack: must
   tobacco.cigarettes.camel.blue: should
@@ -376,7 +443,6 @@ priority:
   # 4.5 Lighters & matches
   tobacco.lighters.bic.classic: must
   tobacco.lighters.bic.mini: should
-  tobacco.lighters.clipper: should
   tobacco.lighters.value-lighters: must
   tobacco.lighters.eagle-torch.small: must
   tobacco.lighters.eagle-torch.large: should
@@ -399,7 +465,8 @@ priority:
 
   # 8.2 Seasonings, hot sauce & condiments
   grocery.seasonings.tajin.clasico: must
-  grocery.seasonings.mega: must
+  grocery.seasonings.tajin.mini: must
+  grocery.seasonings.tajin.chamoy: nice
   grocery.seasonings.hot-sauce.tapatio: must
   grocery.seasonings.hot-sauce.valentina: must
   grocery.seasonings.hot-sauce.cholula: nice
@@ -420,7 +487,6 @@ priority:
   grocery.dry-goods.gelatin-flan: nice
 
   # 8.5 Breakfast & pantry
-  grocery.breakfast-pantry.tortillas: must
   grocery.breakfast-pantry.peanut-butter: nice
   grocery.breakfast-pantry.syrup-honey: nice
 
@@ -480,6 +546,7 @@ priority:
   household.equipment-home.batteries.9v: should
   household.equipment-home.chargers-cables: should
   household.equipment-home.grilling-fire: should
+  household.equipment-home.grilling-fire.butane-canister: nice
 
   # --- Health & beauty ---------------------------------------------------------
   health-beauty: should
@@ -545,9 +612,9 @@ notes:
   tobacco.nicotine.zyn: Mercaso sells Original and Smooth, 3mg and 6mg. The 6mg are must, following the outline's "6mg must"; flavored Zyn is dropped in CA.
   grocery.instant-meals.canned-soup: Juanita's Menudo is for the LA market.
   grocery.seasonings.tajin: Tajín and chamoy are must in the LA market (department 5 mixers list).
-  grocery.seasonings.mega: The outline wants one chamoy; Mega is the must pick and Tajín Chamoy the backup.
+  grocery.seasonings.mega: The outline wants one chamoy; Mega is the pick and Tajín Chamoy the backup. Both sell to under 5% of stores.
   grocery.seasonings.hot-sauce: The outline wants 2–3 hot sauces. Tapatío and Valentina are must, El Yucateco should.
-  grocery.breakfast-pantry.tortillas: Must in the LA market (Mission).
+  grocery.breakfast-pantry.tortillas: Should after the sales cross-check (3.15); stores mostly buy fresh tortillas locally.
   mixers-bar.mixers: "The mixers list marks every mixer must. The canonical nodes keep their own priorities: Schweppes stays should per section 1.5, and Canada Dry club soda and tonic 1L are must."
   household: A liquor store in LA usually wants value and hispanic brands; national is the upgrade.
   household.air-candles-pest.religious-candle: Must in the LA market.

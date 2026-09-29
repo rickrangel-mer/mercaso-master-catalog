@@ -30,7 +30,8 @@ All in `scripts/athena/sql/`:
 | File | Purpose | Output |
 |---|---|---|
 | `products.sql` | Live items with UPCs and attributes, no prices or costs | `data/raw/products.csv` |
-| `liquor_sales_by_sku.sql` | Trailing 12 months, CA liquor stores, one row per SKU: cases, units, revenue, orders, and the share of liquor stores that bought it | `data/raw/liquor_sales_by_sku.csv` |
+| `liquor_sales_by_sku.sql` | Trailing 12 months, CA liquor stores, one row per SKU: cases, units, revenue, orders, the share of liquor stores that bought it, the same share over the last 90 days, and first and last order dates (so replaced items show up) | `data/raw/liquor_sales_by_sku.csv` |
+| `liquor_reach_by_category.sql` | Same stores and period: the share of liquor stores that bought anything in each Mercaso department and category | `data/raw/liquor_reach_by_category.csv` |
 | `optional_checks.sql` | Attribute names and item statuses, for tuning the matcher | Not needed for the exports |
 
 `data/raw/` is gitignored, so exports never reach the repo.
@@ -41,8 +42,9 @@ With the credentials in the environment:
 
 ```
 pnpm athena:check                  # who am I, and can Athena read the item table
-pnpm athena:export                 # both exports into data/raw/
-pnpm athena:export liquor-sales    # or one of: products, liquor-sales
+pnpm athena:export                 # all exports into data/raw/
+pnpm athena:export liquor-sales    # or any of: products, liquor-sales, liquor-reach
+pnpm crosscheck                    # Phase 2.5 comparison, from the two liquor exports
 ```
 
 The runner is `scripts/athena/run.ts`. It reads these variables, set in the cloud environment's settings. A new session picks them up; a running one does not.
@@ -50,7 +52,7 @@ The runner is `scripts/athena/run.ts`. It reads these variables, set in the clou
 | Variable | Notes |
 |---|---|
 | `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY` | Read directly, so `AWS_PROFILE` cannot redirect them. |
-| `AWS_SESSION_TOKEN` | Needed for temporary credentials. These expire, often within hours; the runner says so when it happens. |
+| `AWS_SESSION_TOKEN` | Only for temporary keys (`ASIA...`). These expire, often within hours; the runner says so when it happens. Next to a long-term key (`AKIA...`) AWS rejects it, so the runner ignores it and warns. |
 | `AWS_REGION` | Required. |
 | `ATHENA_WORKGROUP` | Defaults to `primary`. |
 | `ATHENA_S3_STAGING_DIR` | S3 path for query results. Optional if the workgroup sets one. |

@@ -8,11 +8,15 @@ size_classes:
   single: Single-serve, up to about 30oz
   take_home: Take-home, about 1L and larger
 size_defs:
+  6-5oz-can: { name: 6.5oz can, size_class: single, container: can, volume_ml: 192 }
+  8oz-can: { name: 8oz can, size_class: single, container: can, volume_ml: 237 }
   8-4oz-can: { name: 8.4oz can, size_class: single, container: can, volume_ml: 250 }
   8-4oz: { name: 8.4oz bottle, size_class: single, container: bottle, volume_ml: 250 }
   9-5oz-glass: { name: 9.5oz glass, size_class: single, container: glass bottle, volume_ml: 281 }
   10oz: { name: 10oz bottle, size_class: single, container: bottle, volume_ml: 296 }
   10oz-glass: { name: 10oz glass, size_class: single, container: glass bottle, volume_ml: 296 }
+  10-5oz: { name: 10.5oz bottle, size_class: single, container: bottle, volume_ml: 311 }
+  11-1oz: { name: 11.1oz carton, size_class: single, container: carton, volume_ml: 328 }
   11-15oz-glass: { name: 11.15oz glass, size_class: single, container: glass bottle, volume_ml: 330 }
   11-5oz: { name: 11.5oz carton or can, size_class: single, volume_ml: 340 }
   11-5oz-can: { name: 11.5oz can, size_class: single, container: can, volume_ml: 340 }
@@ -21,18 +25,23 @@ size_defs:
   13-7oz: { name: 13.7oz bottle, size_class: single, container: bottle, volume_ml: 405 }
   14oz: { name: 14oz bottle, size_class: single, container: bottle, volume_ml: 414 }
   15-2oz: { name: 15.2oz bottle, size_class: single, container: bottle, volume_ml: 450 }
+  15oz-can: { name: 15oz can, size_class: single, container: can, volume_ml: 444 }
+  15-5oz-can: { name: 15.5oz can, size_class: single, container: can, volume_ml: 458 }
   16oz: { name: 16oz bottle, size_class: single, container: bottle, volume_ml: 473 }
   16oz-can: { name: 16oz can, size_class: single, container: can, volume_ml: 473 }
   16oz-glass: { name: 16oz glass, size_class: single, container: glass bottle, volume_ml: 473 }
+  16-6oz: { name: 16.6oz bottle, size_class: single, container: bottle, volume_ml: 491 }
   16-9oz: { name: 16.9oz / 500ml bottle, size_class: single, container: bottle, volume_ml: 500 }
   16-9oz-can: { name: 16.9oz can, size_class: single, container: can, volume_ml: 500 }
   17oz: { name: 17oz bottle, size_class: single, container: bottle, volume_ml: 503 }
   18-5oz: { name: 18.5oz bottle, size_class: single, container: bottle, volume_ml: 547 }
   20oz: { name: 20oz bottle, size_class: single, container: bottle, volume_ml: 591 }
   20oz-can: { name: 20oz can, size_class: single, container: can, volume_ml: 591 }
+  600ml: { name: 600ml bottle, size_class: single, container: bottle, volume_ml: 600 }
   21oz: { name: 21oz bottle, size_class: single, container: bottle, volume_ml: 625 }
+  22oz-can: { name: 22oz can, size_class: single, container: can, volume_ml: 650 }
   23oz-can: { name: 23oz can, size_class: single, container: can, volume_ml: 680 }
-  23-5oz-can: { name: 23.5oz can, size_class: single, container: can, volume_ml: 695 }
+  24oz: { name: 24oz bottle, size_class: single, container: bottle, volume_ml: 710 }
   24oz-can: { name: 24oz can, size_class: single, container: can, volume_ml: 710 }
   24oz-cup: { name: 24oz cup, size_class: single, container: cup, volume_ml: 710 }
   25-4oz-glass: { name: 25.4oz / 750ml glass, size_class: single, container: glass bottle, volume_ml: 750 }
@@ -41,6 +50,7 @@ size_defs:
   32oz: { name: 32oz bottle, size_class: take_home, container: bottle, volume_ml: 946 }
   1l: { name: 1L bottle, size_class: take_home, container: bottle, volume_ml: 1000 }
   40oz: { name: 40oz bottle, size_class: take_home, container: bottle, volume_ml: 1183 }
+  46oz: { name: 46oz can, size_class: take_home, container: can, volume_ml: 1360 }
   1-5l: { name: 1.5L bottle, size_class: take_home, container: bottle, volume_ml: 1500 }
   64oz: { name: 64oz bottle, size_class: take_home, container: bottle, volume_ml: 1893 }
   2l: { name: 2L bottle, size_class: take_home, container: bottle, volume_ml: 2000 }
@@ -135,15 +145,30 @@ children:
       - key: sparkling-ice
         name: Sparkling Ice
         kind: brand_line
-        verify: sales
-        note: The outline wants the top 3–4 flavors; the first four listed stand in until sales data ranks them.
+        note: The top four flavors from the sales cross-check (4.5) come first.
         sizes: [17oz]
         children:
-          - { key: black-cherry, name: Black Cherry, kind: variant }
-          - { key: cherry-limeade, name: Cherry Limeade, kind: variant }
           - { key: kiwi-strawberry, name: Kiwi Strawberry, kind: variant }
-          - { key: fruit-punch, name: Fruit Punch, kind: variant }
+          - { key: black-raspberry, name: Black Raspberry, kind: variant }
+          - { key: strawberry-watermelon, name: Strawberry Watermelon, kind: variant }
+          - { key: coco-pineapple, name: Coconut Pineapple, kind: variant }
+          - { key: black-cherry, name: Black Cherry, kind: variant }
           - { key: lemonade, name: Lemonade, kind: variant }
+      - key: penafiel
+        name: Peñafiel
+        kind: brand_line
+        note: Mexican sparkling mineral water.
+        sizes: [600ml]
+        children:
+          - { key: original, name: Original, kind: variant }
+          - { key: limonada, name: Limonada, kind: variant }
+          - { key: naranjada, name: Naranjada, kind: variant }
+      - key: premium-water
+        name: Premium still or sparkling water
+        kind: assortment_slot
+        target_count: { min: 1, max: 1 }
+        brand_hints: [Saratoga, Mountain Valley]
+        note: Saratoga 28oz and Mountain Valley 1L each reach about 19% of stores.
       - key: liquid-death
         name: Liquid Death
         kind: brand_line
@@ -187,41 +212,58 @@ children:
       - key: bang
         name: Bang, top flavors
         kind: assortment_slot
-        target_count: { min: 4, max: 5 }
+        target_count: { min: 2, max: 2 }
         size_class: [single]
         brand_hints: [Bang]
-        verify: sales
+        note: Peach Mango and Blue Razz lead (12% of stores each).
       - key: ghost
         name: Ghost, top flavors
         kind: assortment_slot
         target_count: { min: 3, max: 4 }
         size_class: [single]
         brand_hints: [Ghost]
-        verify: sales
+        note: Welch's Grape, Strawbango, Cherry Limeade and Blue Raspberry lead (19–23%).
       - key: celsius
         name: Celsius
         kind: brand_line
-        verify: sales
-        note: The outline says top flavors, ranked by sales data. Flavors are not named yet.
+        note: Flavors ranked by the sales cross-check (4.6). Pink Lemonade launched February 2026.
+        sizes: [12oz-can]
         children:
-          - { key: original, name: Original, kind: variant, sizes: [12oz-can] }
+          - { key: watermelon, name: Watermelon, kind: variant }
+          - { key: wild-berry, name: Wild Berry, kind: variant }
+          - { key: mango-passionfruit, name: Mango Passionfruit, kind: variant }
+          - { key: peach-mango-green-tea, name: Peach Mango Green Tea, kind: variant }
+          - { key: pink-lemonade, name: Pink Lemonade, kind: variant }
+          - { key: kiwi-guava, name: Kiwi Guava, kind: variant }
           - { key: essentials, name: Essentials, kind: variant, sizes: [16oz-can] }
       - key: alani-nu
         name: Alani Nu, top flavors
         kind: assortment_slot
-        target_count: { min: 2, max: 3 }
+        target_count: { min: 1, max: 2 }
         size_class: [single]
         brand_hints: [Alani Nu]
-        verify: sales
-        note: The outline gives no count; 2–3 is a placeholder.
+        note: The variety 18-pack sells best (7%); single flavors reach 2–3%.
       - key: c4
         name: C4, top flavors
         kind: assortment_slot
-        target_count: { min: 2, max: 3 }
+        target_count: { min: 3, max: 3 }
         size_class: [single]
         brand_hints: [C4]
-        verify: sales
-        note: The outline gives no count; 2–3 is a placeholder.
+        note: Strawberry Watermelon Ice, Jolly Rancher Watermelon and Frozen Bombsicle lead (17–18%).
+      - key: guayaki
+        name: Guayakí Yerba Mate
+        kind: brand_line
+        sizes: [15-5oz-can]
+        children:
+          - { key: enlighten-mint, name: Enlighten Mint, kind: variant }
+          - { key: bluephoria, name: Bluephoria, kind: variant }
+          - { key: revel-berry, name: Revel Berry, kind: variant }
+      - key: nos
+        name: NOS
+        kind: brand_line
+        sizes: [16oz-can]
+        children:
+          - { key: original, name: Original, kind: variant }
 
   # 2.3 Sports & electrolytes
   - key: sports
@@ -233,13 +275,17 @@ children:
         kind: brand_line
         sizes: [20oz, 28oz]
         children:
-          - { key: fruit-punch, name: Fruit Punch, kind: variant }
-          - { key: cool-blue, name: Cool Blue, kind: variant }
-          - { key: lemon-lime, name: Lemon Lime, kind: variant }
-          - { key: orange, name: Orange, kind: variant }
+          - { key: fruit-punch, name: Fruit Punch, kind: variant, sizes: [20oz, 24oz, 28oz] }
+          - { key: cool-blue, name: Cool Blue, kind: variant, sizes: [20oz, 24oz, 28oz] }
+          - { key: lemon-lime, name: Lemon Lime, kind: variant, sizes: [20oz, 24oz, 28oz] }
+          - { key: orange, name: Orange, kind: variant, sizes: [20oz, 24oz, 28oz] }
           - { key: glacier-freeze, name: Glacier Freeze, kind: variant }
           - { key: glacier-cherry, name: Glacier Cherry, kind: variant }
           - { key: lime-cucumber, name: Lime Cucumber, kind: variant }
+          - { key: fierce-grape, name: Fierce Grape, kind: variant }
+          - { key: fierce-strawberry, name: Fierce Strawberry, kind: variant, sizes: [28oz] }
+          - { key: fierce-green-apple, name: Fierce Green Apple, kind: variant, sizes: [28oz] }
+          - { key: arctic-blitz, name: Arctic Blitz, kind: variant, sizes: [28oz] }
       - key: powerade
         name: Powerade
         kind: brand_line
@@ -260,19 +306,26 @@ children:
           - { key: orange-mandarin, name: Orange Mandarin, kind: variant }
           - { key: coconut, name: Coconut, kind: variant }
           - { key: grape, name: Grape, kind: variant }
-          - { key: lemon-lime, name: Lemon Lime, kind: variant }
+          - { key: lemon-lime, name: Lemon Lime, kind: variant, note: Sold as Cucumber-Lime. }
           - { key: strawberry-kiwi, name: Strawberry Kiwi, kind: variant }
+          - { key: blue-raspberry, name: Blue Raspberry, kind: variant }
+          - { key: fruit-punch, name: Fruit Punch, kind: variant }
+          - { key: berry-bliss, name: Berry Bliss, kind: variant }
+          - { key: mango, name: Mango, kind: variant }
+          - { key: jamaica, name: Jamaica, kind: variant }
       - key: vitaminwater
         name: Vitaminwater
         kind: brand_line
-        sizes: [20oz]
+        note: The 28oz bottle replaced the 32oz in August 2026 (sales cross-check 1.10).
+        sizes: [20oz, 28oz]
         children:
           - { key: xxx, name: XXX, kind: variant }
-          - { key: focus, name: Focus, kind: variant }
+          - { key: focus, name: Focus, kind: variant, sizes: [20oz] }
           - { key: energy, name: Energy, kind: variant }
           - { key: power-c, name: Power-C, kind: variant }
           - { key: refresh, name: Refresh, kind: variant }
-          - { key: essential, name: Essential, kind: variant }
+          - { key: essential, name: Essential, kind: variant, sizes: [20oz] }
+          - { key: elevate, name: Elevate, kind: variant, sizes: [20oz] }
 
   # 2.4 Juice, nectars & punch
   - key: juice
@@ -302,8 +355,7 @@ children:
       - key: calypso
         name: Calypso
         kind: brand_line
-        verify: sales
-        note: The outline wants 2–3 more flavors beyond the two must; the next three listed stand in.
+        note: Flavors ranked by the sales cross-check (4.11).
         sizes: [16oz-glass]
         children:
           - { key: strawberry-lemonade, name: Strawberry Lemonade, kind: variant }
@@ -314,6 +366,7 @@ children:
           - { key: tropical-mango, name: Tropical Mango, kind: variant }
           - { key: triple-melon, name: Triple Melon, kind: variant }
           - { key: paradise-punch, name: Paradise Punch, kind: variant }
+          - { key: island-wave, name: Island Wave, kind: variant }
       - key: minute-maid
         name: Minute Maid
         kind: brand_line
@@ -337,14 +390,14 @@ children:
       - key: langers
         name: Langers
         kind: brand_line
-        note: Value juice.
+        note: Value juice. Pineapple, cranberry and mango come in 15.2oz bottles.
         sizes: [16oz]
         children:
           - { key: orange, name: Orange, kind: variant }
           - { key: apple, name: Apple, kind: variant }
-          - { key: mango, name: Mango, kind: variant }
-          - { key: pineapple, name: Pineapple, kind: variant }
-          - { key: cranberry, name: Cranberry, kind: variant }
+          - { key: mango, name: Mango, kind: variant, sizes: [15-2oz] }
+          - { key: pineapple, name: Pineapple, kind: variant, sizes: [15-2oz] }
+          - { key: cranberry, name: Cranberry, kind: variant, sizes: [15-2oz] }
           - { key: fruit-punch, name: Fruit Punch, kind: variant }
       - key: ocean-spray
         name: Ocean Spray
@@ -376,21 +429,34 @@ children:
         children:
           - { key: orange, name: Orange, kind: variant }
           - { key: apple, name: Apple, kind: variant }
+          - { key: pineapple, name: 100% Pineapple, kind: variant, sizes: [8oz-can, 46oz] }
+      - key: v8
+        name: V8
+        kind: brand_line
+        sizes: [11-5oz-can]
+        children:
+          - { key: original, name: Original, kind: variant }
+      - key: tropicana
+        name: Tropicana
+        kind: brand_line
+        sizes: [32oz]
+        children:
+          - { key: orange, name: Orange, kind: variant }
       - key: martinellis
         name: Martinelli's
         kind: brand_line
         children:
           - { key: apple-juice, name: Apple Juice, kind: variant, sizes: [10oz-glass] }
           - { key: sparkling-cider, name: Sparkling Cider, kind: variant, sizes: [8-4oz] }
-      # Aloe and coconut water: both stocked brands are listed; sales data decides which leads.
+      # Aloe and coconut water: flavors and leaders set by the sales cross-check (4.12–4.15).
       - key: visvita
         name: Visvita (aloe)
         kind: brand_line
-        verify: sales
         sizes: [16-9oz, 1-5l]
-        children: &aloe-flavors
+        children:
           - { key: original, name: Original, kind: variant }
           - { key: mango, name: Mango, kind: variant }
+          - { key: pomegranate, name: Pomegranate, kind: variant }
           - { key: strawberry, name: Strawberry, kind: variant }
           - { key: pineapple, name: Pineapple, kind: variant }
           - { key: coconut, name: Coconut, kind: variant }
@@ -399,13 +465,16 @@ children:
       - key: okf
         name: OKF (aloe)
         kind: brand_line
-        verify: sales
         sizes: [16-9oz, 1-5l]
-        children: *aloe-flavors
+        children:
+          - { key: original, name: Original, kind: variant }
+          - { key: mango, name: Mango, kind: variant }
+          - { key: strawberry, name: Strawberry, kind: variant }
+          - { key: pineapple, name: Pineapple, kind: variant }
+          - { key: coconut, name: Coconut, kind: variant }
       - key: vita-coco
         name: Vita Coco (coconut water)
         kind: brand_line
-        verify: sales
         sizes: [11-5oz, 16-9oz]
         children:
           - { key: original, name: Original, kind: variant }
@@ -413,11 +482,10 @@ children:
       - key: parrot
         name: Parrot (coconut water)
         kind: brand_line
-        verify: sales
-        sizes: [11-5oz, 16-9oz]
+        note: The 100% Coconut Water 16.6oz was discontinued in August 2026.
         children:
-          - { key: original, name: Original, kind: variant }
-          - { key: with-pulp, name: With Pulp, kind: variant }
+          - { key: original, name: Pure Coconut Water, kind: variant, sizes: [11-1oz] }
+          - { key: with-pulp, name: With Pulp, kind: variant, sizes: [10-5oz, 16-6oz] }
 
   # 2.5 RTD tea, coffee & dairy drinks
   - key: tea-coffee
@@ -427,7 +495,10 @@ children:
       - key: arizona
         name: Arizona
         kind: brand_line
-        sizes: [23-5oz-can]
+        note: >-
+          22oz cans. Pre-priced and non-pre-priced cases are case options on the match row, not
+          separate leaves (sales cross-check 1.6, 1.7).
+        sizes: [22oz-can]
         children:
           - { key: green-tea, name: Green Tea Ginseng Honey, kind: variant }
           - { key: mucho-mango, name: Mucho Mango, kind: variant }
@@ -437,7 +508,11 @@ children:
           - { key: fruit-punch, name: Fruit Punch, kind: variant }
           - { key: watermelon, name: Watermelon, kind: variant }
           - { key: grapeade, name: Grapeade, kind: variant }
-          - { key: arnold-palmer, name: Arnold Palmer, kind: variant }
+          - { key: arnold-palmer, name: Arnold Palmer, kind: variant, note: Sells mostly as Arnold Palmer Lite. }
+          - { key: rx-energy, name: Rx Energy, kind: variant }
+          - { key: peach, name: Peach Tea, kind: variant }
+          - { key: orangeade, name: Orangeade, kind: variant }
+          - { key: sweet-tea, name: Southern Style Sweet Tea, kind: variant }
       - key: snapple
         name: Snapple
         kind: brand_line
@@ -474,6 +549,13 @@ children:
           - { key: mocha, name: Mocha, kind: variant }
           - { key: caramel, name: Caramel, kind: variant }
           - { key: coffee, name: Coffee, kind: variant }
+      - key: starbucks-espresso
+        name: Starbucks Espresso & Doubleshot
+        kind: brand_line
+        children:
+          - { key: espresso-cream, name: Espresso & Cream, kind: variant, sizes: [6-5oz-can] }
+          - { key: doubleshot-vanilla, name: Doubleshot Energy Vanilla, kind: variant, sizes: [15oz-can] }
+          - { key: doubleshot-mocha, name: Doubleshot Energy Mocha, kind: variant, sizes: [15oz-can] }
       - key: nesquik
         name: Nesquik
         kind: brand_line
@@ -491,13 +573,14 @@ children:
       - key: baja-micheladas
         name: Baja Micheladas (cup)
         kind: brand_line
-        note: Pre-rimmed 24oz michelada cup. Department 5 cross-references it.
+        note: >-
+          Pre-rimmed 24oz michelada cup. Department 5 cross-references it. The Styrofoam cups were
+          discontinued in July 2026; Original now comes in a plastic cup, and Hot and Pineapple
+          are gone (sales cross-check 3.6).
         sizes: [24oz-cup]
         children:
           - { key: original, name: Original, kind: variant }
           - { key: mango, name: Mango, kind: variant }
-          - { key: hot, name: Hot, kind: variant }
-          - { key: pineapple, name: Pineapple, kind: variant }
       - key: clamato
         name: Clamato
         kind: subcategory

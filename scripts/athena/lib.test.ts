@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { configFromEnv, explainAwsError, pageToRows, prepareSql, toCsv } from "./lib.ts";
+import { configFromEnv, credentialsFromEnv, explainAwsError, pageToRows, prepareSql, toCsv } from "./lib.ts";
 
 describe("configFromEnv", () => {
   const keys = { AWS_ACCESS_KEY_ID: "k", AWS_SECRET_ACCESS_KEY: "s" };
@@ -16,6 +16,20 @@ describe("configFromEnv", () => {
 
   it("lists what is missing, treating blank values as missing", () => {
     expect(configFromEnv({ AWS_REGION: " ", AWS_ACCESS_KEY_ID: "k" }).missing).toEqual(["AWS_REGION", "AWS_SECRET_ACCESS_KEY"]);
+  });
+});
+
+describe("credentialsFromEnv", () => {
+  it("passes a session token through with temporary keys", () => {
+    expect(credentialsFromEnv({ AWS_ACCESS_KEY_ID: "ASIAX", AWS_SECRET_ACCESS_KEY: "s", AWS_SESSION_TOKEN: "t" })).toEqual({
+      credentials: { accessKeyId: "ASIAX", secretAccessKey: "s", sessionToken: "t" },
+    });
+  });
+
+  it("ignores a session token next to a long-term key, with a warning", () => {
+    const { credentials, warning } = credentialsFromEnv({ AWS_ACCESS_KEY_ID: "AKIAX", AWS_SECRET_ACCESS_KEY: "s", AWS_SESSION_TOKEN: "t" });
+    expect(credentials).toEqual({ accessKeyId: "AKIAX", secretAccessKey: "s" });
+    expect(warning).toMatch(/AWS_SESSION_TOKEN/);
   });
 });
 

@@ -81,7 +81,7 @@ children:
         name: 16oz plastic party cup (red/blue)
         kind: assortment_slot
         target_count: { min: 1, max: 2 }
-        brand_hints: [Reyma, Imperial, Axxion]
+        brand_hints: [Cool Party Cups, Imperial, Reyma, Axxion]
       - key: shot-glass-1oz
         name: 1oz plastic shot glass
         kind: assortment_slot

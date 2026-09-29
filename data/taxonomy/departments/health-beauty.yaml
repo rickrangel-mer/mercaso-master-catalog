@@ -64,7 +64,7 @@ children:
         kind: assortment_slot
         target_count: { min: 1, max: 2 }
         size_class: [small]
-        brand_hints: [5-Hour Energy, Lipovitan]
+        brand_hints: [5-Hour Energy]
         note: Counter item. Energy shots live here, not with energy drinks.
       - key: vitamin-c
         name: Vitamin C / Emergen-C

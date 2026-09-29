@@ -7,6 +7,9 @@
 -- Quantities are cases; `units` multiplies by the case pack.
 -- `store_share` is the fraction of active liquor stores that bought the SKU at least once,
 -- which is the best single signal for "should every liquor store carry this".
+-- A SKU discontinued mid-year keeps its full-year share, and its replacement looks weak, so
+-- the export also carries first and last order dates and the share over the last 90 days
+-- (store_share_90d, against stores active in those 90 days).
 -- For another store type, change the one store_type literal below (e.g. 'Laundromat').
 WITH stores AS (
   SELECT si.store_id,
@@ -26,7 +29,7 @@ liquor_stores AS (
   WHERE store_type = 'Liquor store'
 ),
 orders AS (
-  SELECT o.order_id, o.store_id
+  SELECT o.order_id, o.store_id, o.created_at
   FROM dwm.dwm_trade_order_detail_full o
   JOIN liquor_stores ls ON ls.store_id = o.store_id
   WHERE o.dt = (SELECT max(dt) FROM dwm.dwm_trade_order_detail_full)
@@ -35,7 +38,9 @@ orders AS (
     AND coalesce(o.shipping_province_code, 'CA') = 'CA'
 ),
 active AS (
-  SELECT count(DISTINCT store_id) AS liquor_stores_active FROM orders
+  SELECT count(DISTINCT store_id) AS liquor_stores_active,
+         count(DISTINCT CASE WHEN created_at >= date_add('day', -90, current_timestamp) THEN store_id END) AS liquor_stores_active_90d
+  FROM orders
 ),
 lines AS (
   SELECT li.sku, li.order_id, li.current_quantity, li.current_total_amount,
@@ -60,7 +65,12 @@ SELECT
   count(DISTINCT l.order_id) AS orders,
   count(DISTINCT o.store_id) AS stores_buying,
   max(a.liquor_stores_active) AS liquor_stores_active,
-  round(CAST(count(DISTINCT o.store_id) AS double) / max(a.liquor_stores_active), 4) AS store_share
+  round(CAST(count(DISTINCT o.store_id) AS double) / max(a.liquor_stores_active), 4) AS store_share,
+  count(DISTINCT CASE WHEN o.created_at >= date_add('day', -90, current_timestamp) THEN o.store_id END) AS stores_buying_90d,
+  round(CAST(count(DISTINCT CASE WHEN o.created_at >= date_add('day', -90, current_timestamp) THEN o.store_id END) AS double)
+        / max(a.liquor_stores_active_90d), 4) AS store_share_90d,
+  CAST(min(o.created_at) AS date) AS first_order_date,
+  CAST(max(o.created_at) AS date) AS last_order_date
 FROM lines l
 JOIN orders o ON o.order_id = l.order_id
 CROSS JOIN active a

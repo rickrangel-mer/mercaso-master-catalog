@@ -24,6 +24,30 @@ export function configFromEnv(env: NodeJS.ProcessEnv = process.env): { config?: 
   return { config: { region: region!, workgroup, ...(outputLocation ? { outputLocation } : {}) }, missing };
 }
 
+export interface AwsCredentials {
+  accessKeyId: string;
+  secretAccessKey: string;
+  sessionToken?: string;
+}
+
+/**
+ * Credentials from the environment. A session token only belongs with temporary keys (ASIA...);
+ * sent with a long-term IAM user key (AKIA...), AWS rejects the pair as InvalidClientTokenId.
+ * So a stray token next to an AKIA key is ignored, with a warning.
+ */
+export function credentialsFromEnv(env: NodeJS.ProcessEnv = process.env): { credentials: AwsCredentials; warning?: string } {
+  const accessKeyId = env.AWS_ACCESS_KEY_ID?.trim() ?? "";
+  const secretAccessKey = env.AWS_SECRET_ACCESS_KEY?.trim() ?? "";
+  const sessionToken = env.AWS_SESSION_TOKEN?.trim() || undefined;
+  if (sessionToken && accessKeyId.startsWith("AKIA")) {
+    return {
+      credentials: { accessKeyId, secretAccessKey },
+      warning: "Ignoring AWS_SESSION_TOKEN: the access key is a long-term key (AKIA...), which takes no session token. Remove AWS_SESSION_TOKEN from the environment settings.",
+    };
+  }
+  return { credentials: { accessKeyId, secretAccessKey, ...(sessionToken ? { sessionToken } : {}) } };
+}
+
 /** Athena runs one statement per call and rejects a trailing semicolon; comments are fine. */
 export function prepareSql(sql: string): string {
   return sql.trim().replace(/;\s*$/, "");
@@ -47,7 +71,7 @@ export function explainAwsError(e: unknown): string {
   const err = e as { name?: string; message?: string };
   const name = err.name ?? "Error";
   const hints: Record<string, string> = {
-    InvalidClientTokenId: "AWS rejected the access key. Check AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY in the environment settings.",
+    InvalidClientTokenId: "AWS rejected the access key. Check AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY in the environment settings, and that AWS_SESSION_TOKEN is set only for temporary keys (ASIA...).",
     SignatureDoesNotMatch: "The secret key does not match the access key. Re-copy AWS_SECRET_ACCESS_KEY.",
     ExpiredToken: "The temporary credentials have expired. Refresh AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY and AWS_SESSION_TOKEN.",
     ExpiredTokenException: "The temporary credentials have expired. Refresh AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY and AWS_SESSION_TOKEN.",
