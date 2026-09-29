@@ -51,7 +51,7 @@ Goal: agree on the liquor-store taxonomy and where the branded/assortment line f
 - Query Athena for liquor-store customers, trailing 12 months: units and revenue by category and item.
 - Compare against the encoded catalog: top movers that map to no node → candidate additions; `must` nodes with negligible sales → candidate downgrades; brand-level sanity where the outline defers to data (aloe, coconut water, Mexican candy, energy drinks, tobacco lines 4.1–4.4).
 - Output `docs/exploration/sales-crosscheck.md` with a decision column; Rick reviews; departments move to `agreed`.
-- Needs working AWS credentials, region, and Athena database/table names. The keys in the cloud environment as of 2026-09-28 are rejected by STS.
+- Tables and joins are known (2026-09-29); queries are in `scripts/athena/sql/`, see `docs/athena.md`. Until AWS credentials work here (still rejected by STS on 2026-09-29), Rick runs them in the Athena console and shares the CSVs.
 
 ### Phase 3 — Family-tree web UI (read-only)
 
@@ -62,7 +62,7 @@ Goal: agree on the liquor-store taxonomy and where the branded/assortment line f
 
 ### Phase 4 — Matching to Mercaso's catalog
 
-1. **Ingest**: `scripts/athena/export-products.ts` queries Athena (`@aws-sdk/client-athena`, results via S3) for the product dimension: sku, name, brand, category fields, size/pack, active flag. Cached to `data/raw/products.csv` (gitignored). Confirm table and column names with the data team first.
+1. **Ingest**: `scripts/athena/export-products.ts` queries Athena (`@aws-sdk/client-athena`, results via S3) for the product dimension: sku, name, brand, category fields, size/pack, active flag. Cached to `data/raw/products.csv` (gitignored). The query is `scripts/athena/sql/products.sql` against `dim.dim_item_item_info_full`, which carries UPCs, so many branded leaves can match exactly.
 2. **Candidate generation** (`scripts/match/candidates.ts`): normalize names (brand dictionary, variant keywords zero/diet/caffeine-free, size regex), match against leaf attrs. Branded leaves: exact brand+variant+size. Assortment leaves: category + size_class + form filters, returning all qualifying SKUs with a rank from sales velocity.
 3. **LLM classification** (`scripts/match/classify.ts`): products with no rule match get name + description + the relevant subtree; the model returns best leaf id and confidence. Batched and cached by SKU.
 4. **Human review**: `review-export.ts` writes low-confidence rows to CSV; reviewer sets status; import back to `data/matches/liquor.csv`.
@@ -82,7 +82,8 @@ data/matches/liquor.csv           # node → Mercaso SKU
 data/raw/                         # Athena exports, gitignored
 schema/catalog.schema.json
 scripts/{validate,build}.ts
-scripts/athena/{export-products,export-sales}.ts
+scripts/athena/sql/                # discovery, products, liquor sales (see docs/athena.md)
+scripts/athena/{export-products,export-sales}.ts   # later, once credentials work
 scripts/match/{candidates,classify,review-export,gaps}.ts
 apps/web/                         # Next.js tree viewer
 dist/                             # built JSON, gitignored
