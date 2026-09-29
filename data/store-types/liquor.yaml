@@ -15,6 +15,7 @@ include:
   - tobacco
   - grocery
   - mixers-bar
+  - household
 
 priority:
   # --- SCD ---------------------------------------------------------------
@@ -431,6 +432,42 @@ priority:
   mixers-bar.trash-storage-bags: should
   mixers-bar.trash-storage-bags.kitchen-trash-13gal: must
 
+  # --- Household & kitchen ----------------------------------------------------
+  household: nice
+
+  # 6.1 Cleaning solutions
+  household.cleaning.multipurpose-cleaner: must
+  household.cleaning.bleach: must
+  household.cleaning.dish-soap: must
+  household.cleaning.toilet-bowl-cleaner: should
+  household.cleaning.disinfecting-wipes: should
+
+  # 6.2 Laundry
+  household.laundry.detergent-liquid: must
+  household.laundry.detergent-powder: must
+  household.laundry.laundry-bar-soap: must
+  household.laundry.fabric-softener: should
+
+  # 6.3 Paper & disposables
+  household.paper.toilet-paper: must
+  household.paper.paper-towels: must
+  household.paper.napkins: should
+  household.paper.aluminum-foil: should
+
+  # 6.4 Air care, candles & pest
+  household.air-candles-pest.air-freshener-spray: should
+  household.air-candles-pest.religious-candle: must
+  household.air-candles-pest.pest-control: should
+
+  # 6.5 Cleaning equipment & home
+  household.equipment-home.sponges: must
+  household.equipment-home.latex-gloves: should
+  household.equipment-home.batteries.aa: must
+  household.equipment-home.batteries.aaa: must
+  household.equipment-home.batteries.9v: should
+  household.equipment-home.chargers-cables: should
+  household.equipment-home.grilling-fire: should
+
 notes:
   scd.cola.coca-cola-mexican: Must in the LA market.
   scd.lemon-lime.sprite-mexican: Should in the LA market.
@@ -459,3 +496,6 @@ notes:
   grocery.seasonings.hot-sauce: The outline wants 2–3 hot sauces. Tapatío and Valentina are must, El Yucateco should.
   grocery.breakfast-pantry.tortillas: Must in the LA market (Mission).
   mixers-bar.mixers: "The mixers list marks every mixer must. The canonical nodes keep their own priorities: Schweppes stays should per section 1.5, and Canada Dry club soda and tonic 1L are must."
+  household: A liquor store in LA usually wants value and hispanic brands; national is the upgrade.
+  household.air-candles-pest.religious-candle: Must in the LA market.
+  household.paper.sandwich-bags: The outline had plastic wrap and sandwich bags as one nice slot here, and zipper bags as should in department 5. Sandwich bags now live only in department 5, at should.

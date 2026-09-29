@@ -1,0 +1,277 @@
+# Household & kitchen. Source: docs/exploration/liquor.md section 6.
+# Assortment: each leaf is a shelf need with a target count. `brand_hints` help matching and
+# are not part of the leaf. `mix` is set only where the outline states what the target must include.
+# Trash and zipper bags live in department 5 (mixers-bar.trash-storage-bags); this links there.
+key: household
+name: Household & kitchen
+kind: department
+size_classes:
+  small: Single-use or trial size (liquor-store default)
+  regular: Standard retail size
+  bulk: Club or multi-pack (markets only)
+children:
+  # 6.1 Cleaning solutions
+  - key: cleaning
+    name: Cleaning solutions
+    kind: category
+    children:
+      - key: multipurpose-cleaner
+        name: Multipurpose cleaner
+        kind: assortment_slot
+        target_count: { min: 2, max: 2 }
+        size_class: [small, regular]
+        brand_hints: [Fabuloso, Pinalen, LA's Totally Awesome]
+      - key: bleach
+        name: Bleach
+        kind: assortment_slot
+        target_count: { min: 1, max: 2 }
+        size_class: [small]
+        brand_hints: [Cloralen, Clorox]
+        note: 16–32oz.
+      - key: dish-soap
+        name: Dish soap
+        kind: assortment_slot
+        target_count: { min: 2, max: 2 }
+        mix: [value]
+        size_class: [small]
+        brand_hints: [Palmolive, Ajax]
+      - key: toilet-bowl-cleaner
+        name: Toilet bowl cleaner
+        kind: assortment_slot
+        target_count: { min: 1, max: 1 }
+        size_class: [regular]
+        brand_hints: [NuValu, Lysol]
+      - key: disinfecting-wipes
+        name: Disinfecting wipes / spray
+        kind: assortment_slot
+        target_count: { min: 1, max: 1 }
+        size_class: [small]
+        brand_hints: [Clorox, Lysol]
+      - key: glass-cleaner
+        name: Glass cleaner
+        kind: assortment_slot
+        target_count: { min: 1, max: 1 }
+        size_class: [small]
+        brand_hints: [Windex]
+        note: Windex or a value brand.
+      - key: scouring-powder
+        name: Scouring powder
+        kind: assortment_slot
+        target_count: { min: 1, max: 1 }
+        size_class: [regular]
+        brand_hints: [Comet, Ajax]
+      - key: shoe-polish
+        name: Shoe polish
+        kind: assortment_slot
+        target_count: { min: 1, max: 1 }
+        size_class: [small]
+        brand_hints: [Nugget]
+
+  # 6.2 Laundry
+  - key: laundry
+    name: Laundry
+    kind: category
+    children:
+      - key: detergent-liquid
+        name: Laundry detergent, liquid
+        kind: assortment_slot
+        target_count: { min: 2, max: 2 }
+        mix: [value]
+        size_class: [small]
+        brand_hints: [Tide, Gain, Ariel, Ace]
+        note: Single-load bottle or pouch.
+      - key: detergent-powder
+        name: Laundry detergent, powder
+        kind: assortment_slot
+        target_count: { min: 1, max: 1 }
+        mix: [hispanic]
+        size_class: [small]
+        brand_hints: [Ariel, Roma, Foca]
+        note: Small bag.
+      - key: laundry-bar-soap
+        name: Bar soap for laundry
+        kind: assortment_slot
+        target_count: { min: 1, max: 1 }
+        mix: [hispanic]
+        size_class: [small]
+        brand_hints: [Zote, Lirio]
+      - key: fabric-softener
+        name: Fabric softener
+        kind: assortment_slot
+        target_count: { min: 1, max: 2 }
+        size_class: [small]
+        brand_hints: [Suavitel, Downy, Ensueño]
+      - key: dryer-sheets
+        name: Dryer sheets
+        kind: assortment_slot
+        target_count: { min: 1, max: 1 }
+        size_class: [small]
+        brand_hints: [Bounce, Gain]
+      - key: stain-remover
+        name: Stain remover
+        kind: assortment_slot
+        target_count: { min: 1, max: 1 }
+        size_class: [small]
+        brand_hints: [Soilove, Awesome]
+
+  # 6.3 Paper & disposables
+  - key: paper
+    name: Paper & disposables
+    kind: category
+    children:
+      - key: toilet-paper
+        name: Toilet paper
+        kind: assortment_slot
+        target_count: { min: 2, max: 2 }
+        mix: [value, national]
+        size_class: [small, regular]
+        brand_hints: [Virtue, Jubilee, Melody, "555", Charmin, Scott]
+        note: Single roll and 4-pack.
+      - key: paper-towels
+        name: Paper towels
+        kind: assortment_slot
+        target_count: { min: 1, max: 2 }
+        mix: [value, national]
+        size_class: [small]
+        brand_hints: [Del Rey, Virtue, Bounty]
+        note: Single roll.
+      - key: napkins
+        name: Napkins
+        kind: assortment_slot
+        target_count: { min: 1, max: 1 }
+        mix: [value]
+        size_class: [small]
+      - key: facial-tissue
+        name: Facial tissue
+        kind: assortment_slot
+        target_count: { min: 1, max: 1 }
+        brand_hints: [Puffs, Softeen]
+      - key: aluminum-foil
+        name: Aluminum foil
+        kind: assortment_slot
+        target_count: { min: 1, max: 1 }
+        size_class: [small]
+        brand_hints: [Reynolds, Durable]
+        note: Or a value brand.
+      - key: plastic-wrap
+        name: Plastic wrap
+        kind: assortment_slot
+        target_count: { min: 1, max: 1 }
+        size_class: [small]
+        brand_hints: [Glad, Table King]
+      - key: sandwich-bags
+        name: Sandwich bags
+        kind: subcategory
+        note: Carried under department 5 trash & storage bags.
+        cross_ref: [mixers-bar.trash-storage-bags.zipper-bags]
+      - key: aluminum-pans
+        name: Aluminum pans
+        kind: assortment_slot
+        target_count: { min: 1, max: 1 }
+        size_class: [small]
+        brand_hints: [Durable]
+
+  # 6.4 Air care, candles & pest
+  - key: air-candles-pest
+    name: Air care, candles & pest
+    kind: category
+    children:
+      - key: air-freshener-spray
+        name: Air freshener spray
+        kind: assortment_slot
+        target_count: { min: 1, max: 2 }
+        size_class: [regular]
+        brand_hints: [Febreze, Air Wick, Glade, Wizard]
+      - key: air-freshener-small
+        name: Air freshener beads / car
+        kind: assortment_slot
+        target_count: { min: 1, max: 1 }
+        size_class: [small]
+        brand_hints: [Wizard, California Scents, LA's Totally]
+      - key: religious-candle
+        name: Religious candle (veladora)
+        kind: assortment_slot
+        target_count: { min: 2, max: 3 }
+        size_class: [small]
+        brand_hints: [Veladora, Vel-Mex]
+      - key: scented-candle
+        name: Scented candle
+        kind: assortment_slot
+        target_count: { min: 1, max: 1 }
+        size_class: [small]
+        brand_hints: [NuValu]
+      - key: incense
+        name: Incense
+        kind: assortment_slot
+        target_count: { min: 1, max: 1 }
+        size_class: [small]
+      - key: pest-control
+        name: Roach / ant / mosquito
+        kind: assortment_slot
+        target_count: { min: 1, max: 2 }
+        size_class: [small]
+        brand_hints: [Raid, PIC, Kingman]
+
+  # 6.5 Cleaning equipment & home
+  - key: equipment-home
+    name: Cleaning equipment & home
+    kind: category
+    children:
+      - key: sponges
+        name: Sponges / scrubbers
+        kind: assortment_slot
+        target_count: { min: 1, max: 2 }
+        brand_hints: [NuValu, Scrub Pro]
+      - key: latex-gloves
+        name: Latex gloves
+        kind: assortment_slot
+        target_count: { min: 1, max: 1 }
+        brand_hints: [Household, Advance]
+      - key: broom-dustpan
+        name: Broom / dustpan
+        kind: assortment_slot
+        target_count: { min: 1, max: 1 }
+        brand_hints: [NuValu]
+      - key: spray-bottle
+        name: Spray bottle
+        kind: assortment_slot
+        target_count: { min: 1, max: 1 }
+      - key: plunger
+        name: Plunger
+        kind: assortment_slot
+        target_count: { min: 1, max: 1 }
+        brand_hints: [NuValu]
+      - key: bath-mat
+        name: Bath mat
+        kind: assortment_slot
+        target_count: { min: 1, max: 1 }
+        brand_hints: [NuValu]
+      - key: shower-curtain
+        name: Shower curtain
+        kind: assortment_slot
+        target_count: { min: 1, max: 1 }
+        brand_hints: [NuValu]
+      - key: batteries
+        name: Batteries
+        kind: subcategory
+        note: One brand for each size.
+        children:
+          - { key: aa, name: AA, kind: assortment_slot, target_count: { min: 1, max: 1 }, brand_hints: [Duracell, Panasonic] }
+          - { key: aaa, name: AAA, kind: assortment_slot, target_count: { min: 1, max: 1 }, brand_hints: [Duracell, Panasonic] }
+          - { key: 9v, name: 9V, kind: assortment_slot, target_count: { min: 1, max: 1 }, brand_hints: [Duracell, Panasonic] }
+          - { key: cr2032, name: CR2032, kind: assortment_slot, target_count: { min: 1, max: 1 }, brand_hints: [Duracell, Panasonic] }
+      - key: chargers-cables
+        name: Chargers & cables
+        kind: subcategory
+        children:
+          - { key: usb-c-cable, name: USB-C cable, kind: assortment_slot, target_count: { min: 1, max: 1 }, mix: [value] }
+          - { key: lightning-cable, name: Lightning cable, kind: assortment_slot, target_count: { min: 1, max: 1 }, mix: [value] }
+          - { key: wall-block, name: Wall charger block, kind: assortment_slot, target_count: { min: 1, max: 1 }, mix: [value] }
+      - key: grilling-fire
+        name: Charcoal, lighter fluid & firewood
+        kind: subcategory
+        note: Summer items.
+        children:
+          - { key: charcoal, name: Charcoal, kind: assortment_slot, target_count: { min: 1, max: 1 }, brand_hints: [Kingsford] }
+          - { key: charcoal-lighter-fluid, name: Charcoal lighter fluid, kind: assortment_slot, target_count: { min: 1, max: 1 }, brand_hints: [Kingsford] }
+          - { key: firewood, name: Firewood / fire logs, kind: assortment_slot, target_count: { min: 1, max: 1 }, brand_hints: [El Rey, Duraflame] }
