@@ -1,5 +1,5 @@
 # Departments in display order. Each key has a file data/taxonomy/departments/<key>.yaml.
-# Encoded so far: SCD. The rest follow one department per PR, in the Phase 0 order.
+# All eight liquor-store departments from docs/exploration/liquor.md are encoded.
 departments:
   - scd
   - drinks
@@ -7,4 +7,5 @@ departments:
   - tobacco
   - mixers-bar
   - household
+  - health-beauty
   - grocery

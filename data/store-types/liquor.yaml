@@ -1,6 +1,15 @@
 # Liquor store (LA market). Source: docs/exploration/liquor.md.
 # `priority` maps a node id to must | should | nice. A priority covers the node's whole subtree
 # unless a descendant sets its own. Every carried leaf must end up with a priority.
+#
+# How the outline's wording becomes priorities:
+# - A variant the outline lists without a priority is nice (department or section default).
+# - When a must names one size ("Lemonade 20oz must"), the variant's other sizes are should.
+#   When a should names one size, the other sizes are nice.
+# - Take-home sizes (1L and up) and cigarette cartons of must variants are should, unless the
+#   outline makes them must (Coca-Cola, Pepsi, Sprite, Squirt 2L; Clamato 32oz; water 1L).
+# - "LA market" priorities apply as written; the reason is kept in `notes`.
+# - state: CA drops every node marked restricted in CA (menthol and flavored tobacco).
 store_type: liquor
 name: Liquor store
 description: >-
@@ -13,9 +22,10 @@ include:
   - drinks
   - candy-snacks
   - tobacco
-  - grocery
   - mixers-bar
   - household
+  - health-beauty
+  - grocery
 
 priority:
   # --- SCD ---------------------------------------------------------------
@@ -468,6 +478,46 @@ priority:
   household.equipment-home.chargers-cables: should
   household.equipment-home.grilling-fire: should
 
+  # --- Health & beauty ---------------------------------------------------------
+  health-beauty: should
+
+  # 7.1 Medicine (OTC)
+  health-beauty.medicine.pain-reliever: must
+  health-beauty.medicine.antacid: must
+  health-beauty.medicine.cough-drops: must
+  health-beauty.medicine.cold-flu: must
+  health-beauty.medicine.antifungal: nice
+  health-beauty.medicine.energy-shot: must
+  health-beauty.medicine.vitamin-c: nice
+
+  # 7.2 Oral care & lip
+  health-beauty.oral-lip.toothpaste: must
+  health-beauty.oral-lip.toothbrush: must
+  health-beauty.oral-lip.lip-balm: must
+  health-beauty.oral-lip.floss: nice
+
+  # 7.3 Personal care
+  health-beauty.personal-care.bar-soap: must
+  health-beauty.personal-care.deodorant: must
+  health-beauty.personal-care.razor: must
+  health-beauty.personal-care.shaving-cream: nice
+  health-beauty.personal-care.sunscreen: nice
+  health-beauty.personal-care.body-spray: nice
+
+  # 7.4 Feminine care & family planning
+  health-beauty.feminine-family.pads: must
+  health-beauty.feminine-family.condoms: must
+  health-beauty.feminine-family.lubricant: nice
+  health-beauty.feminine-family.pregnancy-test: nice
+
+  # 7.5 First aid & hygiene
+  health-beauty.first-aid.bandages: must
+  health-beauty.first-aid.cotton-swabs: nice
+  health-beauty.first-aid.face-masks: nice
+
+  # 7.6 Beauty accessories
+  health-beauty.beauty-accessories.lashes-nail-polish: nice
+
 notes:
   scd.cola.coca-cola-mexican: Must in the LA market.
   scd.lemon-lime.sprite-mexican: Should in the LA market.
@@ -499,3 +549,5 @@ notes:
   household: A liquor store in LA usually wants value and hispanic brands; national is the upgrade.
   household.air-candles-pest.religious-candle: Must in the LA market.
   household.paper.sandwich-bags: The outline had plastic wrap and sandwich bags as one nice slot here, and zipper bags as should in department 5. Sandwich bags now live only in department 5, at should.
+  health-beauty.personal-care.hair-gel: Should in the LA market.
+  health-beauty.medicine.cold-flu: Must in season.
