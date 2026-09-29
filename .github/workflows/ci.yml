@@ -20,3 +20,7 @@ jobs:
       - run: pnpm test
       - run: pnpm validate
       - run: pnpm build
+      - name: Build the tree viewer
+        run: pnpm --filter web build
+        env:
+          NEXT_TELEMETRY_DISABLED: "1"

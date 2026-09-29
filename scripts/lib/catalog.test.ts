@@ -133,6 +133,17 @@ describe("taxonomy", () => {
     expect(errs).toContain("scd.home.soap: assortment_slot needs a target_count");
   });
 
+  it("allows a childless category or subcategory only when it is a cross_ref link", () => {
+    const withLinks = dept();
+    withLinks.children!.push(
+      { key: "mixers", name: "Mixers", kind: "category", cross_ref: ["scd.cola.coke"] },
+      { key: "empty", name: "Empty", kind: "category" },
+    );
+    const { taxonomy, issues } = taxonomyOf(withLinks);
+    expect(errors(issues)).toEqual(["scd.empty: a category needs at least one child, or a cross_ref if it only points elsewhere"]);
+    expect(taxonomy.byId.get("scd.mixers")?.attrs.cross_ref).toEqual(["scd.cola.coke"]);
+  });
+
   it("checks cross references", () => {
     const withRef = dept();
     (withRef.children![1]!.children![0] as AuthoredNode).cross_ref = ["scd.cola.coke.classic", "scd.nope"];
@@ -192,6 +203,17 @@ describe("store type", () => {
     const errs = errors(issues);
     expect(errs).toContain('scd.cola.coke: everything under "scd.cola.coke" is excluded; exclude "scd.cola.coke" itself instead');
     expect(errs).toContain('scd.missing: exclude refers to "scd.missing", which is not a taxonomy node');
+  });
+
+  it("gives cross_ref links no priority and rejects one set on them", () => {
+    const withLink = dept();
+    withLink.children!.push({ key: "mixers", name: "Mixers", kind: "category", cross_ref: ["scd.cola.coke"] });
+    const { taxonomy: tx } = taxonomyOf(withLink);
+    const { resolved, issues } = resolveStoreType(storeType(), "liquor.yaml", tx);
+    expect(errors(issues)).toEqual([]);
+    expect(resolved.roots[0]?.children.find((c) => c.node.key === "mixers")?.priority).toBeUndefined();
+    const bad = resolveStoreType(storeType({ priority: { scd: "should", "scd.mixers": "must" } }), "liquor.yaml", tx);
+    expect(errors(bad.issues)).toEqual(['scd.mixers: "scd.mixers" is a cross_ref link; set the priority on the node it points at']);
   });
 
   it("warns when an explicit priority repeats the inherited one", () => {

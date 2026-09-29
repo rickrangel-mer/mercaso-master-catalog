@@ -1,0 +1,331 @@
+# Grocery staples. Source: docs/exploration/liquor.md section 8.
+# Mostly assortment: a 9pm convenience top-up, small sizes, one or two options per slot.
+# Branded exceptions (customers ask by name): hot sauce, Tajín and chamoy.
+# Out of scope: chilled and frozen, bread.
+key: grocery
+name: Grocery staples
+kind: department
+size_classes:
+  small: Single-use or small size (liquor-store default)
+  regular: Standard retail size
+  bulk: Club or multi-pack (markets only)
+size_defs:
+  2oz: { name: 2oz bottle, size_class: small, container: bottle }
+  4oz: { name: 4oz bottle, size_class: small, container: bottle }
+  5oz: { name: 5oz, size_class: small }
+  10oz: { name: 10oz bottle, size_class: small, container: bottle }
+  12-5oz: { name: 12.5oz bottle, size_class: small, container: bottle }
+  bottle: { name: Standard bottle, size_class: small, container: bottle }
+children:
+  # 8.1 Instant meals
+  - key: instant-meals
+    name: Instant meals
+    kind: category
+    children:
+      - key: ramen-cup
+        name: Ramen cup / bowl
+        kind: assortment_slot
+        target_count: { min: 3, max: 4 }
+        brand_hints: [Maruchan, Nissin Cup Noodles, Nongshim, Paldo, Tapatio Big Bowl, Samyang Buldak]
+      - key: ramen-packet
+        name: Ramen packet
+        kind: assortment_slot
+        target_count: { min: 2, max: 2 }
+        brand_hints: [Maruchan, Nissin Top Ramen, Samyang]
+      - key: canned-chili-pasta
+        name: Canned chili / pasta
+        kind: assortment_slot
+        target_count: { min: 1, max: 2 }
+        brand_hints: [Hormel, Chef Boyardee, Dinty Moore]
+      - key: vienna-sausage
+        name: Vienna sausage
+        kind: assortment_slot
+        target_count: { min: 1, max: 1 }
+        brand_hints: [Libby's]
+      - key: spam
+        name: Spam / luncheon meat
+        kind: assortment_slot
+        target_count: { min: 1, max: 1 }
+        brand_hints: [Hormel]
+      - key: canned-soup
+        name: Canned soup
+        kind: assortment_slot
+        target_count: { min: 1, max: 2 }
+        brand_hints: [Campbell's, Maggi, Juanita's Menudo]
+      - key: mac-cheese-cup
+        name: Mac & cheese cup
+        kind: assortment_slot
+        target_count: { min: 1, max: 1 }
+        brand_hints: [Kraft]
+        verify: stock
+
+  # 8.2 Seasonings, hot sauce & condiments
+  - key: seasonings
+    name: Seasonings, hot sauce & condiments
+    kind: category
+    children:
+      - key: tajin
+        name: Tajín
+        kind: brand_line
+        note: >-
+          Department 5 cross-references Tajín and chamoy. The outline also lists "Fruit" next
+          to Clásico 5oz; which product that means needs confirming.
+        children:
+          - { key: clasico, name: Clásico, kind: variant, sizes: [5oz] }
+          - { key: chamoy, name: Chamoy, kind: variant, sizes: [bottle], verify: stock }
+      - key: mega
+        name: Mega
+        kind: brand_line
+        verify: stock
+        sizes: [bottle]
+        children:
+          - { key: chamoy, name: Chamoy, kind: variant }
+      - key: hot-sauce
+        name: Hot sauce
+        kind: subcategory
+        verify: stock
+        note: Sizes are the common retail bottles; confirm against Mercaso stock.
+        children:
+          - key: tapatio
+            name: Tapatío
+            kind: brand_line
+            sizes: [5oz, 10oz]
+            children:
+              - { key: original, name: Original, kind: variant }
+          - key: valentina
+            name: Valentina
+            kind: brand_line
+            sizes: [12-5oz]
+            children:
+              - { key: original, name: Original, kind: variant }
+          - key: el-yucateco
+            name: El Yucateco
+            kind: brand_line
+            sizes: [4oz]
+            children:
+              - { key: red-habanero, name: Red Habanero, kind: variant }
+          - key: cholula
+            name: Cholula
+            kind: brand_line
+            sizes: [5oz]
+            children:
+              - { key: original, name: Original, kind: variant }
+          - key: tabasco
+            name: Tabasco
+            kind: brand_line
+            sizes: [2oz]
+            children:
+              - { key: original, name: Original, kind: variant }
+      - key: salt
+        name: Salt
+        kind: assortment_slot
+        target_count: { min: 1, max: 1 }
+        brand_hints: [Morton, Sal Bahía]
+      - key: pepper
+        name: Pepper
+        kind: assortment_slot
+        target_count: { min: 1, max: 1 }
+        brand_hints: [McCormick]
+      - key: seasoning-blend
+        name: Seasoning blend
+        kind: assortment_slot
+        target_count: { min: 1, max: 1 }
+        brand_hints: [Knorr, Lawry's]
+        note: Knorr chicken bouillon, Lawry's.
+      - key: mayo
+        name: Mayonnaise
+        kind: assortment_slot
+        target_count: { min: 1, max: 1 }
+        brand_hints: [McCormick]
+      - key: ketchup
+        name: Ketchup
+        kind: assortment_slot
+        target_count: { min: 1, max: 1 }
+        brand_hints: [Hunt's]
+      - key: mustard
+        name: Mustard
+        kind: assortment_slot
+        target_count: { min: 1, max: 1 }
+        brand_hints: [French's]
+      - key: salad-dressing
+        name: Salad dressing
+        kind: assortment_slot
+        target_count: { min: 1, max: 1 }
+        brand_hints: [Wish-Bone]
+      - key: soy-sauce
+        name: Soy sauce
+        kind: assortment_slot
+        target_count: { min: 1, max: 1 }
+        brand_hints: [Kikkoman]
+
+  # 8.3 Canned & jarred
+  - key: canned-jarred
+    name: Canned & jarred
+    kind: category
+    children:
+      - key: beans
+        name: Refried / whole beans
+        kind: assortment_slot
+        target_count: { min: 2, max: 2 }
+        brand_hints: [Sun Vista, Rosarita, La Costeña, Goya]
+      - key: jalapenos
+        name: Jalapeños / chipotle
+        kind: assortment_slot
+        target_count: { min: 1, max: 2 }
+        brand_hints: [La Costeña, Embasa, La Morena]
+      - key: pickles
+        name: Pickles
+        kind: assortment_slot
+        target_count: { min: 1, max: 1 }
+        size_class: [small]
+        brand_hints: [Van Holten's]
+        note: Single jar or pouch.
+      - key: tuna
+        name: Tuna
+        kind: assortment_slot
+        target_count: { min: 1, max: 1 }
+        brand_hints: [Bumble Bee, StarKist]
+      - key: sardines-oysters
+        name: Sardines / oysters
+        kind: assortment_slot
+        target_count: { min: 1, max: 1 }
+        brand_hints: [Beach Cliff, California Girl]
+      - key: canned-fruit
+        name: Canned fruit
+        kind: assortment_slot
+        target_count: { min: 1, max: 1 }
+        brand_hints: [Dole, Del Monte]
+      - key: canned-vegetables
+        name: Canned vegetables
+        kind: assortment_slot
+        target_count: { min: 1, max: 1 }
+        brand_hints: [Del Monte]
+      - key: tomato-enchilada-sauce
+        name: Tomato / enchilada sauce
+        kind: assortment_slot
+        target_count: { min: 1, max: 1 }
+        brand_hints: [Las Palmas, El Pato, Hunt's]
+      - key: nacho-cheese
+        name: Nacho cheese
+        kind: assortment_slot
+        target_count: { min: 1, max: 1 }
+        brand_hints: [Juanita's]
+
+  # 8.4 Dry goods & baking
+  - key: dry-goods
+    name: Dry goods & baking
+    kind: category
+    children:
+      - key: rice
+        name: Rice
+        kind: assortment_slot
+        target_count: { min: 1, max: 1 }
+        brand_hints: [Mahatma, Parrot]
+      - key: dry-beans
+        name: Dry beans
+        kind: assortment_slot
+        target_count: { min: 1, max: 1 }
+        brand_hints: [Goya, Springfield]
+      - key: pasta
+        name: Pasta
+        kind: assortment_slot
+        target_count: { min: 1, max: 2 }
+        brand_hints: [La Moderna]
+      - key: cooking-oil
+        name: Cooking oil
+        kind: assortment_slot
+        target_count: { min: 1, max: 1 }
+        brand_hints: [Mazola, 1-2-3]
+      - key: sugar
+        name: Sugar
+        kind: assortment_slot
+        target_count: { min: 1, max: 1 }
+        brand_hints: [C&H, Zulka]
+      - key: flour-masa
+        name: Flour / masa
+        kind: assortment_slot
+        target_count: { min: 1, max: 1 }
+        brand_hints: [Maseca]
+        verify: stock
+      - key: condensed-milk
+        name: Condensed milk
+        kind: assortment_slot
+        target_count: { min: 1, max: 1 }
+        brand_hints: [La Lechera]
+      - key: evaporated-milk
+        name: Evaporated milk
+        kind: assortment_slot
+        target_count: { min: 1, max: 1 }
+        brand_hints: [Carnation]
+      - key: gelatin-flan
+        name: Gelatin / flan
+        kind: assortment_slot
+        target_count: { min: 1, max: 1 }
+        brand_hints: [Royal]
+
+  # 8.5 Breakfast & pantry
+  - key: breakfast-pantry
+    name: Breakfast & pantry
+    kind: category
+    children:
+      - key: cereal
+        name: Cereal
+        kind: assortment_slot
+        target_count: { min: 2, max: 2 }
+        size_class: [small]
+        brand_hints: [Kellogg's, General Mills]
+        note: Single-serve or small box.
+      - key: toaster-pastry
+        name: Pop-Tarts / toaster pastry
+        kind: assortment_slot
+        target_count: { min: 1, max: 1 }
+        brand_hints: [Kellogg's]
+      - key: tortillas
+        name: Tortillas
+        kind: assortment_slot
+        target_count: { min: 1, max: 1 }
+        brand_hints: [Mission]
+        note: Guerrero appears once in the old sheet; confirm in the sales cross-check.
+      - key: tostadas
+        name: Tostadas
+        kind: assortment_slot
+        target_count: { min: 1, max: 1 }
+        brand_hints: [Los Pericos, Charras]
+      - key: peanut-butter
+        name: Peanut butter / Nutella
+        kind: assortment_slot
+        target_count: { min: 1, max: 1 }
+        brand_hints: [Skippy, Nutella]
+      - key: syrup-honey
+        name: Syrup / honey
+        kind: assortment_slot
+        target_count: { min: 1, max: 1 }
+
+  # 8.6 Pet (nice only)
+  - key: pet
+    name: Pet
+    kind: category
+    children:
+      - key: dog-food-wet
+        name: Dog food, wet single
+        kind: assortment_slot
+        target_count: { min: 1, max: 1 }
+        size_class: [small]
+        brand_hints: [Pedigree, Cesar]
+      - key: dog-food-dry
+        name: Dog food, dry small bag
+        kind: assortment_slot
+        target_count: { min: 1, max: 1 }
+        size_class: [small]
+        brand_hints: [Pedigree, Field Trial]
+      - key: cat-food-wet
+        name: Cat food, wet single
+        kind: assortment_slot
+        target_count: { min: 1, max: 1 }
+        size_class: [small]
+        brand_hints: [9 Lives]
+      - key: pet-treats
+        name: Pet treats
+        kind: assortment_slot
+        target_count: { min: 1, max: 1 }
+        brand_hints: [Canine Carry Outs]

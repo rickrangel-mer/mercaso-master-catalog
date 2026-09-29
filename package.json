@@ -10,7 +10,9 @@
     "validate": "tsx scripts/validate.ts",
     "build": "tsx scripts/build.ts",
     "typecheck": "tsc --noEmit",
-    "test": "vitest run"
+    "test": "vitest run",
+    "web:dev": "pnpm build && pnpm --filter web dev",
+    "web:build": "pnpm build && pnpm --filter web build"
   },
   "devDependencies": {
     "@types/node": "^22.20.4",

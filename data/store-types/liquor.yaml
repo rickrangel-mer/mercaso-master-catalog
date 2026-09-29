@@ -1,6 +1,15 @@
 # Liquor store (LA market). Source: docs/exploration/liquor.md.
 # `priority` maps a node id to must | should | nice. A priority covers the node's whole subtree
 # unless a descendant sets its own. Every carried leaf must end up with a priority.
+#
+# How the outline's wording becomes priorities:
+# - A variant the outline lists without a priority is nice (department or section default).
+# - When a must names one size ("Lemonade 20oz must"), the variant's other sizes are should.
+#   When a should names one size, the other sizes are nice.
+# - Take-home sizes (1L and up) and cigarette cartons of must variants are should, unless the
+#   outline makes them must (Coca-Cola, Pepsi, Sprite, Squirt 2L; Clamato 32oz; water 1L).
+# - "LA market" priorities apply as written; the reason is kept in `notes`.
+# - state: CA drops every node marked restricted in CA (menthol and flavored tobacco).
 store_type: liquor
 name: Liquor store
 description: >-
@@ -10,6 +19,13 @@ state: CA
 
 include:
   - scd
+  - drinks
+  - candy-snacks
+  - tobacco
+  - mixers-bar
+  - household
+  - health-beauty
+  - grocery
 
 priority:
   # --- SCD ---------------------------------------------------------------
@@ -95,6 +111,416 @@ priority:
   scd.ginger-ale-club-tonic.schweppes: should
   scd.ginger-ale-club-tonic.seagrams: nice
 
+  # --- Water, energy, sports, juice, tea & coffee ---------------------------
+  # Section defaults are nice: variants the outline lists without a priority.
+
+  # 2.1 Water
+  drinks.water: nice
+  drinks.water.arrowhead.spring: should
+  drinks.water.arrowhead.spring.16-9oz: must
+  drinks.water.arrowhead.spring.1l: must
+  drinks.water.aquafina.original.20oz: should
+  drinks.water.dasani.original.20oz: should
+  drinks.water.value-water: must
+  drinks.water.smartwater.original: should
+  drinks.water.smartwater.original.1l: must
+  drinks.water.essentia: should
+  drinks.water.fiji.original.1l: should
+  drinks.water.topo-chico: must
+  drinks.water.perrier.original: should
+  drinks.water.sparkling-ice: should
+  drinks.water.sparkling-ice.lemonade: nice
+
+  # 2.2 Energy
+  drinks.energy: nice
+  drinks.energy.red-bull: should
+  drinks.energy.red-bull.original.8-4oz-can: must
+  drinks.energy.red-bull.original.12oz-can: must
+  drinks.energy.red-bull.sugar-free.8-4oz-can: must
+  drinks.energy.red-bull.sugar-free.12oz-can: must
+  drinks.energy.monster.original: must
+  drinks.energy.monster.original.24oz-can: nice
+  drinks.energy.monster.ultra-zero: must
+  drinks.energy.monster.ultra-zero.24oz-can: nice
+  drinks.energy.monster.zero-sugar: should
+  drinks.energy.monster.zero-sugar.24oz-can: nice
+  drinks.energy.monster.lo-carb: should
+  drinks.energy.monster.lo-carb.24oz-can: nice
+  drinks.energy.rockstar: should
+  drinks.energy.celsius: should
+  drinks.energy.alani-nu: should
+
+  # 2.3 Sports & electrolytes
+  drinks.sports: nice
+  drinks.sports.gatorade.fruit-punch: must
+  drinks.sports.gatorade.fruit-punch.28oz: should
+  drinks.sports.gatorade.cool-blue: must
+  drinks.sports.gatorade.cool-blue.28oz: should
+  drinks.sports.gatorade.lemon-lime: must
+  drinks.sports.gatorade.lemon-lime.28oz: should
+  drinks.sports.gatorade.orange: must
+  drinks.sports.gatorade.orange.28oz: should
+  drinks.sports.gatorade.glacier-freeze: should
+  drinks.sports.powerade.mountain-berry-blast: should
+  drinks.sports.powerade.fruit-punch: should
+  drinks.sports.electrolit: should
+  drinks.sports.electrolit.strawberry: must
+  drinks.sports.electrolit.coconut: must
+  drinks.sports.electrolit.orange-mandarin: must
+  drinks.sports.vitaminwater.xxx: should
+
+  # 2.4 Juice, nectars & punch
+  drinks.juice: nice
+  drinks.juice.jumex: should
+  drinks.juice.jumex.mango: must
+  drinks.juice.jumex.mango.1l: should
+  drinks.juice.jumex.guava: must
+  drinks.juice.jumex.guava.1l: should
+  drinks.juice.kerns.mango: should
+  drinks.juice.kerns.guava: should
+  drinks.juice.kerns.peach: should
+  drinks.juice.calypso.strawberry-lemonade: must
+  drinks.juice.calypso.ocean-blue: must
+  drinks.juice.calypso.lemonade: should
+  drinks.juice.calypso.southern-peach: should
+  drinks.juice.calypso.kiwi: should
+  drinks.juice.minute-maid.lemonade: should
+  drinks.juice.minute-maid.lemonade.20oz: must
+  drinks.juice.minute-maid.pink-lemonade: should
+  drinks.juice.welchs.grape: should
+  drinks.juice.welchs.apple: should
+  drinks.juice.langers.orange: should
+  drinks.juice.langers.apple: should
+  drinks.juice.ocean-spray.cranberry.15-2oz: should
+  drinks.juice.motts-clamato.original: should
+  drinks.juice.motts-clamato.original.16oz: must
+  drinks.juice.motts-clamato.original.32oz: must
+  drinks.juice.martinellis.apple-juice: should
+  drinks.juice.visvita.original: should
+  drinks.juice.visvita.mango: should
+  drinks.juice.okf.original: should
+  drinks.juice.okf.mango: should
+  drinks.juice.vita-coco: should
+  drinks.juice.parrot: should
+
+  # 2.5 RTD tea, coffee & dairy drinks
+  drinks.tea-coffee: nice
+  drinks.tea-coffee.arizona: should
+  drinks.tea-coffee.arizona.green-tea: must
+  drinks.tea-coffee.arizona.mucho-mango: must
+  drinks.tea-coffee.arizona.lemon-tea: must
+  drinks.tea-coffee.arizona.arnold-palmer: must
+  drinks.tea-coffee.snapple.peach-tea: should
+  drinks.tea-coffee.snapple.lemon-tea: should
+  drinks.tea-coffee.brisk.lemon: should
+  drinks.tea-coffee.pure-leaf.sweet: should
+  drinks.tea-coffee.pure-leaf.unsweetened: should
+  drinks.tea-coffee.starbucks-frappuccino.vanilla.13-7oz: should
+  drinks.tea-coffee.starbucks-frappuccino.mocha.13-7oz: should
+  drinks.tea-coffee.nesquik.chocolate: should
+
+  # 2.6 Michelada mixes
+  drinks.michelada: must
+
+  # --- Candy & snacks --------------------------------------------------------
+  # Department default is nice: variants the outline lists without a priority.
+  candy-snacks: nice
+
+  # 3.1 Chocolate bars
+  candy-snacks.chocolate.snickers.original: must
+  candy-snacks.chocolate.snickers.almond: should
+  candy-snacks.chocolate.reeses.cups: must
+  candy-snacks.chocolate.m-and-ms.milk-chocolate: must
+  candy-snacks.chocolate.m-and-ms.peanut: must
+  candy-snacks.chocolate.kit-kat.original: should
+  candy-snacks.chocolate.kit-kat.original.single: must
+  candy-snacks.chocolate.hersheys.milk-chocolate: should
+  candy-snacks.chocolate.hersheys.milk-chocolate.single: must
+  candy-snacks.chocolate.hersheys.almond: should
+  candy-snacks.chocolate.twix.original: should
+  candy-snacks.chocolate.twix.original.single: must
+  candy-snacks.chocolate.pay-day: should
+  candy-snacks.chocolate.kinder-joy: should
+
+  # 3.2 Gum & mints
+  candy-snacks.gum-mints.trident.spearmint: must
+  candy-snacks.gum-mints.trident.original: must
+  candy-snacks.gum-mints.extra.spearmint: must
+  candy-snacks.gum-mints.extra.polar-ice: must
+  candy-snacks.gum-mints.orbit.spearmint: should
+  candy-snacks.gum-mints.5-gum.spearmint-rain: should
+  candy-snacks.gum-mints.wrigleys.doublemint: should
+  candy-snacks.gum-mints.wrigleys.juicy-fruit: should
+  candy-snacks.gum-mints.ice-breakers.cool-mint: must
+  candy-snacks.gum-mints.ice-breakers.ice-cubes: should
+  candy-snacks.gum-mints.tic-tac.orange: must
+  candy-snacks.gum-mints.tic-tac.freshmint: must
+  candy-snacks.gum-mints.altoids.peppermint: should
+  candy-snacks.gum-mints.mentos.mint: should
+  candy-snacks.gum-mints.mentos.fruit: should
+
+  # 3.3 Gummy, chewy & sour
+  candy-snacks.gummy-chewy.haribo.gold-bears: must
+  candy-snacks.gummy-chewy.haribo.sour-gold-bears: should
+  candy-snacks.gummy-chewy.haribo.happy-cola: should
+  candy-snacks.gummy-chewy.trolli.sour-brite-crawlers: must
+  candy-snacks.gummy-chewy.sour-patch-kids.original: must
+  candy-snacks.gummy-chewy.skittles.original: must
+  candy-snacks.gummy-chewy.skittles.sour: should
+  candy-snacks.gummy-chewy.starburst.original: must
+  candy-snacks.gummy-chewy.airheads: should
+  candy-snacks.gummy-chewy.now-and-later: should
+  candy-snacks.gummy-chewy.hi-chew.original-mix: should
+  candy-snacks.gummy-chewy.life-savers: should
+  candy-snacks.gummy-chewy.nerds.gummy-clusters: must
+  candy-snacks.gummy-chewy.snak-club: should
+
+  # 3.4 Hard candy & lollipops
+  candy-snacks.hard-candy.jolly-rancher.original: should
+  candy-snacks.hard-candy.charms-blow-pop: must
+
+  # 3.5 Mexican candy
+  candy-snacks.mexican-candy.lucas.muecas: must
+  candy-snacks.mexican-candy.lucas.gusano: must
+  candy-snacks.mexican-candy.lucas.salsagheti: must
+  candy-snacks.mexican-candy.de-la-rosa.mazapan: must
+  candy-snacks.mexican-candy.de-la-rosa.pulparindo: must
+  candy-snacks.mexican-candy.pelon.pelo-rico: must
+  candy-snacks.mexican-candy.vero.mango-con-chile: must
+  candy-snacks.mexican-candy.vero.elotes: must
+  candy-snacks.mexican-candy.jovy: should
+  candy-snacks.mexican-candy.limon-7: should
+  candy-snacks.mexican-candy.indy: should
+  candy-snacks.mexican-candy.hola: should
+  candy-snacks.mexican-candy.ravi: should
+  candy-snacks.mexican-candy.lorena: should
+  candy-snacks.mexican-candy.pica: should
+
+  # 3.6 Salty snacks
+  candy-snacks.salty-snacks.frito-lay-xvl: should
+  candy-snacks.salty-snacks.frito-lay-xvl.cheetos-flamin-hot: must
+  candy-snacks.salty-snacks.frito-lay-xvl.doritos-nacho: must
+  candy-snacks.salty-snacks.frito-lay-xvl.lays-classic: must
+  candy-snacks.salty-snacks.takis.fuego: must
+  candy-snacks.salty-snacks.takis.blue-heat: should
+  candy-snacks.salty-snacks.pringles.original.2-5oz: should
+  candy-snacks.salty-snacks.pringles.sour-cream-onion.2-5oz: should
+  candy-snacks.salty-snacks.cheez-it.original: should
+
+  # 3.7 Nuts & seeds
+  candy-snacks.nuts-seeds.david.original: must
+  candy-snacks.nuts-seeds.david.ranch: must
+  candy-snacks.nuts-seeds.corn-nuts.original: should
+  candy-snacks.nuts-seeds.corn-nuts.ranch: should
+  candy-snacks.nuts-seeds.planters.salted: should
+  candy-snacks.nuts-seeds.blue-diamond.smokehouse: should
+  candy-snacks.nuts-seeds.wonderful-pistachios.roasted-salted: should
+  candy-snacks.nuts-seeds.japanese-peanuts: must
+  candy-snacks.nuts-seeds.chili-lime-peanuts: must
+
+  # 3.8 Meat snacks & bars
+  candy-snacks.meat-snacks-bars.jack-links.original: must
+  candy-snacks.meat-snacks-bars.jack-links.teriyaki: should
+  candy-snacks.meat-snacks-bars.slim-jim.giant-original: must
+  candy-snacks.meat-snacks-bars.slim-jim.monster-original: should
+  candy-snacks.meat-snacks-bars.slim-jim.monster-tabasco: should
+  candy-snacks.meat-snacks-bars.clif-bar.chocolate-chip: should
+
+  # 3.9 Cookies, crackers & snack cakes
+  candy-snacks.cookies-cakes.oreo.original: must
+  candy-snacks.cookies-cakes.chips-ahoy.original: should
+  candy-snacks.cookies-cakes.grandmas: should
+  candy-snacks.cookies-cakes.keebler.sandwich-crackers: should
+  candy-snacks.cookies-cakes.gamesa.marias: should
+  candy-snacks.cookies-cakes.rice-krispies-treats: should
+  candy-snacks.cookies-cakes.hostess.honey-bun: must
+  candy-snacks.cookies-cakes.hostess.twinkies: must
+  candy-snacks.cookies-cakes.hostess.cupcakes: must
+  candy-snacks.cookies-cakes.bon-appetit.concha: should
+  candy-snacks.cookies-cakes.bon-appetit.danish: should
+  candy-snacks.cookies-cakes.clover-hill: should
+  candy-snacks.cookies-cakes.welchs-fruit-snacks: should
+
+  # --- Tobacco & accessories -------------------------------------------------
+  # Department default is nice. Cartons of must lines are should, like take-home sizes.
+  # Nodes marked restricted: [CA] are dropped from this CA build, whatever their priority.
+  tobacco: nice
+
+  # 4.1 Cigarettes
+  tobacco.cigarettes.marlboro.red: should
+  tobacco.cigarettes.marlboro.red.pack: must
+  tobacco.cigarettes.marlboro.gold: should
+  tobacco.cigarettes.marlboro.gold.pack: must
+  tobacco.cigarettes.newport: should
+  tobacco.cigarettes.newport.non-menthol.pack: must
+  tobacco.cigarettes.camel.blue: should
+  tobacco.cigarettes.american-spirit: should
+  tobacco.cigarettes.value-cigarettes: must
+
+  # 4.2 Cigars & cigarillos
+  tobacco.cigars.swisher-sweets: must
+  tobacco.cigars.backwoods.original: must
+  tobacco.cigars.black-and-mild.original: must
+  tobacco.cigars.unflavored-cigarillos: should
+
+  # 4.3 Vapes & nicotine alternatives
+  tobacco.nicotine.zyn: should
+  tobacco.nicotine.zyn.original-6mg: must
+  tobacco.nicotine.zyn.smooth-6mg: must
+  tobacco.nicotine.other-pouches: should
+
+  # 4.4 Smokeless & pipe tobacco
+  tobacco.smokeless.copenhagen.long-cut: should
+  tobacco.smokeless.bugler: should
+
+  # 4.5 Lighters & matches
+  tobacco.lighters.bic.classic: must
+  tobacco.lighters.bic.mini: should
+  tobacco.lighters.clipper: should
+  tobacco.lighters.value-lighters: must
+  tobacco.lighters.eagle-torch.small: must
+  tobacco.lighters.eagle-torch.large: should
+  tobacco.lighters.butane-refill: should
+
+  # 4.6 Rolling papers, wraps & cones
+  tobacco.papers.zig-zag.orange: must
+  tobacco.papers.raw.classic: must
+  tobacco.papers.raw.cones: should
+  tobacco.papers.blunt-wraps: should
+
+  # --- Grocery staples --------------------------------------------------------
+  # Department default is should; must and nice are set below.
+  grocery: should
+
+  # 8.1 Instant meals
+  grocery.instant-meals.ramen-cup: must
+  grocery.instant-meals.ramen-packet: must
+  grocery.instant-meals.mac-cheese-cup: nice
+
+  # 8.2 Seasonings, hot sauce & condiments
+  grocery.seasonings.tajin.clasico: must
+  grocery.seasonings.mega: must
+  grocery.seasonings.hot-sauce.tapatio: must
+  grocery.seasonings.hot-sauce.valentina: must
+  grocery.seasonings.hot-sauce.cholula: nice
+  grocery.seasonings.hot-sauce.tabasco: nice
+  grocery.seasonings.salad-dressing: nice
+  grocery.seasonings.soy-sauce: nice
+
+  # 8.3 Canned & jarred
+  grocery.canned-jarred.beans: must
+  grocery.canned-jarred.jalapenos: must
+  grocery.canned-jarred.canned-fruit: nice
+  grocery.canned-jarred.canned-vegetables: nice
+  grocery.canned-jarred.nacho-cheese: nice
+
+  # 8.4 Dry goods & baking
+  grocery.dry-goods.sugar: must
+  grocery.dry-goods.flour-masa: nice
+  grocery.dry-goods.gelatin-flan: nice
+
+  # 8.5 Breakfast & pantry
+  grocery.breakfast-pantry.tortillas: must
+  grocery.breakfast-pantry.peanut-butter: nice
+  grocery.breakfast-pantry.syrup-honey: nice
+
+  # 8.6 Pet
+  grocery.pet: nice
+
+  # --- Mixers, bar tools, cups & bags -----------------------------------------
+  # Mixer links carry no priority of their own; the canonical nodes do.
+  mixers-bar: nice
+  mixers-bar.bar-tools.corkscrew: must
+  mixers-bar.bar-tools.bottle-opener: must
+  mixers-bar.cups-disposables.party-cup-16oz: must
+  mixers-bar.cups-disposables.shot-glass-1oz: must
+  mixers-bar.cups-disposables.foam-cup-12oz: should
+  mixers-bar.cups-disposables.plates-9in: should
+  mixers-bar.cups-disposables.plastic-forks: should
+  mixers-bar.cups-disposables.plastic-spoons: should
+  mixers-bar.cups-disposables.foam-cooler: should
+  mixers-bar.store-bags: must
+  mixers-bar.store-bags.t-shirt-bag-12x7x22: should
+  mixers-bar.store-bags.reusable-bag: nice
+  mixers-bar.trash-storage-bags: should
+  mixers-bar.trash-storage-bags.kitchen-trash-13gal: must
+
+  # --- Household & kitchen ----------------------------------------------------
+  household: nice
+
+  # 6.1 Cleaning solutions
+  household.cleaning.multipurpose-cleaner: must
+  household.cleaning.bleach: must
+  household.cleaning.dish-soap: must
+  household.cleaning.toilet-bowl-cleaner: should
+  household.cleaning.disinfecting-wipes: should
+
+  # 6.2 Laundry
+  household.laundry.detergent-liquid: must
+  household.laundry.detergent-powder: must
+  household.laundry.laundry-bar-soap: must
+  household.laundry.fabric-softener: should
+
+  # 6.3 Paper & disposables
+  household.paper.toilet-paper: must
+  household.paper.paper-towels: must
+  household.paper.napkins: should
+  household.paper.aluminum-foil: should
+
+  # 6.4 Air care, candles & pest
+  household.air-candles-pest.air-freshener-spray: should
+  household.air-candles-pest.religious-candle: must
+  household.air-candles-pest.pest-control: should
+
+  # 6.5 Cleaning equipment & home
+  household.equipment-home.sponges: must
+  household.equipment-home.latex-gloves: should
+  household.equipment-home.batteries.aa: must
+  household.equipment-home.batteries.aaa: must
+  household.equipment-home.batteries.9v: should
+  household.equipment-home.chargers-cables: should
+  household.equipment-home.grilling-fire: should
+
+  # --- Health & beauty ---------------------------------------------------------
+  health-beauty: should
+
+  # 7.1 Medicine (OTC)
+  health-beauty.medicine.pain-reliever: must
+  health-beauty.medicine.antacid: must
+  health-beauty.medicine.cough-drops: must
+  health-beauty.medicine.cold-flu: must
+  health-beauty.medicine.antifungal: nice
+  health-beauty.medicine.energy-shot: must
+  health-beauty.medicine.vitamin-c: nice
+
+  # 7.2 Oral care & lip
+  health-beauty.oral-lip.toothpaste: must
+  health-beauty.oral-lip.toothbrush: must
+  health-beauty.oral-lip.lip-balm: must
+  health-beauty.oral-lip.floss: nice
+
+  # 7.3 Personal care
+  health-beauty.personal-care.bar-soap: must
+  health-beauty.personal-care.deodorant: must
+  health-beauty.personal-care.razor: must
+  health-beauty.personal-care.shaving-cream: nice
+  health-beauty.personal-care.sunscreen: nice
+  health-beauty.personal-care.body-spray: nice
+
+  # 7.4 Feminine care & family planning
+  health-beauty.feminine-family.pads: must
+  health-beauty.feminine-family.condoms: must
+  health-beauty.feminine-family.lubricant: nice
+  health-beauty.feminine-family.pregnancy-test: nice
+
+  # 7.5 First aid & hygiene
+  health-beauty.first-aid.bandages: must
+  health-beauty.first-aid.cotton-swabs: nice
+  health-beauty.first-aid.face-masks: nice
+
+  # 7.6 Beauty accessories
+  health-beauty.beauty-accessories.lashes-nail-polish: nice
+
 notes:
   scd.cola.coca-cola-mexican: Must in the LA market.
   scd.lemon-lime.sprite-mexican: Should in the LA market.
@@ -102,3 +528,29 @@ notes:
   scd.fruit-mexican.jarritos: The top four flavors (Mandarin, Lime, Tamarind, Grapefruit) are must in the LA market.
   scd.lemon-lime.mountain-dew.diet: The outline gave Diet Mountain Dew no priority; set to nice.
   scd.ginger-ale-club-tonic.canada-dry: Ginger Ale 20oz and Club Soda and Tonic 1L are must as mixers.
+  drinks.water.topo-chico: Must in the LA market; mixer.
+  drinks.water.value-water: One value still water in every store (guardrail).
+  drinks.sports.electrolit: Strawberry, Coconut and Orange Mandarin are must in the LA market.
+  drinks.sports.vitaminwater: Carry XXX plus two others.
+  drinks.juice.motts-clamato.original: 16oz and 32oz are must for micheladas.
+  drinks.michelada.baja-micheladas: All four flavors are must per the department 5 decision (michelada cups stay and are must). Section 2.6 had Original and Hot at should.
+  candy-snacks: "Guardrails: checkout counter holds 6 chocolate bars, 4 gums, 2 mints, Blow Pops and 4 Mexican candies minimum. Peg wall: Haribo, Trolli, Sour Patch, Nerds Clusters, one value line. Chip rack: 3 Flamin' Hot items, Doritos, Lay's, Takis."
+  candy-snacks.mexican-candy: Priorities will be re-ranked from sales data; every stocked brand stays in the tree.
+  candy-snacks.gummy-chewy.now-and-later: LA market staple.
+  candy-snacks.nuts-seeds.japanese-peanuts: Must in the LA market.
+  candy-snacks.cookies-cakes.gamesa.marias: Should in the LA market.
+  candy-snacks.cookies-cakes.bon-appetit: Concha and Danish are should in the LA market.
+  tobacco: Priorities follow LA liquor-store velocity. Lines 4.1–4.4 are drafts to confirm against Mercaso stock.
+  tobacco.cigarettes.newport: Newport is must in the outline; in CA only Non-Menthol can be sold.
+  tobacco.nicotine.zyn: Mercaso sells Original and Smooth, 3mg and 6mg. The 6mg are must, following the outline's "6mg must"; flavored Zyn is dropped in CA.
+  grocery.instant-meals.canned-soup: Juanita's Menudo is for the LA market.
+  grocery.seasonings.tajin: Tajín and chamoy are must in the LA market (department 5 mixers list).
+  grocery.seasonings.mega: The outline wants one chamoy; Mega is the must pick and Tajín Chamoy the backup.
+  grocery.seasonings.hot-sauce: The outline wants 2–3 hot sauces. Tapatío and Valentina are must, El Yucateco should.
+  grocery.breakfast-pantry.tortillas: Must in the LA market (Mission).
+  mixers-bar.mixers: "The mixers list marks every mixer must. The canonical nodes keep their own priorities: Schweppes stays should per section 1.5, and Canada Dry club soda and tonic 1L are must."
+  household: A liquor store in LA usually wants value and hispanic brands; national is the upgrade.
+  household.air-candles-pest.religious-candle: Must in the LA market.
+  household.paper.sandwich-bags: The outline had plastic wrap and sandwich bags as one nice slot here, and zipper bags as should in department 5. Sandwich bags now live only in department 5, at should.
+  health-beauty.personal-care.hair-gel: Should in the LA market.
+  health-beauty.medicine.cold-flu: Must in season.

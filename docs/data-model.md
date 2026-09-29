@@ -12,7 +12,9 @@ pnpm test        # unit tests for the validator and build
 pnpm typecheck
 ```
 
-CI runs all four on every pull request and on pushes to `main`.
+CI runs all four on every pull request and on pushes to `main`, then builds the tree viewer.
+
+`pnpm web:dev` builds the catalog and starts the viewer. It reads `dist/*.json`, copied into `apps/web/public/data/` by its `copy-data` script.
 
 ## Files
 
@@ -81,6 +83,10 @@ A nested `size_classes` replaces the inherited vocabulary. A nested `size_defs` 
 | `age_restricted` | Applies to the whole subtree. |
 | `restricted` | States where the subtree must not be recommended, e.g. `[CA]` for menthol. |
 | `cross_ref` | Ids of canonical nodes this node points at, so nothing is duplicated (rule 10). |
+
+**Links.** A category or subcategory may have `cross_ref` and no children. It is then a pure link, like the mixers in department 5. A link has no priority of its own; the store type sets priority on the node it points at, and setting one on the link is an error.
+
+**Slots inside branded categories.** When the outline says "carry one of these brands" or "top flavors" without naming them, the leaf is an `assortment_slot` even in a branded category. The brands go in `brand_hints`.
 
 ## Store-type files
 

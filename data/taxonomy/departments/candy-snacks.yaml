@@ -1,0 +1,798 @@
+# Candy & snacks. Source: docs/exploration/liquor.md section 3.
+# Branded: brand line -> variant (flavor) -> size. Size classes are defined per category
+# (rule 4): single / king for bars, peg for gummies, xvl for chips, retail units elsewhere.
+# "One of these brands" rows are assortment slots inside the branded category.
+key: candy-snacks
+name: Candy & snacks
+kind: department
+children:
+  # 3.1 Chocolate bars
+  - key: chocolate
+    name: Chocolate bars
+    kind: category
+    size_classes:
+      single: Standard single bar
+      king: King or share size
+    size_defs:
+      single: { name: Single, size_class: single }
+      king: { name: King size, size_class: king }
+    children:
+      - key: snickers
+        name: Snickers
+        kind: brand_line
+        sizes: [single, king]
+        children:
+          - { key: original, name: Original, kind: variant }
+          - { key: almond, name: Almond, kind: variant }
+          - { key: white, name: White, kind: variant }
+      - key: reeses
+        name: Reese's
+        kind: brand_line
+        sizes: [single, king]
+        children:
+          - { key: cups, name: Peanut Butter Cups, kind: variant }
+          - { key: big-cup, name: Big Cup, kind: variant }
+          - { key: sticks, name: Sticks, kind: variant }
+      - key: m-and-ms
+        name: M&M's
+        kind: brand_line
+        sizes: [single, king]
+        children:
+          - { key: milk-chocolate, name: Milk Chocolate, kind: variant }
+          - { key: peanut, name: Peanut, kind: variant }
+          - { key: peanut-butter, name: Peanut Butter, kind: variant }
+      - key: kit-kat
+        name: Kit Kat
+        kind: brand_line
+        sizes: [single, king]
+        children:
+          - { key: original, name: Original, kind: variant }
+      - key: hersheys
+        name: Hershey's
+        kind: brand_line
+        sizes: [single, king]
+        children:
+          - { key: milk-chocolate, name: Milk Chocolate, kind: variant }
+          - { key: almond, name: Almond, kind: variant }
+          - { key: cookies-n-creme, name: Cookies 'n' Creme, kind: variant }
+      - key: twix
+        name: Twix
+        kind: brand_line
+        sizes: [single, king]
+        children:
+          - { key: original, name: Original, kind: variant }
+      - key: pay-day
+        name: Pay Day
+        kind: brand_line
+        sizes: [single, king]
+        children:
+          - { key: original, name: Original, kind: variant }
+      - key: kinder-joy
+        name: Kinder Joy
+        kind: brand_line
+        sizes: [single]
+        children:
+          - { key: original, name: Original, kind: variant }
+      - key: ferrero-rocher
+        name: Ferrero Rocher
+        kind: brand_line
+        sizes: [single]
+        children:
+          - { key: 3-count, name: 3-count, kind: variant }
+
+  # 3.2 Gum & mints
+  - key: gum-mints
+    name: Gum & mints
+    kind: category
+    size_classes:
+      single: One counter pack, tin or roll
+    size_defs:
+      5-stick: { name: 5-stick pack, size_class: single, unit_count: 5 }
+      14ct: { name: 14-piece pack, size_class: single, unit_count: 14 }
+      15ct: { name: 15-piece pack, size_class: single, unit_count: 15 }
+      15-stick: { name: 15-stick pack, size_class: single, unit_count: 15 }
+      40pc: { name: 40-piece cup, size_class: single, unit_count: 40 }
+      1-5oz-tin: { name: 1.5oz tin, size_class: single, container: tin }
+      tin: { name: Tin, size_class: single, container: tin }
+      roll: { name: Roll, size_class: single }
+      pack: { name: Pack, size_class: single }
+      tape: { name: Bubble Tape, size_class: single }
+    children:
+      - key: trident
+        name: Trident
+        kind: brand_line
+        sizes: [14ct]
+        children:
+          - { key: spearmint, name: Spearmint, kind: variant }
+          - { key: original, name: Original, kind: variant }
+          - { key: tropical-twist, name: Tropical Twist, kind: variant }
+          - { key: bubblegum, name: Bubblegum, kind: variant }
+      - key: extra
+        name: Extra
+        kind: brand_line
+        sizes: [15ct]
+        children:
+          - { key: spearmint, name: Spearmint, kind: variant }
+          - { key: peppermint, name: Peppermint, kind: variant }
+          - { key: polar-ice, name: Polar Ice, kind: variant }
+      - key: orbit
+        name: Orbit
+        kind: brand_line
+        sizes: [14ct]
+        children:
+          - { key: spearmint, name: Spearmint, kind: variant }
+          - { key: peppermint, name: Peppermint, kind: variant }
+          - { key: wintermint, name: Wintermint, kind: variant }
+      - key: 5-gum
+        name: 5 Gum
+        kind: brand_line
+        sizes: [15ct]
+        children:
+          - { key: spearmint-rain, name: Spearmint Rain, kind: variant }
+          - { key: peppermint-cobalt, name: Peppermint Cobalt, kind: variant }
+          - { key: watermelon, name: Watermelon, kind: variant }
+      - key: wrigleys
+        name: Wrigley's
+        kind: brand_line
+        sizes: [5-stick, 15-stick]
+        children:
+          - { key: doublemint, name: Doublemint, kind: variant }
+          - { key: juicy-fruit, name: Juicy Fruit, kind: variant }
+          - { key: big-red, name: Big Red, kind: variant }
+          - { key: spearmint, name: Spearmint, kind: variant }
+      - key: eclipse-or-dentyne
+        name: Eclipse or Dentyne
+        kind: assortment_slot
+        target_count: { min: 1, max: 1 }
+        size_class: [single]
+        brand_hints: [Eclipse, Dentyne]
+        note: Spearmint or Winterfresh; one of the two brands.
+      - key: hubba-bubba
+        name: Hubba Bubba
+        kind: brand_line
+        children:
+          - { key: bubble-tape, name: Bubble Tape, kind: variant, sizes: [tape] }
+          - { key: max-original, name: Max Original, kind: variant, sizes: [pack] }
+      - key: ice-breakers
+        name: Ice Breakers
+        kind: brand_line
+        children:
+          - { key: cool-mint, name: Cool Mint mints, kind: variant, sizes: [1-5oz-tin] }
+          - { key: spearmint, name: Spearmint mints, kind: variant, sizes: [1-5oz-tin] }
+          - { key: ice-cubes, name: Ice Cubes gum, kind: variant, sizes: [40pc] }
+      - key: tic-tac
+        name: Tic Tac
+        kind: brand_line
+        sizes: [pack]
+        children:
+          - { key: orange, name: Orange, kind: variant }
+          - { key: freshmint, name: Freshmint, kind: variant }
+          - { key: fruit-adventure, name: Fruit Adventure, kind: variant }
+      - key: altoids
+        name: Altoids
+        kind: brand_line
+        sizes: [tin]
+        children:
+          - { key: peppermint, name: Peppermint, kind: variant }
+          - { key: wintergreen, name: Wintergreen, kind: variant }
+      - key: mentos
+        name: Mentos
+        kind: brand_line
+        sizes: [roll]
+        children:
+          - { key: mint, name: Mint, kind: variant }
+          - { key: fruit, name: Fruit, kind: variant }
+          - { key: rainbow, name: Rainbow, kind: variant }
+
+  # 3.3 Gummy, chewy & sour
+  - key: gummy-chewy
+    name: Gummy, chewy & sour
+    kind: category
+    size_classes:
+      peg: Peg bag
+      single: Single pack
+      king: King or share pack
+    size_defs:
+      peg: { name: Peg bag, size_class: peg }
+      4oz-peg: { name: 4oz peg bag, size_class: peg }
+      single: { name: Single, size_class: single }
+      king: { name: King size, size_class: king }
+    children:
+      - key: haribo
+        name: Haribo
+        kind: brand_line
+        note: The outline wants Gold Bears plus two more; the next two listed stand in.
+        sizes: [peg]
+        children:
+          - { key: gold-bears, name: Gold Bears, kind: variant }
+          - { key: sour-gold-bears, name: Sour Gold Bears, kind: variant }
+          - { key: happy-cola, name: Happy Cola, kind: variant }
+          - { key: twin-snakes, name: Twin Snakes, kind: variant }
+      - key: trolli
+        name: Trolli
+        kind: brand_line
+        sizes: [peg]
+        children:
+          - { key: sour-brite-crawlers, name: Sour Brite Crawlers, kind: variant }
+          - { key: sour-brite-eggs, name: Sour Brite Eggs, kind: variant }
+          - { key: watermelon-sharks, name: Watermelon Sharks, kind: variant }
+      - key: sour-patch-kids
+        name: Sour Patch Kids
+        kind: brand_line
+        sizes: [peg]
+        children:
+          - { key: original, name: Original, kind: variant }
+          - { key: watermelon, name: Watermelon, kind: variant }
+      - key: skittles
+        name: Skittles
+        kind: brand_line
+        sizes: [single, king]
+        children:
+          - { key: original, name: Original, kind: variant }
+          - { key: sour, name: Sour, kind: variant }
+          - { key: wild-berry, name: Wild Berry, kind: variant }
+      - key: starburst
+        name: Starburst
+        kind: brand_line
+        sizes: [single, king]
+        children:
+          - { key: original, name: Original, kind: variant }
+          - { key: fave-reds, name: FaveReds, kind: variant }
+      - key: airheads
+        name: Airheads
+        kind: brand_line
+        sizes: [single]
+        children:
+          - { key: assorted, name: Assorted, kind: variant }
+          - { key: xtremes, name: Xtremes, kind: variant }
+      - key: now-and-later
+        name: Now & Later
+        kind: brand_line
+        sizes: [single]
+        children:
+          - { key: original, name: Original, kind: variant }
+          - { key: extreme-sour, name: Extreme Sour, kind: variant }
+      - key: hi-chew
+        name: Hi-Chew
+        kind: brand_line
+        sizes: [peg, single]
+        children:
+          - { key: original-mix, name: Original mix, kind: variant }
+          - { key: mango, name: Mango, kind: variant }
+          - { key: strawberry, name: Strawberry, kind: variant }
+      - key: warheads
+        name: Warheads
+        kind: brand_line
+        sizes: [peg]
+        children:
+          - { key: extreme-sour, name: Extreme Sour, kind: variant }
+          - { key: sour-twists, name: Sour Twists, kind: variant }
+      - key: other-peg
+        name: Other peg bags
+        kind: assortment_slot
+        target_count: { min: 1, max: 2 }
+        size_class: [peg]
+        brand_hints: [Mike & Ike, Sour Power, Rips, Red Vines]
+      - key: life-savers
+        name: Life Savers Gummies
+        kind: brand_line
+        sizes: [peg]
+        children:
+          - { key: five-flavor, name: Five Flavor, kind: variant }
+          - { key: wild-berry, name: Wild Berry, kind: variant }
+      - key: nerds
+        name: Nerds
+        kind: brand_line
+        children:
+          - { key: gummy-clusters, name: Gummy Clusters, kind: variant, sizes: [peg] }
+          - { key: rope, name: Rope, kind: variant, sizes: [single] }
+      - key: snak-club
+        name: Snak Club
+        kind: brand_line
+        note: Value peg-bag line.
+        sizes: [4oz-peg]
+        children:
+          - { key: sour-worms, name: Sour Worms, kind: variant }
+          - { key: gummy-bears, name: Gummy Bears, kind: variant }
+          - { key: apple-rings, name: Apple Rings, kind: variant }
+
+  # 3.4 Hard candy & lollipops
+  - key: hard-candy
+    name: Hard candy & lollipops
+    kind: category
+    size_classes:
+      peg: Peg bag
+      single: Single piece or pack
+    size_defs:
+      peg: { name: Peg bag, size_class: peg }
+      single: { name: Single, size_class: single }
+    children:
+      - key: jolly-rancher
+        name: Jolly Rancher
+        kind: brand_line
+        sizes: [peg]
+        children:
+          - { key: original, name: Original hard candy, kind: variant }
+          - { key: sour, name: Sour, kind: variant }
+      - key: charms-blow-pop
+        name: Charms Blow Pop
+        kind: brand_line
+        sizes: [single]
+        children:
+          - { key: assorted, name: Assorted, kind: variant }
+      - key: pop-rocks
+        name: Pop Rocks
+        kind: brand_line
+        sizes: [single]
+        children:
+          - { key: strawberry, name: Strawberry, kind: variant }
+          - { key: cherry, name: Cherry, kind: variant }
+          - { key: watermelon, name: Watermelon, kind: variant }
+      - key: lemonhead
+        name: Lemonhead (Ferrara)
+        kind: brand_line
+        sizes: [single]
+        children:
+          - { key: original, name: Original, kind: variant }
+          - { key: chewy, name: Chewy, kind: variant }
+
+  # 3.5 Mexican candy. Every stocked brand stays; priority is re-ranked from sales data.
+  - key: mexican-candy
+    name: Mexican candy
+    kind: category
+    verify: sales
+    size_classes:
+      single: Single piece or pack
+    size_defs:
+      single: { name: Single, size_class: single }
+    children:
+      - key: lucas
+        name: Lucas
+        kind: brand_line
+        sizes: [single]
+        children:
+          - { key: muecas, name: Muecas, kind: variant }
+          - { key: gusano, name: Gusano, kind: variant }
+          - { key: bomvaso, name: Bomvaso, kind: variant }
+          - { key: salsagheti, name: Salsagheti, kind: variant }
+          - { key: pelucas, name: Pelucas, kind: variant }
+      - key: de-la-rosa
+        name: De la Rosa
+        kind: brand_line
+        sizes: [single]
+        children:
+          - { key: mazapan, name: Mazapán, kind: variant }
+          - { key: pulparindo, name: Pulparindo, kind: variant }
+          - { key: pulparindots, name: Pulparindots, kind: variant }
+      - key: pelon
+        name: Pelon
+        kind: brand_line
+        sizes: [single]
+        children:
+          - { key: pelo-rico, name: Pelo Rico, kind: variant }
+          - { key: pelonetes, name: Pelonetes, kind: variant }
+          - { key: pelonazo, name: Pelonazo, kind: variant }
+      - key: vero
+        name: Vero
+        kind: brand_line
+        sizes: [single]
+        children:
+          - { key: mango-con-chile, name: Mango con Chile, kind: variant }
+          - { key: elotes, name: Elotes, kind: variant }
+          - { key: rebanaditas, name: Rebanaditas, kind: variant }
+      - key: jovy
+        name: Jovy
+        kind: brand_line
+        sizes: [single]
+        children:
+          - { key: revolcaditas, name: Revolcaditas, kind: variant }
+          - { key: ricas-mango, name: Ricas Mango, kind: variant }
+      - key: limon-7
+        name: Limón 7
+        kind: brand_line
+        sizes: [single]
+        children:
+          - { key: salt-lemon, name: Salt & Lemon powder, kind: variant }
+      - key: indy
+        name: Indy
+        kind: brand_line
+        sizes: [single]
+        children:
+          - { key: chamoy, name: Chamoy, kind: variant }
+          - { key: tamarindo, name: Tamarindo, kind: variant }
+      - key: hola
+        name: Hola
+        kind: brand_line
+        sizes: [single]
+        children:
+          - { key: tamarind, name: Tamarind candies, kind: variant }
+      - key: ravi
+        name: Ravi
+        kind: brand_line
+        sizes: [single]
+        children:
+          - { key: tamarind, name: Tamarind, kind: variant }
+          - { key: chamoy, name: Chamoy, kind: variant }
+      - key: lorena
+        name: Lorena
+        kind: brand_line
+        sizes: [single]
+        children:
+          - { key: pelon-style, name: Pelón-style, kind: variant }
+          - { key: chamoy, name: Chamoy, kind: variant }
+      - key: pica
+        name: Pica
+        kind: brand_line
+        sizes: [single]
+        children:
+          - { key: fresa, name: Fresa, kind: variant }
+          - { key: pica-gomas, name: Pica Gomas, kind: variant }
+
+  # 3.6 Salty snacks
+  - key: salty-snacks
+    name: Salty snacks (chips, corn, popcorn)
+    kind: category
+    size_classes:
+      xvl: XVL bag (chips are XVL only)
+      single: Other single-serve pack
+    size_defs:
+      xvl: { name: XVL (2.5–3.5oz), size_class: xvl }
+      4oz-xvl: { name: 4oz bag, size_class: xvl }
+      1-3oz: { name: 1.3oz can, size_class: single }
+      2-5oz: { name: 2.5oz can, size_class: single }
+      2oz: { name: 2oz bag, size_class: single }
+      3oz: { name: 3oz bag, size_class: single }
+      3-75oz: { name: 3.75oz bag, size_class: single }
+    children:
+      - key: frito-lay-xvl
+        name: Frito-Lay XVL
+        kind: brand_line
+        sizes: [xvl]
+        children:
+          - { key: cheetos-flamin-hot, name: Cheetos Flamin' Hot, kind: variant }
+          - { key: cheetos-xxtra-flamin-hot, name: Cheetos Xxtra Flamin' Hot, kind: variant }
+          - { key: cheetos-crunchy, name: Cheetos Crunchy, kind: variant }
+          - { key: doritos-nacho, name: Doritos Nacho, kind: variant }
+          - { key: doritos-dinamita, name: Doritos Dinamita, kind: variant }
+          - { key: fritos-turbos-flamas, name: Fritos Turbos Flamas, kind: variant }
+          - { key: funyuns-flamin-hot, name: Funyuns Flamin' Hot, kind: variant }
+          - { key: munchies-flamin-hot, name: Munchies Flamin' Hot, kind: variant }
+          - { key: lays-classic, name: Lay's Classic, kind: variant }
+          - { key: ruffles-cheddar, name: Ruffles Cheddar, kind: variant }
+      - key: takis
+        name: Takis
+        kind: brand_line
+        sizes: [4oz-xvl]
+        children:
+          - { key: fuego, name: Fuego, kind: variant }
+          - { key: blue-heat, name: Blue Heat, kind: variant }
+          - { key: crunchy-fajitas, name: Crunchy Fajitas, kind: variant }
+      - key: pringles
+        name: Pringles
+        kind: brand_line
+        sizes: [1-3oz, 2-5oz]
+        children:
+          - { key: original, name: Original, kind: variant }
+          - { key: sour-cream-onion, name: Sour Cream & Onion, kind: variant }
+          - { key: cheddar, name: Cheddar, kind: variant }
+          - { key: bbq, name: BBQ, kind: variant }
+      - key: cheez-it
+        name: Cheez-It
+        kind: brand_line
+        sizes: [3oz]
+        children:
+          - { key: original, name: Original, kind: variant }
+          - { key: extra-cheesy, name: Extra Cheesy, kind: variant }
+          - { key: hot-spicy, name: Hot & Spicy, kind: variant }
+      - key: chex-mix
+        name: Chex Mix
+        kind: brand_line
+        sizes: [3-75oz]
+        children:
+          - { key: traditional, name: Traditional, kind: variant }
+          - { key: cheddar, name: Cheddar, kind: variant }
+          - { key: bold, name: Bold, kind: variant }
+      - key: kettle
+        name: Kettle
+        kind: brand_line
+        sizes: [2oz]
+        children:
+          - { key: sea-salt, name: Sea Salt, kind: variant }
+          - { key: salt-vinegar, name: Salt & Vinegar, kind: variant }
+      - key: value-chips
+        name: Value chips
+        kind: assortment_slot
+        target_count: { min: 1, max: 1 }
+        mix: [value]
+        size_class: [single]
+        brand_hints: [El Sabroso, California Snack Foods]
+        note: 3oz bags.
+
+  # 3.7 Nuts & seeds
+  - key: nuts-seeds
+    name: Nuts & seeds
+    kind: category
+    size_classes:
+      single: Retail unit as sold
+    size_defs:
+      single: { name: Single pack, size_class: single }
+      1-25oz: { name: 1.25oz, size_class: single }
+      1-5oz: { name: 1.5oz, size_class: single }
+      1-75oz: { name: 1.5–1.75oz, size_class: single }
+      1-7oz: { name: 1.7oz, size_class: single }
+      2-4oz: { name: 2–4oz, size_class: single }
+      4oz: { name: 4oz, size_class: single }
+      5oz: { name: 5oz, size_class: single }
+      5-25oz: { name: 5.25oz, size_class: single }
+      6oz: { name: 6oz, size_class: single }
+      6-3oz: { name: 6.3oz, size_class: single }
+    children:
+      - key: david
+        name: David
+        kind: brand_line
+        sizes: [5-25oz]
+        children:
+          - { key: original, name: Original, kind: variant }
+          - { key: ranch, name: Ranch, kind: variant }
+          - { key: bbq, name: BBQ, kind: variant }
+          - { key: dill-pickle, name: Dill Pickle, kind: variant }
+      - key: spitz
+        name: Spitz
+        kind: brand_line
+        sizes: [6oz]
+        children:
+          - { key: original, name: Original, kind: variant }
+          - { key: cracked-pepper, name: Cracked Pepper, kind: variant }
+          - { key: bbq, name: BBQ, kind: variant }
+      - key: corn-nuts
+        name: Corn Nuts
+        kind: brand_line
+        sizes: [1-7oz, 4oz]
+        children:
+          - { key: original, name: Original, kind: variant }
+          - { key: ranch, name: Ranch, kind: variant }
+          - { key: chili-picante, name: Chili Picante, kind: variant }
+          - { key: bbq, name: BBQ, kind: variant }
+      - key: planters
+        name: Planters
+        kind: brand_line
+        sizes: [1-75oz]
+        children:
+          - { key: salted, name: Salted, kind: variant }
+          - { key: heat, name: Heat, kind: variant }
+      - key: blue-diamond
+        name: Blue Diamond
+        kind: brand_line
+        sizes: [1-5oz]
+        children:
+          - { key: smokehouse, name: Smokehouse, kind: variant }
+          - { key: wasabi-soy, name: Wasabi Soy, kind: variant }
+          - { key: roasted-salted, name: Roasted Salted, kind: variant }
+      - key: wonderful-pistachios
+        name: Wonderful Pistachios
+        kind: brand_line
+        sizes: [1-25oz]
+        children:
+          - { key: roasted-salted, name: Roasted Salted, kind: variant }
+          - { key: sweet-chili, name: Sweet Chili, kind: variant }
+      - key: japanese-peanuts
+        name: Japanese peanuts
+        kind: assortment_slot
+        target_count: { min: 1, max: 1 }
+        size_class: [single]
+        brand_hints: [Arachi, Manzela]
+        note: Natural or Hot; single or 6.3oz.
+      - key: chili-lime-peanuts
+        name: Chili-lime peanuts
+        kind: assortment_slot
+        target_count: { min: 1, max: 1 }
+        size_class: [single]
+        brand_hints: [Snak Club, Muncheros, Tapatio]
+        note: Chili Lemon peanuts or Tajín seeds, 5oz.
+      - key: beer-nuts
+        name: Beer Nuts
+        kind: brand_line
+        sizes: [2-4oz]
+        children:
+          - { key: peanuts, name: Peanuts, kind: variant }
+          - { key: cashews, name: Cashews, kind: variant }
+
+  # 3.8 Meat snacks & bars
+  - key: meat-snacks-bars
+    name: Meat snacks & bars
+    kind: category
+    size_classes:
+      single: Retail unit as sold
+    size_defs:
+      single: { name: Single, size_class: single }
+      1oz: { name: 1oz, size_class: single }
+      1-25oz: { name: 1.25oz, size_class: single }
+      2-4oz: { name: 2.4oz, size_class: single }
+      3-25oz: { name: 3.25oz, size_class: single }
+    children:
+      - key: jack-links
+        name: Jack Link's
+        kind: brand_line
+        sizes: [1oz, 3-25oz]
+        children:
+          - { key: original, name: Original jerky, kind: variant }
+          - { key: teriyaki, name: Teriyaki jerky, kind: variant }
+          - { key: peppered, name: Peppered jerky, kind: variant }
+          - { key: beef-cheese-sticks, name: Beef & Cheese sticks, kind: variant, sizes: [1-25oz] }
+      - key: slim-jim
+        name: Slim Jim
+        kind: brand_line
+        sizes: [single]
+        children:
+          - { key: giant-original, name: Giant Original, kind: variant }
+          - { key: monster-original, name: Monster Original, kind: variant }
+          - { key: monster-tabasco, name: Monster Tabasco, kind: variant }
+      - key: clif-bar
+        name: Clif Bar
+        kind: brand_line
+        sizes: [2-4oz]
+        children:
+          - { key: chocolate-chip, name: Chocolate Chip, kind: variant }
+          - { key: crunchy-peanut-butter, name: Crunchy Peanut Butter, kind: variant }
+          - { key: chocolate-brownie, name: Chocolate Brownie, kind: variant }
+      - key: snack-bars
+        name: Snack bars
+        kind: assortment_slot
+        target_count: { min: 1, max: 2 }
+        size_class: [single]
+        brand_hints: [Kind, Nature Valley]
+        note: One bar brand, its top two items.
+      - key: protein-bars
+        name: Protein bars and bites
+        kind: assortment_slot
+        target_count: { min: 1, max: 1 }
+        size_class: [single]
+        brand_hints: [Power Crunch, Prime Bites]
+
+  # 3.9 Cookies, crackers & snack cakes
+  - key: cookies-cakes
+    name: Cookies, crackers & snack cakes
+    kind: category
+    size_classes:
+      single: Single-serve pack or cake
+      king: King or share pack
+    size_defs:
+      single: { name: Single, size_class: single }
+      6ct: { name: 6-count pack, size_class: single, unit_count: 6 }
+      king-4oz: { name: King 4oz, size_class: king }
+      king: { name: King size, size_class: king }
+      1-35oz: { name: 1.35oz, size_class: single }
+      1-8oz: { name: 1.8oz, size_class: single }
+      2-2oz: { name: 2.2oz, size_class: single }
+      2-25oz: { name: 2.25oz, size_class: single }
+      2-5oz: { name: 2.5oz, size_class: single }
+      3oz-mini: { name: 3oz mini bag, size_class: single }
+      4oz: { name: 4oz, size_class: single }
+      4-9oz: { name: 4.9oz, size_class: single }
+    children:
+      - key: oreo
+        name: Oreo
+        kind: brand_line
+        sizes: [6ct, king-4oz]
+        children:
+          - { key: original, name: Original, kind: variant }
+          - { key: double-stuf, name: Double Stuf, kind: variant }
+          - { key: mini, name: Mini, kind: variant, sizes: [3oz-mini] }
+      - key: chips-ahoy
+        name: Chips Ahoy
+        kind: brand_line
+        children:
+          - { key: original, name: Original, kind: variant, sizes: [king] }
+          - { key: mini, name: Mini, kind: variant, sizes: [3oz-mini] }
+      - key: grandmas
+        name: Grandma's
+        kind: brand_line
+        sizes: [2-5oz]
+        children:
+          - { key: peanut-butter, name: Peanut Butter, kind: variant }
+          - { key: mini-sandwich-cremes, name: Mini Sandwich Cremes, kind: variant }
+      - key: keebler
+        name: Keebler
+        kind: brand_line
+        sizes: [1-8oz]
+        children:
+          - { key: sandwich-crackers, name: Cheese & PB sandwich crackers, kind: variant }
+          - { key: club-cheddar, name: Club & Cheddar, kind: variant }
+          - { key: vanilla-wafers, name: Vanilla wafers, kind: variant }
+      - key: ritz
+        name: Ritz
+        kind: brand_line
+        sizes: [1-35oz]
+        children:
+          - { key: cheese-sandwich, name: Cheese sandwich, kind: variant }
+          - { key: original, name: Original, kind: variant }
+      - key: gamesa
+        name: Gamesa
+        kind: brand_line
+        sizes: [4-9oz]
+        children:
+          - { key: marias, name: Marías, kind: variant }
+          - { key: barra-de-coco, name: Barra de Coco, kind: variant }
+      - key: value-cookies
+        name: Value cookies and wafers
+        kind: assortment_slot
+        target_count: { min: 1, max: 1 }
+        mix: [value]
+        brand_hints: [Bauducco, Lil' Dutch Maid]
+        note: Wafers or creme cookies, 5–12oz; value shelf.
+      - key: pocky
+        name: Pocky
+        kind: brand_line
+        sizes: [single]
+        children:
+          - { key: chocolate, name: Chocolate, kind: variant }
+          - { key: strawberry, name: Strawberry, kind: variant }
+      - key: hello-panda
+        name: Hello Panda
+        kind: brand_line
+        sizes: [single]
+        children:
+          - { key: chocolate, name: Chocolate, kind: variant }
+      - key: yan-yan
+        name: Yan Yan
+        kind: brand_line
+        sizes: [single]
+        children:
+          - { key: chocolate, name: Chocolate, kind: variant }
+      - key: rice-krispies-treats
+        name: Rice Krispies Treats
+        kind: brand_line
+        sizes: [2-2oz]
+        children:
+          - { key: original, name: Original, kind: variant }
+      - key: lenny-larrys
+        name: Lenny & Larry's
+        kind: brand_line
+        sizes: [4oz]
+        children:
+          - { key: chocolate-chip, name: Chocolate Chip, kind: variant }
+          - { key: peanut-butter, name: Peanut Butter, kind: variant }
+      - key: hostess
+        name: Hostess
+        kind: brand_line
+        sizes: [single]
+        children:
+          - { key: honey-bun, name: Honey Bun, kind: variant }
+          - { key: twinkies, name: Twinkies, kind: variant }
+          - { key: cupcakes, name: Cupcakes, kind: variant }
+          - { key: zingers, name: Zingers, kind: variant }
+          - { key: ding-dongs, name: Ding Dongs, kind: variant }
+      - key: bon-appetit
+        name: Bon Appetit
+        kind: brand_line
+        sizes: [single]
+        children:
+          - { key: danish, name: Danish, kind: variant }
+          - { key: concha, name: Concha, kind: variant }
+          - { key: banana-bread, name: Banana Bread, kind: variant }
+          - { key: muffin, name: Muffin, kind: variant }
+      - key: clover-hill
+        name: Clover Hill
+        kind: brand_line
+        sizes: [single]
+        children:
+          - { key: big-texas-cinnamon-roll, name: Big Texas cinnamon roll, kind: variant }
+      - key: other-snack-cakes
+        name: Other snack cakes
+        kind: assortment_slot
+        target_count: { min: 1, max: 1 }
+        size_class: [single]
+        brand_hints: [Dolly Madison, Ne-Mo's, Moon Pie]
+        note: Mini donuts and cakes.
+      - key: welchs-fruit-snacks
+        name: Welch's Fruit Snacks
+        kind: brand_line
+        sizes: [2-25oz]
+        children:
+          - { key: mixed-fruit, name: Mixed Fruit, kind: variant }
+      - key: nutella-and-go
+        name: Nutella & Go
+        kind: brand_line
+        sizes: [single]
+        children:
+          - { key: original, name: Original, kind: variant }

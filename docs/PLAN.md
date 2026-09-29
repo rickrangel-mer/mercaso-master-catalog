@@ -43,7 +43,7 @@ Goal: agree on the liquor-store taxonomy and where the branded/assortment line f
 
 - Translate the Phase 0 outline into `data/taxonomy/*.yaml` (shared structure, reusable by other store types) and `data/store-types/liquor.yaml`.
 - Start with SCD end to end to prove both the model and the validator, then the rest in the Phase 0 order, one PR per department for review.
-- **Status:** SCD encoded 2026-09-29 together with Phase 1. Next: water, energy, sports, juice (department 2).
+- **Status: done 2026-09-29.** All eight departments are encoded, with one commit per department. The Athena prioritization pass moves to Phase 2.5 because it needs the same credentials.
 - Prioritization pass: `scripts/athena/export-sales.ts` pulls sales by category for liquor-store customers; a ranking script proposes priorities; expert adjusts in PR review.
 
 ### Phase 2.5 — Sales cross-check (Athena)
@@ -58,6 +58,7 @@ Goal: agree on the liquor-store taxonomy and where the branded/assortment line f
 - `apps/web` Next.js app loading `dist/<store-type>.json`. D3 hierarchy, collapsible horizontal tree with branches, store-type switcher, search/filter, node detail panel (attrs, priority, matched SKUs or assortment coverage), color by priority, badge by match status. Branded and assortment leaves rendered distinctly.
 - Deploy as static export or Vercel.
 - Built after Phase 2 has at least SCD encoded so the tree has real data; can start in parallel once Phase 1's JSON shape is fixed.
+- **Status: done 2026-09-29.** `pnpm web:dev` runs it; `pnpm web:build` writes a static site to `apps/web/out/`. Not deployed yet; hosting is Rick's call.
 
 ### Phase 4 — Matching to Mercaso's catalog
 

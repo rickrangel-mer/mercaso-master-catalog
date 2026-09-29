@@ -9,7 +9,7 @@ The catalog is a tree: Store type → Department → Category → Subcategory �
 
 ## Status
 
-Phase 1 done: data model, validator, build and CI. Soft drinks (SCD) is encoded for liquor stores. The other seven departments follow one PR each. See [docs/HANDOFF.md](docs/HANDOFF.md) for where things stand, [docs/PLAN.md](docs/PLAN.md) for the plan and [docs/data-model.md](docs/data-model.md) for the file formats.
+Phases 1 to 3 done: data model, validator, build and CI; all eight liquor-store departments encoded; and a read-only family-tree viewer in `apps/web`. Next are the Athena sales cross-check (Phase 2.5) and SKU matching (Phase 4), both waiting on Athena access. See [docs/HANDOFF.md](docs/HANDOFF.md) for where things stand, [docs/PLAN.md](docs/PLAN.md) for the plan and [docs/data-model.md](docs/data-model.md) for the file formats.
 
 ## Quick start
 
@@ -17,6 +17,8 @@ Phase 1 done: data model, validator, build and CI. Soft drinks (SCD) is encoded 
 pnpm install
 pnpm validate
 pnpm build     # writes dist/liquor.json
+pnpm web:dev   # tree viewer at http://localhost:3000
+pnpm web:build # static site in apps/web/out/
 ```
 
 ## Layout
@@ -28,5 +30,5 @@ data/store-types/          per store type: what it carries and at what priority
 data/matches/              node to Mercaso SKU rows
 schema/                    JSON Schema for the data files
 scripts/                   validate, build; Athena export and matching come later
-apps/web/                  read-only family-tree viewer (Phase 3, not built yet)
+apps/web/                  read-only family-tree viewer (Next.js + D3, static export)
 ```

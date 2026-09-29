@@ -1,0 +1,278 @@
+# Health & beauty. Source: docs/exploration/liquor.md section 7.
+# Assortment, same slot rules as department 6. The liquor-store version is one "trial size /
+# emergency" rack, so every slot is size_class small. Male enhancement products are out.
+key: health-beauty
+name: Health & beauty
+kind: department
+size_classes:
+  small: Single-use or trial size (liquor-store default)
+  regular: Standard retail size
+  bulk: Club or multi-pack (markets only)
+children:
+  # 7.1 Medicine (OTC)
+  - key: medicine
+    name: Medicine (OTC)
+    kind: category
+    children:
+      - key: pain-reliever
+        name: Pain reliever (acetaminophen, ibuprofen)
+        kind: assortment_slot
+        target_count: { min: 2, max: 2 }
+        size_class: [small]
+        brand_hints: [Tylenol, Advil, Aleve]
+        note: Single-dose 2-packs.
+      - key: antacid
+        name: Antacid
+        kind: assortment_slot
+        target_count: { min: 1, max: 2 }
+        size_class: [small]
+        brand_hints: [Tums, Pepto-Bismol, Alka-Seltzer]
+      - key: cough-drops
+        name: Cough drops
+        kind: assortment_slot
+        target_count: { min: 1, max: 1 }
+        size_class: [small]
+        brand_hints: [Halls]
+      - key: cold-flu
+        name: Cold & flu
+        kind: assortment_slot
+        target_count: { min: 1, max: 2 }
+        size_class: [small]
+        brand_hints: [DayQuil, NyQuil, Alka-Seltzer Plus, Rompe Pecho]
+        note: Seasonal.
+      - key: vapor-rub
+        name: Vapor rub
+        kind: assortment_slot
+        target_count: { min: 1, max: 1 }
+        size_class: [small]
+        brand_hints: [Vicks]
+      - key: allergy
+        name: Allergy
+        kind: assortment_slot
+        target_count: { min: 1, max: 1 }
+        size_class: [small]
+        brand_hints: [Benadryl]
+        note: Benadryl or generic.
+      - key: antifungal
+        name: Antifungal / foot
+        kind: assortment_slot
+        target_count: { min: 1, max: 1 }
+        size_class: [small]
+        brand_hints: [Derman]
+      - key: energy-shot
+        name: Energy shot
+        kind: assortment_slot
+        target_count: { min: 1, max: 2 }
+        size_class: [small]
+        brand_hints: [5-Hour Energy, Lipovitan]
+        note: Counter item. Energy shots live here, not with energy drinks.
+      - key: vitamin-c
+        name: Vitamin C / Emergen-C
+        kind: assortment_slot
+        target_count: { min: 1, max: 1 }
+        size_class: [small]
+
+  # 7.2 Oral care & lip
+  - key: oral-lip
+    name: Oral care & lip
+    kind: category
+    children:
+      - key: toothpaste
+        name: Toothpaste
+        kind: assortment_slot
+        target_count: { min: 1, max: 1 }
+        size_class: [small]
+        brand_hints: [Colgate]
+      - key: toothbrush
+        name: Toothbrush
+        kind: assortment_slot
+        target_count: { min: 1, max: 1 }
+        size_class: [small]
+        brand_hints: [Colgate, Oral-B]
+      - key: mouthwash
+        name: Mouthwash
+        kind: assortment_slot
+        target_count: { min: 1, max: 1 }
+        size_class: [small]
+        brand_hints: [Listerine, Scope]
+      - key: lip-balm
+        name: Lip balm
+        kind: assortment_slot
+        target_count: { min: 1, max: 2 }
+        size_class: [small]
+        brand_hints: [ChapStick, Carmex]
+        note: Counter item.
+      - key: floss
+        name: Floss
+        kind: assortment_slot
+        target_count: { min: 1, max: 1 }
+        size_class: [small]
+        brand_hints: [Oral-B]
+
+  # 7.3 Personal care
+  - key: personal-care
+    name: Personal care
+    kind: category
+    children:
+      - key: bar-soap
+        name: Bar soap
+        kind: assortment_slot
+        target_count: { min: 1, max: 2 }
+        size_class: [small]
+        brand_hints: [Dove, Zest, Lucky]
+      - key: body-wash
+        name: Body wash / hand soap
+        kind: assortment_slot
+        target_count: { min: 1, max: 1 }
+        size_class: [small]
+        brand_hints: [Lucky, Dove]
+      - key: deodorant
+        name: Deodorant
+        kind: assortment_slot
+        target_count: { min: 1, max: 2 }
+        size_class: [small]
+        brand_hints: [Axe, Old Spice, Secret, Speed Stick]
+      - key: shampoo
+        name: Shampoo / conditioner
+        kind: assortment_slot
+        target_count: { min: 1, max: 1 }
+        size_class: [small]
+        brand_hints: [Head & Shoulders, Suave, VO5]
+      - key: hair-gel
+        name: Hair gel / spray
+        kind: assortment_slot
+        target_count: { min: 1, max: 2 }
+        size_class: [small]
+        brand_hints: [Moco de Gorila, Super Wet, Xtreme, Aqua Net]
+      - key: razor
+        name: Razor, disposable
+        kind: assortment_slot
+        target_count: { min: 1, max: 1 }
+        size_class: [small]
+        brand_hints: [Gillette, Dorco, Schick]
+      - key: shaving-cream
+        name: Shaving cream
+        kind: assortment_slot
+        target_count: { min: 1, max: 1 }
+        size_class: [small]
+        brand_hints: [Gillette]
+      - key: lotion
+        name: Petroleum jelly / lotion
+        kind: assortment_slot
+        target_count: { min: 1, max: 1 }
+        size_class: [small]
+        brand_hints: [Vaseline, Nivea, Pond's]
+      - key: sunscreen
+        name: Sunscreen
+        kind: assortment_slot
+        target_count: { min: 1, max: 1 }
+        size_class: [small]
+        brand_hints: [Coppertone]
+        note: Summer item.
+      - key: body-spray
+        name: Cologne / body spray
+        kind: assortment_slot
+        target_count: { min: 1, max: 1 }
+        size_class: [small]
+        brand_hints: [Axe]
+
+  # 7.4 Feminine care & family planning
+  - key: feminine-family
+    name: Feminine care & family planning
+    kind: category
+    children:
+      - key: pads
+        name: Pads
+        kind: assortment_slot
+        target_count: { min: 1, max: 1 }
+        size_class: [small]
+        brand_hints: [Always]
+      - key: tampons
+        name: Tampons
+        kind: assortment_slot
+        target_count: { min: 1, max: 1 }
+        size_class: [small]
+        brand_hints: [Tampax]
+      - key: condoms
+        name: Condoms
+        kind: assortment_slot
+        target_count: { min: 2, max: 2 }
+        size_class: [small]
+        brand_hints: [Trojan]
+        note: Counter item. Trojan ENZ, Magnum, Ultra Thin.
+      - key: lubricant
+        name: Lubricant
+        kind: assortment_slot
+        target_count: { min: 1, max: 1 }
+        size_class: [small]
+        brand_hints: [Trojan]
+      - key: pregnancy-test
+        name: Pregnancy test
+        kind: assortment_slot
+        target_count: { min: 1, max: 1 }
+        size_class: [small]
+
+  # 7.5 First aid & hygiene
+  - key: first-aid
+    name: First aid & hygiene
+    kind: category
+    children:
+      - key: bandages
+        name: Bandages
+        kind: assortment_slot
+        target_count: { min: 1, max: 1 }
+        size_class: [small]
+        brand_hints: [Band-Aid, Pure-Aid]
+      - key: rubbing-alcohol
+        name: Rubbing alcohol
+        kind: assortment_slot
+        target_count: { min: 1, max: 1 }
+        size_class: [small]
+      - key: hydrogen-peroxide
+        name: Hydrogen peroxide
+        kind: assortment_slot
+        target_count: { min: 1, max: 1 }
+        size_class: [small]
+      - key: hand-sanitizer
+        name: Hand sanitizer
+        kind: assortment_slot
+        target_count: { min: 1, max: 1 }
+        size_class: [small]
+        brand_hints: [NuValu]
+      - key: eye-drops
+        name: Eye drops
+        kind: assortment_slot
+        target_count: { min: 1, max: 1 }
+        size_class: [small]
+        brand_hints: [Visine, Clear Eyes]
+      - key: cotton-swabs
+        name: Cotton swabs
+        kind: assortment_slot
+        target_count: { min: 1, max: 1 }
+        size_class: [small]
+      - key: face-masks
+        name: Face masks
+        kind: assortment_slot
+        target_count: { min: 1, max: 1 }
+        size_class: [small]
+
+  # 7.6 Beauty accessories
+  - key: beauty-accessories
+    name: Beauty accessories
+    kind: category
+    children:
+      - key: nail-clipper
+        name: Nail clipper / file
+        kind: assortment_slot
+        target_count: { min: 1, max: 1 }
+        size_class: [small]
+      - key: hair-accessories
+        name: Hair ties / combs / brushes
+        kind: assortment_slot
+        target_count: { min: 1, max: 2 }
+        size_class: [small]
+      - key: lashes-nail-polish
+        name: Lashes / nail polish
+        kind: assortment_slot
+        target_count: { min: 1, max: 1 }
+        size_class: [small]

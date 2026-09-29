@@ -1,0 +1,192 @@
+# Mixers, bar tools, cups & bags. Source: docs/exploration/liquor.md section 5.
+# Mixers are links (cross_ref) to their canonical nodes in SCD, drinks and grocery (rule 10);
+# their priorities live on the canonical nodes. Everything else is assortment.
+# Out of scope: packaged ice, Rose's and sweet & sour mix.
+key: mixers-bar
+name: Mixers, bar tools, cups & bags
+kind: department
+children:
+  # 5.1 Mixers (cross-references)
+  - key: mixers
+    name: Mixers
+    kind: category
+    children:
+      - key: club-soda-tonic-ginger-ale
+        name: Club soda, tonic & ginger ale
+        kind: subcategory
+        cross_ref: [scd.ginger-ale-club-tonic]
+      - key: clamato
+        name: Clamato
+        kind: subcategory
+        cross_ref: [drinks.juice.motts-clamato]
+      - key: cranberry
+        name: Cranberry juice
+        kind: subcategory
+        cross_ref: [drinks.juice.ocean-spray.cranberry]
+      - key: lemonade
+        name: Lemonade
+        kind: subcategory
+        cross_ref: [drinks.juice.minute-maid.lemonade]
+      - key: topo-chico
+        name: Topo Chico
+        kind: subcategory
+        cross_ref: [drinks.water.topo-chico]
+      - key: squirt
+        name: Squirt
+        kind: subcategory
+        cross_ref: [scd.fruit-mexican.squirt]
+      - key: michelada-cups
+        name: Michelada cups
+        kind: subcategory
+        cross_ref: [drinks.michelada.baja-micheladas]
+      - key: tajin-chamoy
+        name: Tajín & chamoy
+        kind: subcategory
+        cross_ref: [grocery.seasonings.tajin, grocery.seasonings.mega]
+
+  # 5.2 Bar tools & openers
+  - key: bar-tools
+    name: Bar tools & openers
+    kind: category
+    children:
+      - key: corkscrew
+        name: Corkscrew / waiter's wine key
+        kind: assortment_slot
+        target_count: { min: 1, max: 2 }
+        mix: [value, national]
+        note: One value, one better.
+      - key: bottle-opener
+        name: Bottle opener (keychain, flat)
+        kind: assortment_slot
+        target_count: { min: 1, max: 2 }
+      - key: flask
+        name: Flask
+        kind: assortment_slot
+        target_count: { min: 1, max: 1 }
+      - key: jigger
+        name: Jigger / shot pourer
+        kind: assortment_slot
+        target_count: { min: 1, max: 1 }
+      - key: rimming-tray
+        name: Michelada rimming tray / cup salt
+        kind: assortment_slot
+        target_count: { min: 1, max: 1 }
+
+  # 5.3 Cups, shot glasses & party disposables
+  - key: cups-disposables
+    name: Cups, shot glasses & party disposables
+    kind: category
+    children:
+      - key: party-cup-16oz
+        name: 16oz plastic party cup (red/blue)
+        kind: assortment_slot
+        target_count: { min: 1, max: 2 }
+        brand_hints: [Reyma, Imperial, Axxion]
+      - key: shot-glass-1oz
+        name: 1oz plastic shot glass
+        kind: assortment_slot
+        target_count: { min: 1, max: 1 }
+        brand_hints: [Table King]
+      - key: michelada-cup
+        name: 24oz michelada cup (rimmed)
+        kind: subcategory
+        note: The Baja michelada cup is the same product as section 2.6, so this links to it.
+        cross_ref: [drinks.michelada.baja-micheladas]
+      - key: foam-cup-12oz
+        name: 12oz foam cup
+        kind: assortment_slot
+        target_count: { min: 1, max: 1 }
+        brand_hints: [Dart, Wincup, Axxion]
+      - key: plastic-cup-8oz
+        name: 8oz plastic cup
+        kind: assortment_slot
+        target_count: { min: 1, max: 1 }
+        brand_hints: [Axxion]
+      - key: plates-9in
+        name: Paper/foam plates 9"
+        kind: assortment_slot
+        target_count: { min: 1, max: 1 }
+        brand_hints: [Axxion, Good Time]
+      - key: foam-bowls
+        name: Foam bowls
+        kind: assortment_slot
+        target_count: { min: 1, max: 1 }
+      - key: plastic-forks
+        name: Plastic forks
+        kind: assortment_slot
+        target_count: { min: 1, max: 1 }
+        brand_hints: [Table King, Sunset]
+      - key: plastic-spoons
+        name: Plastic spoons
+        kind: assortment_slot
+        target_count: { min: 1, max: 1 }
+        brand_hints: [Table King, Sunset]
+      - key: skewers
+        name: Bamboo skewers
+        kind: assortment_slot
+        target_count: { min: 1, max: 1 }
+      - key: toothpicks
+        name: Toothpicks
+        kind: assortment_slot
+        target_count: { min: 1, max: 1 }
+      - key: foam-cooler
+        name: Styrofoam cooler
+        kind: assortment_slot
+        target_count: { min: 1, max: 1 }
+        note: Summer item.
+
+  # 5.4 Bags (store operating supplies)
+  - key: store-bags
+    name: Store operating supplies (bags)
+    kind: category
+    note: Supplies the store uses rather than shelves; kept here because the owner orders them in the same trip.
+    children:
+      - key: t-shirt-bag-10x5x19
+        name: T-shirt bag, black 10×5×19 ("Thank You")
+        kind: assortment_slot
+        target_count: { min: 1, max: 1 }
+        note: Heavy-duty and standard.
+      - key: t-shirt-bag-single-bottle
+        name: T-shirt bag, black 8×4×16 / 6×4×15 (single bottle)
+        kind: assortment_slot
+        target_count: { min: 1, max: 1 }
+      - key: t-shirt-bag-12x7x22
+        name: T-shirt bag, 12×7×22 (large, black or white)
+        kind: assortment_slot
+        target_count: { min: 1, max: 1 }
+      - key: kraft-bag-2lb
+        name: Kraft paper bag 2lb (bottle bag)
+        kind: assortment_slot
+        target_count: { min: 1, max: 1 }
+        brand_hints: [Duro]
+      - key: kraft-bag-4lb
+        name: Kraft paper bag 4lb (bottle bag)
+        kind: assortment_slot
+        target_count: { min: 1, max: 1 }
+        brand_hints: [Duro]
+      - key: reusable-bag
+        name: Reusable bag 13×7×21
+        kind: assortment_slot
+        target_count: { min: 1, max: 1 }
+        note: CA bag law; confirm the current rule.
+
+  # 5.5 Trash & storage bags. Canonical home for trash and zipper bags; department 6 links here.
+  - key: trash-storage-bags
+    name: Trash & storage bags
+    kind: category
+    children:
+      - key: kitchen-trash-13gal
+        name: Kitchen trash bag 13gal
+        kind: assortment_slot
+        target_count: { min: 1, max: 2 }
+        mix: [value, national]
+        brand_hints: [Sure-Tuff, Ri-Pac, Glad, Hefty]
+      - key: trash-30gal
+        name: Large trash bag 30–33gal
+        kind: assortment_slot
+        target_count: { min: 1, max: 1 }
+      - key: zipper-bags
+        name: Sandwich / zipper bags
+        kind: assortment_slot
+        target_count: { min: 1, max: 1 }
+        brand_hints: [Glad, Kitchen & Beyond]
