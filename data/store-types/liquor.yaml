@@ -11,6 +11,7 @@ state: CA
 include:
   - scd
   - drinks
+  - candy-snacks
 
 priority:
   # --- SCD ---------------------------------------------------------------
@@ -207,6 +208,125 @@ priority:
   # 2.6 Michelada mixes
   drinks.michelada: must
 
+  # --- Candy & snacks --------------------------------------------------------
+  # Department default is nice: variants the outline lists without a priority.
+  candy-snacks: nice
+
+  # 3.1 Chocolate bars
+  candy-snacks.chocolate.snickers.original: must
+  candy-snacks.chocolate.snickers.almond: should
+  candy-snacks.chocolate.reeses.cups: must
+  candy-snacks.chocolate.m-and-ms.milk-chocolate: must
+  candy-snacks.chocolate.m-and-ms.peanut: must
+  candy-snacks.chocolate.kit-kat.original: should
+  candy-snacks.chocolate.kit-kat.original.single: must
+  candy-snacks.chocolate.hersheys.milk-chocolate: should
+  candy-snacks.chocolate.hersheys.milk-chocolate.single: must
+  candy-snacks.chocolate.hersheys.almond: should
+  candy-snacks.chocolate.twix.original: should
+  candy-snacks.chocolate.twix.original.single: must
+  candy-snacks.chocolate.pay-day: should
+  candy-snacks.chocolate.kinder-joy: should
+
+  # 3.2 Gum & mints
+  candy-snacks.gum-mints.trident.spearmint: must
+  candy-snacks.gum-mints.trident.original: must
+  candy-snacks.gum-mints.extra.spearmint: must
+  candy-snacks.gum-mints.extra.polar-ice: must
+  candy-snacks.gum-mints.orbit.spearmint: should
+  candy-snacks.gum-mints.5-gum.spearmint-rain: should
+  candy-snacks.gum-mints.wrigleys.doublemint: should
+  candy-snacks.gum-mints.wrigleys.juicy-fruit: should
+  candy-snacks.gum-mints.ice-breakers.cool-mint: must
+  candy-snacks.gum-mints.ice-breakers.ice-cubes: should
+  candy-snacks.gum-mints.tic-tac.orange: must
+  candy-snacks.gum-mints.tic-tac.freshmint: must
+  candy-snacks.gum-mints.altoids.peppermint: should
+  candy-snacks.gum-mints.mentos.mint: should
+  candy-snacks.gum-mints.mentos.fruit: should
+
+  # 3.3 Gummy, chewy & sour
+  candy-snacks.gummy-chewy.haribo.gold-bears: must
+  candy-snacks.gummy-chewy.haribo.sour-gold-bears: should
+  candy-snacks.gummy-chewy.haribo.happy-cola: should
+  candy-snacks.gummy-chewy.trolli.sour-brite-crawlers: must
+  candy-snacks.gummy-chewy.sour-patch-kids.original: must
+  candy-snacks.gummy-chewy.skittles.original: must
+  candy-snacks.gummy-chewy.skittles.sour: should
+  candy-snacks.gummy-chewy.starburst.original: must
+  candy-snacks.gummy-chewy.airheads: should
+  candy-snacks.gummy-chewy.now-and-later: should
+  candy-snacks.gummy-chewy.hi-chew.original-mix: should
+  candy-snacks.gummy-chewy.life-savers: should
+  candy-snacks.gummy-chewy.nerds.gummy-clusters: must
+  candy-snacks.gummy-chewy.snak-club: should
+
+  # 3.4 Hard candy & lollipops
+  candy-snacks.hard-candy.jolly-rancher.original: should
+  candy-snacks.hard-candy.charms-blow-pop: must
+
+  # 3.5 Mexican candy
+  candy-snacks.mexican-candy.lucas.muecas: must
+  candy-snacks.mexican-candy.lucas.gusano: must
+  candy-snacks.mexican-candy.lucas.salsagheti: must
+  candy-snacks.mexican-candy.de-la-rosa.mazapan: must
+  candy-snacks.mexican-candy.de-la-rosa.pulparindo: must
+  candy-snacks.mexican-candy.pelon.pelo-rico: must
+  candy-snacks.mexican-candy.vero.mango-con-chile: must
+  candy-snacks.mexican-candy.vero.elotes: must
+  candy-snacks.mexican-candy.jovy: should
+  candy-snacks.mexican-candy.limon-7: should
+  candy-snacks.mexican-candy.indy: should
+  candy-snacks.mexican-candy.hola: should
+  candy-snacks.mexican-candy.ravi: should
+  candy-snacks.mexican-candy.lorena: should
+  candy-snacks.mexican-candy.pica: should
+
+  # 3.6 Salty snacks
+  candy-snacks.salty-snacks.frito-lay-xvl: should
+  candy-snacks.salty-snacks.frito-lay-xvl.cheetos-flamin-hot: must
+  candy-snacks.salty-snacks.frito-lay-xvl.doritos-nacho: must
+  candy-snacks.salty-snacks.frito-lay-xvl.lays-classic: must
+  candy-snacks.salty-snacks.takis.fuego: must
+  candy-snacks.salty-snacks.takis.blue-heat: should
+  candy-snacks.salty-snacks.pringles.original.2-5oz: should
+  candy-snacks.salty-snacks.pringles.sour-cream-onion.2-5oz: should
+  candy-snacks.salty-snacks.cheez-it.original: should
+
+  # 3.7 Nuts & seeds
+  candy-snacks.nuts-seeds.david.original: must
+  candy-snacks.nuts-seeds.david.ranch: must
+  candy-snacks.nuts-seeds.corn-nuts.original: should
+  candy-snacks.nuts-seeds.corn-nuts.ranch: should
+  candy-snacks.nuts-seeds.planters.salted: should
+  candy-snacks.nuts-seeds.blue-diamond.smokehouse: should
+  candy-snacks.nuts-seeds.wonderful-pistachios.roasted-salted: should
+  candy-snacks.nuts-seeds.japanese-peanuts: must
+  candy-snacks.nuts-seeds.chili-lime-peanuts: must
+
+  # 3.8 Meat snacks & bars
+  candy-snacks.meat-snacks-bars.jack-links.original: must
+  candy-snacks.meat-snacks-bars.jack-links.teriyaki: should
+  candy-snacks.meat-snacks-bars.slim-jim.giant-original: must
+  candy-snacks.meat-snacks-bars.slim-jim.monster-original: should
+  candy-snacks.meat-snacks-bars.slim-jim.monster-tabasco: should
+  candy-snacks.meat-snacks-bars.clif-bar.chocolate-chip: should
+
+  # 3.9 Cookies, crackers & snack cakes
+  candy-snacks.cookies-cakes.oreo.original: must
+  candy-snacks.cookies-cakes.chips-ahoy.original: should
+  candy-snacks.cookies-cakes.grandmas: should
+  candy-snacks.cookies-cakes.keebler.sandwich-crackers: should
+  candy-snacks.cookies-cakes.gamesa.marias: should
+  candy-snacks.cookies-cakes.rice-krispies-treats: should
+  candy-snacks.cookies-cakes.hostess.honey-bun: must
+  candy-snacks.cookies-cakes.hostess.twinkies: must
+  candy-snacks.cookies-cakes.hostess.cupcakes: must
+  candy-snacks.cookies-cakes.bon-appetit.concha: should
+  candy-snacks.cookies-cakes.bon-appetit.danish: should
+  candy-snacks.cookies-cakes.clover-hill: should
+  candy-snacks.cookies-cakes.welchs-fruit-snacks: should
+
 notes:
   scd.cola.coca-cola-mexican: Must in the LA market.
   scd.lemon-lime.sprite-mexican: Should in the LA market.
@@ -220,3 +340,9 @@ notes:
   drinks.sports.vitaminwater: Carry XXX plus two others.
   drinks.juice.motts-clamato.original: 16oz and 32oz are must for micheladas.
   drinks.michelada.baja-micheladas: All four flavors are must per the department 5 decision (michelada cups stay and are must). Section 2.6 had Original and Hot at should.
+  candy-snacks: "Guardrails: checkout counter holds 6 chocolate bars, 4 gums, 2 mints, Blow Pops and 4 Mexican candies minimum. Peg wall: Haribo, Trolli, Sour Patch, Nerds Clusters, one value line. Chip rack: 3 Flamin' Hot items, Doritos, Lay's, Takis."
+  candy-snacks.mexican-candy: Priorities will be re-ranked from sales data; every stocked brand stays in the tree.
+  candy-snacks.gummy-chewy.now-and-later: LA market staple.
+  candy-snacks.nuts-seeds.japanese-peanuts: Must in the LA market.
+  candy-snacks.cookies-cakes.gamesa.marias: Should in the LA market.
+  candy-snacks.cookies-cakes.bon-appetit: Concha and Danish are should in the LA market.
