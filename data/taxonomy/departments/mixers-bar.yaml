@@ -133,7 +133,8 @@ children:
         name: Styrofoam cooler
         kind: assortment_slot
         target_count: { min: 1, max: 1 }
-        note: Summer item.
+        brand_hints: [LiFoam]
+        note: Summer item. The LiFoam 28qt reaches 16% of stores (sales cross-check 2.14).
 
   # 5.4 Bags (store operating supplies)
   - key: store-bags
