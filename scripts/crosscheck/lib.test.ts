@@ -14,6 +14,10 @@ const row = (title: string, brand_name: string, department = "Beverage"): SalesR
   orders: 1,
   stores_buying: 1,
   store_share: 0.1,
+  store_share_90d: 0.1,
+  first_order_date: "2025-10-01",
+  last_order_date: "2026-09-01",
+  status: "ACTIVE",
 });
 
 const leaf = (id: string, brand: string, variant: string, siblings: string[], volumeMl?: number): LeafTarget => ({

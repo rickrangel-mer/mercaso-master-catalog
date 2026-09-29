@@ -16,6 +16,12 @@ export interface SalesRow {
   orders: number;
   stores_buying: number;
   store_share: number;
+  /** Share over the last 90 days, against stores active in those 90 days. */
+  store_share_90d: number;
+  first_order_date: string;
+  last_order_date: string;
+  /** availability_status from the products export: ACTIVE, ARCHIVED or DRAFT; blank if unknown. */
+  status: string;
 }
 
 /** Mercaso departments a catalog department may match into. Keeps "Takis" snacks out of seasonings. */

@@ -2,7 +2,9 @@
 
 This compares the encoded liquor-store catalog against 12 months of Mercaso sales to California liquor stores. It proposes changes. **Rick decides.** Fill in the Decision column (`yes`, `no`, or a different change); the accepted rows then become one-line edits in `data/`. After that, the departments move to `agreed`.
 
-Data pulled 2026-09-29 from Athena: **1,993** CA liquor stores that ordered in the last 12 months, and **14,980** SKUs they bought. No prices or revenue appear here.
+Data pulled 2026-09-29 from Athena. **Window: 2025-09-29 to 2026-09-28**, the trailing 12 months of orders that weren't cancelled. In that window, **1,993** CA liquor stores bought **14,980** SKUs; 13,471 of those SKUs are still active. No prices or revenue appear here.
+
+**Discontinued and replaced items.** A SKU discontinued mid-year keeps its full-year share, and its replacement looks weak. For example, the Coca-Cola 1L was last ordered on 2026-04-04, and its replacement, a 24oz bottle, was first ordered on 2026-04-06. So this report matches only items that are ACTIVE in the item table. It also shows a **90-day share** (the last 90 days, against stores active then) wherever an item launched or was discontinued during the year. 90-day shares run lower than 12-month ones, since fewer stores buy any one SKU in three months, so compare them only with each other. Revised 2026-09-29 after Rick flagged the 1L.
 
 ## How to read the numbers
 
@@ -31,15 +33,16 @@ Outside those departments, a proposal compares the leaf with the leaders in its 
 
 ```
 pnpm athena:export liquor-sales liquor-reach   # sales by SKU and category reach, into data/raw/
-pnpm crosscheck                                # writes data/raw/crosscheck/{leaves,unmatched,verify}.csv
+pnpm athena:export products                    # item status, used to skip discontinued SKUs
+pnpm crosscheck                                # writes data/raw/crosscheck/{leaves,unmatched,verify,discontinued}.csv
 ```
 
-`leaves.csv` lists every carried leaf with its best-selling matched SKU. `unmatched.csv` lists SKUs bought by at least 5% of stores that match no leaf. `verify.csv` lists the top SKUs for each `verify` node. All three are gitignored.
+`leaves.csv` lists every carried leaf with its best-selling matched SKU. `unmatched.csv` lists SKUs bought by at least 5% of stores that match no leaf. `verify.csv` lists the top SKUs for each `verify` node. `discontinued.csv` lists SKUs bought by at least 5% of stores that are no longer active. All four are gitignored.
 
 ## Summary
 
 - **The priorities hold up.** In soft drinks and candy, the `must` leaves outsell the `should` leaves about 2–3 to 1.
-- **Four sizes are missing.** 16oz cans and 1L bottles of Coca-Cola, Sprite, Dr Pepper, Pepsi and Squirt all sell in 20–60% of stores, and the catalog has neither size for those brands. Arizona sells as **22oz** cans, not the 23.5oz the catalog lists, and in far more flavors.
+- **Sizes are missing.** 16oz cans sell in 20–60% of stores for Coca-Cola, Sprite, Dr Pepper, Pepsi and Squirt, and the catalog lists no 16oz for them. The Coca-Cola bottler replaced its 1L with a 24oz bottle in April 2026; Dr Pepper, Pepsi and Squirt still sell 1L. Arizona sells as **22oz** cans, not the 23.5oz the catalog lists, and in far more flavors.
 - **Better data now answers the brand-level questions** the outline left open: Celsius, Sparkling Ice, Shasta, the energy slots, aloe and coconut water, and Mexican candy.
 - **Most upgrades are in drinks,** where `nice` leaves sell almost as well as `should` ones: Vitaminwater, Monster, premium water, Clamato Picante, Calypso and Parrot (sections 4 and 5).
 - **About a dozen downgrades or drops** cover weak zero-sugar sizes, Vero lollipops, XVL chips, and brand lines Mercaso barely sells (Mirinda, Fresca, Barq's, Schweppes, Seagram's).
@@ -53,16 +56,16 @@ Top sellers whose brand is in the catalog but whose size or variant is not.
 
 | # | Node | Sales evidence (store share) | Proposed | Decision |
 |---|---|---|---|---|
-| 1.1 | `scd.cola.coca-cola` sizes | Classic 16oz 59%, Zero 16oz 41%, Diet 16oz 40%, Cherry 16oz 25%; Classic 1L 39%, Diet 1L 22% | Add `16oz-can` and `1l` to the brand line. Classic 16oz must; Classic 1L should | |
-| 1.2 | `scd.lemon-lime.sprite` sizes | 16oz can 40%, 1L 27% | Add `16oz-can` (should) and `1l` (should) | |
-| 1.3 | `scd.cola.dr-pepper` sizes | 16oz 40%, 1L 32%; 2L already 51% | Add `16oz-can` and `1l` at should | |
+| 1.1 | `scd.cola.coca-cola` sizes | Classic 16oz 59%, Zero 16oz 41%, Diet 16oz 40%, Cherry 16oz 25%. The 1L (39% for the year) is discontinued: last ordered 2026-04-04 and replaced by a 24oz bottle from 2026-04-06. Over 90 days, Classic 24oz reaches 19% and Diet 24oz 8% | Add `16oz-can`: Classic must, Zero and Diet should. Add a new `24oz` bottle size: Classic should, Diet nice. No 1L | |
+| 1.2 | `scd.lemon-lime.sprite` sizes | 16oz can 40%. The 1L is discontinued (last ordered 2026-03-21); the 24oz that replaced it reaches 9% over 90 days | Add `16oz-can` (should) and `24oz` (nice) | |
+| 1.3 | `scd.cola.dr-pepper` sizes | 16oz 40%, 1L 32% (both active and selling through September); 2L already 51% | Add `16oz-can` and `1l` at should | |
 | 1.4 | `scd.cola.pepsi` sizes | 16oz 28%, 1L 24% | Add `16oz-can` and `1l` at should | |
 | 1.5 | `scd.fruit-mexican.squirt` sizes | 1L 40%, 16oz 21% | Add `1l` (should) and `16oz-can` (nice) | |
 | 1.6 | `drinks.tea-coffee.arizona` size | All 23.5oz leaves have no sales; the 22oz cans sell in 35–68% of stores | Replace `23-5oz-can` with a `22oz-can` size def (650 ml) | |
 | 1.7 | `drinks.tea-coffee.arizona` variants | Green Tea 68%, Mucho Mango 64%, Watermelon 62%, Kiwi Strawberry 57%, Fruit Punch 52%, Rx Energy 44%, Grapeade 43%, Lemon Tea 42%, Raspberry 42%, Peach 40%, Orangeade 37%, Sweet Tea 36%, Blueberry White Tea 36%, Green Tea Cucumber 35%, Dragonfruit Mango 34%, Arnold Palmer Lite 32%, Lemonade 31% | Green Tea, Mucho Mango, Lemon Tea and Arnold Palmer stay must (Arnold Palmer sells mostly as Lite, 32%). Watermelon, Kiwi Strawberry and Fruit Punch go to must. Add Rx Energy, Peach, Orangeade and Sweet Tea at should; the rest should or nice as encoded. Pre-priced and non-pre-priced cases are case options on the match row (rule 3), not separate leaves | |
 | 1.8 | `drinks.sports.electrolit` variants | Blue Raspberry 41%, Fruit Punch 39%, Berry Bliss 31%, Mango 29%, Jamaica 26% are not encoded; Lemon Lime (Cucumber-Lime) 42%, Strawberry Kiwi 41%, Grape 38% are | Add Blue Raspberry and Fruit Punch (should), Berry Bliss, Mango and Jamaica (nice) | |
 | 1.9 | `drinks.sports.gatorade` | Fierce Grape 28oz 35%, Fierce Strawberry 28%, Fierce Green Apple 26%, Arctic Blitz 20%; 24oz Cool Blue 35%, Fruit Punch 30% | Add Fierce Grape (should) and the other three (nice); add a `24oz` size at nice | |
-| 1.10 | `drinks.water.vitaminwater` | 32oz bottles: XXX 27%, Power-C 27%, Energy 26%; Elevate 20oz 26% not encoded | Add a `32oz` size at nice; add Elevate at nice | |
+| 1.10 | `drinks.sports.vitaminwater` | The 32oz bottles (26–27% for the year) are discontinued; 28oz bottles replaced them in August 2026. Over 90 days: XXX 28oz 20%, Energy 19%, Power-C 15%, Refresh 11%. Elevate 20oz 26% is not encoded | Add a `28oz` size: XXX and Energy should, the rest nice. Add Elevate at nice | |
 | 1.11 | `drinks.juice` Dole | Dole 100% Pineapple 8oz can 44%, 46oz 32%; no Dole line | Add brand line Dole Pineapple: 8oz should, 46oz nice | |
 | 1.12 | `grocery.seasonings.tajin` | Fruit and Snack Seasoning 5oz 18%, Mini 0.35oz 27%; Clásico 14oz 2%, 4.23oz 1%. The "Fruit" in the outline is most likely this 5oz bottle, which is Clásico under its retail label | Treat the 5oz Fruit and Snack Seasoning as the Clásico 5oz leaf (must); add Mini 0.35oz at must | |
 | 1.13 | `candy-snacks.cookies-cakes.hostess` | Cup Cake Chocolate 35%, Strawberry 17%, Orange 13%; Donettes Powdered 29%, Chocolate 28%, Crunch 22% | Cupcakes must as is (the matcher missed "Cup Cake"); add Donettes Powdered and Chocolate at should | |
@@ -90,7 +93,7 @@ Brands bought by at least 12% of stores with no node at all. All are shelf-stabl
 | 2.10 | Abba-Zaba, Efrutti, Toxic Waste Slime Licker | 15%, 13%, 12% | Nice | |
 | 2.11 | Barebells protein bars | Cookies & Cream 15% | Nice in `meat-snacks-bars` | |
 | 2.12 | ACT II microwave popcorn | 14% | Nice | |
-| 2.13 | Charcoal and fire: Carbonazo mesquite charcoal 16%, Firemaster firewood 16%, Charcoal Master lighter fluid 14%, Gas One butane 15% | The slots exist but hint at Kingsford and Duraflame, which don't sell here | Change the `brand_hints` of the charcoal, firewood and lighter-fluid slots to the brands that sell | |
+| 2.13 | Charcoal and fire: Carbonazo mesquite charcoal 16%, Kingsford 4lb 13%, Firemaster firewood 16%, Charcoal Master lighter fluid 14%, Gas One butane 15% | The slots exist. Kingsford sells; El Rey and Duraflame firewood and Kingsford lighter fluid don't | Charcoal hints: Kingsford, Carbonazo. Firewood hint: Firemaster. Lighter fluid hint: Charcoal Master. Gas One is a new nice slot | |
 | 2.14 | LiFoam ice chest cooler | 28qt 16% | Nice, as a seasonal item in `household.equipment-home` | |
 | 2.15 | Party cups (unbranded, 16oz 24-pack) | 21%, filed under Kitchen | Use as the match for `mixers-bar.cups-disposables.party-cup-16oz` (see 3.12) | |
 
@@ -105,7 +108,7 @@ Brands bought by at least 12% of stores with no node at all. All are shelf-stabl
 | 3.3 | `scd.lemon-lime.mountain-dew.original.12oz-can` | must | 5.6%; the 20oz reaches 19% | Should | |
 | 3.4 | `scd.root-beer-cream.a-and-w.root-beer.12oz-can` | must | 7.8%; the 20oz reaches 33% | Should; the 20oz stays must | |
 | 3.5 | `scd.fruit-mexican.jarritos.grapefruit` | must | 370ml 8%, 1.5L 6% | Should | |
-| 3.6 | `drinks.michelada.baja-micheladas` (all four) | must (department 5 decision) | Original 9%, Mango 6%, Hot 5%, Pineapple 3%; Clamato mixes are 16% | Original must, Mango and Hot should, Pineapple nice. This reverses the encoding choice in the handoff | |
+| 3.6 | `drinks.michelada.baja-micheladas` (all four) | must (department 5 decision) | The Styrofoam cups are gone: Original and Hot were archived in July 2026, and Pineapple is back to draft. An Original Mix plastic cup launched 2026-07-14 and reaches 3% over 90 days; Mango, the only other active cup, reaches 1%. The rim dips are active (Chamoy 7%, Mango Habanero 6%); Clamato Michelada Especial reaches 16% | Keep Original (now the plastic cup) at should; Mango nice; drop Hot and Pineapple. This reverses the encoding choice in the handoff | |
 | 3.7 | `candy-snacks.mexican-candy.vero` Mango con chile and Elotes | must | Chili Lollipops Mango 40ct 8%, Elotes 8% | Should | |
 | 3.8 | `candy-snacks.salty-snacks.frito-lay-xvl` (8 variants) | must and should | Best XVL is Funyuns Flamin' Hot at 6%; Cheetos Flamin' Hot, Doritos Nacho and Lay's XVL have no sales. The same flavors in 2.5–3.25oz bags reach 8–24% | Keep the XVL line at nice and rethink rule 4 ("Chips: xvl only") before Phase 4 | |
 | 3.9 | `candy-snacks.meat-snacks-bars.jack-links.original` | must | Original 3.25oz 4%, 1oz 4%. Slim Jim Giant Original (must) reaches 13%, and the Snack Size 0.28oz Original, not encoded, reaches 20% | Jack Link's should; add Slim Jim Snack Size Original at must | |
@@ -136,16 +139,16 @@ Brands bought by at least 12% of stores with no node at all. All are shelf-stabl
 | 4.3 | `scd.fruit-mexican.fresca` | nice | 2–4% | See 3.18 | |
 | 4.4 | `scd.fruit-mexican.manzanita-sol` | nice | 2L 7%, 20oz 6%, 12oz 5% | Keep Apple at nice, as encoded | |
 | 4.5 | `drinks.water.sparkling-ice` | should, 4 stand-ins | Kiwi Strawberry 8%, Black Raspberry 7%, Strawberry Watermelon 7%, Coco Pineapple 7%, Lemon Lime 6%, Black Cherry 6% | Top four: Kiwi Strawberry, Black Raspberry, Strawberry Watermelon, Coco Pineapple. Replace Cherry Limeade and Fruit Punch. At 6–8% the whole line fits nice better than should | |
-| 4.6 | `drinks.energy.celsius` | should, flavors not named | Watermelon 35%, Wild Berry 30%, Mango Passionfruit 27%, Kiwi Guava 27%, Peach Mango Green Tea 25%, Grape Rush 25% | Name variants: Watermelon and Wild Berry should, the next four nice | |
+| 4.6 | `drinks.energy.celsius` | should, flavors not named | Watermelon 35%, Wild Berry 30%, Mango Passionfruit 27%, Kiwi Guava 27%, Peach Mango Green Tea 25%, Grape Rush 25%. Pink Lemonade launched in February 2026 and already ranks fifth over 90 days (15%, against Watermelon's 21%) | Name variants: Watermelon and Wild Berry should; Mango Passionfruit, Peach Mango Green Tea, Pink Lemonade and Kiwi Guava nice | |
 | 4.7 | `drinks.energy.ghost` | nice slot | Welch's Grape 23%, Strawbango 22%, Cherry Limeade 20%, Blue Raspberry 19% | Should, target 3–4 | |
 | 4.8 | `drinks.energy.c4` | nice slot, placeholder 2–3 | Strawberry Watermelon Ice 18%, Jolly Rancher Watermelon 18%, Frozen Bombsicle 17%, Jolly Rancher Green Apple 16% | Should, target 3 | |
 | 4.9 | `drinks.energy.bang` | nice slot | Peach Mango 12%, Blue Razz 12% | Nice, target 2 | |
 | 4.10 | `drinks.energy.alani-nu` | should slot, placeholder 2–3 | Variety 18-pack 7%; singles 2–3% | Nice, target 1–2 | |
-| 4.11 | `drinks.juice.calypso` | 2 must, 3 should, 3 nice | Ocean Blue 68%, Strawberry 55%, Original 55%, Triple Melon 49%, Kiwi 49%, Paradise Punch 44%, Island Wave 43%, Tropical Mango 39%, Southern Peach 38% | Original must; Triple Melon, Paradise Punch should; add Island Wave at should | |
+| 4.11 | `drinks.juice.calypso` | 2 must, 3 should, 3 nice | Ocean Blue 68%, Strawberry 55%, Original 55%, Triple Melon 49%, Kiwi 49%, Paradise Punch 44%, Island Wave 43%, Tropical Mango 39%, Southern Peach 38%. The 90-day order is the same; Dragon Breeze, new in July 2026, reaches 16% | Original must; Triple Melon, Paradise Punch should; add Island Wave at should | |
 | 4.12 | `drinks.juice.visvita` | Original and Mango should | Original 16.9oz 36%, Mango 27%, Pomegranate 25% (not encoded), Pineapple 23%, 1.5L Original 22% | Original 16.9oz must; add Pomegranate at should | |
 | 4.13 | `drinks.juice.okf` | Original and Mango should | Original 16.9oz 15%, 1.5L 12%; Mango 5% | Original should; Mango nice; Guava and Tamarindo drop (no sales) | |
 | 4.14 | `drinks.juice.vita-coco` | should | Original 16.9oz 43%, Pineapple 15%; the 11.1oz is 9% | Original 16.9oz must; the rest as is | |
-| 4.15 | `drinks.juice.parrot` | should | With Pulp 16.6oz 66%, 10.5oz 19%; 100% Coconut Water 16.6oz 9% | With Pulp 16.6oz must; resize the 16.9oz leaves to 16.6oz and the 11.5oz leaves to 10.5oz | |
+| 4.15 | `drinks.juice.parrot` | should | With Pulp 16.6oz 66%, 10.5oz 19%. The 100% Coconut Water 16.6oz (9%) was archived in August 2026; Pure Coconut Water 11.1oz is active (7%) | With Pulp 16.6oz must; resize the with-pulp leaves to 16.6oz and 10.5oz; the Original leaf keeps only the 11.1oz | |
 | 4.16 | `candy-snacks.mexican-candy` | category | Leaders: Limon 7 32%, Indy Dedos 32%, Lucas Gusano 29%, Salsagheti 29%, De la Rosa Mazapan 28%, Pulparindots 28%, Lucas Baby Mango 24%, Muecas 23%, Pelonazo 20% | Limon 7 Salt & Lemon must; Pelonazo should; also 1.14, 1.15, 3.7, 3.23, 3.24 | |
 
 ## 5. Upgrades
@@ -206,4 +209,5 @@ Lines 4.1–4.4 remain market-knowledge drafts until someone checks store shelve
 
 - **The script is a screening tool, not the Phase 4 matcher.** Candy, chip and tobacco leaves carry no volume, so it matches them at the variant level. Assortment slots without `brand_hints` don't match at all (bar tools, sponges, pads, bags); those were checked by hand.
 - **Store share undercounts items stores get elsewhere,** as the reach table shows. For household, health and beauty, and grocery, a low share is not evidence that stores skip the item.
-- **The period is one year,** so seasonal items (charcoal, coolers) count once.
+- **The period is one year,** so seasonal items (charcoal, coolers) count once, and a limited edition sells for only part of it. Red Bull's seasonal editions (Peach 20%, Summer 8–9% over 90 days) are left out on purpose.
+- **Only active items are matched.** An item archived since the export ran, or one Mercaso plans to drop, still counts. Recheck the discontinued list before applying changes: `data/raw/crosscheck/discontinued.csv`.

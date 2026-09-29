@@ -30,7 +30,7 @@ All in `scripts/athena/sql/`:
 | File | Purpose | Output |
 |---|---|---|
 | `products.sql` | Live items with UPCs and attributes, no prices or costs | `data/raw/products.csv` |
-| `liquor_sales_by_sku.sql` | Trailing 12 months, CA liquor stores, one row per SKU: cases, units, revenue, orders, and the share of liquor stores that bought it | `data/raw/liquor_sales_by_sku.csv` |
+| `liquor_sales_by_sku.sql` | Trailing 12 months, CA liquor stores, one row per SKU: cases, units, revenue, orders, the share of liquor stores that bought it, the same share over the last 90 days, and first and last order dates (so replaced items show up) | `data/raw/liquor_sales_by_sku.csv` |
 | `liquor_reach_by_category.sql` | Same stores and period: the share of liquor stores that bought anything in each Mercaso department and category | `data/raw/liquor_reach_by_category.csv` |
 | `optional_checks.sql` | Attribute names and item statuses, for tuning the matcher | Not needed for the exports |
 
