@@ -14,6 +14,7 @@ include:
   - candy-snacks
   - tobacco
   - grocery
+  - mixers-bar
 
 priority:
   # --- SCD ---------------------------------------------------------------
@@ -412,6 +413,24 @@ priority:
   # 8.6 Pet
   grocery.pet: nice
 
+  # --- Mixers, bar tools, cups & bags -----------------------------------------
+  # Mixer links carry no priority of their own; the canonical nodes do.
+  mixers-bar: nice
+  mixers-bar.bar-tools.corkscrew: must
+  mixers-bar.bar-tools.bottle-opener: must
+  mixers-bar.cups-disposables.party-cup-16oz: must
+  mixers-bar.cups-disposables.shot-glass-1oz: must
+  mixers-bar.cups-disposables.foam-cup-12oz: should
+  mixers-bar.cups-disposables.plates-9in: should
+  mixers-bar.cups-disposables.plastic-forks: should
+  mixers-bar.cups-disposables.plastic-spoons: should
+  mixers-bar.cups-disposables.foam-cooler: should
+  mixers-bar.store-bags: must
+  mixers-bar.store-bags.t-shirt-bag-12x7x22: should
+  mixers-bar.store-bags.reusable-bag: nice
+  mixers-bar.trash-storage-bags: should
+  mixers-bar.trash-storage-bags.kitchen-trash-13gal: must
+
 notes:
   scd.cola.coca-cola-mexican: Must in the LA market.
   scd.lemon-lime.sprite-mexican: Should in the LA market.
@@ -439,3 +458,4 @@ notes:
   grocery.seasonings.mega: The outline wants one chamoy; Mega is the must pick and Tajín Chamoy the backup.
   grocery.seasonings.hot-sauce: The outline wants 2–3 hot sauces. Tapatío and Valentina are must, El Yucateco should.
   grocery.breakfast-pantry.tortillas: Must in the LA market (Mission).
+  mixers-bar.mixers: "The mixers list marks every mixer must. The canonical nodes keep their own priorities: Schweppes stays should per section 1.5, and Canada Dry club soda and tonic 1L are must."

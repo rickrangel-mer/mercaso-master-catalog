@@ -79,8 +79,13 @@ export function resolveStoreType(
     }
 
     const carried = inh.carried || include.has(node.id);
-    const explicit = carried ? priority[node.id] : undefined;
-    const resolvedPriority = explicit ?? (carried ? inh.priority : undefined);
+    // A childless non-leaf is a cross_ref link; its priority lives on the canonical node.
+    const isLink = node.children.length === 0 && !isLeafKind(node.kind);
+    if (isLink && priority[node.id]) {
+      err(node.id, `"${node.id}" is a cross_ref link; set the priority on the node it points at`);
+    }
+    const explicit = carried && !isLink ? priority[node.id] : undefined;
+    const resolvedPriority = isLink ? undefined : explicit ?? (carried ? inh.priority : undefined);
     const ageRestricted = inh.ageRestricted || node.attrs.age_restricted === true;
     const restricted = [...new Set([...inh.restricted, ...restrictedHere])];
 

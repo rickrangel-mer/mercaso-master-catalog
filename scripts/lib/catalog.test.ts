@@ -205,6 +205,17 @@ describe("store type", () => {
     expect(errs).toContain('scd.missing: exclude refers to "scd.missing", which is not a taxonomy node');
   });
 
+  it("gives cross_ref links no priority and rejects one set on them", () => {
+    const withLink = dept();
+    withLink.children!.push({ key: "mixers", name: "Mixers", kind: "category", cross_ref: ["scd.cola.coke"] });
+    const { taxonomy: tx } = taxonomyOf(withLink);
+    const { resolved, issues } = resolveStoreType(storeType(), "liquor.yaml", tx);
+    expect(errors(issues)).toEqual([]);
+    expect(resolved.roots[0]?.children.find((c) => c.node.key === "mixers")?.priority).toBeUndefined();
+    const bad = resolveStoreType(storeType({ priority: { scd: "should", "scd.mixers": "must" } }), "liquor.yaml", tx);
+    expect(errors(bad.issues)).toEqual(['scd.mixers: "scd.mixers" is a cross_ref link; set the priority on the node it points at']);
+  });
+
   it("warns when an explicit priority repeats the inherited one", () => {
     const { issues } = resolveStoreType(
       storeType({ priority: { scd: "should", "scd.cola": "should" } }),
