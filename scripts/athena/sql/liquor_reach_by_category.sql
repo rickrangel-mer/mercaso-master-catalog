@@ -4,7 +4,7 @@
 -- Same stores, orders and lines as liquor_sales_by_sku.sql. A SKU's store_share only means
 -- something next to its category's reach: few stores buy tobacco or cleaning supplies from
 -- Mercaso at all, so a 4% SKU there can be a category leader. Rows with a blank category are
--- department totals.
+-- department totals; rows with a blank sub_category are category totals.
 WITH stores AS (
   SELECT si.store_id,
          -- The manual sheet wins, but a blank override must not hide the store's own type.
@@ -45,6 +45,7 @@ lines AS (
 SELECT
   l.department,
   l.category,
+  l.sub_category,
   count(DISTINCT o.store_id) AS stores_buying,
   max(a.liquor_stores_active) AS liquor_stores_active,
   round(CAST(count(DISTINCT o.store_id) AS double) / max(a.liquor_stores_active), 4) AS store_share,
@@ -53,5 +54,5 @@ SELECT
 FROM lines l
 JOIN orders o ON o.order_id = l.order_id
 CROSS JOIN active a
-GROUP BY GROUPING SETS ((l.department, l.category), (l.department))
-ORDER BY l.department, l.category NULLS FIRST;
+GROUP BY GROUPING SETS ((l.department, l.category, l.sub_category), (l.department, l.category), (l.department))
+ORDER BY l.department, l.category NULLS FIRST, l.sub_category NULLS FIRST;

@@ -96,7 +96,7 @@ Brands bought by at least 12% of stores with no node at all. All are shelf-stabl
 | 2.11 | Barebells protein bars | Cookies & Cream 15% | Nice in `meat-snacks-bars` | yes |
 | 2.12 | ACT II microwave popcorn | 14% | Nice | yes |
 | 2.13 | Charcoal and fire: Carbonazo mesquite charcoal 16%, Kingsford 4lb 13%, Firemaster firewood 16%, Charcoal Master lighter fluid 14%, Gas One butane 15% | The slots exist. Kingsford sells; El Rey and Duraflame firewood and Kingsford lighter fluid don't | Charcoal hints: Kingsford, Carbonazo. Firewood hint: Firemaster. Lighter fluid hint: Charcoal Master. Gas One is a new nice slot | yes |
-| 2.14 | LiFoam ice chest cooler | 28qt 16% | Nice, as a seasonal item in `household.equipment-home` | yes |
+| 2.14 | LiFoam ice chest cooler | 28qt 16% | Nice, as a seasonal item. Applied as a `brand_hints` entry on the existing `mixers-bar.cups-disposables.foam-cooler` slot (should), so the cooler isn't listed twice | yes |
 | 2.15 | Party cups (unbranded, 16oz 24-pack) | 21%, filed under Kitchen | Use as the match for `mixers-bar.cups-disposables.party-cup-16oz` (see 3.12) | yes |
 
 ## 3. Downgrades and drops
