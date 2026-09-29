@@ -1,10 +1,13 @@
 -- Export: Mercaso product catalog, for matching catalog leaves to SKUs (Phase 4).
 -- Save the result as data/raw/products.csv (gitignored).
 --
--- One row per live item from the latest snapshot. No prices or costs: matching does not need
--- them. Arrays are flattened to "|"-separated strings so the CSV stays one row per item.
--- Assumes: dt is a daily full snapshot (discovery D1); UPC types say "each" or "case" (D6).
--- If D1 shows more than one tenant_id, add: AND i.tenant_id = '<mercaso tenant>'.
+-- One row per live item from the latest snapshot (the latest dt holds full history). No prices
+-- or costs: matching does not need them. Arrays are flattened to "|"-separated strings so the
+-- CSV stays one row per item.
+-- UPCs: types are EACH_UPC and CASE_UPC. The same code often appears with and without a
+-- leading zero (UPC-A vs EAN-13), so leading zeros are stripped and duplicates dropped.
+-- Attributes: "Item size", "Bottle Size" and "Flavor" get their own columns for matching; the
+-- full list is kept in `attributes` as name=value unit.
 SELECT
   i.sku_number,
   i.item_id,
@@ -23,9 +26,17 @@ SELECT
   i.clazz,
   i.sales_status,
   i.availability_status,
-  array_join(transform(filter(i.upc_ls, u -> lower(u.upc_type) LIKE '%each%'), u -> u.upc_number), '|') AS each_upcs,
-  array_join(transform(filter(i.upc_ls, u -> lower(u.upc_type) LIKE '%case%'), u -> u.upc_number), '|') AS case_upcs,
-  array_join(transform(i.upc_ls, u -> u.upc_type || ':' || u.upc_number), '|') AS all_upcs,
+  array_join(array_distinct(transform(
+    filter(i.upc_ls, u -> u.upc_type = 'EACH_UPC'), u -> regexp_replace(u.upc_number, '^0+', '')
+  )), '|') AS each_upcs,
+  array_join(array_distinct(transform(
+    filter(i.upc_ls, u -> u.upc_type = 'CASE_UPC'), u -> regexp_replace(u.upc_number, '^0+', '')
+  )), '|') AS case_upcs,
+  element_at(filter(i.attribute_ls, a -> a.attribute_name = 'Item size'), 1).value AS item_size,
+  element_at(filter(i.attribute_ls, a -> a.attribute_name = 'Item size'), 1).unit AS item_size_unit,
+  element_at(filter(i.attribute_ls, a -> a.attribute_name = 'Bottle Size'), 1).value AS bottle_size,
+  element_at(filter(i.attribute_ls, a -> a.attribute_name = 'Bottle Size'), 1).unit AS bottle_size_unit,
+  element_at(filter(i.attribute_ls, a -> a.attribute_name = 'Flavor'), 1).value AS flavor,
   array_join(
     transform(i.attribute_ls, a -> a.attribute_name || '=' || coalesce(a.value, '') || coalesce(' ' || a.unit, '')),
     '|'

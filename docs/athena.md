@@ -12,16 +12,16 @@ What the sales cross-check (Phase 2.5) and SKU matching (Phase 4) read from Merc
 | `dim.dim_store_mercaso_store_info_full` | one row per store | `store_id`, `store_type`, `postal_code` |
 | `ods.ods_gsheet_manually_collected_ums_store_type_full` | manual corrections | `store_type` and store name overrides by `store_id` |
 
-All tables are partitioned by `tenant_id` and `dt`.
+All tables are partitioned by `tenant_id` and `dt`. The latest `dt` of each table holds the full history, and `tenant_id` can be ignored.
 
 ## Joins
 
 ```
 line item --order_id--> order --store_id--> store info (+ manual store-type override)
-line item --sku--> item (sku_number, to confirm)
+line item --sku--> item (sku_number or item_id; both work)
 ```
 
-Store type is `COALESCE(manual.store_type, store_info.store_type)`, from Rick's query.
+Store type is the manual sheet's value where it is not blank, otherwise the store table's, following Rick's query.
 
 ## Queries
 
@@ -29,9 +29,9 @@ All in `scripts/athena/sql/`:
 
 | File | Purpose | Output |
 |---|---|---|
-| `00_discovery.sql` | Seven small checks, run once | Paste results back into the session |
 | `products.sql` | Live items with UPCs and attributes, no prices or costs | `data/raw/products.csv` |
-| `liquor_sales_by_sku.sql` | Trailing 12 months, CA liquor stores, one row per SKU, with the share of liquor stores that bought it | `data/raw/liquor_sales_by_sku.csv` |
+| `liquor_sales_by_sku.sql` | Trailing 12 months, CA liquor stores, one row per SKU: cases, units, revenue, orders, and the share of liquor stores that bought it | `data/raw/liquor_sales_by_sku.csv` |
+| `optional_checks.sql` | Attribute names and item statuses, for tuning the matcher | Not needed for the exports |
 
 `data/raw/` is gitignored, so exports never reach the repo.
 
@@ -46,14 +46,16 @@ Direct access needs:
 
 These go in the environment's secret settings, never in the repo.
 
-## Assumptions the discovery queries check
+## Confirmed facts (Rick, 2026-09-29)
 
-| Check | Assumption | If it's wrong |
-|---|---|---|
-| D1 | Each `*_full` table's latest `dt` is a full snapshot holding all history. There is one `tenant_id`. | Read every `dt`, or filter to Mercaso's tenant. |
-| D2 | Liquor stores have a `store_type` containing "liquor". | Use the exact label or labels. |
-| D3 | `cancelled_at` marks cancelled orders. | Filter on `order_status` instead. |
-| D4 | Line-item `sku` equals the item table's `sku_number`. | Join on `item_id`. |
-| D5 | A line's quantity counts what the SKU is sold as, usually a case. | Divide by `package_size`. |
-| D6 | UPC types say "each" or "case". Size and flavor may sit in `attribute_ls`. | Adjust the UPC split and the parser. |
-| D7 | Status values tell which items are sellable. | Add a status filter to the products export. |
+- **Snapshots.** The latest `dt` of each `*_full` table holds the full history. `tenant_id` can be ignored.
+- **Cancelled orders.** `cancelled_at` marks them.
+- **Join key.** Line-item `sku` joins to the item table's `sku_number` or `item_id`.
+- **Quantities are cases.** A line's `current_quantity` counts cases, so units are cases times `package_size`.
+- **UPCs.** `upc_ls` holds entries such as `{upc_number=814669012782, upc_type=EACH_UPC}`. The same code often appears with and without a leading zero, so the export strips leading zeros and drops duplicates.
+- **Attributes.** `attribute_ls` holds entries such as `Item size = 3.0000 L`, `Bottle Size = 3.0000 L` and `Flavor = Strawberry`. The products export turns these three into columns.
+- **Store types.** Both the store table and the manual sheet use the same labels:
+  - Liquor store, Laundromat, Convenience store, Market / grocery
+  - Gas station, Smoke shop, Discount dollar, Restaurant, Hotel
+  - Miscellaneous, Non-store, Unknown, and blank
+- **Blank overrides.** The manual sheet wins, except where it is blank. A blank there must not hide the store's own type, so the query treats blanks as missing.

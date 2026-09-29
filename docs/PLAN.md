@@ -82,7 +82,7 @@ data/matches/liquor.csv           # node → Mercaso SKU
 data/raw/                         # Athena exports, gitignored
 schema/catalog.schema.json
 scripts/{validate,build}.ts
-scripts/athena/sql/                # discovery, products, liquor sales (see docs/athena.md)
+scripts/athena/sql/                # products and liquor-sales exports (see docs/athena.md)
 scripts/athena/{export-products,export-sales}.ts   # later, once credentials work
 scripts/match/{candidates,classify,review-export,gaps}.ts
 apps/web/                         # Next.js tree viewer

@@ -2,19 +2,16 @@
 -- Save the result as data/raw/liquor_sales_by_sku.csv (gitignored).
 --
 -- Joins: line items -> orders (order_id) -> stores (store_id) -> store type (Rick's query).
--- Counts only liquor stores in CA, only orders not cancelled, and quantities after refunds.
+-- Counts only liquor stores in CA, only orders not cancelled (cancelled_at), and quantities
+-- after refunds. The latest dt of each table holds full history; tenant_id is ignored.
+-- Quantities are cases; `units` multiplies by the case pack.
 -- `store_share` is the fraction of active liquor stores that bought the SKU at least once,
 -- which is the best single signal for "should every liquor store carry this".
---
--- Assumes, to confirm with the discovery queries:
---   D1  each *_full dt is a daily full snapshot, so the latest dt holds all history.
---   D2  liquor stores are the store_type values matching '%liquor%'.
---   D3  cancelled_at marks cancelled orders.
---   D5  current_quantity counts what the SKU is sold as (usually a case).
--- If D1 shows more than one tenant_id, add a tenant filter to each table below.
+-- For another store type, change the one store_type literal below (e.g. 'Laundromat').
 WITH stores AS (
   SELECT si.store_id,
-         COALESCE(st.store_type, si.store_type) AS store_type,
+         -- The manual sheet wins, but a blank override must not hide the store's own type.
+         COALESCE(NULLIF(trim(st.store_type), ''), NULLIF(trim(si.store_type), '')) AS store_type,
          SUBSTRING(si.postal_code, 1, 5) AS postal_code
   FROM dim.dim_store_mercaso_store_info_full si
   LEFT JOIN ods.ods_gsheet_manually_collected_ums_store_type_full st
@@ -26,7 +23,7 @@ WITH stores AS (
 liquor_stores AS (
   SELECT DISTINCT store_id
   FROM stores
-  WHERE lower(store_type) LIKE '%liquor%'
+  WHERE store_type = 'Liquor store'
 ),
 orders AS (
   SELECT o.order_id, o.store_id
@@ -57,7 +54,8 @@ SELECT
   max(l.sub_category) AS sub_category,
   max(l.package_type) AS package_type,
   max(l.package_size) AS package_size,
-  sum(l.current_quantity) AS quantity,
+  sum(l.current_quantity) AS cases,
+  sum(l.current_quantity * coalesce(l.package_size, 1)) AS units,
   sum(l.current_total_amount) AS revenue,
   count(DISTINCT l.order_id) AS orders,
   count(DISTINCT o.store_id) AS stores_buying,
