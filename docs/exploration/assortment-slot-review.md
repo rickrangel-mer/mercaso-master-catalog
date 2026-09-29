@@ -6,7 +6,7 @@ It uses the same data as the cross-check. Window: 2025-09-29 to 2026-09-28, acti
 
 **Two kinds of change.**
 - **Applied in this PR (part A):** suggested brands, slot names and item counts, where sales leave no real choice. These are the brands and sizes stores already buy from Mercaso.
-- **Proposed (part B):** priority changes, drops and new slots. These are Rick's call, so each has a Decision column and none is applied yet.
+- **Proposed (part B):** priority changes, drops and new slots. **Rick accepted all 25 on 2026-09-29, and they are applied in `data/`.**
 
 ## How far Mercaso reaches here
 
@@ -67,33 +67,46 @@ Most stores buy these categories from Mercaso, but spread across many items, so 
 
 | # | Slot | Now | Evidence (12-month store share) | Proposed | Decision |
 |---|---|---|---|---|---|
-| B.1 | `household.laundry.fabric-softener` | should | Suavitel 17%, Downy 13%; fabric softeners reach 39% | Must | |
-| B.2 | `household.laundry.laundry-bar-soap` | must | Zote 14.1oz 4%, 7oz 2% | Should | |
-| B.3 | `household.laundry.dryer-sheets` | nice | Bounce 10%, Gain 9% | Should | |
-| B.4 | `household.laundry.stain-remover` | nice | Soilove 12% | Should | |
-| B.5 | `household.cleaning.glass-cleaner` | nice | Windex 500ml 10% | Should | |
-| B.6 | `household.cleaning.scouring-powder` | nice | Ajax 9% | Should | |
-| B.7 | `household.cleaning.toilet-bowl-cleaner` | should | Best is Lysol 32oz at 1.6% | Nice | |
-| B.8 | `household.cleaning.disinfecting-wipes` | should | Clorox wipes 2.8% | Nice | |
-| B.9 | `household.paper.napkins` | should | Melody 180ct 15%, on a par with the bleach and detergent leaders | Must | |
-| B.10 | `household.air-candles-pest.air-freshener-spray` | should | Febreze under 3% | Nice | |
-| B.11 | `household.air-candles-pest.air-freshener-small` | nice | Little Trees 5%; air fresheners reach 22% | Should | |
-| B.12 | `household.air-candles-pest.incense` | nice | Nag Champa 6% | Should | |
-| B.13 | `household.equipment-home.latex-gloves` | should | No glove above 2% (work gloves 1.8%) | Nice | |
-| B.14 | `household.equipment-home.chargers-cables` (USB-C, Lightning, wall block) | should | All under 1%; stores likely buy phone accessories elsewhere | Nice | |
-| B.15 | `mixers-bar.cups-disposables.foam-cup-12oz` | should | Axxion 16oz 13%, 12oz 12% | Must | |
-| B.16 | `mixers-bar.cups-disposables.foam-bowls` | nice | Axxion 30oz 6% | Should | |
-| B.17 | `mixers-bar.bar-tools.rimming-tray` | nice | Baja rim dips 6–7% | Should | |
-| B.18 | `mixers-bar.store-bags.reusable-bag` | nice | Reusable "Thank You" 13×7×21 bag 6.5% | Should | |
-| B.19 | `mixers-bar.trash-storage-bags.zipper-bags` | should | Under 1% | Nice | |
-| B.20 | Drop slots with no sales and no Mercaso stock | nice | Plastic wrap 0.3%, spray bottle 0.1%, plunger 0.2%, shower curtain 0.1%, bath mat none; flask and jigger not stocked | Drop `household.paper.plastic-wrap`, `household.equipment-home.spray-bottle`, `plunger`, `bath-mat`, `shower-curtain`, `mixers-bar.bar-tools.flask`, `jigger` | |
-| B.21 | New slot: cocktail jug | — | Mixed Cocktail Jug 1 gal 11% (7% over 90 days), 2 gal 5% | Add `mixers-bar.cups-disposables.cocktail-jug` at should | |
-| B.22 | New category: automotive | — | Motor oil & fluids reach 25% and auto cleaning 22%. Chevron Supreme 10W-30 7%, 10W-40 7%; STP power steering fluid 7%; Little Trees covered by B.11 | Add `household.auto` with a motor-oil slot (should, 2 items, Chevron, Pennzoil) and an auto-fluids slot (nice: power steering, brake, antifreeze, washer fluid; STP, Peak, LA's Totally Awesome) | |
-| B.23 | New slot: super glue | — | Krazy Glue 12% | Add `household.equipment-home.super-glue` at should | |
-| B.24 | New slots: party and gifts | — | Wine-bottle gift bags 5%, party balloons 6%, birthday candles 3% | Add wine gift bag (should) and balloons and birthday candles (nice) under `mixers-bar.cups-disposables` | |
-| B.25 | New slot: six-pack rings | — | Plastic rings for 6-pack cans, 1000ct, 4% | Add `mixers-bar.store-bags.six-pack-rings` at nice | |
+| B.1 | `household.laundry.fabric-softener` | should | Suavitel 17%, Downy 13%; fabric softeners reach 39% | Must | yes |
+| B.2 | `household.laundry.laundry-bar-soap` | must | Zote 14.1oz 4%, 7oz 2% | Should | yes |
+| B.3 | `household.laundry.dryer-sheets` | nice | Bounce 10%, Gain 9% | Should | yes |
+| B.4 | `household.laundry.stain-remover` | nice | Soilove 12% | Should | yes |
+| B.5 | `household.cleaning.glass-cleaner` | nice | Windex 500ml 10% | Should | yes |
+| B.6 | `household.cleaning.scouring-powder` | nice | Ajax 9% | Should | yes |
+| B.7 | `household.cleaning.toilet-bowl-cleaner` | should | Best is Lysol 32oz at 1.6% | Nice | yes |
+| B.8 | `household.cleaning.disinfecting-wipes` | should | Clorox wipes 2.8% | Nice | yes |
+| B.9 | `household.paper.napkins` | should | Melody 180ct 15%, on a par with the bleach and detergent leaders | Must | yes |
+| B.10 | `household.air-candles-pest.air-freshener-spray` | should | Febreze under 3% | Nice | yes |
+| B.11 | `household.air-candles-pest.air-freshener-small` | nice | Little Trees 5%; air fresheners reach 22% | Should | yes |
+| B.12 | `household.air-candles-pest.incense` | nice | Nag Champa 6% | Should | yes |
+| B.13 | `household.equipment-home.latex-gloves` | should | No glove above 2% (work gloves 1.8%) | Nice | yes |
+| B.14 | `household.equipment-home.chargers-cables` (USB-C, Lightning, wall block) | should | All under 1%; stores likely buy phone accessories elsewhere | Nice | yes |
+| B.15 | `mixers-bar.cups-disposables.foam-cup-12oz` | should | Axxion 16oz 13%, 12oz 12% | Must | yes |
+| B.16 | `mixers-bar.cups-disposables.foam-bowls` | nice | Axxion 30oz 6% | Should | yes |
+| B.17 | `mixers-bar.bar-tools.rimming-tray` | nice | Baja rim dips 6–7% | Should | yes |
+| B.18 | `mixers-bar.store-bags.reusable-bag` | nice | Reusable "Thank You" 13×7×21 bag 6.5% | Should | yes |
+| B.19 | `mixers-bar.trash-storage-bags.zipper-bags` | should | Under 1% | Nice | yes |
+| B.20 | Drop slots with no sales and no Mercaso stock | nice | Plastic wrap 0.3%, spray bottle 0.1%, plunger 0.2%, shower curtain 0.1%, bath mat none; flask and jigger not stocked | Drop `household.paper.plastic-wrap`, `household.equipment-home.spray-bottle`, `plunger`, `bath-mat`, `shower-curtain`, `mixers-bar.bar-tools.flask`, `jigger` | yes |
+| B.21 | New slot: cocktail jug | — | Mixed Cocktail Jug 1 gal 11% (7% over 90 days), 2 gal 5% | Add `mixers-bar.cups-disposables.cocktail-jug` at should | yes |
+| B.22 | New category: automotive | — | Motor oil & fluids reach 25% and auto cleaning 22%. Chevron Supreme 10W-30 7%, 10W-40 7%; STP power steering fluid 7%; Little Trees covered by B.11 | Add `household.auto` with a motor-oil slot (should, 2 items, Chevron, Pennzoil) and an auto-fluids slot (nice: power steering, brake, antifreeze, washer fluid; STP, Peak, LA's Totally Awesome) | yes |
+| B.23 | New slot: super glue | — | Krazy Glue 12% | Add `household.equipment-home.super-glue` at should | yes |
+| B.24 | New slots: party and gifts | — | Wine-bottle gift bags 5%, party balloons 6%, birthday candles 3% | Add wine gift bag (should) and balloons and birthday candles (nice) under `mixers-bar.cups-disposables` | yes |
+| B.25 | New slot: six-pack rings | — | Plastic rings for 6-pack cans, 1000ct, 4% | Add `mixers-bar.store-bags.six-pack-rings` at nice | yes |
 
 Unchanged, and confirmed by sales: the `must` slots for multipurpose cleaner, bleach, dish soap, liquid and powder detergent, toilet paper, paper towels, religious candles, sponges, batteries, party cups, shot cups, bottle bags and 13gal trash bags. The charcoal, firewood and butane slots were settled in the cross-check.
+
+## Automotive is liquor-store demand, not gas stations
+
+Rick asked whether B.22 mixes in gas stations or convenience stores. It doesn't. The data covers only stores labeled "Liquor store", and the labels hold up. By store type, 12 months, CA:
+
+| Store type | Active stores | Buy motor oil | Buy car-care items | Gas-station-like names |
+|---|---|---|---|---|
+| Liquor store | 1,993 | 25% (493) | 22% | 4 |
+| Gas station | 627 | 43% | 48% | 423 |
+| Market / grocery | 719 | 22% | 20% | 3 |
+| Convenience store | 392 | 15% | 20% | 6 |
+
+Gas-station-like names are store names matching words such as gas, fuel, Chevron, Arco or 76. Only 1 of the 493 liquor stores that buy motor oil has one. A future gas-station catalog should weight automotive more heavily.
 
 ## Not covered yet
 

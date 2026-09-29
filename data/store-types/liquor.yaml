@@ -500,16 +500,22 @@ priority:
   mixers-bar.bar-tools.bottle-opener: must
   mixers-bar.cups-disposables.party-cup-16oz: must
   mixers-bar.cups-disposables.shot-glass-1oz: must
-  mixers-bar.cups-disposables.foam-cup-12oz: should
+  mixers-bar.bar-tools.rimming-tray: should
+  mixers-bar.cups-disposables.foam-cup-12oz: must
+  mixers-bar.cups-disposables.foam-bowls: should
   mixers-bar.cups-disposables.plates-9in: should
   mixers-bar.cups-disposables.plastic-forks: should
   mixers-bar.cups-disposables.plastic-spoons: should
   mixers-bar.cups-disposables.foam-cooler: should
+  mixers-bar.cups-disposables.cocktail-jug: should
+  mixers-bar.cups-disposables.wine-gift-bag: should
   mixers-bar.store-bags: must
   mixers-bar.store-bags.t-shirt-bag-12x7x22: should
-  mixers-bar.store-bags.reusable-bag: nice
+  mixers-bar.store-bags.reusable-bag: should
+  mixers-bar.store-bags.six-pack-rings: nice
   mixers-bar.trash-storage-bags: should
   mixers-bar.trash-storage-bags.kitchen-trash-13gal: must
+  mixers-bar.trash-storage-bags.zipper-bags: nice
 
   # --- Household & kitchen ----------------------------------------------------
   household: nice
@@ -518,35 +524,38 @@ priority:
   household.cleaning.multipurpose-cleaner: must
   household.cleaning.bleach: must
   household.cleaning.dish-soap: must
-  household.cleaning.toilet-bowl-cleaner: should
-  household.cleaning.disinfecting-wipes: should
+  household.cleaning.glass-cleaner: should
+  household.cleaning.scouring-powder: should
 
   # 6.2 Laundry
   household.laundry.detergent-liquid: must
   household.laundry.detergent-powder: must
-  household.laundry.laundry-bar-soap: must
-  household.laundry.fabric-softener: should
+  household.laundry.laundry-bar-soap: should
+  household.laundry.fabric-softener: must
+  household.laundry.dryer-sheets: should
+  household.laundry.stain-remover: should
 
   # 6.3 Paper & disposables
   household.paper.toilet-paper: must
   household.paper.paper-towels: must
-  household.paper.napkins: should
+  household.paper.napkins: must
   household.paper.aluminum-foil: should
 
   # 6.4 Air care, candles & pest
-  household.air-candles-pest.air-freshener-spray: should
+  household.air-candles-pest.air-freshener-small: should
+  household.air-candles-pest.incense: should
   household.air-candles-pest.religious-candle: must
   household.air-candles-pest.pest-control: should
 
   # 6.5 Cleaning equipment & home
   household.equipment-home.sponges: must
-  household.equipment-home.latex-gloves: should
+  household.equipment-home.super-glue: should
   household.equipment-home.batteries.aa: must
   household.equipment-home.batteries.aaa: must
   household.equipment-home.batteries.9v: should
-  household.equipment-home.chargers-cables: should
   household.equipment-home.grilling-fire: should
   household.equipment-home.grilling-fire.butane-canister: nice
+  household.auto.motor-oil: should
 
   # --- Health & beauty ---------------------------------------------------------
   health-beauty: should

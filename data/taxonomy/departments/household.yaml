@@ -154,12 +154,6 @@ children:
         size_class: [small]
         brand_hints: [Reynolds, Premier]
         note: Or a value brand.
-      - key: plastic-wrap
-        name: Plastic wrap
-        kind: assortment_slot
-        target_count: { min: 1, max: 1 }
-        size_class: [small]
-        brand_hints: [Glad, Table King]
       - key: sandwich-bags
         name: Sandwich bags
         kind: subcategory
@@ -234,25 +228,12 @@ children:
         kind: assortment_slot
         target_count: { min: 1, max: 1 }
         brand_hints: [NuValu]
-      - key: spray-bottle
-        name: Spray bottle
+      - key: super-glue
+        name: Super glue
         kind: assortment_slot
         target_count: { min: 1, max: 1 }
-      - key: plunger
-        name: Plunger
-        kind: assortment_slot
-        target_count: { min: 1, max: 1 }
-        brand_hints: [NuValu]
-      - key: bath-mat
-        name: Bath mat
-        kind: assortment_slot
-        target_count: { min: 1, max: 1 }
-        brand_hints: [NuValu]
-      - key: shower-curtain
-        name: Shower curtain
-        kind: assortment_slot
-        target_count: { min: 1, max: 1 }
-        brand_hints: [NuValu]
+        brand_hints: [Krazy Glue]
+        note: Krazy Glue reaches 12% of stores (slot review B.23).
       - key: batteries
         name: Batteries
         kind: subcategory
@@ -278,3 +259,22 @@ children:
           - { key: charcoal-lighter-fluid, name: Charcoal lighter fluid, kind: assortment_slot, target_count: { min: 1, max: 1 }, brand_hints: [Charcoal Master] }
           - { key: firewood, name: Firewood / fire logs, kind: assortment_slot, target_count: { min: 1, max: 1 }, brand_hints: [Firemaster] }
           - { key: butane-canister, name: Butane gas canister, kind: assortment_slot, target_count: { min: 1, max: 1 }, brand_hints: [Gas One] }
+
+  # 6.6 Automotive (slot review B.22). A quarter of liquor stores buy motor oil from Mercaso;
+  # these are liquor stores, not gas stations mislabeled (4 of 1,993 have gas-station names).
+  - key: auto
+    name: Automotive
+    kind: category
+    children:
+      - key: motor-oil
+        name: Motor oil, 1qt
+        kind: assortment_slot
+        target_count: { min: 2, max: 2 }
+        brand_hints: [Chevron, Pennzoil]
+        note: 10W-30 and 10W-40 lead (7% of stores each); 20W-50 and 5W-30 next.
+      - key: auto-fluids
+        name: Auto fluids
+        kind: assortment_slot
+        target_count: { min: 1, max: 2 }
+        brand_hints: [STP, Peak, LA's Totally Awesome]
+        note: Power steering fluid (7%), windshield washer, brake fluid, antifreeze.

@@ -59,14 +59,6 @@ children:
         name: Bottle opener (keychain, flat)
         kind: assortment_slot
         target_count: { min: 1, max: 2 }
-      - key: flask
-        name: Flask
-        kind: assortment_slot
-        target_count: { min: 1, max: 1 }
-      - key: jigger
-        name: Jigger / shot pourer
-        kind: assortment_slot
-        target_count: { min: 1, max: 1 }
       - key: rimming-tray
         name: Michelada rim dip / rimming salt
         kind: assortment_slot
@@ -138,6 +130,24 @@ children:
         kind: assortment_slot
         target_count: { min: 1, max: 1 }
         brand_hints: [LiFoam, Ariana]
+      - key: cocktail-jug
+        name: Mixed cocktail jug, 1 gallon
+        kind: assortment_slot
+        target_count: { min: 1, max: 1 }
+        note: Reaches 11% of stores (7% over 90 days); the 2 gallon 5% (slot review B.21).
+      - key: wine-gift-bag
+        name: Wine bottle gift bag
+        kind: assortment_slot
+        target_count: { min: 1, max: 1 }
+        note: Hologram wine-bottle bags reach 5% of stores.
+      - key: balloons
+        name: Party balloons
+        kind: assortment_slot
+        target_count: { min: 1, max: 1 }
+      - key: birthday-candles
+        name: Birthday candles
+        kind: assortment_slot
+        target_count: { min: 1, max: 1 }
         note: Summer item. The LiFoam 28qt reaches 16% of stores (sales cross-check 2.14).
 
   # 5.4 Bags (store operating supplies)
@@ -175,7 +185,12 @@ children:
         name: Reusable bag 13×7×21
         kind: assortment_slot
         target_count: { min: 1, max: 1 }
-        note: CA bag law; confirm the current rule.
+        note: CA bag law; confirm the current rule. The reusable "Thank You" 13×7×21 bag reaches 6.5% of stores.
+      - key: six-pack-rings
+        name: Six-pack can rings
+        kind: assortment_slot
+        target_count: { min: 1, max: 1 }
+        note: 1000-count rings for 6-pack cans reach 4% of stores.
 
   # 5.5 Trash & storage bags. Canonical home for trash and zipper bags; department 6 links here.
   - key: trash-storage-bags
