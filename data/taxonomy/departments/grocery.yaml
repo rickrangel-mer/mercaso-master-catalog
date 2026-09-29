@@ -26,11 +26,13 @@ children:
       - key: ramen-cup
         name: Ramen cup / bowl
         kind: assortment_slot
+        match_terms: ["cup", "bowl"]
         target_count: { min: 3, max: 4 }
         brand_hints: [Maruchan, Nissin Cup Noodles, Nongshim, Paldo, Tapatio Big Bowl, Samyang Buldak]
       - key: ramen-packet
         name: Ramen packet
         kind: assortment_slot
+        match_terms: ["ramen noodle soup", "top ramen", "noodle soup,"]
         target_count: { min: 2, max: 2 }
         brand_hints: [Maruchan, Nissin Top Ramen, Samyang]
       - key: canned-chili-pasta
@@ -46,6 +48,7 @@ children:
       - key: spam
         name: Spam / luncheon meat
         kind: assortment_slot
+        match_terms: ["spam"]
         target_count: { min: 1, max: 1 }
         brand_hints: [Hormel]
       - key: canned-soup
@@ -134,6 +137,7 @@ children:
       - key: mayo
         name: Mayonnaise
         kind: assortment_slot
+        match_terms: ["mayonnaise"]
         target_count: { min: 1, max: 1 }
         brand_hints: [McCormick]
       - key: ketchup
@@ -165,6 +169,7 @@ children:
       - key: beans
         name: Refried / whole beans
         kind: assortment_slot
+        match_terms: ["beans"]
         target_count: { min: 2, max: 2 }
         brand_hints: [Sun Vista, Rosarita, La Costeña, Goya]
       - key: jalapenos
@@ -202,6 +207,7 @@ children:
       - key: tomato-enchilada-sauce
         name: Tomato / enchilada sauce
         kind: assortment_slot
+        match_terms: ["tomato sauce", "enchilada sauce"]
         target_count: { min: 1, max: 1 }
         brand_hints: [Las Palmas, El Pato, Hunt's]
       - key: nacho-cheese
@@ -223,6 +229,7 @@ children:
       - key: dry-beans
         name: Dry beans
         kind: assortment_slot
+        match_terms: ["beans, 1 lb", "beans, 2 lb", "beans, 4 lb", "beans 1 lb", "beans 4 lb"]
         target_count: { min: 1, max: 1 }
         brand_hints: [Goya, Springfield]
       - key: pasta
@@ -281,6 +288,7 @@ children:
       - key: tortillas
         name: Tortillas
         kind: assortment_slot
+        match_terms: ["tortillas"]
         target_count: { min: 1, max: 1 }
         brand_hints: [Guerrero, Calidad, Mission]
         note: Every brand reaches only 1–2.5% of stores; stores likely buy fresh tortillas locally.
@@ -292,11 +300,13 @@ children:
       - key: peanut-butter
         name: Peanut butter / Nutella
         kind: assortment_slot
+        match_terms: ["peanut butter", "hazelnut spread"]
         target_count: { min: 1, max: 1 }
         brand_hints: [Skippy, Nutella]
       - key: syrup-honey
         name: Syrup / honey
         kind: assortment_slot
+        match_terms: ["syrup", "pure honey", "honey bear", "clover honey"]
         target_count: { min: 1, max: 1 }
 
   # 8.6 Pet (nice only)
@@ -307,12 +317,14 @@ children:
       - key: dog-food-wet
         name: Dog food, wet single
         kind: assortment_slot
+        match_terms: ["wet dog food", "choice cuts", "chopped"]
         target_count: { min: 1, max: 1 }
         size_class: [small]
         brand_hints: [Pedigree, Cesar]
       - key: dog-food-dry
         name: Dog food, dry small bag
         kind: assortment_slot
+        match_terms: ["adult dog food", "small dog food", "dry dog food"]
         target_count: { min: 1, max: 1 }
         size_class: [small]
         brand_hints: [Pedigree, Field Trial]
@@ -325,5 +337,6 @@ children:
       - key: pet-treats
         name: Pet treats
         kind: assortment_slot
+        match_terms: ["dog treat", "cat treat", "canine carry outs"]
         target_count: { min: 1, max: 1 }
         brand_hints: [Canine Carry Outs]

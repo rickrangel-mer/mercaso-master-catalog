@@ -1,10 +1,10 @@
-# Handoff — Phases 1–3 and 2.5 done; Phase 4 is next
+# Handoff — Phases 1–4 done; the static site is ready
 
 Mainline: `main` (default). New work goes in PRs against `main`. Last updated 2026-09-29.
 
 ## Where things stand
 
-- `docs/PLAN.md` — the approved plan. Phases 0–3 and 2.5 are done.
+- `docs/PLAN.md` — the approved plan. Phases 0–4 and 2.5 are done.
 - `docs/data-model.md` — file formats, commands, and what the validator checks. Read this before touching `data/`.
 - `docs/exploration/liquor.md` — the liquor-store outline, the ten **modeling rules**, and the **encoding conventions** used to turn the outline into data.
 - `data/taxonomy/departments/` — all eight departments. `data/store-types/liquor.yaml` — liquor priorities, notes, `state: CA`.
@@ -14,7 +14,7 @@ Mainline: `main` (default). New work goes in PRs against `main`. Last updated 20
 
 | Leaves | Must | Should | Nice | Dropped as not sold in CA |
 |---|---|---|---|---|
-| 1,024 | 192 | 404 | 428 | 17 nodes |
+| 1,038 | 192 | 409 | 437 | 17 nodes |
 
 Before the sales cross-check: 945 leaves (191 must, 370 should, 384 nice).
 
@@ -37,12 +37,21 @@ The encoding choices this handoff used to list for confirmation are settled. Whe
 
 Unchanged: Zyn, the CA flavored-tobacco drops, sandwich bags in department 5, Red Bull Sugar Free, and cigarette cartons at should.
 
+## Matching (Phase 4, 2026-09-29)
+
+- `pnpm match` proposes Mercaso SKUs into `data/matches/liquor.csv`; `pnpm gaps` writes `docs/exploration/liquor-gaps.md`. Both are in `scripts/match/`, with tests.
+- Every top pick was reviewed in-session: 52 wrong matches rejected, 16 added by hand (Marlboro Red, Tajín, Mega Chamoy and others). Rick approved the 1,081 matches at confidence 0.6 or higher; the rest stay pending.
+- Coverage: **865 of 1,038 items**, including 188 of 192 must. The 4 must misses: Topo Chico Twist of Lime and Black & Mild Original 5-pack (Mercaso has none), and the corkscrew and bottle-opener slots (correct but unbranded matches at 0.50 confidence, still pending).
+- The viewer shows each item's matched products by name, SKU, case pack and status.
+- Chips carry 2.5–3.25oz bags beside XVL (rule 4, Rick 2026-09-29).
+
 ## Next steps
 
-1. **Assortment slot review** (`docs/exploration/assortment-slot-review.md`). Household and mixers and bar are done: suggested brands, names and item counts are fixed, and Rick accepted all 25 priority and structure proposals, which are applied. They include a new automotive category (a quarter of liquor stores buy motor oil). Next, review health and beauty and grocery the same way.
-2. **Phase 4 — matching.** Reads the products export; the item table has UPCs. The old order-form spreadsheet (not committed; it carries prices) is a good matching fixture. First revisit rule 4 ("chips: XVL only", see `docs/exploration/liquor.md`): XVL bags barely sell through Mercaso.
-3. **Rerunning the cross-check.** Athena works (`pnpm athena:check`). `data/raw/` is gitignored, so a new session runs `pnpm athena:export`, then `pnpm crosscheck`. The script in `scripts/crosscheck/` is a rough screening matcher; its limits are in section 8 of the report.
-4. **Deploy the viewer** if wanted: `pnpm web:build` writes a static site to `apps/web/out/`.
+1. **Host the static site** if wanted: `pnpm web:build` writes it to `apps/web/out/`.
+2. **Approve the rest:** the pending rows in `data/matches/liquor.csv` (status `auto`), including the corkscrew and bottle opener.
+3. **Sourcing:** work through `docs/exploration/liquor-gaps.md` (2 must, 39 should, 96 nice).
+4. **Assortment slot review for health and beauty and grocery** (as done for household in `docs/exploration/assortment-slot-review.md`).
+5. **Refreshing:** `data/raw/` is gitignored; a new session runs `pnpm athena:export`, then `pnpm match` (keeps all review decisions) and `pnpm gaps`.
 
 ## Open items for Rick
 

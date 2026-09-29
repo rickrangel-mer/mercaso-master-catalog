@@ -664,6 +664,28 @@ select {
   padding-left: 18px;
 }
 
+.skus li {
+  margin-bottom: 6px;
+}
+
+.sku-title {
+  display: block;
+}
+
+.sku-meta {
+  display: block;
+  font-size: 11px;
+  color: var(--muted);
+}
+
+.sku-status.sku-approved {
+  color: var(--ok, inherit);
+}
+
+.sku-status.sku-auto {
+  font-style: italic;
+}
+
 .linklike {
   border: none;
   background: none;

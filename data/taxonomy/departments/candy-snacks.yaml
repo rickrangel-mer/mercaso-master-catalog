@@ -1,6 +1,6 @@
 # Candy & snacks. Source: docs/exploration/liquor.md section 3.
 # Branded: brand line -> variant (flavor) -> size. Size classes are defined per category
-# (rule 4): single / king for bars, peg for gummies, xvl for chips, retail units elsewhere.
+# (rule 4): single / king for bars, peg for gummies, 2.5–3.25oz bags and XVL for chips, retail units elsewhere.
 # "One of these brands" rows are assortment slots inside the branded category.
 key: candy-snacks
 name: Candy & snacks
@@ -334,6 +334,7 @@ children:
       - key: other-peg
         name: Other peg bags
         kind: assortment_slot
+        match_terms: ["peg"]
         target_count: { min: 1, max: 2 }
         size_class: [peg]
         brand_hints: [Mike & Ike, Sour Power, Rips, Red Vines]
@@ -505,10 +506,11 @@ children:
     name: Salty snacks (chips, corn, popcorn)
     kind: category
     size_classes:
-      xvl: XVL bag (chips are XVL only)
-      single: Other single-serve pack
+      xvl: XVL bag
+      single: Single-serve bag, can or pack, including the 2.5–3.25oz chip bag
     size_defs:
-      xvl: { name: XVL (2.5–3.5oz), size_class: xvl }
+      xvl: { name: XVL bag (about 2–2.5oz), size_class: xvl }
+      single-bag: { name: 2.5–3.25oz bag, size_class: single }
       4oz-xvl: { name: 4oz bag, size_class: xvl }
       1-3oz: { name: 1.3oz can, size_class: single }
       2-5oz: { name: 2.5oz can, size_class: single }
@@ -517,25 +519,34 @@ children:
       3-75oz: { name: 3.75oz bag, size_class: single }
       bag: { name: Single bag, size_class: single }
     children:
-      - key: frito-lay-xvl
-        name: Frito-Lay XVL
+      - key: frito-lay
+        name: Frito-Lay
         kind: brand_line
-        sizes: [xvl]
+        note: >-
+          The 2.5–3.25oz bag outsells XVL through Mercaso: XVL reaches at most 6% of stores, the
+          small bags 8–24% (rule 4 revised 2026-09-29).
+        sizes: [single-bag, xvl]
         children:
-          - { key: cheetos-flamin-hot, name: Cheetos Flamin' Hot, kind: variant }
-          - { key: cheetos-xxtra-flamin-hot, name: Cheetos Xxtra Flamin' Hot, kind: variant }
+          - { key: cheetos-flamin-hot, name: Cheetos Crunchy Flamin' Hot, kind: variant }
+          - { key: cheetos-xxtra-flamin-hot, name: Cheetos Crunchy Xxtra Flamin' Hot, kind: variant }
+          - { key: cheetos-flamin-hot-limon, name: Cheetos Crunchy Flamin' Hot Limón, kind: variant, sizes: [single-bag] }
           - { key: cheetos-crunchy, name: Cheetos Crunchy, kind: variant }
-          - { key: doritos-nacho, name: Doritos Nacho, kind: variant }
-          - { key: doritos-dinamita, name: Doritos Dinamita, kind: variant }
-          - { key: fritos-turbos-flamas, name: Fritos Turbos Flamas, kind: variant }
-          - { key: funyuns-flamin-hot, name: Funyuns Flamin' Hot, kind: variant }
+          - { key: chesters-fries-flamin-hot, name: Chester's Fries Flamin' Hot, kind: variant, sizes: [single-bag] }
+          - { key: doritos-nacho, name: Doritos Nacho Cheese, kind: variant }
+          - { key: doritos-cool-ranch, name: Doritos Cool Ranch, kind: variant, sizes: [single-bag] }
+          - { key: doritos-flamin-hot-nacho, name: Doritos Flamin' Hot Nacho, kind: variant, sizes: [single-bag] }
+          - { key: doritos-flamas, name: Doritos Flamas, kind: variant, sizes: [single-bag] }
+          - { key: doritos-dinamita, name: Doritos Dinamita, kind: variant, sizes: [xvl] }
+          - { key: fritos-original, name: Fritos Original, kind: variant, sizes: [single-bag] }
+          - { key: fritos-turbos-flamas, name: Fritos Turbos Flamas, kind: variant, sizes: [xvl] }
+          - { key: funyuns-flamin-hot, name: Funyuns Flamin' Hot, kind: variant, sizes: [xvl] }
           - { key: munchies-flamin-hot, name: Munchies Flamin' Hot, kind: variant }
-          - { key: lays-classic, name: Lay's Classic, kind: variant }
-          - { key: ruffles-cheddar, name: Ruffles Cheddar, kind: variant }
+          - { key: lays-classic, name: Lay's Classic, kind: variant, sizes: [xvl] }
+          - { key: ruffles-cheddar, name: Ruffles Cheddar, kind: variant, sizes: [xvl] }
       - key: takis
         name: Takis
         kind: brand_line
-        sizes: [4oz-xvl]
+        sizes: [single-bag, 4oz-xvl]
         children:
           - { key: fuego, name: Fuego, kind: variant }
           - { key: blue-heat, name: Blue Heat, kind: variant }
@@ -588,6 +599,7 @@ children:
       - key: value-chips
         name: Value chips
         kind: assortment_slot
+        match_terms: ["chips"]
         target_count: { min: 1, max: 1 }
         mix: [value]
         size_class: [single]
@@ -664,6 +676,7 @@ children:
       - key: japanese-peanuts
         name: Japanese peanuts
         kind: assortment_slot
+        match_terms: ["japanese peanut"]
         target_count: { min: 1, max: 1 }
         size_class: [single]
         brand_hints: [Arachi, Manzela]
@@ -671,6 +684,7 @@ children:
       - key: chili-lime-peanuts
         name: Chili-lime peanuts
         kind: assortment_slot
+        match_terms: ["peanuts, hot", "peanuts, tajin", "chili & lime", "chili lime", "hot & spicy, premium", "chile limon"]
         target_count: { min: 1, max: 1 }
         size_class: [single]
         brand_hints: [Arachi, Snak Club]
@@ -731,6 +745,7 @@ children:
       - key: snack-bars
         name: Snack bars
         kind: assortment_slot
+        match_terms: ["granola", "nature valley", "kind bar", "chewy bar", "nut bar"]
         target_count: { min: 1, max: 2 }
         size_class: [single]
         brand_hints: [Kind, Nature Valley]
@@ -744,6 +759,7 @@ children:
       - key: protein-bars
         name: Protein bars and bites
         kind: assortment_slot
+        match_terms: ["protein bar", "protein bites", "power crunch", "prime bites", "protein wafer"]
         target_count: { min: 1, max: 1 }
         size_class: [single]
         brand_hints: [Power Crunch, Prime Bites]
@@ -795,7 +811,7 @@ children:
         kind: brand_line
         sizes: [1-8oz]
         children:
-          - { key: sandwich-crackers, name: Cheese & PB sandwich crackers, kind: variant }
+          - { key: sandwich-crackers, name: Cheese & Peanut Butter sandwich crackers, kind: variant }
           - { key: club-cheddar, name: Club & Cheddar, kind: variant }
           - { key: vanilla-wafers, name: Vanilla wafers, kind: variant }
       - key: ritz
@@ -815,6 +831,7 @@ children:
       - key: value-cookies
         name: Value cookies and wafers
         kind: assortment_slot
+        match_terms: ["cookie", "wafer cookie"]
         target_count: { min: 1, max: 1 }
         mix: [value]
         brand_hints: [Bauducco, Lil' Dutch Maid]
@@ -875,6 +892,7 @@ children:
       - key: other-snack-cakes
         name: Other snack cakes
         kind: assortment_slot
+        match_terms: ["snack cake", "moon pie", "donut", "honey bun", "brownie", "cake roll", "zebra cake", "oatmeal creme"]
         target_count: { min: 1, max: 1 }
         size_class: [single]
         brand_hints: [Dolly Madison, Ne-Mo's, Moon Pie]

@@ -364,6 +364,12 @@ priority:
   # 3.6 Salty snacks
   candy-snacks.salty-snacks.takis.fuego: must
   candy-snacks.salty-snacks.takis.blue-heat: should
+  candy-snacks.salty-snacks.takis.fuego.4oz-xvl: should
+  candy-snacks.salty-snacks.takis.blue-heat.4oz-xvl: nice
+  candy-snacks.salty-snacks.frito-lay.doritos-nacho.single-bag: should
+  candy-snacks.salty-snacks.frito-lay.cheetos-flamin-hot.single-bag: should
+  candy-snacks.salty-snacks.frito-lay.cheetos-xxtra-flamin-hot.single-bag: should
+  candy-snacks.salty-snacks.frito-lay.chesters-fries-flamin-hot: should
   candy-snacks.salty-snacks.pringles.original.2-5oz: should
   candy-snacks.salty-snacks.pringles.sour-cream-onion.2-5oz: should
   candy-snacks.salty-snacks.cheez-it.original: should

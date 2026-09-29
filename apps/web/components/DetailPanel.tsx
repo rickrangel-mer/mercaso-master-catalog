@@ -89,13 +89,18 @@ export function DetailPanel({ node, index, onJump }: Props) {
           {d.match.skus.length > 0 ? (
             <ul className="skus">
               {d.match.skus.map((s) => (
-                <li key={`${s.sku}-${s.case_pack ?? ""}`} className="mono">
-                  {s.sku} {s.case_pack ? `· case ${s.case_pack}` : ""} · {s.status}
+                <li key={`${s.sku}-${s.case_pack ?? ""}`}>
+                  <span className="sku-title">{s.title ?? s.sku}</span>
+                  <span className="sku-meta mono">
+                    {s.sku}
+                    {s.case_pack ? ` · case of ${s.case_pack}` : ""} ·{" "}
+                    <span className={`sku-status sku-${s.status}`}>{s.status === "auto" ? "proposed" : s.status}</span>
+                  </span>
                 </li>
               ))}
             </ul>
           ) : (
-            <p className="muted">No SKUs matched yet (Phase 4).</p>
+            <p className="muted">No Mercaso SKU found. This item is on the gap list for sourcing.</p>
           )}
         </div>
       )}
@@ -136,8 +141,11 @@ function Legend() {
         </li>
         <li>
           <span className="match match-matched">matched</span>
-          <span className="match match-gap">gap</span> Mercaso SKU coverage
+          <span className="match match-covered">covered</span>
+          <span className="match match-partial">partial</span>
+          <span className="match match-gap">gap</span>
         </li>
+        <li className="muted">Mercaso SKU coverage; only approved matches count.</li>
         <li>
           <span className="tag flag">check</span> needs a sales or stock check
         </li>

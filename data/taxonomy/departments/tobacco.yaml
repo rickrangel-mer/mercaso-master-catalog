@@ -111,6 +111,7 @@ children:
       - key: unflavored-cigarillos
         name: Unflavored cigarillos
         kind: assortment_slot
+        match_terms: ["cigarillo", "cigars"]
         target_count: { min: 1, max: 1 }
         size_class: [pack]
         brand_hints: [Game, White Owl, Dutch Masters]
@@ -118,6 +119,7 @@ children:
       - key: other-cigars
         name: Other cigars
         kind: assortment_slot
+        match_terms: ["cigars", "cigarillo"]
         target_count: { min: 1, max: 1 }
         size_class: [pack]
         brand_hints: [Garcia y Vega, Optimo]
@@ -164,6 +166,7 @@ children:
       - key: disposable-vapes
         name: Disposable vapes
         kind: assortment_slot
+        match_terms: ["e-cigarette", "vape"]
         target_count: { min: 1, max: 1 }
         size_class: [single]
         note: FDA-authorized, tobacco flavor only in CA. Check compliance before recommending.
@@ -210,6 +213,7 @@ children:
       - key: other-roll-your-own
         name: Other roll-your-own tobacco
         kind: assortment_slot
+        match_terms: ["smoking tobacco", "pipe tobacco", "roll your own", "cigarette tobacco", "snipe"]
         target_count: { min: 1, max: 1 }
         size_class: [single]
         brand_hints: [Top, Gambler]
@@ -330,16 +334,20 @@ children:
       - key: glass-tubes
         name: Glass tubes / one-hitters
         kind: assortment_slot
+        match_terms: ["glass tube", "love rose"]
         target_count: { min: 1, max: 2 }
       - key: grinders
         name: Grinders
         kind: assortment_slot
+        match_terms: ["grinder"]
         target_count: { min: 1, max: 1 }
       - key: rolling-trays
         name: Rolling trays
         kind: assortment_slot
+        match_terms: ["rolling tray"]
         target_count: { min: 1, max: 1 }
       - key: lighter-leashes
         name: Lighter leashes / keychain lighters
         kind: assortment_slot
+        match_terms: ["lighter leash", "leash"]
         target_count: { min: 1, max: 1 }

@@ -42,6 +42,7 @@ export interface AuthoredNode {
   mix?: Mix[];
   size_class?: string[];
   brand_hints?: string[];
+  match_terms?: string[];
   children?: AuthoredNode[];
 }
 
@@ -76,6 +77,7 @@ export interface NodeAttrs {
   target_count?: { min: number; max: number };
   mix?: Mix[];
   brand_hints?: string[];
+  match_terms?: string[];
 }
 
 /** A resolved taxonomy node: full id computed, sizes expanded. */
@@ -115,6 +117,8 @@ export type MatchSource = (typeof MATCH_SOURCES)[number];
 export interface MatchRow {
   node_id: string;
   mercaso_sku: string;
+  /** Mercaso's item title, so the viewer can show what the SKU is. */
+  title?: string;
   case_pack?: number;
   rank?: number;
   confidence?: number;
@@ -132,5 +136,5 @@ export interface LeafMatch {
   approved: number;
   pending: number;
   rejected: number;
-  skus: { sku: string; status: MatchStatus; rank?: number; case_pack?: number }[];
+  skus: { sku: string; title?: string; status: MatchStatus; rank?: number; case_pack?: number }[];
 }

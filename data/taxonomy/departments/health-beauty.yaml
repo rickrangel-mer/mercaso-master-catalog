@@ -62,6 +62,7 @@ children:
       - key: energy-shot
         name: Energy shot
         kind: assortment_slot
+        match_terms: ["5-hour", "energy shot"]
         target_count: { min: 1, max: 2 }
         size_class: [small]
         brand_hints: [5-Hour Energy]
@@ -69,6 +70,7 @@ children:
       - key: vitamin-c
         name: Vitamin C / Emergen-C
         kind: assortment_slot
+        match_terms: ["emergen-c", "airborne", "vitamin c 1000"]
         target_count: { min: 1, max: 1 }
         size_class: [small]
 
@@ -123,6 +125,7 @@ children:
       - key: body-wash
         name: Body wash / hand soap
         kind: assortment_slot
+        match_terms: ["body wash"]
         target_count: { min: 1, max: 1 }
         size_class: [small]
         brand_hints: [Lucky, Dove]
@@ -159,6 +162,7 @@ children:
       - key: lotion
         name: Petroleum jelly / lotion
         kind: assortment_slot
+        match_terms: ["lotion", "petroleum jelly"]
         target_count: { min: 1, max: 1 }
         size_class: [small]
         brand_hints: [Vaseline, Nivea, Pond's]
@@ -184,6 +188,7 @@ children:
       - key: pads
         name: Pads
         kind: assortment_slot
+        match_terms: ["pads"]
         target_count: { min: 1, max: 1 }
         size_class: [small]
         brand_hints: [Always]
@@ -203,6 +208,7 @@ children:
       - key: lubricant
         name: Lubricant
         kind: assortment_slot
+        match_terms: ["ky jelly", "k-y", "personal lubricant"]
         target_count: { min: 1, max: 1 }
         size_class: [small]
         brand_hints: [Trojan]
@@ -236,6 +242,7 @@ children:
       - key: hand-sanitizer
         name: Hand sanitizer
         kind: assortment_slot
+        match_terms: ["sanitizer"]
         target_count: { min: 1, max: 1 }
         size_class: [small]
         brand_hints: [NuValu]
@@ -253,6 +260,7 @@ children:
       - key: face-masks
         name: Face masks
         kind: assortment_slot
+        match_terms: ["disposable mask", "face mask"]
         target_count: { min: 1, max: 1 }
         size_class: [small]
 
@@ -264,15 +272,18 @@ children:
       - key: nail-clipper
         name: Nail clipper / file
         kind: assortment_slot
+        match_terms: ["nail clipper"]
         target_count: { min: 1, max: 1 }
         size_class: [small]
       - key: hair-accessories
         name: Hair ties / combs / brushes
         kind: assortment_slot
+        match_terms: ["hair tie", "hair elastic", "bobby pin", "hair clip", "scrunchie", "headband", "hair band"]
         target_count: { min: 1, max: 2 }
         size_class: [small]
       - key: lashes-nail-polish
         name: Lashes / nail polish
         kind: assortment_slot
+        match_terms: ["lashes", "nail polish"]
         target_count: { min: 1, max: 1 }
         size_class: [small]

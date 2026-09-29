@@ -229,15 +229,15 @@ describe("store type", () => {
 describe("matches and output", () => {
   const { taxonomy } = taxonomyOf(dept());
   const { resolved } = resolveStoreType(storeType(), "liquor.yaml", taxonomy);
-  const header = "node_id,mercaso_sku,case_pack,rank,confidence,status,source,reviewer,note";
+  const header = "node_id,mercaso_sku,title,case_pack,rank,confidence,status,source,reviewer,note";
 
   it("validates rows", () => {
     const csv = [
       header,
-      "scd.cola.coke.classic,123,24,1,0.9,approved,rule,rick,",
-      "scd.cola.coke.classic.20oz,123,24,1,1.5,approved,rule,rick,",
-      "scd.cola.coke.classic.20oz,124,24,1,0.9,approved,rule,,",
-      "scd.cola.coke.classic.20oz,125,24,1,0.9,maybe,rule,rick,",
+      "scd.cola.coke.classic,123,,24,1,0.9,approved,rule,rick,",
+      "scd.cola.coke.classic.20oz,123,,24,1,1.5,approved,rule,rick,",
+      "scd.cola.coke.classic.20oz,124,,24,1,0.9,approved,rule,,",
+      "scd.cola.coke.classic.20oz,125,,24,1,0.9,maybe,rule,rick,",
     ].join("\n");
     const errs = errors(parseMatches(csv, "liquor.csv", taxonomy).issues);
     expect(errs).toEqual([
@@ -251,17 +251,18 @@ describe("matches and output", () => {
   it("summarizes coverage for branded leaves and assortment slots", () => {
     const csv = [
       header,
-      "scd.cola.coke.classic.20oz,100,24,1,,approved,manual,rick,",
-      "scd.cola.coke.classic.20oz,101,35,2,,approved,manual,rick,Coke 35-count case",
-      "scd.cola.coke.classic.2l,102,8,1,0.7,auto,llm,,",
-      "scd.tobacco.slot,200,,1,,approved,rule,rick,",
-      "scd.tobacco.slot,201,,2,,rejected,rule,rick,",
+      "scd.cola.coke.classic.20oz,100,Coca-Cola Classic 20oz,24,1,,approved,manual,rick,",
+      "scd.cola.coke.classic.20oz,101,,35,2,,approved,manual,rick,Coke 35-count case",
+      "scd.cola.coke.classic.2l,102,,8,1,0.7,auto,llm,,",
+      "scd.tobacco.slot,200,,,1,,approved,rule,rick,",
+      "scd.tobacco.slot,201,,,2,,rejected,rule,rick,",
     ].join("\n");
     const { rows, issues } = parseMatches(csv, "liquor.csv", taxonomy);
     expect(errors(issues)).toEqual([]);
     const summary = summarizeMatches(rows, resolved);
     expect(summary.get("scd.cola.coke.classic.20oz")?.status).toBe("matched");
     expect(summary.get("scd.cola.coke.classic.20oz")?.skus.map((s) => s.case_pack)).toEqual([24, 35]);
+    expect(summary.get("scd.cola.coke.classic.20oz")?.skus[0]?.title).toBe("Coca-Cola Classic 20oz");
     expect(summary.get("scd.cola.coke.classic.2l")).toMatchObject({ status: "gap", pending: 1 });
     expect(summary.get("scd.tobacco.slot")).toMatchObject({ status: "partial", approved: 1, rejected: 1 });
     expect(summary.get("scd.tobacco.menthol")?.status).toBe("gap");

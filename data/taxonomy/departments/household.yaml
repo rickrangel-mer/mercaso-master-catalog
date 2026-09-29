@@ -44,6 +44,7 @@ children:
       - key: disinfecting-wipes
         name: Disinfecting wipes / spray
         kind: assortment_slot
+        match_terms: ["wipes", "disinfectant spray", "disinfecting spray"]
         target_count: { min: 1, max: 1 }
         size_class: [small]
         brand_hints: [Clorox, Lysol]
@@ -75,6 +76,7 @@ children:
       - key: detergent-liquid
         name: Laundry detergent, liquid
         kind: assortment_slot
+        match_terms: ["liquid"]
         target_count: { min: 2, max: 2 }
         mix: [value]
         size_class: [small]
@@ -83,6 +85,7 @@ children:
       - key: detergent-powder
         name: Laundry detergent, powder
         kind: assortment_slot
+        match_terms: ["powder", "polvo", "oxi azul", "detergent original"]
         target_count: { min: 1, max: 2 }
         mix: [hispanic]
         size_class: [small]
@@ -122,6 +125,7 @@ children:
       - key: toilet-paper
         name: Toilet paper
         kind: assortment_slot
+        match_terms: ["toilet paper", "bath tissue", "bathroom tissue"]
         target_count: { min: 2, max: 2 }
         mix: [value, national]
         size_class: [small, regular]
@@ -130,6 +134,7 @@ children:
       - key: paper-towels
         name: Paper towels
         kind: assortment_slot
+        match_terms: ["paper towel"]
         target_count: { min: 1, max: 2 }
         mix: [value, national]
         size_class: [small]
@@ -221,6 +226,7 @@ children:
       - key: latex-gloves
         name: Latex gloves
         kind: assortment_slot
+        match_terms: ["gloves"]
         target_count: { min: 1, max: 1 }
         brand_hints: [Household, Advance]
       - key: broom-dustpan
@@ -241,15 +247,15 @@ children:
         children:
           - { key: aa, name: AA, kind: assortment_slot, target_count: { min: 1, max: 1 }, brand_hints: [Duracell, Panasonic] }
           - { key: aaa, name: AAA, kind: assortment_slot, target_count: { min: 1, max: 1 }, brand_hints: [Duracell, Panasonic] }
-          - { key: 9v, name: 9V, kind: assortment_slot, target_count: { min: 1, max: 1 }, brand_hints: [Duracell, Panasonic] }
-          - { key: cr2032, name: CR2032, kind: assortment_slot, target_count: { min: 1, max: 1 }, brand_hints: [Duracell, Panasonic] }
+          - { key: 9v, name: 9V, kind: assortment_slot, target_count: { min: 1, max: 1 }, brand_hints: [Duracell, Panasonic], match_terms: ["9v"] }
+          - { key: cr2032, name: CR2032, kind: assortment_slot, target_count: { min: 1, max: 1 }, brand_hints: [Duracell, Panasonic], match_terms: ["2032"] }
       - key: chargers-cables
         name: Chargers & cables
         kind: subcategory
         children:
-          - { key: usb-c-cable, name: USB-C cable, kind: assortment_slot, target_count: { min: 1, max: 1 }, mix: [value] }
-          - { key: lightning-cable, name: Lightning cable, kind: assortment_slot, target_count: { min: 1, max: 1 }, mix: [value] }
-          - { key: wall-block, name: Wall charger block, kind: assortment_slot, target_count: { min: 1, max: 1 }, mix: [value] }
+          - { key: usb-c-cable, name: USB-C cable, kind: assortment_slot, target_count: { min: 1, max: 1 }, mix: [value], match_terms: ["type c", "type-c", "usb-c"] }
+          - { key: lightning-cable, name: Lightning cable, kind: assortment_slot, target_count: { min: 1, max: 1 }, mix: [value], match_terms: ["iphone", "lightning"] }
+          - { key: wall-block, name: Wall charger block, kind: assortment_slot, target_count: { min: 1, max: 1 }, mix: [value], match_terms: ["wall charger", "charger block", "adapter"] }
       - key: grilling-fire
         name: Charcoal, lighter fluid & firewood
         kind: subcategory
@@ -257,8 +263,8 @@ children:
         children:
           - { key: charcoal, name: Charcoal, kind: assortment_slot, target_count: { min: 1, max: 1 }, brand_hints: [Kingsford, Carbonazo] }
           - { key: charcoal-lighter-fluid, name: Charcoal lighter fluid, kind: assortment_slot, target_count: { min: 1, max: 1 }, brand_hints: [Charcoal Master] }
-          - { key: firewood, name: Firewood / fire logs, kind: assortment_slot, target_count: { min: 1, max: 1 }, brand_hints: [Firemaster] }
-          - { key: butane-canister, name: Butane gas canister, kind: assortment_slot, target_count: { min: 1, max: 1 }, brand_hints: [Gas One] }
+          - { key: firewood, name: Firewood / fire logs, kind: assortment_slot, target_count: { min: 1, max: 1 }, brand_hints: [Firemaster], match_terms: ["firewood", "fire log"] }
+          - { key: butane-canister, name: Butane gas canister, kind: assortment_slot, target_count: { min: 1, max: 1 }, brand_hints: [Gas One], match_terms: ["canister", "cartridge"] }
 
   # 6.6 Automotive (slot review B.22). A quarter of liquor stores buy motor oil from Mercaso;
   # these are liquor stores, not gas stations mislabeled (4 of 1,993 have gas-station names).
@@ -269,12 +275,14 @@ children:
       - key: motor-oil
         name: Motor oil, 1qt
         kind: assortment_slot
+        match_terms: ["motor oil"]
         target_count: { min: 2, max: 2 }
         brand_hints: [Chevron, Pennzoil]
         note: 10W-30 and 10W-40 lead (7% of stores each); 20W-50 and 5W-30 next.
       - key: auto-fluids
         name: Auto fluids
         kind: assortment_slot
+        match_terms: ["fluid", "antifreeze", "coolant"]
         target_count: { min: 1, max: 2 }
         brand_hints: [STP, Peak, LA's Totally Awesome]
         note: Power steering fluid (7%), windshield washer, brake fluid, antifreeze.

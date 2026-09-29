@@ -15,6 +15,7 @@ import {
 export const MATCH_COLUMNS = [
   "node_id",
   "mercaso_sku",
+  "title",
   "case_pack",
   "rank",
   "confidence",
@@ -49,7 +50,7 @@ export function parseMatches(
   records.slice(1).forEach((rec, i) => {
     const where = `line ${i + 2}`;
     const err = (message: string) => issues.push({ level: "error", file, where, message });
-    const [node_id = "", sku = "", casePack = "", rank = "", confidence = "", status = "", source = "", reviewer = "", note = ""] =
+    const [node_id = "", sku = "", title = "", casePack = "", rank = "", confidence = "", status = "", source = "", reviewer = "", note = ""] =
       rec.map((v) => v.trim());
 
     const node = taxonomy.byId.get(node_id);
@@ -90,6 +91,7 @@ export function parseMatches(
     rows.push({
       node_id,
       mercaso_sku: sku,
+      ...(title ? { title } : {}),
       ...(casePackN !== undefined ? { case_pack: casePackN } : {}),
       ...(rankN !== undefined ? { rank: rankN } : {}),
       ...(confidenceN !== undefined ? { confidence: confidenceN } : {}),
@@ -146,6 +148,7 @@ export function summarizeMatches(rows: MatchRow[], resolved: ResolvedStoreType):
         .filter((r) => r.status !== "rejected")
         .map((r) => ({
           sku: r.mercaso_sku,
+          ...(r.title ? { title: r.title } : {}),
           status: r.status,
           ...(r.rank !== undefined ? { rank: r.rank } : {}),
           ...(r.case_pack !== undefined ? { case_pack: r.case_pack } : {}),

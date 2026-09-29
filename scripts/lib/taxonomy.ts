@@ -20,7 +20,7 @@ const ALLOWED_CHILDREN: Record<AuthoredKind, AuthoredKind[]> = {
   assortment_slot: [],
 };
 
-const SLOT_ONLY = ["target_count", "mix", "size_class", "brand_hints"] as const;
+const SLOT_ONLY = ["target_count", "mix", "size_class", "brand_hints", "match_terms"] as const;
 const SCOPE_KINDS: AuthoredKind[] = ["department", "category", "subcategory", "brand_line"];
 
 export interface DepartmentSource {
@@ -152,6 +152,7 @@ function walk(
     }
     if (node.mix) attrs.mix = node.mix;
     if (node.brand_hints) attrs.brand_hints = node.brand_hints;
+    if (node.match_terms) attrs.match_terms = node.match_terms;
     if (node.size_class) {
       for (const sc of node.size_class) {
         if (!scope.sizeClasses) err(`size class "${sc}" used with no size_classes vocabulary in scope`);

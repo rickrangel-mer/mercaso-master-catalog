@@ -15,7 +15,9 @@
     "web:build": "pnpm build && pnpm --filter web build",
     "athena:check": "tsx scripts/athena/run.ts check",
     "athena:export": "tsx scripts/athena/run.ts export",
-    "crosscheck": "tsx scripts/crosscheck/run.ts"
+    "crosscheck": "tsx scripts/crosscheck/run.ts",
+    "match": "tsx scripts/match/run.ts",
+    "gaps": "tsx scripts/match/gaps.ts"
   },
   "devDependencies": {
     "@aws-sdk/client-athena": "^3.1143.0",

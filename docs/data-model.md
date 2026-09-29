@@ -10,6 +10,8 @@ pnpm validate    # check every data file; exits 1 on errors
 pnpm build       # write dist/<store-type>.json (refuses if validation fails)
 pnpm test        # unit tests for the validator and build
 pnpm typecheck
+pnpm match       # propose Mercaso SKUs into data/matches/liquor.csv (needs pnpm athena:export)
+pnpm gaps        # write docs/exploration/liquor-gaps.md from the match file
 ```
 
 CI runs all four on every pull request and on pushes to `main`, then builds the tree viewer.
@@ -62,7 +64,7 @@ children:
 
 A nested `size_classes` replaces the inherited vocabulary. A nested `size_defs` adds to the inherited definitions.
 
-**Assortment leaves.** A slot needs `target_count`. It may also set `mix`, `size_class` and `brand_hints`.
+**Assortment leaves.** A slot needs `target_count`. It may also set `mix`, `size_class`, `brand_hints` and `match_terms`. `match_terms` lists phrases a Mercaso item title must contain (any one, case-insensitive) to fill the slot; without it the matcher uses the slot's own name words.
 
 ```yaml
 - key: dish-soap
@@ -111,10 +113,12 @@ A priority covers the node's whole subtree until a descendant sets its own. Ever
 `data/matches/<store-type>.csv` has this header:
 
 ```
-node_id,mercaso_sku,case_pack,rank,confidence,status,source,reviewer,note
+node_id,mercaso_sku,title,case_pack,rank,confidence,status,source,reviewer,note
 ```
 
-`node_id` must be a size or assortment-slot leaf. `status` is `auto`, `approved` or `rejected`. `source` is `rule`, `llm` or `manual`. Approved and rejected rows need a reviewer. `case_pack` carries the case option (rule 3), so one leaf can hold a 24-count and a 35-count row.
+`node_id` must be a size or assortment-slot leaf. `title` is Mercaso's item title, shown in the viewer. `status` is `auto`, `approved` or `rejected`. `source` is `rule`, `llm` or `manual`. Approved and rejected rows need a reviewer. `case_pack` carries the case option (rule 3), so one leaf can hold a 24-count and a 35-count row.
+
+`pnpm match` (`scripts/match/`) proposes rows as `auto`/`rule`, ranked by how many CA liquor stores bought each SKU. A branded leaf gets its top seller plus other case packs of that product; a slot gets its suggested brands first. Rerunning keeps approved, rejected and `manual` rows and adds no proposals to a leaf that already has an approved or hand-added SKU, so a review is never lost. To fix a wrong match, set it to `rejected` with a reviewer and rerun; the next candidate takes its place.
 
 The build computes coverage per leaf from approved rows:
 
