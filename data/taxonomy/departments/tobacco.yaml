@@ -85,7 +85,7 @@ children:
       - key: swisher-sweets
         name: Swisher Sweets
         kind: brand_line
-        note: Only unflavored cigars can be sold in CA. Whether Diamond counts as unflavored needs confirming.
+        note: Only unflavored cigars can be sold in CA; Original and Diamond qualify (Rick, 2026-09-29).
         sizes: [2-pack, 5-pack]
         children:
           - { key: original, name: Original, kind: variant }
@@ -137,10 +137,14 @@ children:
         name: Zyn
         kind: brand_line
         note: >-
-          CA's flavored tobacco ban covers nicotine pouches, so every flavored Zyn is marked
-          restricted in CA. Mercaso to confirm which Zyn it sells in CA (unflavored lines).
+          Mercaso sells Original and Smooth in 3mg and 6mg (Rick, 2026-09-29). Flavored Zyn stays
+          in the tree for other markets but is restricted in CA, where the flavor ban covers pouches.
         sizes: [can]
         children:
+          - { key: original-6mg, name: Original 6mg, kind: variant }
+          - { key: original-3mg, name: Original 3mg, kind: variant }
+          - { key: smooth-6mg, name: Smooth 6mg, kind: variant }
+          - { key: smooth-3mg, name: Smooth 3mg, kind: variant }
           - { key: wintergreen-6mg, name: Wintergreen 6mg, kind: variant, restricted: [CA] }
           - { key: wintergreen-3mg, name: Wintergreen 3mg, kind: variant, restricted: [CA] }
           - { key: cool-mint-6mg, name: Cool Mint 6mg, kind: variant, restricted: [CA] }

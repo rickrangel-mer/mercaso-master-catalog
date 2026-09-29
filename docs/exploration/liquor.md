@@ -463,6 +463,7 @@ Kind: **assortment**.
 
 - Tobacco products are in scope; Mercaso sells them now (Rick, 2026-09-28).
 - Rolling papers and wraps (4.6) confirmed in scope. Lines 4.1–4.4 are market-knowledge drafts pending an Athena stock check.
+- Zyn: Mercaso sells Original and Smooth in 3mg and 6mg. Flavored Zyn is restricted in CA. Swisher Sweets Original and Diamond are sold in CA; Grape is not (Rick, 2026-09-29).
 
 ---
 

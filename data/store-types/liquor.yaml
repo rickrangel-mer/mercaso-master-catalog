@@ -364,6 +364,9 @@ priority:
   tobacco.cigars.unflavored-cigarillos: should
 
   # 4.3 Vapes & nicotine alternatives
+  tobacco.nicotine.zyn: should
+  tobacco.nicotine.zyn.original-6mg: must
+  tobacco.nicotine.zyn.smooth-6mg: must
   tobacco.nicotine.other-pouches: should
 
   # 4.4 Smokeless & pipe tobacco
@@ -539,7 +542,7 @@ notes:
   candy-snacks.cookies-cakes.bon-appetit: Concha and Danish are should in the LA market.
   tobacco: Priorities follow LA liquor-store velocity. Lines 4.1–4.4 are drafts to confirm against Mercaso stock.
   tobacco.cigarettes.newport: Newport is must in the outline; in CA only Non-Menthol can be sold.
-  tobacco.nicotine.zyn: The outline has Wintergreen and Cool Mint 6mg as must. Every flavored Zyn is dropped in CA; confirm the unflavored Zyn Mercaso sells there.
+  tobacco.nicotine.zyn: Mercaso sells Original and Smooth, 3mg and 6mg. The 6mg are must, following the outline's "6mg must"; flavored Zyn is dropped in CA.
   grocery.instant-meals.canned-soup: Juanita's Menudo is for the LA market.
   grocery.seasonings.tajin: Tajín and chamoy are must in the LA market (department 5 mixers list).
   grocery.seasonings.mega: The outline wants one chamoy; Mega is the must pick and Tajín Chamoy the backup.

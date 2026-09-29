@@ -14,12 +14,12 @@ Mainline: `main` (default). New work goes in PRs against `main`. Last updated 20
 
 | Leaves | Must | Should | Nice | Dropped as not sold in CA |
 |---|---|---|---|---|
-| 941 | 189 | 368 | 384 | 18 nodes |
+| 945 | 191 | 370 | 384 | 17 nodes |
 
 ## Choices made while encoding, for Rick to confirm
 
-- **Zyn.** CA's flavored tobacco ban covers nicotine pouches, so every flavored Zyn is `restricted: [CA]` and the CA build has no Zyn. The outline had Wintergreen and Cool Mint 6mg as must. Which Zyn does Mercaso sell in CA?
-- **Other flavored tobacco** dropped in CA: Marlboro Menthol, Newport Box and 100s, Camel Crush, Swisher Grape, Backwoods Honey and Russian Cream, Black & Mild Casino, Copenhagen Wintergreen. Swisher Diamond is kept; confirm it counts as unflavored.
+- **Zyn** (settled 2026-09-29). Mercaso sells Original and Smooth in 3mg and 6mg. The 6mg are must and the 3mg should; flavored Zyn is dropped in CA.
+- **Other flavored tobacco** dropped in CA: Marlboro Menthol, Newport Box and 100s, Camel Crush, Swisher Grape, Backwoods Honey and Russian Cream, Black & Mild Casino, Copenhagen Wintergreen. Swisher Original and Diamond confirmed as sold in CA.
 - **Baja Micheladas.** All four flavors are must, following the department 5 decision. Section 2.6 had Original and Hot at should.
 - **Schweppes** stays should (section 1.5), although the mixers list says must.
 - **Sandwich bags** live only in department 5 (should). Department 6 links there.
