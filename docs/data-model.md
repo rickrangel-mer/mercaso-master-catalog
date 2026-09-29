@@ -12,7 +12,9 @@ pnpm test        # unit tests for the validator and build
 pnpm typecheck
 ```
 
-CI runs all four on every pull request and on pushes to `main`.
+CI runs all four on every pull request and on pushes to `main`, then builds the tree viewer.
+
+`pnpm web:dev` builds the catalog and starts the viewer. It reads `dist/*.json`, copied into `apps/web/public/data/` by its `copy-data` script.
 
 ## Files
 
