@@ -8,7 +8,7 @@ Mainline: `main` (default). New work goes in PRs against `main`. Last updated 20
 - `docs/data-model.md` — file formats, commands, and what the validator checks. Read this before touching `data/`.
 - `docs/exploration/liquor.md` — the liquor-store outline, the ten **modeling rules**, and the **encoding conventions** used to turn the outline into data.
 - `data/taxonomy/departments/` — all eight departments. `data/store-types/liquor.yaml` — liquor priorities, notes, `state: CA`.
-- `apps/web` — read-only viewer laid out as a top-down org chart, modeled on the Rippling org diagram (Next.js + d3-zoom, static export). `pnpm web:dev` to run it.
+- `apps/web` — the static site (Next.js, static export), in three tabs: **Overview** (headline numbers, coverage by department and priority, open must items), **Catalog chart** (the top-down org chart, d3-zoom) and **SKU table** (every matched Mercaso SKU with priority, type, penetration, price and margin; pivot-style groups with subtotals, sort, filter, CSV download). The tab is in the URL hash (`#overview`, `#chart`, `#table`). `pnpm web:dev` to run it.
 
 ## Numbers (liquor store, CA build)
 
@@ -42,16 +42,23 @@ Unchanged: Zyn, the CA flavored-tobacco drops, sandwich bags in department 5, Re
 - `pnpm match` proposes Mercaso SKUs into `data/matches/liquor.csv`; `pnpm gaps` writes `docs/exploration/liquor-gaps.md`. Both are in `scripts/match/`, with tests.
 - Every top pick was reviewed in-session: 52 wrong matches rejected, 16 added by hand (Marlboro Red, Tajín, Mega Chamoy and others). Rick approved the 1,081 matches at confidence 0.6 or higher; the rest stay pending.
 - Coverage: **865 of 1,038 items**, including 188 of 192 must. The 4 must misses: Topo Chico Twist of Lime and Black & Mild Original 5-pack (Mercaso has none), and the corkscrew and bottle-opener slots (correct but unbranded matches at 0.50 confidence, still pending).
-- The viewer shows each item's matched products by name, SKU, case pack and status.
+- The site shows each item's matched products by name, SKU, case pack, status, 12-month and 90-day penetration (`share_12m`, `share_90d` columns in the match file, refreshed by `pnpm match`), and today's price and margin.
+
+## Prices and margin (2026-09-29)
+
+- `pnpm athena:export pricing` writes `data/raw/pricing.csv`: price = promo price when on promo, else the regular price without CRV; cost = Finale's `average_cost` (from `ods.ods_finale_report_of_product_full`, which includes CRV) minus the case CRV. Margin = (price − cost) ÷ price.
+- Prices and costs never go in git. The web build (`apps/web/scripts/copy-data.mjs`) writes `public/data/prices.json` (gitignored) for the catalog's SKUs only; without the export the site builds without the price columns.
+- **The built site in `apps/web/out/` does contain prices and costs.** Host it only somewhere private.
+- About 6 catalog SKUs show a negative margin; they look like cost-data problems in Finale (e.g. DW13542-24 costed at $70.06 against a $47.99 price).
 - Chips carry 2.5–3.25oz bags beside XVL (rule 4, Rick 2026-09-29).
 
 ## Next steps
 
-1. **Host the static site** if wanted: `pnpm web:build` writes it to `apps/web/out/`.
+1. **Host the static site** if wanted: `pnpm web:build` writes it to `apps/web/out/`. It includes prices and margins, so keep it private (or build without `data/raw/pricing.csv`).
 2. **Approve the rest:** the pending rows in `data/matches/liquor.csv` (status `auto`), including the corkscrew and bottle opener.
 3. **Sourcing:** work through `docs/exploration/liquor-gaps.md` (2 must, 39 should, 96 nice).
 4. **Assortment slot review for health and beauty and grocery** (as done for household in `docs/exploration/assortment-slot-review.md`).
-5. **Refreshing:** `data/raw/` is gitignored; a new session runs `pnpm athena:export`, then `pnpm match` (keeps all review decisions) and `pnpm gaps`.
+5. **Refreshing:** `data/raw/` is gitignored; a new session runs `pnpm athena:export`, then `pnpm match` (keeps all review decisions), `pnpm gaps` and `pnpm web:build`.
 
 ## Open items for Rick
 

@@ -1,19 +1,23 @@
 "use client";
 
 import type { CSSProperties, ReactNode } from "react";
+import type { PriceFile } from "../lib/table";
 import { isLeaf, KIND_LABEL, type CatalogIndex, type ViewNode } from "../lib/tree";
 
 interface Props {
   node: ViewNode | null;
   index: CatalogIndex | null;
+  prices: PriceFile | null;
   onJump: (id: string) => void;
 }
 
-export function DetailPanel({ node, index, onJump }: Props) {
+export function DetailPanel({ node, index, prices, onJump }: Props) {
   if (!node || !index) {
     return (
       <aside className="detail" aria-label="Node details">
-        <p className="muted">Select a card to see its details. Use + and × on a card to open or close it.</p>
+        <p className="muted">
+          Click a card to see its details and Mercaso SKUs. Use the + under a card to open it; drag to pan, scroll or pinch to zoom.
+        </p>
         <Legend />
       </aside>
     );
@@ -93,7 +97,9 @@ export function DetailPanel({ node, index, onJump }: Props) {
                   <span className="sku-title">{s.title ?? s.sku}</span>
                   <span className="sku-meta mono">
                     {s.sku}
-                    {s.case_pack ? ` · case of ${s.case_pack}` : ""} ·{" "}
+                    {s.case_pack ? ` · case of ${s.case_pack}` : ""}
+                    {s.share_12m !== undefined ? ` · ${share(s.share_12m)} of stores (12 mo), ${share(s.share_90d ?? 0)} (90 d)` : ""}
+                    {priceText(prices?.prices[s.sku])} ·{" "}
                     <span className={`sku-status sku-${s.status}`}>{s.status === "auto" ? "proposed" : s.status}</span>
                   </span>
                 </li>
@@ -119,10 +125,15 @@ export function DetailPanel({ node, index, onJump }: Props) {
   );
 }
 
+const priceText = (p: PriceFile["prices"][string] | undefined) =>
+  p ? ` · $${p.price.toFixed(2)}${p.promo ? " promo" : ""}${p.margin !== undefined ? `, ${share(p.margin)} margin` : ""}` : "";
+
+const share = (x: number) => `${(x * 100).toFixed(x >= 0.1 ? 0 : 1)}%`;
+
 function Legend() {
   return (
-    <div className="legend section">
-      <h3>Legend</h3>
+    <details className="legend section">
+      <summary>How to read the cards</summary>
       <ul className="legend-list">
         <li>
           <span className="tag prio prio-must">must</span>
@@ -152,6 +163,6 @@ function Legend() {
         <li>↗ dashed card: link to the canonical node</li>
         <li className="muted">Drag or scroll to pan; pinch or ctrl-scroll to zoom.</li>
       </ul>
-    </div>
+    </details>
   );
 }

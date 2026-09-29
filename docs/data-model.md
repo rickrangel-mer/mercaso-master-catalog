@@ -113,10 +113,10 @@ A priority covers the node's whole subtree until a descendant sets its own. Ever
 `data/matches/<store-type>.csv` has this header:
 
 ```
-node_id,mercaso_sku,title,case_pack,rank,confidence,status,source,reviewer,note
+node_id,mercaso_sku,title,case_pack,rank,confidence,share_12m,share_90d,status,source,reviewer,note
 ```
 
-`node_id` must be a size or assortment-slot leaf. `title` is Mercaso's item title, shown in the viewer. `status` is `auto`, `approved` or `rejected`. `source` is `rule`, `llm` or `manual`. Approved and rejected rows need a reviewer. `case_pack` carries the case option (rule 3), so one leaf can hold a 24-count and a 35-count row.
+`node_id` must be a size or assortment-slot leaf. `title` is Mercaso's item title, shown in the viewer. `share_12m` and `share_90d` are the share of active CA liquor stores that bought the SKU in the last 12 months and 90 days (0 to 1), refreshed by `pnpm match`. `status` is `auto`, `approved` or `rejected`. `source` is `rule`, `llm` or `manual`. Approved and rejected rows need a reviewer. `case_pack` carries the case option (rule 3), so one leaf can hold a 24-count and a 35-count row.
 
 `pnpm match` (`scripts/match/`) proposes rows as `auto`/`rule`, ranked by how many CA liquor stores bought each SKU. A branded leaf gets its top seller plus other case packs of that product; a slot gets its suggested brands first. Rerunning keeps approved, rejected and `manual` rows and adds no proposals to a leaf that already has an approved or hand-added SKU, so a review is never lost. To fix a wrong match, set it to `rejected` with a reviewer and rerun; the next candidate takes its place.
 

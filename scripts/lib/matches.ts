@@ -19,6 +19,8 @@ export const MATCH_COLUMNS = [
   "case_pack",
   "rank",
   "confidence",
+  "share_12m",
+  "share_90d",
   "status",
   "source",
   "reviewer",
@@ -50,7 +52,7 @@ export function parseMatches(
   records.slice(1).forEach((rec, i) => {
     const where = `line ${i + 2}`;
     const err = (message: string) => issues.push({ level: "error", file, where, message });
-    const [node_id = "", sku = "", title = "", casePack = "", rank = "", confidence = "", status = "", source = "", reviewer = "", note = ""] =
+    const [node_id = "", sku = "", title = "", casePack = "", rank = "", confidence = "", share12 = "", share90 = "", status = "", source = "", reviewer = "", note = ""] =
       rec.map((v) => v.trim());
 
     const node = taxonomy.byId.get(node_id);
@@ -82,6 +84,18 @@ export function parseMatches(
         return err(`confidence "${confidence}" must be between 0 and 1`);
       }
     }
+    const shareOf = (value: string, field: string): number | undefined | null => {
+      if (value === "") return undefined;
+      const n = Number(value);
+      if (!Number.isFinite(n) || n < 0 || n > 1) {
+        err(`${field} "${value}" must be between 0 and 1`);
+        return null;
+      }
+      return n;
+    };
+    const share12N = shareOf(share12, "share_12m");
+    const share90N = shareOf(share90, "share_90d");
+    if (share12N === null || share90N === null) return;
     if (status !== "auto" && !reviewer) return err(`rows with status ${status} need a reviewer`);
 
     const dedupe = `${node_id}|${sku}|${casePackN ?? ""}`;
@@ -95,6 +109,8 @@ export function parseMatches(
       ...(casePackN !== undefined ? { case_pack: casePackN } : {}),
       ...(rankN !== undefined ? { rank: rankN } : {}),
       ...(confidenceN !== undefined ? { confidence: confidenceN } : {}),
+      ...(share12N !== undefined ? { share_12m: share12N } : {}),
+      ...(share90N !== undefined ? { share_90d: share90N } : {}),
       status: status as MatchStatus,
       source: source as MatchSource,
       ...(reviewer ? { reviewer } : {}),
@@ -150,6 +166,10 @@ export function summarizeMatches(rows: MatchRow[], resolved: ResolvedStoreType):
           sku: r.mercaso_sku,
           ...(r.title ? { title: r.title } : {}),
           status: r.status,
+          source: r.source,
+          ...(r.confidence !== undefined ? { confidence: r.confidence } : {}),
+          ...(r.share_12m !== undefined ? { share_12m: r.share_12m } : {}),
+          ...(r.share_90d !== undefined ? { share_90d: r.share_90d } : {}),
           ...(r.rank !== undefined ? { rank: r.rank } : {}),
           ...(r.case_pack !== undefined ? { case_pack: r.case_pack } : {}),
         })),

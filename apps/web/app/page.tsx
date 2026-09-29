@@ -2,8 +2,12 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { DetailPanel } from "../components/DetailPanel";
-import { Toolbar } from "../components/Toolbar";
+import { Header, TABS, type Tab } from "../components/Header";
 import { OrgChart } from "../components/OrgChart";
+import { Overview } from "../components/Overview";
+import { SkuTable } from "../components/SkuTable";
+import { Toolbar } from "../components/Toolbar";
+import { skuRows, withPrices, type PriceFile } from "../lib/table";
 import {
   ancestorIds,
   expandForHits,
@@ -18,6 +22,11 @@ import {
   type ViewNode,
 } from "../lib/tree";
 
+const tabFromHash = (): Tab => {
+  const h = typeof window === "undefined" ? "" : window.location.hash.slice(1);
+  return TABS.some((t) => t.id === h) ? (h as Tab) : "overview";
+};
+
 interface StoreTypeEntry {
   store_type: string;
   name: string;
@@ -29,6 +38,9 @@ export default function Page() {
   const [storeType, setStoreType] = useState<string>("");
   const [catalog, setCatalog] = useState<StoreTypeCatalog | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [tab, setTabState] = useState<Tab>("overview");
+  // Optional: present only when the build had a pricing export (prices never go in git).
+  const [prices, setPrices] = useState<PriceFile | null>(null);
   const [filters, setFilters] = useState<Filters>(NO_FILTERS);
   const [expanded, setExpanded] = useState<Set<string>>(new Set([ROOT_ID]));
   const [selectedId, setSelectedId] = useState<string | null>(null);
@@ -38,6 +50,26 @@ export default function Page() {
   // Set by a jump so the search-cleared effect below does not collapse the path it just opened.
   const jumping = useRef(false);
   const focusOn = useCallback((id: string) => setFocus((f) => ({ id, seq: f.seq + 1 })), []);
+
+  // The tab lives in the URL hash so a link can open the table or the chart directly.
+  useEffect(() => {
+    const sync = () => setTabState(tabFromHash());
+    sync();
+    window.addEventListener("hashchange", sync);
+    return () => window.removeEventListener("hashchange", sync);
+  }, []);
+  const setTab = useCallback((t: Tab) => {
+    setTabState(t);
+    if (window.location.hash.slice(1) !== t) window.history.replaceState(null, "", `#${t}`);
+    window.scrollTo(0, 0);
+  }, []);
+
+  useEffect(() => {
+    fetch("data/prices.json")
+      .then((r) => (r.ok ? r.json() : null))
+      .then((p: PriceFile | null) => setPrices(p))
+      .catch(() => setPrices(null));
+  }, []);
 
   useEffect(() => {
     fetch("data/index.json")
@@ -66,6 +98,7 @@ export default function Page() {
   }, [storeType, storeTypes, focusOn]);
 
   const index = useMemo(() => (catalog ? indexCatalog(catalog) : null), [catalog]);
+  const rows = useMemo(() => (index ? withPrices(skuRows(index), prices) : []), [index, prices]);
   const filtered = useMemo(() => (index ? filterTree(index, filters) : null), [index, filters]);
 
   // A new search opens the path to every hit; clearing it goes back to departments only.
@@ -109,8 +142,9 @@ export default function Page() {
       setExpanded((prev) => new Set([...prev, ...ancestorIds(index, id)]));
       setSelectedId(id);
       focusOn(id);
+      setTab("chart");
     },
-    [index, focusOn, filters.query],
+    [index, focusOn, filters.query, setTab],
   );
 
   const expandAll = useCallback(() => {
@@ -131,40 +165,37 @@ export default function Page() {
 
   const selected = selectedId && index ? (index.byId.get(selectedId) ?? null) : null;
 
+  const loading = error ? <p className="message">Could not load the catalog: {error}</p> : <p className="message">Loading…</p>;
+
   return (
-    <div className="app">
-      <Toolbar
-        storeTypes={storeTypes}
-        storeType={storeType}
-        onStoreType={setStoreType}
-        catalog={catalog}
-        filters={filters}
-        onFilters={setFilters}
-        onExpandAll={expandAll}
-        onCollapseAll={collapseAll}
-      />
-      <main className="main">
-        <section className="tree-pane" aria-label="Catalog tree">
-          {error && <p className="message">Could not load the catalog: {error}</p>}
-          {!error && !visible && <p className="message">Loading…</p>}
-          {visible && filtered && filtered.tree.children.length === 0 && (
-            <p className="message">Nothing matches these filters.</p>
-          )}
-          {visible && index && (
-            <OrgChart
-              tree={visible}
-              index={index}
-              selectedId={selectedId}
-              hits={filtered?.hits ?? new Set()}
-              focus={focus}
-              anchor={anchor}
-              onSelect={select}
-              onToggle={toggle}
-            />
-          )}
-        </section>
-        <DetailPanel node={selected} index={index} onJump={jumpTo} />
-      </main>
+    <div className={`app tab-${tab}`}>
+      <Header storeTypes={storeTypes} storeType={storeType} onStoreType={setStoreType} tab={tab} onTab={setTab} />
+      {tab === "overview" && <div className="page">{index ? <Overview index={index} rows={rows} onTab={setTab} onJump={jumpTo} /> : loading}</div>}
+      {tab === "table" && <div className="page">{index ? <SkuTable rows={rows} pricesAsOf={prices?.as_of} onJump={jumpTo} /> : loading}</div>}
+      {tab === "chart" && (
+        <>
+          <Toolbar filters={filters} onFilters={setFilters} onExpandAll={expandAll} onCollapseAll={collapseAll} />
+          <main className="main">
+            <section className="tree-pane" aria-label="Catalog chart">
+              {!visible && loading}
+              {visible && filtered && filtered.tree.children.length === 0 && <p className="message">Nothing matches these filters.</p>}
+              {visible && index && (
+                <OrgChart
+                  tree={visible}
+                  index={index}
+                  selectedId={selectedId}
+                  hits={filtered?.hits ?? new Set()}
+                  focus={focus}
+                  anchor={anchor}
+                  onSelect={select}
+                  onToggle={toggle}
+                />
+              )}
+            </section>
+            <DetailPanel node={selected} index={index} prices={prices} onJump={jumpTo} />
+          </main>
+        </>
+      )}
     </div>
   );
 }

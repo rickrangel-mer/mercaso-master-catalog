@@ -2,7 +2,7 @@
  * Runs the Athena queries in scripts/athena/sql/ and saves the results under data/raw/.
  *
  *   pnpm athena:check              confirm the credentials and Athena access
- *   pnpm athena:export             run every export (products, liquor sales)
+ *   pnpm athena:export             run every export (products, liquor sales, pricing)
  *   pnpm athena:export products    run one export by name
  *
  * Settings come from the environment: AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, optional
@@ -25,6 +25,7 @@ const EXPORTS: Record<string, { sql: string; out: string }> = {
   products: { sql: "scripts/athena/sql/products.sql", out: "data/raw/products.csv" },
   "liquor-sales": { sql: "scripts/athena/sql/liquor_sales_by_sku.sql", out: "data/raw/liquor_sales_by_sku.csv" },
   "liquor-reach": { sql: "scripts/athena/sql/liquor_reach_by_category.sql", out: "data/raw/liquor_reach_by_category.csv" },
+  pricing: { sql: "scripts/athena/sql/pricing.sql", out: "data/raw/pricing.csv" },
 };
 
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
