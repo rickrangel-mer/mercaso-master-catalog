@@ -31,8 +31,11 @@ Goal: agree on the liquor-store taxonomy and where the branded/assortment line f
 
 - pnpm workspace, TypeScript, JSON Schema for the data files, `scripts/validate.ts` (ids unique, references resolve, schema check), `scripts/build.ts` (YAML → `dist/<store-type>.json`), CI running validate on PRs.
 - Node shape: `id` (stable slug, e.g. `scd.cola.coca-cola.zero.20oz`), `name`, `kind` (department | category | subcategory | brand_line | variant | size | assortment_slot), `attrs`, `children`.
-- Assortment slot attrs: `target_count` (e.g. 2–3), `mix` (e.g. `[value, national_brand]`), `size_class`, `must_have_forms` (e.g. bar + liquid for soap).
-- Store-type file (`data/store-types/liquor.yaml`) references node ids and adds `priority` (must_carry | should_carry | nice_to_have) with inheritance down the tree, plus notes.
+- Assortment slot attrs: `target_count` (`{min, max}`, e.g. 2–3), `mix` (from `value | national | hispanic`), `size_class`, `brand_hints` (brands that help matching; not part of the leaf).
+- Other attrs: `age_restricted`, `restricted` (states, e.g. `[CA]` for menthol), `cross_ref` (points at the canonical node instead of duplicating it).
+- Store-type file (`data/store-types/liquor.yaml`) references node ids and adds `priority` (must | should | nice) with inheritance down the tree, plus notes.
+- Vocabulary follows the modeling rules in `docs/exploration/liquor.md`; those rules win over any older wording here.
+- **Status: done 2026-09-29.** See `docs/data-model.md` for the file formats as built.
 - Match rows (`data/matches/liquor.csv`): `node_id, mercaso_sku, rank, confidence, status (auto | approved | rejected), source (rule | llm | manual), reviewer, note`. Branded leaves expect 1–few rows; assortment leaves expect many.
 - `build.ts` resolves priority per node and summarizes match status per leaf: branded → matched | gap; assortment → covered (≥ target_count approved SKUs) | partial | gap.
 
@@ -40,6 +43,7 @@ Goal: agree on the liquor-store taxonomy and where the branded/assortment line f
 
 - Translate the Phase 0 outline into `data/taxonomy/*.yaml` (shared structure, reusable by other store types) and `data/store-types/liquor.yaml`.
 - Start with SCD end to end to prove both the model and the validator, then the rest in the Phase 0 order, one PR per department for review.
+- **Status:** SCD encoded 2026-09-29 together with Phase 1. Next: water, energy, sports, juice (department 2).
 - Prioritization pass: `scripts/athena/export-sales.ts` pulls sales by category for liquor-store customers; a ranking script proposes priorities; expert adjusts in PR review.
 
 ### Phase 2.5 — Sales cross-check (Athena)

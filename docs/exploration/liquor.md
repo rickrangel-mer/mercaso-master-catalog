@@ -8,7 +8,7 @@ Alcohol, beer and wine are out of scope. Tobacco is in scope (Mercaso sells it n
 
 ## Department order
 
-1. Soft drinks (SCD) — draft below
+1. Soft drinks (SCD) — discussed
 2. Water, energy, sports, juice, tea/coffee RTD — discussed
 3. Candy & snacks — discussed
 4. Tobacco & accessories — discussed
@@ -54,13 +54,13 @@ Size classes (agreed). Sizes are the **retail unit the store shelves** (12oz can
 
 No multipack class for liquor stores. Sizes the old sheet confirms Mercaso stocks for soda: 12oz can, 16oz, 16.9oz, 20oz, 1L, 2L.
 
-Liquor-store note: single-serve is the core. Take-home 2L is a must for the top two cola lines and lemon-lime. Multipacks are should/nice depending on cooler and shelf space.
+Liquor-store note: single-serve is the core. Take-home 2L is a must for the top two cola lines and lemon-lime. No multipacks (rule 4).
 
 ### 1.1 Cola
 
 | Brand line | Variants that make sense | Sizes | Priority |
 |---|---|---|---|
-| Coca-Cola | Classic, Zero Sugar, Diet Coke, Cherry, Vanilla, Caffeine-Free | 12oz can, 20oz, 2L; 12pk should | Classic/Zero/Diet must; Cherry/Vanilla should; Caffeine-Free nice |
+| Coca-Cola | Classic, Zero Sugar, Diet Coke, Cherry, Vanilla, Caffeine-Free | 12oz can, 20oz, 2L | Classic/Zero/Diet must; Cherry/Vanilla should; Caffeine-Free nice |
 | Coca-Cola Mexican (glass, cane sugar) | Classic | 355ml, 500ml | must in LA-market liquor stores |
 | Pepsi | Original, Zero Sugar, Diet, Wild Cherry | 12oz can, 20oz, 2L | Original/Zero must; Diet should; Wild Cherry should |
 | Dr Pepper | Original, Zero, Diet, Cherry | 12oz can, 20oz, 2L | Original must; Zero/Diet should; Cherry nice |
@@ -128,6 +128,8 @@ Department 5 (Mixers) will cross-reference these rather than duplicate them.
 - One priority list, no store-size split.
 - Mountain Dew under Lemon-lime.
 - Ginger ale, club soda, tonic stay in SCD.
+- No multipacks for liquor stores; the Coca-Cola 12pk is dropped (Rick, 2026-09-29).
+- Encoded in `data/taxonomy/departments/scd.yaml` and `data/store-types/liquor.yaml` (2026-09-29). Take-home sizes are must only for Coca-Cola, Pepsi, Sprite and Squirt; other must variants carry their 2L or 1.5L at should. Diet Mountain Dew had no priority and is set to nice.
 
 ---
 

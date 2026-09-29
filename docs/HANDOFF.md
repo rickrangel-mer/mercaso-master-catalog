@@ -1,28 +1,44 @@
-# Handoff — Phase 0 closed, Phase 1 next
+# Handoff — Phase 1 done, Phase 2 in progress
 
-Mainline: `main` (default). Phase 0 work was done on `claude/nifty-gates-ux5xvt`; both point at the same commit. New work goes in PRs against `main`. Last updated 2026-09-28.
+Mainline: `main` (default). New work goes in PRs against `main`. Last updated 2026-09-29.
 
 ## Where things stand
 
-- `docs/PLAN.md` — the approved plan. Phases 1–4 are unchanged and are the next agent's job.
-- `docs/exploration/liquor.md` — the liquor-store outline. All eight departments are `discussed` with Rick. The top of the file has the ten agreed **modeling rules**; each department ends with a **decisions log**. Read the rules before designing the schema.
-- `docs/exploration/prior-attempt.md` and `prior-attempt-taxonomy.md` — review of the old Mercaso order-form spreadsheet and its department tree. The spreadsheet itself (`mercaso_old_sheet.xlsx`) is not committed because it carries prices; ask Rick for it. It is a useful Phase 4 matching fixture: every row is a Mercaso item number with a parseable description.
+- `docs/PLAN.md` — the approved plan. Phase 1 is done; Phase 2 has SCD encoded.
+- `docs/data-model.md` — file formats, commands, and what the validator checks. Read this before touching `data/`.
+- `docs/exploration/liquor.md` — the liquor-store outline and the ten **modeling rules**. It is the source for every department still to encode.
+- `docs/exploration/prior-attempt.md` and `prior-attempt-taxonomy.md` — review of the old Mercaso order-form spreadsheet. The spreadsheet is not committed because it carries prices; ask Rick for it. It is a useful Phase 4 matching fixture.
 
-## Phase 2.5 — sales cross-check (deferred, not a Phase 0 blocker)
+## What Phase 1 built
 
-Compare the encoded catalog against Athena sales for liquor-store customers to catch good movers the outline missed. Described at the top of `liquor.md` and in `PLAN.md`. Blocked until working AWS credentials, region, and Athena table names are available; the keys in this cloud environment are rejected by STS (`InvalidClientTokenId`). Departments move from `discussed` to `agreed` after Rick reviews the output.
+- pnpm + TypeScript project. `pnpm validate`, `pnpm build`, `pnpm test`, `pnpm typecheck`; CI runs all four.
+- `schema/catalog.schema.json` for the YAML shapes; `scripts/lib/` for the tree, store-type and match checks.
+- Sizes are generated from `size_defs` and `sizes` lists, so variants never repeat size nodes by hand.
+- Store types can set `state`; nodes marked `restricted` in that state are dropped from the build (menthol in CA).
+- Match rows carry `case_pack`, so one leaf can hold more than one case option (rule 3).
 
-## Phase 1 starting points
+## SCD encoding choices to confirm with Rick
 
-- Stack decided: pnpm, TypeScript, YAML data files, JSON Schema, `scripts/validate.ts`, `scripts/build.ts`; Next.js + D3 tree viewer in Phase 3. Node 22 and pnpm are available in the cloud environment.
-- Node kinds: `department | category | subcategory | brand_line | variant | size | assortment_slot`. Leaf is `size` (branded) or `assortment_slot` (assortment).
-- Assortment slot attrs: `target_count {min,max}`, `mix [value|national|hispanic]`, `size_class`, `brand_hints[]`.
-- Other attrs agreed: `age_restricted`, `restricted: CA`, `cross_ref` (mixers point at the canonical node, no duplication).
-- Store-type file lists node ids with `must | should | nice`; priority inherits down the tree.
-- Prove the model with SCD (department 1) end to end first, then encode the rest one department per PR.
+- Take-home sizes are must only for Coca-Cola, Pepsi, Sprite and Squirt. Other must variants (Dr Pepper, Mountain Dew, Fanta Orange, A&W, the top Jarritos) carry 2L or 1.5L at should.
+- Canada Dry: Ginger Ale 20oz and Club Soda and Tonic 1L are must; their other sizes are should.
+- Every variant gets all of its brand line's sizes. Sizes Mercaso does not stock will show as gaps in Phase 4 and can be pruned then.
+- Diet Mountain Dew had no priority in the outline; set to nice.
+- Mirinda, Fresca and Manzanita Sol have one placeholder variant each and `verify: sales`. Shasta has only its colas, also `verify: sales`.
+- The LA-market notes (Mexican Coke, Squirt, top four Jarritos must) are store notes on the liquor store type, which is set to `state: CA`.
+
+## Next steps
+
+1. Encode department 2 (water, energy, sports, juice, RTD tea and coffee, michelada mixes) in `data/taxonomy/departments/`, add it to `index.yaml` and `include`, set priorities. One PR.
+2. Continue in the Phase 0 order, one department per PR. Department 5 mixers use `cross_ref` to SCD and juice nodes. Tobacco lines 4.1–4.4 get `verify: stock`, menthol gets `restricted: [CA]`, tobacco gets `age_restricted: true`.
+3. Phase 3 (viewer) can start in parallel now that `dist/liquor.json` has a fixed shape.
+
+## Phase 2.5 — sales cross-check (deferred)
+
+Compare the encoded catalog against Athena sales for liquor-store customers. Blocked until working AWS credentials, region, and Athena table names are available; the keys in this cloud environment are rejected by STS (`InvalidClientTokenId`). Nodes with `verify: sales` are the brand-level questions to answer there.
 
 ## Open items for Rick
 
 - Athena credentials and table names for the Phase 2.5 cross-check.
 - Guerrero tortillas: appear once in the old sheet; confirm stocked or drop.
 - Lines 4.1–4.4 (cigarettes, cigars, pouches, smokeless) are market-knowledge drafts; confirm against stock.
+- The SCD encoding choices above.

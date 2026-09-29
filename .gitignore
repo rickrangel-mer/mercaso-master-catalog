@@ -3,3 +3,5 @@ dist/
 data/raw/
 .env
 .env.*
+*.log
+.DS_Store

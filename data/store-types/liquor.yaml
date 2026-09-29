@@ -1,0 +1,104 @@
+# Liquor store (LA market). Source: docs/exploration/liquor.md.
+# `priority` maps a node id to must | should | nice. A priority covers the node's whole subtree
+# unless a descendant sets its own. Every carried leaf must end up with a priority.
+store_type: liquor
+name: Liquor store
+description: >-
+  Independent LA-market liquor store. Non-alcoholic scope only: no alcohol, beer or wine,
+  no chilled or frozen, no packaged ice. One priority list for all store sizes.
+state: CA
+
+include:
+  - scd
+
+priority:
+  # --- SCD ---------------------------------------------------------------
+  # Single-serve is the core. Take-home 2L is must only for the top two cola
+  # lines (Coca-Cola, Pepsi) and for Sprite; Squirt 2L is must as a mixer.
+  # Other must variants carry their take-home sizes at should.
+
+  # 1.1 Cola
+  scd.cola.coca-cola.classic: must
+  scd.cola.coca-cola.zero-sugar: must
+  scd.cola.coca-cola.diet: must
+  scd.cola.coca-cola.cherry: should
+  scd.cola.coca-cola.vanilla: should
+  scd.cola.coca-cola.caffeine-free: nice
+  scd.cola.coca-cola-mexican: must
+  scd.cola.pepsi.original: must
+  scd.cola.pepsi.zero-sugar: must
+  scd.cola.pepsi.diet: should
+  scd.cola.pepsi.wild-cherry: should
+  scd.cola.dr-pepper: should
+  scd.cola.dr-pepper.original: must
+  scd.cola.dr-pepper.original.2l: should
+  scd.cola.dr-pepper.cherry: nice
+  scd.cola.shasta: should
+  scd.cola.rc-cola: nice
+
+  # 1.2 Lemon-lime
+  scd.lemon-lime.sprite.original: must
+  scd.lemon-lime.sprite.zero-sugar: should
+  scd.lemon-lime.sprite.lymonade: nice
+  scd.lemon-lime.sprite.tropical-mix: nice
+  scd.lemon-lime.sprite-mexican: should
+  scd.lemon-lime.7up.original: should
+  scd.lemon-lime.7up.zero-sugar: nice
+  scd.lemon-lime.starry: nice
+  scd.lemon-lime.mountain-dew: should
+  scd.lemon-lime.mountain-dew.original: must
+  scd.lemon-lime.mountain-dew.original.2l: should
+  scd.lemon-lime.mountain-dew.diet: nice
+  scd.lemon-lime.mountain-dew.baja-blast: nice
+
+  # 1.3 Citrus, fruit & Mexican sodas
+  scd.fruit-mexican.fanta: should
+  scd.fruit-mexican.fanta.orange: must
+  scd.fruit-mexican.fanta.orange.2l: should
+  scd.fruit-mexican.fanta.grape: nice
+  scd.fruit-mexican.fanta.zero-orange: nice
+  scd.fruit-mexican.fanta-mexican: nice
+  scd.fruit-mexican.fanta-mexican.orange: should
+  scd.fruit-mexican.cactus-cooler: should
+  scd.fruit-mexican.crush: nice
+  scd.fruit-mexican.crush.orange: should
+  scd.fruit-mexican.sunkist: should
+  scd.fruit-mexican.squirt: must
+  scd.fruit-mexican.jarritos: should
+  scd.fruit-mexican.jarritos.mandarin: must
+  scd.fruit-mexican.jarritos.mandarin.1-5l: should
+  scd.fruit-mexican.jarritos.lime: must
+  scd.fruit-mexican.jarritos.lime.1-5l: should
+  scd.fruit-mexican.jarritos.tamarind: must
+  scd.fruit-mexican.jarritos.tamarind.1-5l: should
+  scd.fruit-mexican.jarritos.grapefruit: must
+  scd.fruit-mexican.jarritos.grapefruit.1-5l: should
+  scd.fruit-mexican.sangria-senorial: should
+  scd.fruit-mexican.sidral-mundet: should
+  scd.fruit-mexican.mirinda: nice
+  scd.fruit-mexican.fresca: nice
+  scd.fruit-mexican.manzanita-sol: nice
+
+  # 1.4 Root beer & cream
+  scd.root-beer-cream.a-and-w: should
+  scd.root-beer-cream.a-and-w.root-beer: must
+  scd.root-beer-cream.a-and-w.root-beer.2l: should
+  scd.root-beer-cream.barqs: should
+  scd.root-beer-cream.mug: nice
+
+  # 1.5 Ginger ale, club soda & tonic
+  scd.ginger-ale-club-tonic.canada-dry: should
+  scd.ginger-ale-club-tonic.canada-dry.ginger-ale.20oz: must
+  scd.ginger-ale-club-tonic.canada-dry.ginger-ale-zero: nice
+  scd.ginger-ale-club-tonic.canada-dry.club-soda.1l: must
+  scd.ginger-ale-club-tonic.canada-dry.tonic.1l: must
+  scd.ginger-ale-club-tonic.schweppes: should
+  scd.ginger-ale-club-tonic.seagrams: nice
+
+notes:
+  scd.cola.coca-cola-mexican: Must in the LA market.
+  scd.lemon-lime.sprite-mexican: Should in the LA market.
+  scd.fruit-mexican.squirt: Must in the LA market; paloma mixer, including 2L.
+  scd.fruit-mexican.jarritos: The top four flavors (Mandarin, Lime, Tamarind, Grapefruit) are must in the LA market.
+  scd.lemon-lime.mountain-dew.diet: The outline gave Diet Mountain Dew no priority; set to nice.
+  scd.ginger-ale-club-tonic.canada-dry: Ginger Ale 20oz and Club Soda and Tonic 1L are must as mixers.
