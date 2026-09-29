@@ -1,4 +1,4 @@
-# Handoff — Phases 1–3 done; Athena works, 2.5 and 4 are next
+# Handoff — Phases 1–3 done; Phase 2.5 report awaits Rick's decisions
 
 Mainline: `main` (default). New work goes in PRs against `main`. Last updated 2026-09-29.
 
@@ -32,8 +32,8 @@ Mainline: `main` (default). New work goes in PRs against `main`. Last updated 20
 
 ## Next steps
 
-1. **Rick reviews** the choices above; changes are one-line edits in `data/`.
-2. **Phase 2.5 — sales cross-check.** Athena works as of 2026-09-29 (`pnpm athena:check` passes). `pnpm athena:export` wrote `data/raw/products.csv` (65,061 items) and `data/raw/liquor_sales_by_sku.csv` (14,980 SKUs, 1,993 active CA liquor stores). `data/raw/` is gitignored, so a new session reruns the export first (about 20 seconds). Next, compare the outline against the sales export: nodes with `verify: sales` are the brand-level questions; `verify: stock` nodes need a stock check. See `docs/athena.md` and `scripts/athena/sql/`.
+1. **Rick fills in the Decision column** of `docs/exploration/sales-crosscheck.md` (106 rows). The report also bears on five of the encoding choices above: Baja Micheladas (3.6), Schweppes (3.20), Clamato Picante (5.11), the Tajín "Fruit" question (1.12) and the Sparkling Ice, Calypso and energy stand-ins (section 4). A later session applies the accepted rows to `data/` and marks departments `agreed` in `docs/exploration/liquor.md`.
+2. **Rerunning the cross-check.** Athena works (`pnpm athena:check`). `data/raw/` is gitignored, so a new session runs `pnpm athena:export`, then `pnpm crosscheck`, which writes `data/raw/crosscheck/*.csv`. The script in `scripts/crosscheck/` is a rough screening matcher. Its limits are in section 8 of the report.
 3. **Phase 4 — matching.** Reads the products export; the item table has UPCs. The old order-form spreadsheet (not committed; it carries prices) is a good matching fixture.
 4. **Deploy the viewer** if wanted: `pnpm web:build` writes a static site to `apps/web/out/`.
 
@@ -41,7 +41,6 @@ Mainline: `main` (default). New work goes in PRs against `main`. Last updated 20
 
 - **Remove `AWS_SESSION_TOKEN` from the environment settings.** The key is a long-term `AKIA` key, and AWS rejects that key when a session token comes with it. The runner now ignores the token and warns, so nothing is blocked.
 - The key belongs to the IAM user `meng.local`. If that is someone's personal user, consider a dedicated read-only user for this repo.
-- Guerrero tortillas: appear once in the old sheet; confirm stocked or drop.
 - Lines 4.1–4.4 (cigarettes, cigars, pouches, smokeless) are market-knowledge drafts; confirm against stock.
-- The encoding choices above.
+- The encoding choices above, and the Decision column in `docs/exploration/sales-crosscheck.md`.
 - Where to host the viewer, if anywhere.

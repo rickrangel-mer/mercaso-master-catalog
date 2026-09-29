@@ -51,7 +51,8 @@ Goal: agree on the liquor-store taxonomy and where the branded/assortment line f
 - Query Athena for liquor-store customers, trailing 12 months: units and revenue by category and item.
 - Compare against the encoded catalog: top movers that map to no node → candidate additions; `must` nodes with negligible sales → candidate downgrades; brand-level sanity where the outline defers to data (aloe, coconut water, Mexican candy, energy drinks, tobacco lines 4.1–4.4).
 - Output `docs/exploration/sales-crosscheck.md` with a decision column; Rick reviews; departments move to `agreed`.
-- Tables and joins are known (2026-09-29); queries are in `scripts/athena/sql/`, see `docs/athena.md`. Until AWS credentials work here (still rejected by STS on 2026-09-29), Rick runs them in the Athena console and shares the CSVs.
+- Tables and joins are known (2026-09-29); queries are in `scripts/athena/sql/`, see `docs/athena.md`.
+- **Status: report written 2026-09-29, awaiting Rick's decisions.** `pnpm crosscheck` matches sales to leaves (`scripts/crosscheck/`); `docs/exploration/sales-crosscheck.md` holds the proposals, each with an empty Decision cell. Accepted rows become edits in `data/`, then departments move to `agreed`.
 
 ### Phase 3 — Family-tree web UI (read-only)
 

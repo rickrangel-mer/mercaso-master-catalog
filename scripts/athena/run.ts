@@ -24,6 +24,7 @@ const ROOT = process.cwd();
 const EXPORTS: Record<string, { sql: string; out: string }> = {
   products: { sql: "scripts/athena/sql/products.sql", out: "data/raw/products.csv" },
   "liquor-sales": { sql: "scripts/athena/sql/liquor_sales_by_sku.sql", out: "data/raw/liquor_sales_by_sku.csv" },
+  "liquor-reach": { sql: "scripts/athena/sql/liquor_reach_by_category.sql", out: "data/raw/liquor_reach_by_category.csv" },
 };
 
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
