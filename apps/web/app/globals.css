@@ -1206,3 +1206,8 @@ select {
   color: var(--must);
   font-weight: 600;
 }
+
+.snapshot {
+  font-size: 12.5px;
+  white-space: nowrap;
+}

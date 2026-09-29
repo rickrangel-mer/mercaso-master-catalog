@@ -19,6 +19,7 @@ pnpm validate
 pnpm build     # writes dist/liquor.json
 pnpm web:dev   # tree viewer at http://localhost:3000
 pnpm web:build # static site in apps/web/out/
+pnpm web:html  # the whole site as one HTML file in dist/site/ (opens from disk, no server)
 ```
 
 ## Layout

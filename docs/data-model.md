@@ -18,6 +18,8 @@ CI runs all four on every pull request and on pushes to `main`, then builds the 
 
 `pnpm web:dev` builds the catalog and starts the viewer. It reads `dist/*.json`, copied into `apps/web/public/data/` by its `copy-data` script.
 
+`pnpm web:html` builds the same site as one self-contained HTML file (code, styles and data inlined, via esbuild; `apps/web/scripts/single-html.mjs`). It writes `dist/site/mercaso-liquor-catalog-<date>.html` with price and margin (when `data/raw/pricing.csv` exists) and `...-no-prices.html` without them. The files open straight from disk and make no network requests; the date is the price and cost snapshot and shows in the header.
+
 ## Files
 
 ```

@@ -8,7 +8,7 @@ Mainline: `main` (default). New work goes in PRs against `main`. Last updated 20
 - `docs/data-model.md` — file formats, commands, and what the validator checks. Read this before touching `data/`.
 - `docs/exploration/liquor.md` — the liquor-store outline, the ten **modeling rules**, and the **encoding conventions** used to turn the outline into data.
 - `data/taxonomy/departments/` — all eight departments. `data/store-types/liquor.yaml` — liquor priorities, notes, `state: CA`.
-- `apps/web` — the static site (Next.js, static export), in three tabs: **Overview** (headline numbers, coverage by department and priority, open must items), **Catalog chart** (the top-down org chart, d3-zoom) and **SKU table** (every matched Mercaso SKU with priority, type, penetration, price and margin; pivot-style groups with subtotals, sort, filter, CSV download). The tab is in the URL hash (`#overview`, `#chart`, `#table`). `pnpm web:dev` to run it.
+- `apps/web` — the static site (Next.js, static export), in three tabs: **Overview** (headline numbers, coverage by department and priority, open must items), **Catalog chart** (the top-down org chart, d3-zoom) and **SKU table** (every matched Mercaso SKU with priority, type, penetration, price and margin; pivot-style groups with subtotals, sort, filter, CSV download). The tab is in the URL hash (`#overview`, `#chart`, `#table`). `pnpm web:dev` to run it; `pnpm web:html` builds it as a single HTML file to share.
 
 ## Numbers (liquor store, CA build)
 
@@ -54,11 +54,11 @@ Unchanged: Zyn, the CA flavored-tobacco drops, sandwich bags in department 5, Re
 
 ## Next steps
 
-1. **Host the static site** if wanted: `pnpm web:build` writes it to `apps/web/out/`. It includes prices and margins, so keep it private (or build without `data/raw/pricing.csv`).
+1. **Share the site as a file** (the choice for now): `pnpm web:html` writes `dist/site/mercaso-liquor-catalog-<date>.html` (with price and margin) and `...-no-prices.html`. Share the priced file only privately, e.g. a restricted Drive folder; people download it and open it in a browser (Drive's preview shows only the source). Hosting behind company sign-in can come later; `pnpm web:build` still writes the multi-file site to `apps/web/out/`.
 2. **Approve the rest:** the pending rows in `data/matches/liquor.csv` (status `auto`), including the corkscrew and bottle opener.
 3. **Sourcing:** work through `docs/exploration/liquor-gaps.md` (2 must, 39 should, 96 nice).
 4. **Assortment slot review for health and beauty and grocery** (as done for household in `docs/exploration/assortment-slot-review.md`).
-5. **Refreshing:** `data/raw/` is gitignored; a new session runs `pnpm athena:export`, then `pnpm match` (keeps all review decisions), `pnpm gaps` and `pnpm web:build`.
+5. **Refreshing:** `data/raw/` is gitignored; a new session runs `pnpm athena:export`, then `pnpm match` (keeps all review decisions), `pnpm gaps` and `pnpm web:html`.
 
 ## Open items for Rick
 
