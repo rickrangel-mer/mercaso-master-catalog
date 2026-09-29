@@ -37,14 +37,25 @@ All in `scripts/athena/sql/`:
 
 ## How to run
 
-Until this environment has working AWS credentials, run the queries in the Athena console and download the results as CSV. Then add the CSVs to the session. Once credentials work, a script can run the same SQL directly.
+With the credentials in the environment:
 
-Direct access needs:
-- A read-only access key that STS accepts. The keys in this environment are rejected with `InvalidClientTokenId` as of 2026-09-29.
-- The AWS region.
-- The Athena workgroup and the S3 location for query results.
+```
+pnpm athena:check                  # who am I, and can Athena read the item table
+pnpm athena:export                 # both exports into data/raw/
+pnpm athena:export liquor-sales    # or one of: products, liquor-sales
+```
 
-These go in the environment's secret settings, never in the repo.
+The runner is `scripts/athena/run.ts`. It reads these variables, set in the cloud environment's settings. A new session picks them up; a running one does not.
+
+| Variable | Notes |
+|---|---|
+| `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY` | Read directly, so `AWS_PROFILE` cannot redirect them. |
+| `AWS_SESSION_TOKEN` | Needed for temporary credentials. These expire, often within hours; the runner says so when it happens. |
+| `AWS_REGION` | Required. |
+| `ATHENA_WORKGROUP` | Defaults to `primary`. |
+| `ATHENA_S3_STAGING_DIR` | S3 path for query results. Optional if the workgroup sets one. |
+
+Without credentials, run the SQL files in the Athena console, download each result as CSV, and add the files to the session.
 
 ## Confirmed facts (Rick, 2026-09-29)
 

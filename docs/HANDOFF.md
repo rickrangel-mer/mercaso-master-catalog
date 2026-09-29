@@ -33,7 +33,7 @@ Mainline: `main` (default). New work goes in PRs against `main`. Last updated 20
 ## Next steps
 
 1. **Rick reviews** the choices above; changes are one-line edits in `data/`.
-2. **Phase 2.5 — sales cross-check.** Tables and queries are ready: see `docs/athena.md` and `scripts/athena/sql/`. Rick confirmed the table facts (recorded in `docs/athena.md`); next is running `products.sql` and `liquor_sales_by_sku.sql` in the Athena console and sharing the CSVs. AWS keys in this environment are still rejected by STS (`InvalidClientTokenId`). Nodes with `verify: sales` are the brand-level questions; `verify: stock` nodes need a stock check.
+2. **Phase 2.5 — sales cross-check.** Tables and queries are ready: see `docs/athena.md` and `scripts/athena/sql/`. Rick confirmed the table facts (recorded in `docs/athena.md`) and added AWS credentials to the environment on 2026-09-29. In a new session run `pnpm athena:check`, then `pnpm athena:export`; results land in `data/raw/` (gitignored). AWS keys in this environment are still rejected by STS (`InvalidClientTokenId`). Nodes with `verify: sales` are the brand-level questions; `verify: stock` nodes need a stock check.
 3. **Phase 4 — matching.** Reads the products export; the item table has UPCs. The old order-form spreadsheet (not committed; it carries prices) is a good matching fixture.
 4. **Deploy the viewer** if wanted: `pnpm web:build` writes a static site to `apps/web/out/`.
 
