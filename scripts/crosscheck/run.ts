@@ -81,7 +81,8 @@ const activeStores = Number(raw[0]?.liquor_stores_active) || 0;
 const reach = new Map<string, number>();
 try {
   const reachRows: Record<string, string>[] = parse(readFileSync(join(ROOT, "data/raw/liquor_reach_by_category.csv"), "utf8"), { columns: true });
-  for (const r of reachRows) if (r.category) reach.set(`${r.department}|${r.category}`, Number(r.store_share));
+  // Category totals only; sub-category rows (non-blank sub_category) are for the slot review.
+  for (const r of reachRows) if (r.category && !r.sub_category) reach.set(`${r.department}|${r.category}`, Number(r.store_share));
 } catch {
   console.warn("data/raw/liquor_reach_by_category.csv is missing; relative_pct will be blank. Run pnpm athena:export liquor-reach.");
 }
