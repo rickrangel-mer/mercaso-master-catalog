@@ -19,7 +19,6 @@
   "devDependencies": {
     "@aws-sdk/client-athena": "^3.1143.0",
     "@aws-sdk/client-sts": "^3.1143.0",
-    "@aws-sdk/credential-provider-env": "^3.972.72",
     "@types/node": "^22.20.4",
     "tsx": "^4.23.15",
     "typescript": "^7.0.2",

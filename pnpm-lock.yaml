@@ -24,9 +24,6 @@ importers:
       '@aws-sdk/client-sts':
         specifier: ^3.1143.0
         version: 3.1143.0
-      '@aws-sdk/credential-provider-env':
-        specifier: ^3.972.72
-        version: 3.972.72
       '@types/node':
         specifier: ^22.20.4
         version: 22.20.4

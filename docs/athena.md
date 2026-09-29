@@ -50,7 +50,7 @@ The runner is `scripts/athena/run.ts`. It reads these variables, set in the clou
 | Variable | Notes |
 |---|---|
 | `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY` | Read directly, so `AWS_PROFILE` cannot redirect them. |
-| `AWS_SESSION_TOKEN` | Needed for temporary credentials. These expire, often within hours; the runner says so when it happens. |
+| `AWS_SESSION_TOKEN` | Only for temporary keys (`ASIA...`). These expire, often within hours; the runner says so when it happens. Next to a long-term key (`AKIA...`) AWS rejects it, so the runner ignores it and warns. |
 | `AWS_REGION` | Required. |
 | `ATHENA_WORKGROUP` | Defaults to `primary`. |
 | `ATHENA_S3_STAGING_DIR` | S3 path for query results. Optional if the workgroup sets one. |

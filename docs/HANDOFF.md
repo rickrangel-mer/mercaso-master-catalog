@@ -1,4 +1,4 @@
-# Handoff — Phases 1–3 done; 2.5 and 4 wait on Athena
+# Handoff — Phases 1–3 done; Athena works, 2.5 and 4 are next
 
 Mainline: `main` (default). New work goes in PRs against `main`. Last updated 2026-09-29.
 
@@ -33,13 +33,14 @@ Mainline: `main` (default). New work goes in PRs against `main`. Last updated 20
 ## Next steps
 
 1. **Rick reviews** the choices above; changes are one-line edits in `data/`.
-2. **Phase 2.5 — sales cross-check.** Tables and queries are ready: see `docs/athena.md` and `scripts/athena/sql/`. Rick confirmed the table facts (recorded in `docs/athena.md`) and added AWS credentials to the environment on 2026-09-29. In a new session run `pnpm athena:check`, then `pnpm athena:export`; results land in `data/raw/` (gitignored). The session that wrote this predates those credentials and could not test them; `athena:check` is the first real test. Nodes with `verify: sales` are the brand-level questions; `verify: stock` nodes need a stock check.
+2. **Phase 2.5 — sales cross-check.** Athena works as of 2026-09-29 (`pnpm athena:check` passes). `pnpm athena:export` wrote `data/raw/products.csv` (65,061 items) and `data/raw/liquor_sales_by_sku.csv` (14,980 SKUs, 1,993 active CA liquor stores). `data/raw/` is gitignored, so a new session reruns the export first (about 20 seconds). Next, compare the outline against the sales export: nodes with `verify: sales` are the brand-level questions; `verify: stock` nodes need a stock check. See `docs/athena.md` and `scripts/athena/sql/`.
 3. **Phase 4 — matching.** Reads the products export; the item table has UPCs. The old order-form spreadsheet (not committed; it carries prices) is a good matching fixture.
 4. **Deploy the viewer** if wanted: `pnpm web:build` writes a static site to `apps/web/out/`.
 
 ## Open items for Rick
 
-- Nothing for Athena unless `pnpm athena:check` fails in the new session; its message says what to fix.
+- **Remove `AWS_SESSION_TOKEN` from the environment settings.** The key is a long-term `AKIA` key, and AWS rejects that key when a session token comes with it. The runner now ignores the token and warns, so nothing is blocked.
+- The key belongs to the IAM user `meng.local`. If that is someone's personal user, consider a dedicated read-only user for this repo.
 - Guerrero tortillas: appear once in the old sheet; confirm stocked or drop.
 - Lines 4.1–4.4 (cigarettes, cigars, pouches, smokeless) are market-knowledge drafts; confirm against stock.
 - The encoding choices above.
