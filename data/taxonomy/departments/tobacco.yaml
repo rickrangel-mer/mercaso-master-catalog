@@ -1,0 +1,340 @@
+# Tobacco & accessories. Source: docs/exploration/liquor.md section 4.
+# Branded. Lines 4.1–4.4 are market-knowledge drafts pending a stock check (`verify: stock`).
+# Rule 9: tobacco products carry `age_restricted: true`; menthol and other flavored tobacco
+# carry `restricted: [CA]`, so a store type with `state: CA` drops them from its build.
+key: tobacco
+name: Tobacco & accessories
+kind: department
+children:
+  # 4.1 Cigarettes
+  - key: cigarettes
+    name: Cigarettes
+    kind: category
+    age_restricted: true
+    verify: stock
+    size_classes:
+      single: One pack
+      multi: Carton
+    size_defs:
+      pack: { name: Pack, size_class: single, unit_count: 20 }
+      carton: { name: Carton, size_class: multi, unit_count: 200 }
+    children:
+      - key: marlboro
+        name: Marlboro
+        kind: brand_line
+        sizes: [pack, carton]
+        children:
+          - { key: red, name: Red, kind: variant }
+          - { key: gold, name: Gold, kind: variant }
+          - { key: menthol, name: Menthol, kind: variant, restricted: [CA] }
+          - { key: red-100s, name: Red 100s, kind: variant }
+          - { key: special-blend, name: Special Blend, kind: variant }
+      - key: newport
+        name: Newport
+        kind: brand_line
+        sizes: [pack, carton]
+        children:
+          - { key: box, name: Box (menthol), kind: variant, restricted: [CA] }
+          - { key: 100s, name: 100s (menthol), kind: variant, restricted: [CA] }
+          - { key: non-menthol, name: Non-Menthol, kind: variant }
+      - key: camel
+        name: Camel
+        kind: brand_line
+        sizes: [pack]
+        children:
+          - { key: blue, name: Blue, kind: variant }
+          - { key: crush, name: Crush (menthol capsule), kind: variant, restricted: [CA] }
+          - { key: turkish-royal, name: Turkish Royal, kind: variant }
+      - key: american-spirit
+        name: American Spirit
+        kind: brand_line
+        sizes: [pack]
+        children:
+          - { key: blue, name: Blue, kind: variant }
+          - { key: yellow, name: Yellow, kind: variant }
+      - key: value-cigarettes
+        name: Value cigarettes
+        kind: assortment_slot
+        target_count: { min: 1, max: 1 }
+        mix: [value]
+        size_class: [single]
+        brand_hints: [Pall Mall, L&M, Maverick]
+        note: One value line, Red and Blue.
+      - key: other-cigarettes
+        name: Other cigarette lines
+        kind: assortment_slot
+        target_count: { min: 1, max: 1 }
+        size_class: [single]
+        brand_hints: [Winston, Parliament]
+        note: The outline also lists Kool, which is menthol and cannot be sold in CA.
+
+  # 4.2 Cigars & cigarillos
+  - key: cigars
+    name: Cigars & cigarillos
+    kind: category
+    age_restricted: true
+    verify: stock
+    size_classes:
+      single: Single cigar
+      pack: Small pack
+    size_defs:
+      single: { name: Single, size_class: single, unit_count: 1 }
+      2-pack: { name: 2-pack, size_class: pack, unit_count: 2 }
+      5-pack: { name: 5-pack, size_class: pack, unit_count: 5 }
+    children:
+      - key: swisher-sweets
+        name: Swisher Sweets
+        kind: brand_line
+        note: Only unflavored cigars can be sold in CA. Whether Diamond counts as unflavored needs confirming.
+        sizes: [2-pack, 5-pack]
+        children:
+          - { key: original, name: Original, kind: variant }
+          - { key: grape, name: Grape, kind: variant, restricted: [CA] }
+          - { key: diamond, name: Diamond, kind: variant }
+      - key: backwoods
+        name: Backwoods
+        kind: brand_line
+        sizes: [single, 5-pack]
+        children:
+          - { key: original, name: Original, kind: variant }
+          - { key: honey, name: Honey, kind: variant, restricted: [CA] }
+          - { key: russian-cream, name: Russian Cream, kind: variant, restricted: [CA] }
+      - key: black-and-mild
+        name: Black & Mild
+        kind: brand_line
+        sizes: [single, 5-pack]
+        children:
+          - { key: original, name: Original, kind: variant }
+          - { key: wood-tip, name: Wood Tip, kind: variant }
+          - { key: casino, name: Casino, kind: variant, restricted: [CA] }
+      - key: unflavored-cigarillos
+        name: Unflavored cigarillos
+        kind: assortment_slot
+        target_count: { min: 1, max: 1 }
+        size_class: [pack]
+        brand_hints: [Game, White Owl, Dutch Masters]
+        note: One brand, unflavored varieties, 2-pack.
+      - key: other-cigars
+        name: Other cigars
+        kind: assortment_slot
+        target_count: { min: 1, max: 1 }
+        size_class: [pack]
+        brand_hints: [Garcia y Vega, Optimo]
+
+  # 4.3 Vapes & nicotine alternatives
+  - key: nicotine
+    name: Vapes & nicotine alternatives
+    kind: category
+    age_restricted: true
+    verify: stock
+    size_classes:
+      single: One can, pack or device
+    size_defs:
+      can: { name: Can, size_class: single }
+      pod-pack: { name: Pod pack, size_class: single }
+    children:
+      - key: zyn
+        name: Zyn
+        kind: brand_line
+        note: >-
+          CA's flavored tobacco ban covers nicotine pouches, so every flavored Zyn is marked
+          restricted in CA. Mercaso to confirm which Zyn it sells in CA (unflavored lines).
+        sizes: [can]
+        children:
+          - { key: wintergreen-6mg, name: Wintergreen 6mg, kind: variant, restricted: [CA] }
+          - { key: wintergreen-3mg, name: Wintergreen 3mg, kind: variant, restricted: [CA] }
+          - { key: cool-mint-6mg, name: Cool Mint 6mg, kind: variant, restricted: [CA] }
+          - { key: cool-mint-3mg, name: Cool Mint 3mg, kind: variant, restricted: [CA] }
+          - { key: spearmint-6mg, name: Spearmint 6mg, kind: variant, restricted: [CA] }
+          - { key: spearmint-3mg, name: Spearmint 3mg, kind: variant, restricted: [CA] }
+          - { key: citrus-6mg, name: Citrus 6mg, kind: variant, restricted: [CA] }
+          - { key: citrus-3mg, name: Citrus 3mg, kind: variant, restricted: [CA] }
+      - key: other-pouches
+        name: Other nicotine pouches
+        kind: assortment_slot
+        target_count: { min: 1, max: 1 }
+        size_class: [single]
+        brand_hints: [On!, Velo, Rogue]
+        note: In CA, unflavored only.
+      - key: disposable-vapes
+        name: Disposable vapes
+        kind: assortment_slot
+        target_count: { min: 1, max: 1 }
+        size_class: [single]
+        note: FDA-authorized, tobacco flavor only in CA. Check compliance before recommending.
+      - key: juul
+        name: Juul
+        kind: brand_line
+        sizes: [pod-pack]
+        children:
+          - { key: tobacco-pods, name: Tobacco pods, kind: variant }
+
+  # 4.4 Smokeless & pipe tobacco
+  - key: smokeless
+    name: Smokeless & pipe tobacco
+    kind: category
+    age_restricted: true
+    verify: stock
+    size_classes:
+      single: One can or pouch
+    size_defs:
+      can: { name: Can, size_class: single }
+      pouch: { name: Pouch, size_class: single }
+    children:
+      - key: copenhagen
+        name: Copenhagen
+        kind: brand_line
+        sizes: [can]
+        children:
+          - { key: long-cut, name: Long Cut, kind: variant }
+          - { key: wintergreen, name: Wintergreen, kind: variant, restricted: [CA] }
+          - { key: snuff, name: Snuff, kind: variant }
+      - key: other-smokeless
+        name: Other smokeless
+        kind: assortment_slot
+        target_count: { min: 1, max: 1 }
+        size_class: [single]
+        brand_hints: [Grizzly, Skoal]
+        note: In CA, unflavored only.
+      - key: bugler
+        name: Bugler (roll-your-own)
+        kind: brand_line
+        sizes: [pouch]
+        children:
+          - { key: original, name: Original, kind: variant }
+      - key: other-roll-your-own
+        name: Other roll-your-own tobacco
+        kind: assortment_slot
+        target_count: { min: 1, max: 1 }
+        size_class: [single]
+        brand_hints: [Top, Gambler]
+
+  # 4.5 Lighters & matches (confirmed from the old sheet; not age restricted)
+  - key: lighters
+    name: Lighters & matches
+    kind: category
+    size_classes:
+      single: One lighter, refill or box
+    size_defs:
+      single: { name: Single, size_class: single, unit_count: 1 }
+      4oz: { name: 4oz can, size_class: single }
+      300ml: { name: 300ml can, size_class: single }
+      50ct-box: { name: Box of 50 matchbooks, size_class: single, unit_count: 50 }
+    children:
+      - key: bic
+        name: Bic
+        kind: brand_line
+        note: Sold from a 50-tray; the tray is the case pack.
+        sizes: [single]
+        children:
+          - { key: classic, name: Classic assorted, kind: variant }
+          - { key: mini, name: Mini, kind: variant }
+      - key: clipper
+        name: Clipper
+        kind: brand_line
+        verify: stock
+        sizes: [single]
+        children:
+          - { key: classic, name: Classic assorted, kind: variant }
+      - key: value-lighters
+        name: Value disposable lighters
+        kind: assortment_slot
+        target_count: { min: 1, max: 1 }
+        mix: [value]
+        size_class: [single]
+        brand_hints: [King, Neon, Clickit]
+      - key: eagle-torch
+        name: Eagle Torch
+        kind: brand_line
+        sizes: [single]
+        children:
+          - { key: small, name: Small, kind: variant }
+          - { key: large, name: Large, kind: variant }
+      - key: newport-mini-torch
+        name: Newport Mini Torch
+        kind: brand_line
+        sizes: [single]
+        children:
+          - { key: assorted, name: Assorted, kind: variant }
+      - key: zippo
+        name: Zippo
+        kind: brand_line
+        sizes: [4oz]
+        children:
+          - { key: lighter-fluid, name: Lighter fluid, kind: variant }
+      - key: butane-refill
+        name: Butane refill
+        kind: assortment_slot
+        target_count: { min: 1, max: 1 }
+        size_class: [single]
+        brand_hints: [Neon, Ronson]
+        note: 300ml, 5X or 7X.
+      - key: dd-bean
+        name: D.D. Bean matchbooks
+        kind: brand_line
+        sizes: [50ct-box]
+        children:
+          - { key: matchbooks, name: Matchbooks, kind: variant }
+
+  # 4.6 Rolling papers, wraps & cones (confirmed in scope)
+  - key: papers
+    name: Rolling papers, wraps & cones
+    kind: category
+    age_restricted: true
+    size_classes:
+      single: One booklet or pack
+    size_defs:
+      booklet: { name: Booklet, size_class: single }
+      cone-3pk: { name: 3-cone pack, size_class: single, unit_count: 3 }
+    children:
+      - key: zig-zag
+        name: Zig-Zag
+        kind: brand_line
+        sizes: [booklet]
+        children:
+          - { key: orange, name: Orange 1¼, kind: variant }
+          - { key: white, name: White, kind: variant }
+          - { key: king-slim, name: King Slim, kind: variant }
+      - key: raw
+        name: RAW
+        kind: brand_line
+        children:
+          - { key: classic, name: Classic 1¼, kind: variant, sizes: [booklet] }
+          - { key: king-slim, name: King Slim, kind: variant, sizes: [booklet] }
+          - { key: cones, name: Cones, kind: variant, sizes: [cone-3pk] }
+      - key: other-papers
+        name: Other papers
+        kind: assortment_slot
+        target_count: { min: 1, max: 1 }
+        size_class: [single]
+        brand_hints: [OCB, Elements, Juicy Jay's]
+        note: 1¼ size.
+      - key: blunt-wraps
+        name: Blunt wraps
+        kind: assortment_slot
+        target_count: { min: 1, max: 1 }
+        size_class: [single]
+        brand_hints: [Zig-Zag, High Hemp]
+
+  # 4.7 Counter accessories
+  - key: accessories
+    name: Counter accessories
+    kind: category
+    age_restricted: true
+    children:
+      - key: glass-tubes
+        name: Glass tubes / one-hitters
+        kind: assortment_slot
+        target_count: { min: 1, max: 2 }
+      - key: grinders
+        name: Grinders
+        kind: assortment_slot
+        target_count: { min: 1, max: 1 }
+      - key: rolling-trays
+        name: Rolling trays
+        kind: assortment_slot
+        target_count: { min: 1, max: 1 }
+      - key: lighter-leashes
+        name: Lighter leashes / keychain lighters
+        kind: assortment_slot
+        target_count: { min: 1, max: 1 }

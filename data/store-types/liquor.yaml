@@ -12,6 +12,7 @@ include:
   - scd
   - drinks
   - candy-snacks
+  - tobacco
 
 priority:
   # --- SCD ---------------------------------------------------------------
@@ -327,6 +328,50 @@ priority:
   candy-snacks.cookies-cakes.clover-hill: should
   candy-snacks.cookies-cakes.welchs-fruit-snacks: should
 
+  # --- Tobacco & accessories -------------------------------------------------
+  # Department default is nice. Cartons of must lines are should, like take-home sizes.
+  # Nodes marked restricted: [CA] are dropped from this CA build, whatever their priority.
+  tobacco: nice
+
+  # 4.1 Cigarettes
+  tobacco.cigarettes.marlboro.red: should
+  tobacco.cigarettes.marlboro.red.pack: must
+  tobacco.cigarettes.marlboro.gold: should
+  tobacco.cigarettes.marlboro.gold.pack: must
+  tobacco.cigarettes.newport: should
+  tobacco.cigarettes.newport.non-menthol.pack: must
+  tobacco.cigarettes.camel.blue: should
+  tobacco.cigarettes.american-spirit: should
+  tobacco.cigarettes.value-cigarettes: must
+
+  # 4.2 Cigars & cigarillos
+  tobacco.cigars.swisher-sweets: must
+  tobacco.cigars.backwoods.original: must
+  tobacco.cigars.black-and-mild.original: must
+  tobacco.cigars.unflavored-cigarillos: should
+
+  # 4.3 Vapes & nicotine alternatives
+  tobacco.nicotine.other-pouches: should
+
+  # 4.4 Smokeless & pipe tobacco
+  tobacco.smokeless.copenhagen.long-cut: should
+  tobacco.smokeless.bugler: should
+
+  # 4.5 Lighters & matches
+  tobacco.lighters.bic.classic: must
+  tobacco.lighters.bic.mini: should
+  tobacco.lighters.clipper: should
+  tobacco.lighters.value-lighters: must
+  tobacco.lighters.eagle-torch.small: must
+  tobacco.lighters.eagle-torch.large: should
+  tobacco.lighters.butane-refill: should
+
+  # 4.6 Rolling papers, wraps & cones
+  tobacco.papers.zig-zag.orange: must
+  tobacco.papers.raw.classic: must
+  tobacco.papers.raw.cones: should
+  tobacco.papers.blunt-wraps: should
+
 notes:
   scd.cola.coca-cola-mexican: Must in the LA market.
   scd.lemon-lime.sprite-mexican: Should in the LA market.
@@ -346,3 +391,6 @@ notes:
   candy-snacks.nuts-seeds.japanese-peanuts: Must in the LA market.
   candy-snacks.cookies-cakes.gamesa.marias: Should in the LA market.
   candy-snacks.cookies-cakes.bon-appetit: Concha and Danish are should in the LA market.
+  tobacco: Priorities follow LA liquor-store velocity. Lines 4.1–4.4 are drafts to confirm against Mercaso stock.
+  tobacco.cigarettes.newport: Newport is must in the outline; in CA only Non-Menthol can be sold.
+  tobacco.nicotine.zyn: The outline has Wintergreen and Cool Mint 6mg as must. Every flavored Zyn is dropped in CA; confirm the unflavored Zyn Mercaso sells there.
