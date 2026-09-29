@@ -68,9 +68,11 @@ children:
         kind: assortment_slot
         target_count: { min: 1, max: 1 }
       - key: rimming-tray
-        name: Michelada rimming tray / cup salt
+        name: Michelada rim dip / rimming salt
         kind: assortment_slot
         target_count: { min: 1, max: 1 }
+        brand_hints: [Baja Micheladas]
+        note: Baja rim dips (Chamoy, Mango Habanero, Tamarindo) reach 6–7% of stores.
 
   # 5.3 Cups, shot glasses & party disposables
   - key: cups-disposables
@@ -81,46 +83,48 @@ children:
         name: 16oz plastic party cup (red/blue)
         kind: assortment_slot
         target_count: { min: 1, max: 2 }
-        brand_hints: [Cool Party Cups, Imperial, Reyma, Axxion]
+        brand_hints: [Ultimate Home, Cool Party Cups, Imperial]
       - key: shot-glass-1oz
-        name: 1oz plastic shot glass
+        name: Plastic shot cup (1–2oz)
         kind: assortment_slot
         target_count: { min: 1, max: 1 }
-        brand_hints: [Table King]
+        note: Mostly unbranded; red 2oz shot cups reach 10% of stores, clear 1oz 3%.
       - key: michelada-cup
         name: 24oz michelada cup (rimmed)
         kind: subcategory
         note: The Baja michelada cup is the same product as section 2.6, so this links to it.
         cross_ref: [drinks.michelada.baja-micheladas]
       - key: foam-cup-12oz
-        name: 12oz foam cup
+        name: Foam cup 12–16oz
         kind: assortment_slot
-        target_count: { min: 1, max: 1 }
-        brand_hints: [Dart, Wincup, Axxion]
+        target_count: { min: 1, max: 2 }
+        brand_hints: [Axxion]
+        note: Axxion 16oz reaches 13% of stores and 12oz 12%.
       - key: plastic-cup-8oz
         name: 8oz plastic cup
         kind: assortment_slot
         target_count: { min: 1, max: 1 }
         brand_hints: [Axxion]
       - key: plates-9in
-        name: Paper/foam plates 9"
+        name: Plates 9–10", foam or paper
         kind: assortment_slot
-        target_count: { min: 1, max: 1 }
-        brand_hints: [Axxion, Good Time]
+        target_count: { min: 1, max: 2 }
+        brand_hints: [Axxion, Blue Star]
       - key: foam-bowls
         name: Foam bowls
         kind: assortment_slot
         target_count: { min: 1, max: 1 }
+        brand_hints: [Axxion]
       - key: plastic-forks
         name: Plastic forks
         kind: assortment_slot
         target_count: { min: 1, max: 1 }
-        brand_hints: [Table King, Sunset]
+        brand_hints: [Blue Star, Heavy Duty Cutlery]
       - key: plastic-spoons
         name: Plastic spoons
         kind: assortment_slot
         target_count: { min: 1, max: 1 }
-        brand_hints: [Table King, Sunset]
+        brand_hints: [Blue Star, Heavy Duty Cutlery]
       - key: skewers
         name: Bamboo skewers
         kind: assortment_slot
@@ -133,7 +137,7 @@ children:
         name: Styrofoam cooler
         kind: assortment_slot
         target_count: { min: 1, max: 1 }
-        brand_hints: [LiFoam]
+        brand_hints: [LiFoam, Ariana]
         note: Summer item. The LiFoam 28qt reaches 16% of stores (sales cross-check 2.14).
 
   # 5.4 Bags (store operating supplies)
@@ -159,12 +163,14 @@ children:
         name: Kraft paper bag 2lb (bottle bag)
         kind: assortment_slot
         target_count: { min: 1, max: 1 }
-        brand_hints: [Duro]
+        brand_hints: [Daisy, Duro]
+        note: Daisy Brown Paper Bag #2 reaches 10% of stores.
       - key: kraft-bag-4lb
         name: Kraft paper bag 4lb (bottle bag)
         kind: assortment_slot
         target_count: { min: 1, max: 1 }
-        brand_hints: [Duro]
+        brand_hints: [Daisy, Duro]
+        note: Daisy Brown Paper Bag #4 reaches 6% of stores.
       - key: reusable-bag
         name: Reusable bag 13×7×21
         kind: assortment_slot
@@ -183,11 +189,12 @@ children:
         mix: [value, national]
         brand_hints: [Sure-Tuff, Ri-Pac, Glad, Hefty]
       - key: trash-30gal
-        name: Large trash bag 30–33gal
+        name: Large trash bag 26–33gal
         kind: assortment_slot
         target_count: { min: 1, max: 1 }
+        brand_hints: [Sure-Tuff, Ri-Pac, Riptie]
       - key: zipper-bags
         name: Sandwich / zipper bags
         kind: assortment_slot
         target_count: { min: 1, max: 1 }
-        brand_hints: [Glad, Kitchen & Beyond]
+        brand_hints: [Glad, Ri-Pac]

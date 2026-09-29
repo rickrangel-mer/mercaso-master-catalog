@@ -39,9 +39,10 @@ Unchanged: Zyn, the CA flavored-tobacco drops, sandwich bags in department 5, Re
 
 ## Next steps
 
-1. **Phase 4 — matching.** Reads the products export; the item table has UPCs. The old order-form spreadsheet (not committed; it carries prices) is a good matching fixture. First revisit rule 4 ("chips: XVL only", see `docs/exploration/liquor.md`): XVL bags barely sell through Mercaso.
-2. **Rerunning the cross-check.** Athena works (`pnpm athena:check`). `data/raw/` is gitignored, so a new session runs `pnpm athena:export`, then `pnpm crosscheck`. The script in `scripts/crosscheck/` is a rough screening matcher; its limits are in section 8 of the report.
-3. **Deploy the viewer** if wanted: `pnpm web:build` writes a static site to `apps/web/out/`.
+1. **Assortment slot review** (`docs/exploration/assortment-slot-review.md`). Household and mixers and bar are done: suggested brands, names and item counts are applied, and 25 priority and structure proposals (part B) await Rick's Decision column. Apply the accepted rows, then review health and beauty and grocery the same way.
+2. **Phase 4 — matching.** Reads the products export; the item table has UPCs. The old order-form spreadsheet (not committed; it carries prices) is a good matching fixture. First revisit rule 4 ("chips: XVL only", see `docs/exploration/liquor.md`): XVL bags barely sell through Mercaso.
+3. **Rerunning the cross-check.** Athena works (`pnpm athena:check`). `data/raw/` is gitignored, so a new session runs `pnpm athena:export`, then `pnpm crosscheck`. The script in `scripts/crosscheck/` is a rough screening matcher; its limits are in section 8 of the report.
+4. **Deploy the viewer** if wanted: `pnpm web:build` writes a static site to `apps/web/out/`.
 
 ## Open items for Rick
 
