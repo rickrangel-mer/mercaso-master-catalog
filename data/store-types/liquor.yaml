@@ -10,6 +10,7 @@ state: CA
 
 include:
   - scd
+  - drinks
 
 priority:
   # --- SCD ---------------------------------------------------------------
@@ -95,6 +96,117 @@ priority:
   scd.ginger-ale-club-tonic.schweppes: should
   scd.ginger-ale-club-tonic.seagrams: nice
 
+  # --- Water, energy, sports, juice, tea & coffee ---------------------------
+  # Section defaults are nice: variants the outline lists without a priority.
+
+  # 2.1 Water
+  drinks.water: nice
+  drinks.water.arrowhead.spring: should
+  drinks.water.arrowhead.spring.16-9oz: must
+  drinks.water.arrowhead.spring.1l: must
+  drinks.water.aquafina.original.20oz: should
+  drinks.water.dasani.original.20oz: should
+  drinks.water.value-water: must
+  drinks.water.smartwater.original: should
+  drinks.water.smartwater.original.1l: must
+  drinks.water.essentia: should
+  drinks.water.fiji.original.1l: should
+  drinks.water.topo-chico: must
+  drinks.water.perrier.original: should
+  drinks.water.sparkling-ice: should
+  drinks.water.sparkling-ice.lemonade: nice
+
+  # 2.2 Energy
+  drinks.energy: nice
+  drinks.energy.red-bull: should
+  drinks.energy.red-bull.original.8-4oz-can: must
+  drinks.energy.red-bull.original.12oz-can: must
+  drinks.energy.red-bull.sugar-free.8-4oz-can: must
+  drinks.energy.red-bull.sugar-free.12oz-can: must
+  drinks.energy.monster.original: must
+  drinks.energy.monster.original.24oz-can: nice
+  drinks.energy.monster.ultra-zero: must
+  drinks.energy.monster.ultra-zero.24oz-can: nice
+  drinks.energy.monster.zero-sugar: should
+  drinks.energy.monster.zero-sugar.24oz-can: nice
+  drinks.energy.monster.lo-carb: should
+  drinks.energy.monster.lo-carb.24oz-can: nice
+  drinks.energy.rockstar: should
+  drinks.energy.celsius: should
+  drinks.energy.alani-nu: should
+
+  # 2.3 Sports & electrolytes
+  drinks.sports: nice
+  drinks.sports.gatorade.fruit-punch: must
+  drinks.sports.gatorade.fruit-punch.28oz: should
+  drinks.sports.gatorade.cool-blue: must
+  drinks.sports.gatorade.cool-blue.28oz: should
+  drinks.sports.gatorade.lemon-lime: must
+  drinks.sports.gatorade.lemon-lime.28oz: should
+  drinks.sports.gatorade.orange: must
+  drinks.sports.gatorade.orange.28oz: should
+  drinks.sports.gatorade.glacier-freeze: should
+  drinks.sports.powerade.mountain-berry-blast: should
+  drinks.sports.powerade.fruit-punch: should
+  drinks.sports.electrolit: should
+  drinks.sports.electrolit.strawberry: must
+  drinks.sports.electrolit.coconut: must
+  drinks.sports.electrolit.orange-mandarin: must
+  drinks.sports.vitaminwater.xxx: should
+
+  # 2.4 Juice, nectars & punch
+  drinks.juice: nice
+  drinks.juice.jumex: should
+  drinks.juice.jumex.mango: must
+  drinks.juice.jumex.mango.1l: should
+  drinks.juice.jumex.guava: must
+  drinks.juice.jumex.guava.1l: should
+  drinks.juice.kerns.mango: should
+  drinks.juice.kerns.guava: should
+  drinks.juice.kerns.peach: should
+  drinks.juice.calypso.strawberry-lemonade: must
+  drinks.juice.calypso.ocean-blue: must
+  drinks.juice.calypso.lemonade: should
+  drinks.juice.calypso.southern-peach: should
+  drinks.juice.calypso.kiwi: should
+  drinks.juice.minute-maid.lemonade: should
+  drinks.juice.minute-maid.lemonade.20oz: must
+  drinks.juice.minute-maid.pink-lemonade: should
+  drinks.juice.welchs.grape: should
+  drinks.juice.welchs.apple: should
+  drinks.juice.langers.orange: should
+  drinks.juice.langers.apple: should
+  drinks.juice.ocean-spray.cranberry.15-2oz: should
+  drinks.juice.motts-clamato.original: should
+  drinks.juice.motts-clamato.original.16oz: must
+  drinks.juice.motts-clamato.original.32oz: must
+  drinks.juice.martinellis.apple-juice: should
+  drinks.juice.visvita.original: should
+  drinks.juice.visvita.mango: should
+  drinks.juice.okf.original: should
+  drinks.juice.okf.mango: should
+  drinks.juice.vita-coco: should
+  drinks.juice.parrot: should
+
+  # 2.5 RTD tea, coffee & dairy drinks
+  drinks.tea-coffee: nice
+  drinks.tea-coffee.arizona: should
+  drinks.tea-coffee.arizona.green-tea: must
+  drinks.tea-coffee.arizona.mucho-mango: must
+  drinks.tea-coffee.arizona.lemon-tea: must
+  drinks.tea-coffee.arizona.arnold-palmer: must
+  drinks.tea-coffee.snapple.peach-tea: should
+  drinks.tea-coffee.snapple.lemon-tea: should
+  drinks.tea-coffee.brisk.lemon: should
+  drinks.tea-coffee.pure-leaf.sweet: should
+  drinks.tea-coffee.pure-leaf.unsweetened: should
+  drinks.tea-coffee.starbucks-frappuccino.vanilla.13-7oz: should
+  drinks.tea-coffee.starbucks-frappuccino.mocha.13-7oz: should
+  drinks.tea-coffee.nesquik.chocolate: should
+
+  # 2.6 Michelada mixes
+  drinks.michelada: must
+
 notes:
   scd.cola.coca-cola-mexican: Must in the LA market.
   scd.lemon-lime.sprite-mexican: Should in the LA market.
@@ -102,3 +214,9 @@ notes:
   scd.fruit-mexican.jarritos: The top four flavors (Mandarin, Lime, Tamarind, Grapefruit) are must in the LA market.
   scd.lemon-lime.mountain-dew.diet: The outline gave Diet Mountain Dew no priority; set to nice.
   scd.ginger-ale-club-tonic.canada-dry: Ginger Ale 20oz and Club Soda and Tonic 1L are must as mixers.
+  drinks.water.topo-chico: Must in the LA market; mixer.
+  drinks.water.value-water: One value still water in every store (guardrail).
+  drinks.sports.electrolit: Strawberry, Coconut and Orange Mandarin are must in the LA market.
+  drinks.sports.vitaminwater: Carry XXX plus two others.
+  drinks.juice.motts-clamato.original: 16oz and 32oz are must for micheladas.
+  drinks.michelada.baja-micheladas: All four flavors are must per the department 5 decision (michelada cups stay and are must). Section 2.6 had Original and Hot at should.

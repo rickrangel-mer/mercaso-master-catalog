@@ -1,0 +1,504 @@
+# Water, energy, sports, juice, RTD tea & coffee. Source: docs/exploration/liquor.md section 2.
+# Branded: brand line -> variant -> size. Where the outline says "pick N of these" or "top
+# flavors" without naming them, the node is an assortment slot inside the branded category.
+key: drinks
+name: Water, energy, sports, juice, tea & coffee
+kind: department
+size_classes:
+  single: Single-serve, up to about 30oz
+  take_home: Take-home, about 1L and larger
+size_defs:
+  8-4oz-can: { name: 8.4oz can, size_class: single, container: can, volume_ml: 250 }
+  8-4oz: { name: 8.4oz bottle, size_class: single, container: bottle, volume_ml: 250 }
+  9-5oz-glass: { name: 9.5oz glass, size_class: single, container: glass bottle, volume_ml: 281 }
+  10oz: { name: 10oz bottle, size_class: single, container: bottle, volume_ml: 296 }
+  10oz-glass: { name: 10oz glass, size_class: single, container: glass bottle, volume_ml: 296 }
+  11-15oz-glass: { name: 11.15oz glass, size_class: single, container: glass bottle, volume_ml: 330 }
+  11-5oz: { name: 11.5oz carton or can, size_class: single, volume_ml: 340 }
+  11-5oz-can: { name: 11.5oz can, size_class: single, container: can, volume_ml: 340 }
+  12oz-can: { name: 12oz can, size_class: single, container: can, volume_ml: 355 }
+  12oz-glass: { name: 12oz glass, size_class: single, container: glass bottle, volume_ml: 355 }
+  13-7oz: { name: 13.7oz bottle, size_class: single, container: bottle, volume_ml: 405 }
+  14oz: { name: 14oz bottle, size_class: single, container: bottle, volume_ml: 414 }
+  15-2oz: { name: 15.2oz bottle, size_class: single, container: bottle, volume_ml: 450 }
+  16oz: { name: 16oz bottle, size_class: single, container: bottle, volume_ml: 473 }
+  16oz-can: { name: 16oz can, size_class: single, container: can, volume_ml: 473 }
+  16oz-glass: { name: 16oz glass, size_class: single, container: glass bottle, volume_ml: 473 }
+  16-9oz: { name: 16.9oz / 500ml bottle, size_class: single, container: bottle, volume_ml: 500 }
+  16-9oz-can: { name: 16.9oz can, size_class: single, container: can, volume_ml: 500 }
+  17oz: { name: 17oz bottle, size_class: single, container: bottle, volume_ml: 503 }
+  18-5oz: { name: 18.5oz bottle, size_class: single, container: bottle, volume_ml: 547 }
+  20oz: { name: 20oz bottle, size_class: single, container: bottle, volume_ml: 591 }
+  20oz-can: { name: 20oz can, size_class: single, container: can, volume_ml: 591 }
+  21oz: { name: 21oz bottle, size_class: single, container: bottle, volume_ml: 625 }
+  23oz-can: { name: 23oz can, size_class: single, container: can, volume_ml: 680 }
+  23-5oz-can: { name: 23.5oz can, size_class: single, container: can, volume_ml: 695 }
+  24oz-can: { name: 24oz can, size_class: single, container: can, volume_ml: 710 }
+  24oz-cup: { name: 24oz cup, size_class: single, container: cup, volume_ml: 710 }
+  25-4oz-glass: { name: 25.4oz / 750ml glass, size_class: single, container: glass bottle, volume_ml: 750 }
+  28oz: { name: 28oz bottle, size_class: single, container: bottle, volume_ml: 828 }
+  30-4oz: { name: 30.4oz bottle, size_class: single, container: bottle, volume_ml: 900 }
+  32oz: { name: 32oz bottle, size_class: take_home, container: bottle, volume_ml: 946 }
+  1l: { name: 1L bottle, size_class: take_home, container: bottle, volume_ml: 1000 }
+  40oz: { name: 40oz bottle, size_class: take_home, container: bottle, volume_ml: 1183 }
+  1-5l: { name: 1.5L bottle, size_class: take_home, container: bottle, volume_ml: 1500 }
+  64oz: { name: 64oz bottle, size_class: take_home, container: bottle, volume_ml: 1893 }
+  2l: { name: 2L bottle, size_class: take_home, container: bottle, volume_ml: 2000 }
+  1gal: { name: 1 gallon, size_class: take_home, container: jug, volume_ml: 3785 }
+children:
+  # 2.1 Water
+  - key: water
+    name: Water
+    kind: category
+    children:
+      - key: arrowhead
+        name: Arrowhead
+        kind: brand_line
+        sizes: [16-9oz, 1l, 1-5l, 1gal]
+        children:
+          - { key: spring, name: Spring, kind: variant }
+          - { key: sports-cap, name: Sports cap, kind: variant }
+      - key: aquafina
+        name: Aquafina
+        kind: brand_line
+        sizes: [16-9oz, 20oz, 1l, 1-5l]
+        children:
+          - { key: original, name: Original, kind: variant }
+      - key: dasani
+        name: Dasani
+        kind: brand_line
+        sizes: [16-9oz, 20oz, 1l, 1-5l]
+        children:
+          - { key: original, name: Original, kind: variant }
+      - key: value-water
+        name: Value still water
+        kind: assortment_slot
+        target_count: { min: 1, max: 1 }
+        mix: [value]
+        size_class: [single, take_home]
+        brand_hints: [Niagara, Crystal Geyser]
+        note: 16.9oz and 1 gallon.
+      - key: smartwater
+        name: Smartwater
+        kind: brand_line
+        sizes: [20oz, 1l, 1-5l]
+        children:
+          - { key: original, name: Original, kind: variant }
+          - { key: alkaline, name: Alkaline, kind: variant }
+      - key: essentia
+        name: Essentia
+        kind: brand_line
+        sizes: [20oz, 1l, 1-5l]
+        children:
+          - { key: original, name: Original, kind: variant }
+      - key: core
+        name: Core
+        kind: brand_line
+        sizes: [20oz, 30-4oz]
+        children:
+          - { key: original, name: Original, kind: variant }
+      - key: fiji
+        name: Fiji
+        kind: brand_line
+        sizes: [16-9oz, 1l, 1-5l]
+        children:
+          - { key: original, name: Original, kind: variant }
+      - key: evian
+        name: Evian
+        kind: brand_line
+        sizes: [16-9oz, 1l]
+        children:
+          - { key: original, name: Original, kind: variant }
+      - key: topo-chico
+        name: Topo Chico
+        kind: brand_line
+        note: Sparkling mineral water; mixer. Department 5 cross-references it.
+        sizes: [12oz-glass]
+        children:
+          - { key: original, name: Original, kind: variant }
+          - { key: twist-of-lime, name: Twist of Lime, kind: variant }
+      - key: perrier
+        name: Perrier
+        kind: brand_line
+        sizes: [11-15oz-glass, 16-9oz]
+        children:
+          - { key: original, name: Original, kind: variant }
+          - { key: lime, name: Lime, kind: variant }
+          - { key: strawberry, name: Strawberry, kind: variant }
+          - { key: orange, name: Orange, kind: variant }
+      - key: san-pellegrino
+        name: San Pellegrino
+        kind: brand_line
+        sizes: [16-9oz, 25-4oz-glass]
+        children:
+          - { key: original, name: Original, kind: variant }
+      - key: sparkling-ice
+        name: Sparkling Ice
+        kind: brand_line
+        verify: sales
+        note: The outline wants the top 3–4 flavors; the first four listed stand in until sales data ranks them.
+        sizes: [17oz]
+        children:
+          - { key: black-cherry, name: Black Cherry, kind: variant }
+          - { key: cherry-limeade, name: Cherry Limeade, kind: variant }
+          - { key: kiwi-strawberry, name: Kiwi Strawberry, kind: variant }
+          - { key: fruit-punch, name: Fruit Punch, kind: variant }
+          - { key: lemonade, name: Lemonade, kind: variant }
+      - key: liquid-death
+        name: Liquid Death
+        kind: brand_line
+        sizes: [16-9oz-can]
+        children:
+          - { key: still, name: Still, kind: variant }
+          - { key: sparkling, name: Sparkling, kind: variant }
+
+  # 2.2 Energy
+  - key: energy
+    name: Energy
+    kind: category
+    children:
+      - key: red-bull
+        name: Red Bull
+        kind: brand_line
+        sizes: [8-4oz-can, 12oz-can, 16oz-can, 20oz-can]
+        children:
+          - { key: original, name: Original, kind: variant }
+          - { key: sugar-free, name: Sugar Free, kind: variant }
+          - { key: red-edition, name: Red Edition, kind: variant }
+          - { key: yellow-edition, name: Yellow Edition, kind: variant }
+          - { key: green-edition, name: Green Edition, kind: variant }
+      - key: monster
+        name: Monster
+        kind: brand_line
+        sizes: [16oz-can, 24oz-can]
+        children:
+          - { key: original, name: Original, kind: variant }
+          - { key: zero-sugar, name: Zero Sugar, kind: variant }
+          - { key: ultra-zero, name: Ultra Zero, kind: variant }
+          - { key: lo-carb, name: Lo-Carb, kind: variant }
+          - { key: rehab, name: Rehab, kind: variant }
+      - key: rockstar
+        name: Rockstar
+        kind: brand_line
+        sizes: [16oz-can]
+        children:
+          - { key: original, name: Original, kind: variant }
+          - { key: sugar-free, name: Sugar Free, kind: variant }
+      - key: bang
+        name: Bang, top flavors
+        kind: assortment_slot
+        target_count: { min: 4, max: 5 }
+        size_class: [single]
+        brand_hints: [Bang]
+        verify: sales
+      - key: ghost
+        name: Ghost, top flavors
+        kind: assortment_slot
+        target_count: { min: 3, max: 4 }
+        size_class: [single]
+        brand_hints: [Ghost]
+        verify: sales
+      - key: celsius
+        name: Celsius
+        kind: brand_line
+        verify: sales
+        note: The outline says top flavors, ranked by sales data. Flavors are not named yet.
+        children:
+          - { key: original, name: Original, kind: variant, sizes: [12oz-can] }
+          - { key: essentials, name: Essentials, kind: variant, sizes: [16oz-can] }
+      - key: alani-nu
+        name: Alani Nu, top flavors
+        kind: assortment_slot
+        target_count: { min: 2, max: 3 }
+        size_class: [single]
+        brand_hints: [Alani Nu]
+        verify: sales
+        note: The outline gives no count; 2–3 is a placeholder.
+      - key: c4
+        name: C4, top flavors
+        kind: assortment_slot
+        target_count: { min: 2, max: 3 }
+        size_class: [single]
+        brand_hints: [C4]
+        verify: sales
+        note: The outline gives no count; 2–3 is a placeholder.
+
+  # 2.3 Sports & electrolytes
+  - key: sports
+    name: Sports & electrolytes
+    kind: category
+    children:
+      - key: gatorade
+        name: Gatorade
+        kind: brand_line
+        sizes: [20oz, 28oz]
+        children:
+          - { key: fruit-punch, name: Fruit Punch, kind: variant }
+          - { key: cool-blue, name: Cool Blue, kind: variant }
+          - { key: lemon-lime, name: Lemon Lime, kind: variant }
+          - { key: orange, name: Orange, kind: variant }
+          - { key: glacier-freeze, name: Glacier Freeze, kind: variant }
+          - { key: glacier-cherry, name: Glacier Cherry, kind: variant }
+          - { key: lime-cucumber, name: Lime Cucumber, kind: variant }
+      - key: powerade
+        name: Powerade
+        kind: brand_line
+        sizes: [20oz, 28oz]
+        children:
+          - { key: mountain-berry-blast, name: Mountain Berry Blast, kind: variant }
+          - { key: fruit-punch, name: Fruit Punch, kind: variant }
+          - { key: lemon-lime, name: Lemon Lime, kind: variant }
+          - { key: orange, name: Orange, kind: variant }
+          - { key: grape, name: Grape, kind: variant }
+          - { key: white-cherry, name: White Cherry, kind: variant }
+      - key: electrolit
+        name: Electrolit
+        kind: brand_line
+        sizes: [21oz]
+        children:
+          - { key: strawberry, name: Strawberry, kind: variant }
+          - { key: orange-mandarin, name: Orange Mandarin, kind: variant }
+          - { key: coconut, name: Coconut, kind: variant }
+          - { key: grape, name: Grape, kind: variant }
+          - { key: lemon-lime, name: Lemon Lime, kind: variant }
+          - { key: strawberry-kiwi, name: Strawberry Kiwi, kind: variant }
+      - key: vitaminwater
+        name: Vitaminwater
+        kind: brand_line
+        sizes: [20oz]
+        children:
+          - { key: xxx, name: XXX, kind: variant }
+          - { key: focus, name: Focus, kind: variant }
+          - { key: energy, name: Energy, kind: variant }
+          - { key: power-c, name: Power-C, kind: variant }
+          - { key: refresh, name: Refresh, kind: variant }
+          - { key: essential, name: Essential, kind: variant }
+
+  # 2.4 Juice, nectars & punch
+  - key: juice
+    name: Juice, nectars & punch
+    kind: category
+    children:
+      - key: jumex
+        name: Jumex
+        kind: brand_line
+        sizes: [16oz-can, 1l]
+        children:
+          - { key: mango, name: Mango, kind: variant }
+          - { key: guava, name: Guava, kind: variant }
+          - { key: strawberry-banana, name: Strawberry-Banana, kind: variant }
+          - { key: peach, name: Peach, kind: variant }
+          - { key: coconut-pineapple, name: Coconut Pineapple, kind: variant }
+      - key: kerns
+        name: Kern's
+        kind: brand_line
+        sizes: [11-5oz-can, 23oz-can]
+        children:
+          - { key: mango, name: Mango, kind: variant }
+          - { key: guava, name: Guava, kind: variant }
+          - { key: peach, name: Peach, kind: variant }
+          - { key: strawberry-banana, name: Strawberry Banana, kind: variant }
+          - { key: apricot, name: Apricot, kind: variant }
+      - key: calypso
+        name: Calypso
+        kind: brand_line
+        verify: sales
+        note: The outline wants 2–3 more flavors beyond the two must; the next three listed stand in.
+        sizes: [16oz-glass]
+        children:
+          - { key: strawberry-lemonade, name: Strawberry Lemonade, kind: variant }
+          - { key: ocean-blue, name: Ocean Blue, kind: variant }
+          - { key: lemonade, name: Lemonade, kind: variant }
+          - { key: southern-peach, name: Southern Peach, kind: variant }
+          - { key: kiwi, name: Kiwi, kind: variant }
+          - { key: tropical-mango, name: Tropical Mango, kind: variant }
+          - { key: triple-melon, name: Triple Melon, kind: variant }
+          - { key: paradise-punch, name: Paradise Punch, kind: variant }
+      - key: minute-maid
+        name: Minute Maid
+        kind: brand_line
+        sizes: [12oz-can, 20oz, 2l]
+        children:
+          - { key: lemonade, name: Lemonade, kind: variant, note: Mixer; department 5 cross-references it. }
+          - { key: pink-lemonade, name: Pink Lemonade, kind: variant }
+          - { key: apple, name: Apple, kind: variant }
+          - { key: cranberry-grape, name: Cranberry Grape, kind: variant }
+      - key: welchs
+        name: Welch's
+        kind: brand_line
+        sizes: [16-9oz]
+        children:
+          - { key: grape, name: Grape, kind: variant }
+          - { key: apple, name: Apple, kind: variant }
+          - { key: orange, name: Orange, kind: variant }
+          - { key: cranberry, name: Cranberry, kind: variant }
+          - { key: strawberry-kiwi, name: Strawberry Kiwi, kind: variant }
+          - { key: mango-passion, name: Mango Passion, kind: variant }
+      - key: langers
+        name: Langers
+        kind: brand_line
+        note: Value juice.
+        sizes: [16oz]
+        children:
+          - { key: orange, name: Orange, kind: variant }
+          - { key: apple, name: Apple, kind: variant }
+          - { key: mango, name: Mango, kind: variant }
+          - { key: pineapple, name: Pineapple, kind: variant }
+          - { key: cranberry, name: Cranberry, kind: variant }
+          - { key: fruit-punch, name: Fruit Punch, kind: variant }
+      - key: ocean-spray
+        name: Ocean Spray
+        kind: brand_line
+        sizes: [15-2oz, 32oz]
+        children:
+          - { key: cranberry, name: Cranberry, kind: variant, note: Mixer; department 5 cross-references it. }
+          - { key: cran-grape, name: Cran-Grape, kind: variant }
+      - key: motts-clamato
+        name: Mott's Clamato
+        kind: brand_line
+        note: Michelada base; department 5 cross-references it.
+        sizes: [10oz, 16oz, 32oz, 64oz]
+        children:
+          - { key: original, name: Original, kind: variant }
+          - { key: picante, name: Picante, kind: variant }
+          - { key: preparado, name: Preparado, kind: variant }
+      - key: sunny-d
+        name: Sunny D
+        kind: brand_line
+        sizes: [16oz, 40oz, 64oz]
+        children:
+          - { key: tangy-original, name: Tangy Original, kind: variant }
+          - { key: orange-tangerine, name: Orange Tangerine, kind: variant }
+      - key: dole
+        name: Dole
+        kind: brand_line
+        sizes: [15-2oz]
+        children:
+          - { key: orange, name: Orange, kind: variant }
+          - { key: apple, name: Apple, kind: variant }
+      - key: martinellis
+        name: Martinelli's
+        kind: brand_line
+        children:
+          - { key: apple-juice, name: Apple Juice, kind: variant, sizes: [10oz-glass] }
+          - { key: sparkling-cider, name: Sparkling Cider, kind: variant, sizes: [8-4oz] }
+      # Aloe and coconut water: both stocked brands are listed; sales data decides which leads.
+      - key: visvita
+        name: Visvita (aloe)
+        kind: brand_line
+        verify: sales
+        sizes: [16-9oz, 1-5l]
+        children: &aloe-flavors
+          - { key: original, name: Original, kind: variant }
+          - { key: mango, name: Mango, kind: variant }
+          - { key: strawberry, name: Strawberry, kind: variant }
+          - { key: pineapple, name: Pineapple, kind: variant }
+          - { key: coconut, name: Coconut, kind: variant }
+          - { key: guava, name: Guava, kind: variant }
+          - { key: tamarindo, name: Tamarindo, kind: variant }
+      - key: okf
+        name: OKF (aloe)
+        kind: brand_line
+        verify: sales
+        sizes: [16-9oz, 1-5l]
+        children: *aloe-flavors
+      - key: vita-coco
+        name: Vita Coco (coconut water)
+        kind: brand_line
+        verify: sales
+        sizes: [11-5oz, 16-9oz]
+        children:
+          - { key: original, name: Original, kind: variant }
+          - { key: pineapple, name: Pineapple, kind: variant }
+      - key: parrot
+        name: Parrot (coconut water)
+        kind: brand_line
+        verify: sales
+        sizes: [11-5oz, 16-9oz]
+        children:
+          - { key: original, name: Original, kind: variant }
+          - { key: with-pulp, name: With Pulp, kind: variant }
+
+  # 2.5 RTD tea, coffee & dairy drinks
+  - key: tea-coffee
+    name: RTD tea, coffee & dairy drinks
+    kind: category
+    children:
+      - key: arizona
+        name: Arizona
+        kind: brand_line
+        sizes: [23-5oz-can]
+        children:
+          - { key: green-tea, name: Green Tea Ginseng Honey, kind: variant }
+          - { key: mucho-mango, name: Mucho Mango, kind: variant }
+          - { key: lemon-tea, name: Lemon Tea, kind: variant }
+          - { key: raspberry-tea, name: Raspberry Tea, kind: variant }
+          - { key: kiwi-strawberry, name: Kiwi Strawberry, kind: variant }
+          - { key: fruit-punch, name: Fruit Punch, kind: variant }
+          - { key: watermelon, name: Watermelon, kind: variant }
+          - { key: grapeade, name: Grapeade, kind: variant }
+          - { key: arnold-palmer, name: Arnold Palmer, kind: variant }
+      - key: snapple
+        name: Snapple
+        kind: brand_line
+        sizes: [16oz]
+        children:
+          - { key: peach-tea, name: Peach Tea, kind: variant }
+          - { key: lemon-tea, name: Lemon Tea, kind: variant }
+          - { key: diet-peach-tea, name: Diet Peach Tea, kind: variant }
+          - { key: kiwi-strawberry, name: Kiwi Strawberry, kind: variant }
+          - { key: mango-madness, name: Mango Madness, kind: variant }
+          - { key: apple, name: Apple, kind: variant }
+          - { key: pink-lemonade, name: Pink Lemonade, kind: variant }
+      - key: brisk
+        name: Lipton Brisk
+        kind: brand_line
+        sizes: [1l]
+        children:
+          - { key: lemon, name: Lemon Tea, kind: variant }
+          - { key: raspberry, name: Raspberry, kind: variant }
+      - key: pure-leaf
+        name: Pure Leaf
+        kind: brand_line
+        sizes: [18-5oz]
+        children:
+          - { key: sweet, name: Sweet Tea, kind: variant }
+          - { key: unsweetened, name: Unsweetened, kind: variant }
+          - { key: lemon, name: Lemon, kind: variant }
+      - key: starbucks-frappuccino
+        name: Starbucks Frappuccino
+        kind: brand_line
+        sizes: [9-5oz-glass, 13-7oz]
+        children:
+          - { key: vanilla, name: Vanilla, kind: variant }
+          - { key: mocha, name: Mocha, kind: variant }
+          - { key: caramel, name: Caramel, kind: variant }
+          - { key: coffee, name: Coffee, kind: variant }
+      - key: nesquik
+        name: Nesquik
+        kind: brand_line
+        sizes: [14oz]
+        children:
+          - { key: chocolate, name: Chocolate, kind: variant }
+          - { key: strawberry, name: Strawberry, kind: variant }
+          - { key: vanilla, name: Vanilla, kind: variant }
+
+  # 2.6 Michelada mixes
+  - key: michelada
+    name: Michelada mixes
+    kind: category
+    children:
+      - key: baja-micheladas
+        name: Baja Micheladas (cup)
+        kind: brand_line
+        note: Pre-rimmed 24oz michelada cup. Department 5 cross-references it.
+        sizes: [24oz-cup]
+        children:
+          - { key: original, name: Original, kind: variant }
+          - { key: mango, name: Mango, kind: variant }
+          - { key: hot, name: Hot, kind: variant }
+          - { key: pineapple, name: Pineapple, kind: variant }
+      - key: clamato
+        name: Clamato
+        kind: subcategory
+        cross_ref: [drinks.juice.motts-clamato]

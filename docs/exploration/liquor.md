@@ -30,7 +30,7 @@ Phase 0 is closed. The sales cross-check against Athena is deferred to **Phase 2
 5. Mix vocabulary for assortment slots: `value`, `national`, `hispanic`.
 6. Priority: `must` / `should` / `nice`, one list per store type, no store-size split. Inherits down the tree unless overridden.
 7. Variants listed only where the brand markets them at scale; no auto-generated diet/zero.
-8. Scope for liquor v1: no alcohol, beer, wine; no chilled or frozen; no packaged ice; no bread or Mission tortillas; no male enhancement; no Auto, Apparel, Baby, Office, Toys, Promo, Store Supplies departments. Pet is `nice` only. Tobacco is in scope. Store operating supplies (bags) stay under a labeled node.
+8. Scope for liquor v1: no alcohol, beer, wine; no chilled or frozen; no packaged ice; no bread (Mission tortillas are in, see 8.5); no male enhancement; no Auto, Apparel, Baby, Office, Toys, Promo, Store Supplies departments. Pet is `nice` only. Tobacco is in scope. Store operating supplies (bags) stay under a labeled node.
 9. Age-restricted items carry `age_restricted: true`; CA-restricted variants (menthol, flavored tobacco) carry `restricted: CA`.
 10. Cross-references (mixers) point at the canonical node; nothing is duplicated in two places.
 

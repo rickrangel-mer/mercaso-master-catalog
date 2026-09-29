@@ -217,7 +217,9 @@ function walk(
   }
 
   if (!node.children || node.children.length === 0) {
-    err(`a ${kind} needs at least one child`);
+    // A category or subcategory may be a pure link to canonical nodes elsewhere (rule 10).
+    const isLink = node.cross_ref !== undefined && (kind === "category" || kind === "subcategory");
+    if (!isLink) err(`a ${kind} needs at least one child, or a cross_ref if it only points elsewhere`);
     return out;
   }
   for (const child of node.children) {

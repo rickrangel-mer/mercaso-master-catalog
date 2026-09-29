@@ -133,6 +133,17 @@ describe("taxonomy", () => {
     expect(errs).toContain("scd.home.soap: assortment_slot needs a target_count");
   });
 
+  it("allows a childless category or subcategory only when it is a cross_ref link", () => {
+    const withLinks = dept();
+    withLinks.children!.push(
+      { key: "mixers", name: "Mixers", kind: "category", cross_ref: ["scd.cola.coke"] },
+      { key: "empty", name: "Empty", kind: "category" },
+    );
+    const { taxonomy, issues } = taxonomyOf(withLinks);
+    expect(errors(issues)).toEqual(["scd.empty: a category needs at least one child, or a cross_ref if it only points elsewhere"]);
+    expect(taxonomy.byId.get("scd.mixers")?.attrs.cross_ref).toEqual(["scd.cola.coke"]);
+  });
+
   it("checks cross references", () => {
     const withRef = dept();
     (withRef.children![1]!.children![0] as AuthoredNode).cross_ref = ["scd.cola.coke.classic", "scd.nope"];

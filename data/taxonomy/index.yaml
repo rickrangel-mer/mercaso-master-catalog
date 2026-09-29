@@ -2,3 +2,4 @@
 # Encoded so far: SCD. The rest follow one department per PR, in the Phase 0 order.
 departments:
   - scd
+  - drinks
