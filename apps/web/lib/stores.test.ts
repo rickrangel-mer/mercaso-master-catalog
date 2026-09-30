@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import type { ItemOut, StoreFile, StoreOut } from "./stores.ts";
-import { bandOf, filterStores, gapsToCsv, groupStores, hasMoney, missingToCsv, sortStores, storeGaps, storeSummary, storesMissing, storesToCsv, tierDepartmentMedians } from "./stores.ts";
+import { bandOf, bought12, peerMedians, storePivot, filterStores, gapsToCsv, groupStores, hasMoney, missingToCsv, sortStores, storeGaps, storeSummary, storesMissing, storesToCsv, tierDepartmentMedians } from "./stores.ts";
 
 const item = (id: string, priority: "must" | "should" | "nice", adoption: number[], extra: Partial<ItemOut> = {}): ItemOut => ({
   id,
@@ -110,6 +110,24 @@ describe("gaps", () => {
     // Arizona: both active stores lack it; same tier and orders, so file order holds.
     expect(storesMissing(file, 2).map((s) => s.id)).toEqual(["A", "B"]);
     expect(missingToCsv(file, 0, storesMissing(file, 0)).split("\n")[1]).toBe("coke,coke-SKU,Store B,B,Los Angeles,90001,6-20,20,90.0,fading");
+  });
+});
+
+describe("pivot", () => {
+  it("rolls a store up by department and category, with peers, gaps and fading", () => {
+    const medians = peerMedians(file);
+    expect(medians[1]?.get("Soft drinks")).toBeCloseTo(2 / 3);
+    const b = file.stores[1]!;
+    expect([...bought12(b)].sort()).toEqual([0, 1]);
+    const [dept] = storePivot(file, b, medians);
+    expect(dept).toMatchObject({ key: "Soft drinks", items: 3, bought: 2, mustGaps: 1, gaps: 1, fading: 1, expected: 180 });
+    expect(dept!.children.map((c) => [c.key, c.label, c.items])).toEqual([["Soft drinks|Cola", "Cola", 3]]);
+    // Gaps first, then fading, then held, then bought.
+    expect(dept!.children[0]!.leaves.map((l) => [l.item.id, l.state, l.days])).toEqual([
+      ["coke", "fading", 120],
+      ["arizona", "hold", undefined],
+      ["pepsi", "bought", undefined],
+    ]);
   });
 });
 

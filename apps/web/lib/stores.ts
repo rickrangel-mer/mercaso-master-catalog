@@ -255,3 +255,119 @@ export function missingToCsv(f: StoreFile, index: number, stores: StoreOut[]): s
     }),
   ]);
 }
+
+// ---- Pivot: a store's coverage by department, category and item --------------------------
+
+export type ItemState = "bought" | "fading" | "gap" | "hold";
+
+export interface PivotItem {
+  index: number;
+  item: ItemOut;
+  state: ItemState;
+  /** Days since last bought, for fading items. */
+  days?: number;
+  /** Share of the store's tier that buys it. */
+  adoption: number;
+  /** Expected revenue a year for a must or should gap (0 otherwise). */
+  expected: number;
+}
+
+export interface PivotNode {
+  key: string;
+  label: string;
+  /** Catalog items under the node, and those the store bought in 12 months. */
+  items: number;
+  bought: number;
+  /** Median coverage of the node among stores in the same tier (0–1). */
+  peers: number;
+  mustGaps: number;
+  gaps: number;
+  fading: number;
+  expected: number;
+  children: PivotNode[];
+  /** Items, on category nodes. */
+  leaves: PivotItem[];
+}
+
+/** Items bought in 12 months: bought in 90 days plus fading. */
+export const bought12 = (s: StoreOut) => new Set([...s.bought, ...s.fading_items.map(([i]) => i)]);
+
+const catKey = (it: ItemOut) => `${it.department}|${it.category}`;
+
+/**
+ * Peer medians for every department and category, per tier: the median across the tier's stores
+ * of the share of the node's items each store bought in 12 months. Computed once per file.
+ */
+export function peerMedians(f: StoreFile): Map<string, number>[] {
+  const nodes = new Map<string, number[]>();
+  f.items.forEach((it, i) => {
+    for (const k of [it.department, catKey(it)]) nodes.set(k, [...(nodes.get(k) ?? []), i]);
+  });
+  return f.tiers.map((_, t) => {
+    const stores = f.stores.filter((s) => s.tier === t).map(bought12);
+    const out = new Map<string, number>();
+    for (const [k, idx] of nodes) out.set(k, median(stores.map((b) => idx.filter((i) => b.has(i)).length / idx.length)));
+    return out;
+  });
+}
+
+/** The store's pivot: departments (catalog order) → categories → items. */
+export function storePivot(f: StoreFile, s: StoreOut, medians: Map<string, number>[]): PivotNode[] {
+  const recent = new Set(s.bought);
+  const fading = new Map(s.fading_items);
+  const peers = medians[s.tier] ?? new Map<string, number>();
+  const leaf = (item: ItemOut, index: number): PivotItem => {
+    const t = item.tiers[s.tier] ?? { adoption: 0, typical_cases: 0 };
+    const hold = item.hold !== undefined;
+    const days = fading.get(index);
+    const state: ItemState = recent.has(index) ? "bought" : hold ? "hold" : days !== undefined ? "fading" : "gap";
+    const isGap = state === "gap" || state === "fading";
+    return {
+      index,
+      item,
+      state,
+      ...(days !== undefined ? { days } : {}),
+      adoption: t.adoption,
+      expected: isGap && item.priority !== "nice" && item.price !== undefined ? t.adoption * t.typical_cases * item.price : 0,
+    };
+  };
+  const total = (key: string, label: string, leaves: PivotItem[], children: PivotNode[]): PivotNode => {
+    // A SKU shared by two items (cigarette pack and carton) counts once in the expected revenue.
+    const skus = new Set<string>();
+    let expected = 0;
+    for (const l of leaves) {
+      if (l.expected > 0 && !skus.has(l.item.sku)) {
+        skus.add(l.item.sku);
+        expected += l.expected;
+      }
+    }
+    return {
+      key,
+      label,
+      items: leaves.length,
+      bought: leaves.filter((l) => l.state === "bought" || l.days !== undefined).length,
+      peers: peers.get(key) ?? 0,
+      mustGaps: leaves.filter((l) => (l.state === "gap" || l.state === "fading") && l.item.priority === "must").length,
+      gaps: leaves.filter((l) => l.state === "gap" || l.state === "fading").length,
+      fading: leaves.filter((l) => l.state === "fading").length,
+      expected,
+      children,
+      leaves: children.length ? [] : leaves,
+    };
+  };
+  const rank: Record<ItemState, number> = { gap: 0, fading: 1, hold: 2, bought: 3 };
+  return f.departments.map((dept) => {
+    const deptLeaves: PivotItem[] = [];
+    const cats = new Map<string, PivotItem[]>();
+    f.items.forEach((it, i) => {
+      if (it.department !== dept) return;
+      const l = leaf(it, i);
+      deptLeaves.push(l);
+      cats.set(it.category, [...(cats.get(it.category) ?? []), l]);
+    });
+    const children = [...cats.entries()].map(([cat, leaves]) =>
+      total(`${dept}|${cat}`, cat, [...leaves].sort((a, b) => rank[a.state] - rank[b.state] || b.adoption - a.adoption), []),
+    );
+    return total(dept, dept, deptLeaves, children);
+  });
+}

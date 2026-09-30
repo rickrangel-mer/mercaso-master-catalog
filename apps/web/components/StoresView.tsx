@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { BANDS, hasMoney, storeSummary, tierLabel, type StoreFile } from "../lib/stores";
+import { BANDS, hasMoney, peerMedians, storeSummary, tierLabel, type StoreFile } from "../lib/stores";
 import { ItemGaps } from "./ItemGaps";
 import { StoreDetail } from "./StoreDetail";
 import { fmt, pct } from "./format";
@@ -17,6 +17,8 @@ export function StoresView({ file, onJumpItem }: Props) {
   const [view, setView] = useState<"stores" | "items">("stores");
   const [storeId, setStoreId] = useState<string | null>(null);
   const summary = useMemo(() => (file ? storeSummary(file) : null), [file]);
+  // Peer medians per department and category, per tier, for the store pivots.
+  const medians = useMemo(() => (file ? peerMedians(file) : []), [file]);
   const store = file && storeId ? (file.stores.find((s) => s.id === storeId) ?? null) : null;
 
   useEffect(() => {
@@ -135,10 +137,10 @@ export function StoresView({ file, onJumpItem }: Props) {
         </button>
       </div>
 
-      {view === "stores" ? <StoreTable file={file} onOpen={setStoreId} /> : <ItemGaps file={file} onOpenStore={setStoreId} onJumpItem={onJumpItem} />}
+      {view === "stores" ? <StoreTable file={file} medians={medians} onOpen={setStoreId} onJumpItem={onJumpItem} /> : <ItemGaps file={file} onOpenStore={setStoreId} onJumpItem={onJumpItem} />}
       {!hasMoney(file) && <p className="muted small">This build has no prices, so spend, price, margin and opportunity are hidden.</p>}
 
-      {store && <StoreDetail file={file} store={store} onClose={() => setStoreId(null)} onJumpItem={onJumpItem} />}
+      {store && <StoreDetail file={file} store={store} medians={medians} onClose={() => setStoreId(null)} onJumpItem={onJumpItem} />}
     </div>
   );
 }

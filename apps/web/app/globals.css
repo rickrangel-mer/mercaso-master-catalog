@@ -1495,3 +1495,110 @@ select {
     grid-template-columns: 1fr auto;
   }
 }
+
+/* Store pivot: department → category → item */
+.pivot-row > td {
+  background: var(--bg);
+  padding: 8px 10px 14px 28px;
+}
+
+.sku-table tr.is-expanded td {
+  background: var(--hit-bg);
+}
+
+.store-name {
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+}
+
+.store-name .linklike {
+  text-align: left;
+  font-weight: 600;
+}
+
+.pivot-wrap {
+  background: var(--surface);
+}
+
+.sku-table.pivot th[scope="row"] {
+  font-weight: 400;
+  color: var(--text);
+  text-align: left;
+}
+
+.pivot-toggle {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 4px;
+  border: none;
+  background: none;
+  padding: 0;
+  cursor: pointer;
+  text-align: left;
+  font-weight: 600;
+}
+
+.pivot-toggle:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+}
+
+.pivot-node.depth-0 {
+  background: color-mix(in srgb, var(--bg) 50%, var(--surface));
+}
+
+.pivot-node.depth-1 th[scope="row"] {
+  padding-left: 28px;
+}
+
+.pivot-node.depth-1 .pivot-toggle {
+  font-weight: 500;
+}
+
+.pivot-item th[scope="row"] {
+  padding-left: 52px;
+}
+
+.share-track.with-tick {
+  position: relative;
+  overflow: visible;
+}
+
+.share-track .tick {
+  top: -3px;
+  bottom: -3px;
+}
+
+.state {
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.state-bought {
+  color: var(--ok);
+}
+
+.state-fading {
+  color: var(--warn);
+}
+
+.state-gap {
+  color: var(--must);
+}
+
+.state-hold {
+  color: var(--muted);
+}
+
+.pivot-help {
+  margin: 6px 10px 0;
+}
+
+/* The pivot sits inside the store table; only the outer header sticks. */
+.sku-table.pivot thead th {
+  position: static;
+  box-shadow: none;
+  border-bottom: 1px solid var(--border);
+}

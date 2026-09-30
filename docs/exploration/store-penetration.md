@@ -76,7 +76,9 @@ Store coverage is sensitive to SKUs the match file misses: a store that buys the
 
 The **Stores** tab (built from `dist/stores/liquor.json` into the private site and the single HTML file):
 - Headline numbers, stores by must coverage, and median must coverage by order frequency.
-- **Stores:** the store table, grouped by order frequency (default), coverage band, status, city or organization, with subtotals; filters for status, tier and "ordering less"; CSV download. Clicking a store opens its detail: facts, coverage against peers, department coverage with the peer median as a tick, and its gaps (priority filter, fading only, CSV of all gaps).
+- **Stores:** the store table, grouped by order frequency (default), coverage band, status, city or organization, with subtotals; filters for status, tier and "ordering less"; CSV download.
+- **Pivot (Rick, 2026-09-30):** clicking a store row expands it into departments, a department into categories, and a category into items. Each department and category shows items bought of items in the catalog, coverage with the peer median as a tick, the peer median and the difference, must gaps, fading and opportunity. Item rows show bought / fading / gap / supply hold, how many peers buy it, price and margin, and expected revenue. Peer medians per category are computed in the browser from the same file.
+- Clicking the store name opens its detail: facts, coverage against peers, the same pivot, and its gaps (priority filter, fading only, CSV of all gaps).
 - **Items to push:** one row per catalog item with price, margin, stores buying it, active stores missing it and opportunity; clicking a row lists those stores, with a CSV of all of them.
 - Items on supply hold are tagged and left out of gaps and opportunity.
 - Emails in Mercaso's organization-name field (the owner's email for 1,899 stores) and in store names are removed before the data leaves `pnpm stores`.
