@@ -205,6 +205,14 @@ describe("store type", () => {
     expect(errs).toContain('scd.missing: exclude refers to "scd.missing", which is not a taxonomy node');
   });
 
+  it("checks supply holds like notes: the node must exist and be carried", () => {
+    const hold = { reason: "Out of stock", since: "2026-09-30" };
+    const ok = resolveStoreType(storeType({ supply_hold: { "scd.cola.coke": hold } }), "liquor.yaml", taxonomy);
+    expect(errors(ok.issues)).toEqual([]);
+    const bad = resolveStoreType(storeType({ supply_hold: { "scd.missing": hold } }), "liquor.yaml", taxonomy);
+    expect(errors(bad.issues)).toContain('scd.missing: supply_hold refers to "scd.missing", which is not a taxonomy node');
+  });
+
   it("gives cross_ref links no priority and rejects one set on them", () => {
     const withLink = dept();
     withLink.children!.push({ key: "mixers", name: "Mixers", kind: "category", cross_ref: ["scd.cola.coke"] });

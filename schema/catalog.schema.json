@@ -317,6 +317,22 @@
             "type": "string",
             "minLength": 1
           }
+        },
+        "supply_hold": {
+          "type": "object",
+          "propertyNames": {
+            "$ref": "#/$defs/node_id"
+          },
+          "additionalProperties": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["reason", "since"],
+            "properties": {
+              "reason": { "type": "string", "minLength": 1 },
+              "since": { "type": "string", "pattern": "^\\d{4}-\\d{2}-\\d{2}$" }
+            }
+          },
+          "description": "Items Mercaso cannot reliably supply right now (a whole subtree per entry). The store view keeps them in coverage but leaves them out of fading counts, voids and opportunity. Remove the entry when supply recovers."
         }
       }
     }

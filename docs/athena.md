@@ -33,6 +33,8 @@ All in `scripts/athena/sql/`:
 | `liquor_sales_by_sku.sql` | Trailing 12 months, CA liquor stores, one row per SKU: cases, units, revenue, orders, the share of liquor stores that bought it, the same share over the last 90 days, and first and last order dates (so replaced items show up) | `data/raw/liquor_sales_by_sku.csv` |
 | `liquor_reach_by_category.sql` | Same stores and period: the share of liquor stores that bought anything in each Mercaso department, category and sub-category | `data/raw/liquor_reach_by_category.csv` |
 | `pricing.sql` | Today's case price per live item (the promo price when on promo, else the regular price without CRV) and Finale's average case cost with the case CRV taken out (`average_cost - regular_crv * package_size`), for the site's price and margin columns | `data/raw/pricing.csv` |
+| `liquor_stores.sql` | One row per CA liquor store that ordered in 12 months: name, number, organization, city, ZIP, first and last order dates, orders in 12 months, 90 days and the 90 days before, 12-month spend. No contact details | `data/raw/liquor_stores.csv` |
+| `liquor_store_skus.sql` | Store × SKU for the catalog's SKUs over 12 months: orders, cases, last order date. The runner fills `{{CATALOG_SKUS}}` from the match file | `data/raw/liquor_store_skus.csv` |
 | `optional_checks.sql` | Attribute names and item statuses, for tuning the matcher | Not needed for the exports |
 
 `data/raw/` is gitignored, so exports never reach the repo.
@@ -44,7 +46,7 @@ With the credentials in the environment:
 ```
 pnpm athena:check                  # who am I, and can Athena read the item table
 pnpm athena:export                 # all exports into data/raw/
-pnpm athena:export liquor-sales    # or any of: products, liquor-sales, liquor-reach, pricing
+pnpm athena:export liquor-sales    # or any of: products, liquor-sales, liquor-reach, pricing, liquor-stores, liquor-store-skus
 pnpm crosscheck                    # Phase 2.5 comparison, from the two liquor exports
 ```
 

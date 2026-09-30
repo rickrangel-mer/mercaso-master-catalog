@@ -2,7 +2,7 @@
  * Runs the Athena queries in scripts/athena/sql/ and saves the results under data/raw/.
  *
  *   pnpm athena:check              confirm the credentials and Athena access
- *   pnpm athena:export             run every export (products, liquor sales, pricing)
+ *   pnpm athena:export             run every export (products, liquor sales, pricing, stores)
  *   pnpm athena:export products    run one export by name
  *
  * Settings come from the environment: AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, optional
@@ -18,7 +18,8 @@ import {
   StartQueryExecutionCommand,
 } from "@aws-sdk/client-athena";
 import { GetCallerIdentityCommand, STSClient } from "@aws-sdk/client-sts";
-import { configFromEnv, credentialsFromEnv, explainAwsError, pageToRows, prepareSql, toCsv, type AthenaConfig } from "./lib.ts";
+import { parse } from "csv-parse/sync";
+import { configFromEnv, credentialsFromEnv, explainAwsError, fillCatalogSkus, pageToRows, prepareSql, toCsv, type AthenaConfig } from "./lib.ts";
 
 const ROOT = process.cwd();
 const EXPORTS: Record<string, { sql: string; out: string }> = {
@@ -26,7 +27,15 @@ const EXPORTS: Record<string, { sql: string; out: string }> = {
   "liquor-sales": { sql: "scripts/athena/sql/liquor_sales_by_sku.sql", out: "data/raw/liquor_sales_by_sku.csv" },
   "liquor-reach": { sql: "scripts/athena/sql/liquor_reach_by_category.sql", out: "data/raw/liquor_reach_by_category.csv" },
   pricing: { sql: "scripts/athena/sql/pricing.sql", out: "data/raw/pricing.csv" },
+  "liquor-stores": { sql: "scripts/athena/sql/liquor_stores.sql", out: "data/raw/liquor_stores.csv" },
+  "liquor-store-skus": { sql: "scripts/athena/sql/liquor_store_skus.sql", out: "data/raw/liquor_store_skus.csv" },
 };
+
+/** Every SKU in the liquor match file that is not rejected, for {{CATALOG_SKUS}}. */
+const catalogSkus = (): string[] =>
+  (parse(readFileSync(join(ROOT, "data/matches/liquor.csv"), "utf8"), { columns: true }) as Record<string, string>[])
+    .filter((r) => r.status !== "rejected")
+    .map((r) => r.mercaso_sku ?? "");
 
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
@@ -97,7 +106,8 @@ async function main() {
       console.error(`Unknown export "${name}". Known: ${Object.keys(EXPORTS).join(", ")}.`);
       process.exit(1);
     }
-    const rows = await runQuery(athena, config, readFileSync(join(ROOT, job.sql), "utf8"), name);
+    const sql = readFileSync(join(ROOT, job.sql), "utf8");
+    const rows = await runQuery(athena, config, sql.includes("{{CATALOG_SKUS}}") ? fillCatalogSkus(sql, catalogSkus()) : sql, name);
     mkdirSync(join(ROOT, "data/raw"), { recursive: true });
     writeFileSync(join(ROOT, job.out), toCsv(rows));
     console.log(`  wrote ${job.out}: ${Math.max(0, rows.length - 1)} rows`);

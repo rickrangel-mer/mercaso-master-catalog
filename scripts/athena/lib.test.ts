@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { configFromEnv, credentialsFromEnv, explainAwsError, pageToRows, prepareSql, toCsv } from "./lib.ts";
+import { configFromEnv, credentialsFromEnv, explainAwsError, fillCatalogSkus, pageToRows, prepareSql, toCsv } from "./lib.ts";
 
 describe("configFromEnv", () => {
   const keys = { AWS_ACCESS_KEY_ID: "k", AWS_SECRET_ACCESS_KEY: "s" };
@@ -52,5 +52,17 @@ describe("helpers", () => {
   it("explains the common credential errors", () => {
     expect(explainAwsError({ name: "ExpiredToken", message: "x" })).toContain("Refresh AWS_ACCESS_KEY_ID");
     expect(explainAwsError({ name: "Weird", message: "boom" })).toBe("Weird: boom");
+  });
+});
+
+describe("fillCatalogSkus", () => {
+  it("fills the placeholder with a sorted, de-duplicated, quoted list", () => {
+    expect(fillCatalogSkus("WHERE sku IN ({{CATALOG_SKUS}})", ["B-2", "A1", "B-2", "C_1P"])).toBe("WHERE sku IN ('A1', 'B-2', 'C_1P')");
+    expect(fillCatalogSkus("SELECT 1", [])).toBe("SELECT 1");
+  });
+
+  it("refuses SKUs that could change the query", () => {
+    expect(() => fillCatalogSkus("IN ({{CATALOG_SKUS}})", ["A1", "x') OR ('1'='1"])).toThrow(/unexpected characters/);
+    expect(() => fillCatalogSkus("IN ({{CATALOG_SKUS}})", [])).toThrow(/no SKUs/);
   });
 });
