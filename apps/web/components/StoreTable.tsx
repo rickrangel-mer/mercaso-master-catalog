@@ -27,12 +27,12 @@ interface Props {
 }
 
 const GROUPS: { id: StoreGroupBy; label: string }[] = [
+  { id: "none", label: "No grouping" },
   { id: "tier", label: "Order frequency" },
   { id: "band", label: "Must coverage" },
   { id: "status", label: "Status" },
   { id: "city", label: "City" },
   { id: "organization", label: "Organization" },
-  { id: "none", label: "No grouping" },
 ];
 
 const TREND: Record<StoreOut["trend"], { mark: string; label: string }> = {
@@ -56,7 +56,7 @@ export function StoreTable({ file, medians, onOpen, onJumpItem }: Props) {
     });
   const money$ = hasMoney(file);
   const [filters, setFilters] = useState<StoreFilters>({ query: "", status: "all", tiers: file.tiers.map((_, i) => i), trend: "all" });
-  const [groupBy, setGroupBy] = useState<StoreGroupBy>("tier");
+  const [groupBy, setGroupBy] = useState<StoreGroupBy>("none");
   const [sort, setSort] = useState<{ key: StoreSortKey; dir: "asc" | "desc" }>({ key: money$ ? "opportunity" : "must_gaps", dir: "desc" });
   const [open, setOpen] = useState<Set<string>>(new Set());
   const [shown, setShown] = useState<Record<string, number>>({});
@@ -237,8 +237,12 @@ export function StoreTable({ file, medians, onOpen, onJumpItem }: Props) {
                         <td className="num">{s.score.toFixed(0)}</td>
                         <td className="num">
                           <span className="share">
-                            <span className="share-track" aria-hidden="true">
+                            <span
+                              className="share-track with-tick"
+                              title={`Must items carried: ${pct(mustPct(file, s))}. Tick: the median of stores that order as often (${pct(file.tier_median_must[s.tier] ?? 0)}).`}
+                            >
                               <span className="share-fill" style={{ width: `${Math.max(mustPct(file, s) * 100, 1)}%` }} />
+                              <span className="tick" style={{ left: `${(file.tier_median_must[s.tier] ?? 0) * 100}%` }} />
                             </span>
                             {pct(mustPct(file, s))}
                           </span>
