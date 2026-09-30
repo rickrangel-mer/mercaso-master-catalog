@@ -618,6 +618,14 @@ priority:
   health-beauty.beauty-accessories.nail-clipper: nice
   health-beauty.beauty-accessories.hair-accessories: nice
 
+# Temporary supply problems. The store view keeps these items in coverage but leaves them out of
+# fading counts, voids and opportunity (docs/exploration/store-penetration.md). Remove an entry
+# when supply recovers.
+supply_hold:
+  drinks.tea-coffee.arizona:
+    reason: Manufacturer and stock issues; the 22oz cans' 90-day store share is about half the 12-month share.
+    since: "2026-09-30"
+
 notes:
   scd.cola.coca-cola-mexican: Must in the LA market.
   scd.lemon-lime.sprite-mexican: Should in the LA market.

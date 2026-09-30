@@ -54,6 +54,8 @@ export function resolveStoreType(
   for (const id of exclude) known(id, "exclude");
   for (const id of Object.keys(priority)) known(id, "priority");
   for (const id of Object.keys(notes)) known(id, "notes");
+  const supplyHold = def.supply_hold ?? {};
+  for (const id of Object.keys(supplyHold)) known(id, "supply_hold");
 
   for (const a of include) {
     for (const b of include) {
@@ -141,7 +143,7 @@ export function resolveStoreType(
 
   const dropped = new Set(droppedRestricted);
   const isDropped = (id: string) => [...dropped].some((d) => isWithin(id, d));
-  for (const [field, map] of [["priority", priority], ["notes", notes]] as const) {
+  for (const [field, map] of [["priority", priority], ["notes", notes], ["supply_hold", supplyHold]] as const) {
     for (const id of Object.keys(map)) {
       if (!byId.has(id) || isDropped(id)) continue;
       const r = present.get(id);

@@ -26,6 +26,7 @@ Agreed with Rick on 2026-09-30.
 | Peer adoption | Share of the store's tier that bought the item in 12 months. Voids are ranked by it. |
 | Recommended SKU | The item's approved SKU bought by the most liquor stores. |
 | Typical peer volume | Median cases a year of the item among the tier's stores that buy it. |
+| Supply hold | Items listed under `supply_hold` in the store-type file (a subtree per entry, with a reason and a date). They stay in coverage but are left out of fading counts, voids, top voids and expected opportunity, and are tagged in the store detail. Today: every Arizona 22oz can (Rick, 2026-09-30). |
 | Expected opportunity | For must and should voids: peer adoption × typical peer volume × today's price (promo price when on promo, no CRV), each SKU counted once. This is an estimate of what the store would buy if it behaved like its tier, not a forecast. |
 
 All brands count, including those many stores buy directly from the distributor (Coca-Cola, Pepsi, Frito-Lay, tobacco). A store buying Coke from the bottler shows as a Coke void here; that's still a pricing and sales opportunity.
@@ -54,18 +55,18 @@ Store names, spend, prices and costs are never committed; they reach only the gi
 
 1,993 stores: **1,541 active**, 452 inactive (a median 132 days since their last order).
 
-| Tier | Stores | Active | Median must coverage | Top quarter | Median catalog score | Median fading items |
+| Tier | Stores | Active | Median must coverage | Top quarter | Median catalog score | Median fading items (Arizona on hold) |
 |---|---|---|---|---|---|---|
-| 1–5 orders | 361 | 109 | 6% | 13% | 4 | 16 |
-| 6–20 | 694 | 537 | 22% | 31% | 17 | 59 |
-| 21–50 | 581 | 545 | 38% | 47% | 29 | 97 |
-| 51+ | 357 | 350 | 50% | 58% | 39 | 107 |
+| 1–5 orders | 361 | 109 | 6% | 13% | 4 | 14 |
+| 6–20 | 694 | 537 | 22% | 31% | 17 | 55 |
+| 21–50 | 581 | 545 | 38% | 47% | 29 | 95 |
+| 51+ | 357 | 350 | 50% | 58% | 39 | 103 |
 
 - **Even the best customers buy half the must list from us.** No store buys more than 75% of it; 331 stores buy under 10%.
 - **By department** (median store, and the 51+ tier): drinks 24% / 43%, soft drinks 19% / 33%, candy & snacks 12% / 29%, household 8% / 20%, grocery 7% / 17%, health & beauty 5% / 19%, mixers & bar 4% / 15%, tobacco 0% / 4%. Health & beauty, grocery and household are where frequent buyers still leave the most on the table.
 - **Trend among active stores:** 486 up, 595 flat, 357 down, 103 new.
-- **Most common must voids at active stores** (where at least half the store's tier buys the item): Arizona 22oz Kiwi Strawberry (884 stores), Dr Pepper 20oz (836), Arizona Watermelon (821), Arizona Fruit Punch (781), Arizona Mucho Mango (761), Sprite 2L (727), Vitaminwater XXX (709), Sprite 20oz (679), Coca-Cola Zero 20oz (668), Coca-Cola 16oz can (633).
-- **Arizona 22oz is fading across the board.** Its matched SKUs' 90-day store share is about half the 12-month share for almost every flavor (Mucho Mango 64% → 34%, Kiwi Strawberry 57% → 25%, Watermelon 62% → 28%), in a 90-day window that is mid-summer. **Cause (Rick, 2026-09-30): manufacturer and stock issues**, not stores dropping the line. Until supply recovers, Arizona fading and Arizona voids are a supply signal, not a store-health or sales signal.
+- **Most common must voids at active stores** (where at least half the store's tier buys the item, Arizona on supply hold left out): Dr Pepper 20oz (836 stores), Sprite 2L (727), Vitaminwater XXX (709), Sprite 20oz (679), Coca-Cola Zero 20oz (668), Coca-Cola 16oz can (633), Mexican Coke 500ml (607), Monster Ultra Zero (603), Calypso Ocean Blue (591), Extra Polar Ice gum (590).
+- **Arizona 22oz is fading across the board.** Its matched SKUs' 90-day store share is about half the 12-month share for almost every flavor (Mucho Mango 64% → 34%, Kiwi Strawberry 57% → 25%, Watermelon 62% → 28%), in a 90-day window that is mid-summer. **Cause (Rick, 2026-09-30): manufacturer and stock issues**, not stores dropping the line. Until supply recovers, Arizona fading and Arizona voids are a supply signal, not a store-health or sales signal, so the 13 Arizona 22oz cans are on supply hold (`supply_hold` in `data/store-types/liquor.yaml`).
 
 ## Matching fix found on the way
 

@@ -65,6 +65,9 @@ export interface ItemOut {
   /** Active stores that have not bought it in 90 days, and the summed expected revenue there. */
   active_voids: number;
   opportunity: number;
+  /** Set while the item is on supply hold (store-type `supply_hold`): kept in coverage, left out
+   *  of fading counts, voids, top voids and opportunity. */
+  hold?: { reason: string; since: string };
 }
 
 export type Trend = "up" | "down" | "flat" | "new" | "none";
@@ -96,7 +99,8 @@ export interface StoreOut {
   vs_peers: number;
   /** Coverage per department, in `departments` order (0–1). */
   departments: number[];
-  /** Items not bought in 90 days (never in 12 months, or fading), per priority. */
+  /** Items not bought in 90 days (never in 12 months, or fading), per priority; items on supply
+   *  hold are not counted. */
   voids: { must: number; should: number; nice: number };
   fading: number;
   /** The three must voids most bought by the store's tier (item indexes). */
@@ -151,6 +155,8 @@ export interface ScoreInput {
   stores: StoreInput[];
   storeSkus: StoreSkuInput[];
   prices: Map<string, Price> | null;
+  /** Supply holds from the store-type file: node id (a whole subtree) to reason and date. */
+  holds?: Record<string, { reason: string; since: string }>;
 }
 
 export function scoreStores(input: ScoreInput): StoreFile {
@@ -206,6 +212,7 @@ export function scoreStores(input: ScoreInput): StoreFile {
       if (got) perTier[tierOfStore[k]!]!.push(got.cases);
     });
     const buyers = perTier.reduce((a, t) => a + t.length, 0);
+    const holdId = Object.keys(input.holds ?? {}).find((h) => l.id === h || l.id.startsWith(`${h}.`));
     return {
       id: l.id,
       item: l.item,
@@ -224,8 +231,10 @@ export function scoreStores(input: ScoreInput): StoreFile {
       adoption: input.stores.length ? round(buyers / input.stores.length) : 0,
       active_voids: 0,
       opportunity: 0,
+      ...(holdId ? { hold: input.holds![holdId]! } : {}),
     };
   });
+  const held = items.map((it) => it.hold !== undefined);
 
   const expected = (i: number, tier: number) => {
     const it = items[i]!;
@@ -240,12 +249,16 @@ export function scoreStores(input: ScoreInput): StoreFile {
     const deptBought = departments.map(() => 0);
     const bought: number[] = [];
     const fadingItems: [number, number][] = [];
+    let fading = 0;
     for (const [i, g] of got) {
       bought12[prioOf[i]!]++;
       deptBought[deptOf[i]!]!++;
       const ago = daysBetween(g.last, asOf);
       if (ago <= 90) bought.push(i);
-      else fadingItems.push([i, ago]);
+      else {
+        fadingItems.push([i, ago]);
+        if (!held[i]) fading++;
+      }
     }
     bought.sort((a, b) => a - b);
     fadingItems.sort((a, b) => a[0] - b[0]);
@@ -256,7 +269,7 @@ export function scoreStores(input: ScoreInput): StoreFile {
     // Two items can share one SKU (a cigarette pack and carton); count its revenue once.
     const counted = new Set<string>();
     items.forEach((it, i) => {
-      if (recent.has(i)) return;
+      if (recent.has(i) || held[i]) return;
       const p = prioOf[i]!;
       voids[p]++;
       if (p === "must") mustVoids.push(i);
@@ -290,7 +303,7 @@ export function scoreStores(input: ScoreInput): StoreFile {
       vs_peers: 0,
       departments: deptBought.map((b, d) => (deptTotals[d] ? round(b / deptTotals[d]!, 3) : 0)),
       voids,
-      fading: fadingItems.length,
+      fading,
       top_voids: mustVoids.slice(0, 3),
       opportunity: Math.round(opportunity),
       bought,
@@ -309,6 +322,7 @@ export function scoreStores(input: ScoreInput): StoreFile {
     items.forEach((it, i) => {
       if (recent.has(i)) return;
       it.active_voids++;
+      if (held[i]) return;
       it.opportunity += expected(i, s.tier);
     });
   }

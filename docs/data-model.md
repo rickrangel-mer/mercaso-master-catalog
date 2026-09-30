@@ -109,9 +109,15 @@ priority:
   scd.cola.dr-pepper.original: must
 notes:
   scd.cola.coca-cola-mexican: Must in the LA market.
+supply_hold:              # optional: temporary supply problems
+  drinks.tea-coffee.arizona:
+    reason: Manufacturer and stock issues.
+    since: "2026-09-30"
 ```
 
 A priority covers the node's whole subtree until a descendant sets its own. Every carried leaf must resolve to a priority, or validation fails. A priority that repeats the inherited one is a warning.
+
+`supply_hold` marks a subtree Mercaso can't reliably supply for now. It changes nothing in the catalog build; the store view (`pnpm stores`) keeps held items in coverage but leaves them out of fading counts, voids and opportunity. Like `notes`, each id must exist and be carried. Remove the entry when supply recovers.
 
 ## Match files
 

@@ -59,6 +59,8 @@ export interface StoreTypeFile {
   exclude?: string[];
   priority: Record<string, Priority>;
   notes?: Record<string, string>;
+  /** Node id to a temporary supply problem; see the schema. */
+  supply_hold?: Record<string, { reason: string; since: string }>;
 }
 
 /** Attributes carried into the built JSON. Only the ones that apply to a node are set. */

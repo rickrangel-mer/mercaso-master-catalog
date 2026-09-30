@@ -6,7 +6,8 @@
  *   liquor.json         everything the site's Stores tab needs
  *   liquor-stores.csv   one row per store (the store table)
  *   liquor-voids.csv    per store, its 30 missing must/should items most bought by its peers
- *                       (the rep and pricing list; the site shows every void)
+ *                       (the rep and pricing list; items on supply hold are left out; the site
+ *                       shows every void, holds tagged)
  * Store names, spend and prices stay out of git.
  */
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
@@ -71,6 +72,7 @@ const file = scoreStores({
   })),
   storeSkus: skuRows.map((r) => ({ store_id: r.store_id!, sku: r.sku!, cases: Number(r.cases) || 0, last_order_date: r.last_order_date ?? "" })),
   prices,
+  holds: liquor.resolved.def.supply_hold ?? {},
 });
 
 mkdirSync(OUT, { recursive: true });
@@ -100,7 +102,7 @@ for (const s of file.stores) {
   const fading = new Map(s.fading_items);
   const top = file.items
     .map((it, i) => ({ it, i, t: it.tiers[s.tier]! }))
-    .filter(({ it, i, t }) => !recent.has(i) && it.priority !== "nice" && t.adoption > 0)
+    .filter(({ it, i, t }) => !recent.has(i) && !it.hold && it.priority !== "nice" && t.adoption > 0)
     .sort((a, b) => b.t.adoption - a.t.adoption || (b.it.price ?? 0) * b.t.typical_cases - (a.it.price ?? 0) * a.t.typical_cases)
     .slice(0, VOIDS_PER_STORE);
   top.forEach(({ it, i, t }) => {
@@ -119,6 +121,8 @@ writeFileSync(join(OUT, "liquor-voids.csv"), toCsv(voidRows));
 
 const active = file.stores.filter((s) => s.status === "Active").length;
 const kb = (f: string) => `${Math.round(readFileSync(join(OUT, f)).length / 1024)} KB`;
+const heldItems = file.items.filter((i) => i.hold).length;
+if (heldItems) console.log(`${heldItems} items on supply hold: left out of fading, voids and opportunity.`);
 console.log(`${file.stores.length} stores (${active} active in ${file.active_days} days), ${file.items.length} catalog items with a Mercaso SKU; as of ${file.as_of}.`);
 console.log(`Median must coverage by tier ${file.tiers.map((t, i) => `${t}: ${(file.tier_median_must[i]! * 100).toFixed(0)}%`).join(", ")}.`);
 console.log(`wrote dist/stores/liquor.json (${kb("liquor.json")}), liquor-stores.csv, liquor-voids.csv (${voidRows.length - 1} rows)${prices ? "" : "; no pricing.csv, so no revenue estimates"}.`);

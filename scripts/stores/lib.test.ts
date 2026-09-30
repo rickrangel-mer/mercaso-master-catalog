@@ -61,6 +61,22 @@ const prices = new Map([
 const file = scoreStores({ asOf, storeType: "liquor", leaves, approved, stores, storeSkus, prices });
 const byId = (id: string) => file.stores.find((s) => s.id === id)!;
 
+describe("supply holds", () => {
+  const held = scoreStores({ asOf, storeType: "liquor", leaves, approved, stores, storeSkus, prices, holds: { "scd.coke": { reason: "Stock issue", since: "2026-09-30" } } });
+  it("keep held items in coverage but out of fading, voids, top voids and opportunity", () => {
+    const b = held.stores.find((s) => s.id === "B")!;
+    // B bought Coke 20oz 92 days ago: still covered, but not fading, not a void, not in the opportunity.
+    expect([b.must, b.fading, b.fading_items.length]).toEqual([1, 0, 1]);
+    expect(b.voids).toEqual({ must: 1, should: 1, nice: 1 });
+    expect(b.top_voids).toEqual([2]);
+    expect(b.opportunity).toBe(0);
+    expect(held.items[0]?.hold).toEqual({ reason: "Stock issue", since: "2026-09-30" });
+    expect(held.items[2]?.hold).toBeUndefined();
+    // Still counted as a void at active stores for the item view, with no opportunity.
+    expect(held.items[1]).toMatchObject({ active_voids: 1, opportunity: 0 });
+  });
+});
+
 describe("helpers", () => {
   it("tiers, trends and medians", () => {
     expect([1, 5, 6, 20, 21, 50, 51, 400].map(tierOf)).toEqual([0, 0, 1, 1, 2, 2, 3, 3]);
