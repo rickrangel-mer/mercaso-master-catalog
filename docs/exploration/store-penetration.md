@@ -72,6 +72,12 @@ Store names, spend, prices and costs are never committed; they reach only the gi
 
 Store coverage is sensitive to SKUs the match file misses: a store that buys the same product under another SKU looks like a void. 30 approved SKUs had an unmatched twin, the same product under a different price label or case count. The biggest were the Arizona 22oz **NON PRE-PRICED** cans (21–26% of stores each), then Top Ramen 24-pack, 5-Hour Energy 24-pack and single Old Spice. All 30 were added as approved (reviewer `claude`, note naming the SKU they duplicate); Rick can reject any. Two Arizona SKUs with no catalog item at all, **Blueberry White Tea NON PRE-PRICED (36% of stores)** and **Lemonade PRE-PRICED (31%)**, are candidates for the catalog.
 
-## Next
+## On the site
 
-The Stores tab on the site (overview, store table, store detail with voids, void table grouped by store or item), built from `dist/stores/liquor.json` into the private site and the single HTML file.
+The **Stores** tab (built from `dist/stores/liquor.json` into the private site and the single HTML file):
+- Headline numbers, stores by must coverage, and median must coverage by order frequency.
+- **Stores:** the store table, grouped by order frequency (default), coverage band, status, city or organization, with subtotals; filters for status, tier and "ordering less"; CSV download. Clicking a store opens its detail: facts, coverage against peers, department coverage with the peer median as a tick, and its gaps (priority filter, fading only, CSV of all gaps).
+- **Items to push:** one row per catalog item with price, margin, stores buying it, active stores missing it and opportunity; clicking a row lists those stores, with a CSV of all of them.
+- Items on supply hold are tagged and left out of gaps and opportunity.
+- Emails in Mercaso's organization-name field (the owner's email for 1,899 stores) and in store names are removed before the data leaves `pnpm stores`.
+- The no-prices single file drops prices, margins, spend and opportunity from the store view.

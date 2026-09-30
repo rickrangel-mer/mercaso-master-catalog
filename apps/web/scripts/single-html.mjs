@@ -33,6 +33,13 @@ const read = (f) => JSON.parse(readFileSync(join(data, f), "utf8"));
 const index = read("index.json");
 const catalogs = Object.fromEntries(index.map((e) => [`data/${e.file}`, read(e.file)]));
 const prices = existsSync(join(data, "prices.json")) ? read("prices.json") : null;
+const stores = existsSync(join(data, "stores.json")) ? read("stores.json") : null;
+// The no-prices file must not carry prices, margins, spend or opportunity in the store view either.
+const storesWithoutMoney = (f) => ({
+  ...f,
+  items: f.items.map(({ price, promo, margin, ...rest }) => ({ ...rest, opportunity: 0 })),
+  stores: f.stores.map((s) => ({ ...s, spend_12m: 0, opportunity: 0 })),
+});
 const today = new Date().toISOString().slice(0, 10);
 const snapshot = prices?.as_of || today;
 
@@ -41,7 +48,13 @@ const snapshot = prices?.as_of || today;
 const safeJson = (s) => s.replace(/</g, "\\u003c");
 const safeJs = (s) => s.replace(/<\/(script)/gi, "<\\/$1");
 const page = (withPrices) => {
-  const embedded = { "data/index.json": index, ...catalogs, snapshot, ...(withPrices && prices ? { "data/prices.json": prices } : {}) };
+  const embedded = {
+    "data/index.json": index,
+    ...catalogs,
+    snapshot,
+    ...(withPrices && prices ? { "data/prices.json": prices } : {}),
+    ...(stores ? { "data/stores.json": withPrices ? stores : storesWithoutMoney(stores) } : {}),
+  };
   return `<!doctype html>
 <html lang="en">
 <head>

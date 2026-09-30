@@ -1,11 +1,12 @@
 "use client";
 
-export type Tab = "overview" | "chart" | "table";
+export type Tab = "overview" | "chart" | "table" | "stores";
 
 export const TABS: { id: Tab; label: string }[] = [
   { id: "overview", label: "Overview" },
   { id: "chart", label: "Catalog chart" },
   { id: "table", label: "SKU table" },
+  { id: "stores", label: "Stores" },
 ];
 
 interface Props {

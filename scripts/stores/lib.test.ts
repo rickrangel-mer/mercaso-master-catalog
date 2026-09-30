@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import type { LeafInfo } from "../match/review-lib.ts";
-import { median, scoreStores, tierOf, trendOf, type StoreInput } from "./lib.ts";
+import { median, scoreStores, tierOf, trendOf, withoutContact, type StoreInput } from "./lib.ts";
 
 const leaf = (id: string, department: string, item: string, priority: string, kind: "Branded" | "Slot" = "Branded"): LeafInfo => ({
   id,
@@ -74,6 +74,16 @@ describe("supply holds", () => {
     expect(held.items[2]?.hold).toBeUndefined();
     // Still counted as a void at active stores for the item view, with no opportunity.
     expect(held.items[1]).toMatchObject({ active_voids: 1, opportunity: 0 });
+  });
+});
+
+describe("contact details", () => {
+  it("removes emails from store and organization names", () => {
+    expect(withoutContact("masna.hanna@yahoo.com")).toBe("");
+    expect(withoutContact("Kings Liquor (kings.liquor+1@gmail.com)")).toBe("Kings Liquor");
+    expect(withoutContact("Happys Liquor")).toBe("Happys Liquor");
+    const f = scoreStores({ asOf, storeType: "liquor", leaves, approved, stores: [store("E", 3, "2026-09-29", { organization_name: "a.b@c.com", store_name: "Shop - owner@x.org" })], storeSkus: [], prices: null });
+    expect([f.stores[0]?.name, f.stores[0]?.organization]).toEqual(["Shop", ""]);
   });
 });
 

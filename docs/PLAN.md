@@ -76,7 +76,7 @@ Goal: agree on the liquor-store taxonomy and where the branded/assortment line f
 
 - How much of the catalog each liquor store buys from Mercaso, its voids and its health, for three uses: a personalized pricing program for the voids, sales-rep push lists, and health monitoring (Rick, 2026-09-30). Definitions and first findings: `docs/exploration/store-penetration.md`.
 - Stores active in 12 months; status Active (ordered in 45 days) or Inactive; peers by order frequency; all brands count.
-- 5a (done 2026-09-30): Athena exports `liquor-stores` and `liquor-store-skus`, `pnpm stores` scoring with tests, the two tables as CSV in `dist/stores/`. 5b: a Stores tab on the site.
+- 5a (done 2026-09-30): Athena exports `liquor-stores` and `liquor-store-skus`, `pnpm stores` scoring with tests, the two tables as CSV in `dist/stores/`. 5b (done 2026-09-30): the Stores tab on the site, in both builds; the no-prices file drops prices, margins, spend and opportunity from the store view too.
 
 ### Later (out of scope now)
 
