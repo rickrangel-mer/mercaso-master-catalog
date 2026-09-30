@@ -1034,8 +1034,8 @@ health-beauty.first-aid.rubbing-alcohol,JC76123,"Rubbing Alcohol, Isopropyl, 50%
 health-beauty.first-aid.hydrogen-peroxide,JC110827,"Swan, Hydrogen Peroxide, 16 oz (12 Pack)",12,1,0.60,0.0888,0.0322,approved,rule,rick,"Approved in bulk at confidence 0.6+ (Rick, 2026-09-29)"
 health-beauty.first-aid.eye-drops,JC108424,"Visine, Red Eye Hydrating Comfort Drops, 0.28 oz (12 Pack)",12,1,0.85,0.1545,0.0101,approved,rule,rick,"Approved in bulk at confidence 0.6+ (Rick, 2026-09-29)"
 health-beauty.first-aid.eye-drops,MW25415,"Clear Eyes, Redness Relief, 0.5 oz (6 Pack)",6,2,0.85,0.0893,0.0143,approved,rule,rick,"Approved in bulk at confidence 0.6+ (Rick, 2026-09-29)"
-health-beauty.first-aid.cotton-swabs,DW122000-24,"Faygo, Soda, Cotton Candy, 23 oz (24 Pack)",24,1,0.60,0.1616,0.0852,approved,rule,rick,"Approved in bulk at confidence 0.6+ (Rick, 2026-09-29)"
-health-beauty.first-aid.cotton-swabs,DW123530-12,"Bang, Energy Drink, Cotton Candy, 16 oz (12 Pack)",12,2,0.60,0.0858,0.0340,approved,rule,rick,"Approved in bulk at confidence 0.6+ (Rick, 2026-09-29)"
+health-beauty.first-aid.cotton-swabs,DW122000-24,"Faygo, Soda, Cotton Candy, 23 oz (24 Pack)",24,1,0.60,0.1616,0.0852,rejected,rule,claude,"Review: cotton candy drink, not cotton swabs (was approved in bulk; slot review 2026-09-30)"
+health-beauty.first-aid.cotton-swabs,DW123530-12,"Bang, Energy Drink, Cotton Candy, 16 oz (12 Pack)",12,2,0.60,0.0858,0.0340,rejected,rule,claude,"Review: cotton candy drink, not cotton swabs (was approved in bulk; slot review 2026-09-30)"
 grocery.instant-meals.ramen-cup,CO1746909,"Samyang, Buldak, Carbonara Spicy Ramen, Bowl, 3.7 oz (6 Pack)",6,1,0.85,0.3151,0.1740,approved,rule,rick,"Approved in bulk at confidence 0.6+ (Rick, 2026-09-29)"
 grocery.instant-meals.ramen-cup,JC185451,"Maruchan, Instant Lunch, Chicken Ramen, Cup, 2.25 oz (12 Pack)",12,2,0.85,0.3016,0.2062,approved,rule,rick,"Approved in bulk at confidence 0.6+ (Rick, 2026-09-29)"
 grocery.instant-meals.ramen-cup,JC185453,"Maruchan, Instant Lunch, Shrimp Ramen, Cup, 2.25 oz (12 Pack)",12,3,0.85,0.2704,0.1681,approved,rule,rick,"Approved in bulk at confidence 0.6+ (Rick, 2026-09-29)"
@@ -1132,6 +1132,15 @@ grocery.pet.dog-food-dry,JC195811,"Pedigree, Adult Dog Food, Roasted Chicken, Ri
 grocery.pet.dog-food-dry,JC175881,"Pedigree, Small Dog Food, Roasted Chicken, Rice, And Vegetables, 3.5 lb (4 Pack)",4,2,0.85,0.0938,0.0429,approved,rule,rick,"Approved in bulk at confidence 0.6+ (Rick, 2026-09-29)"
 grocery.pet.cat-food-wet,JC70325,"9 Lives, Wet Cat Food, Hearty Cuts with Beef & Chicken, 5.5 oz (24 Pack)",24,1,0.85,0.0818,0.0215,approved,rule,rick,"Approved in bulk at confidence 0.6+ (Rick, 2026-09-29)"
 grocery.pet.cat-food-wet,JC70326,"9 Lives, Wet Cat Food, Ocean Whitefish, 5.5 oz (24 Pack)",24,2,0.85,0.0687,0.0155,approved,rule,rick,"Approved in bulk at confidence 0.6+ (Rick, 2026-09-29)"
+health-beauty.medicine.pain-reliever,DW14063-50,"Tylenol, Extra Strength, 500 mg, 50 ct (1 Pack)",1,4,0.90,0.1345,0.0644,auto,manual,,Added in slot review (2026-09-30): Top seller in the slot
+health-beauty.first-aid.eye-drops,MW049750,"Pure Eyes, Redness Relief, 0.24 oz (12 Pack)",12,3,0.90,0.1174,0.0834,auto,manual,,Added in slot review (2026-09-30): Rising: 8% of stores in 90 days
+health-beauty.first-aid.cotton-swabs,DW7430-1,"Q-Tips, Cotton Swabs, 170 ct (1 Pack)",1,1,0.90,0.0426,0.0179,auto,manual,,"Added in slot review (2026-09-30): Q-Tips 170ct, the top cotton swab"
+health-beauty.personal-care.body-wash,VS090300,"Lucky, Hand Soap Ocean Fresh, 13.5 oz (12 Pack)",12,3,0.90,0.0296,0.0077,auto,manual,,"Added in slot review (2026-09-30): Lucky hand soap, top seller in the slot"
+grocery.instant-meals.canned-soup,DW13573-12,"Juanita's, Juanita's, Menudo, 15 oz (12 Pack)",12,4,0.90,0.0547,0.0155,auto,manual,,"Added in slot review (2026-09-30): Juanita's Menudo 15oz, second in canned soup"
+grocery.canned-jarred.canned-vegetables,CO425349,"Del Monte, Whole Kernel Corn, 15.25 oz (12 Pack)",12,3,0.90,0.0552,0.0226,auto,manual,,"Added in slot review (2026-09-30): Del Monte corn, top canned vegetable"
+grocery.canned-jarred.canned-fruit,DW82160-12,"Dole, Pineapple Chunks in Juice, 20 oz (12 Pack)",12,3,0.90,0.0331,0.0089,auto,manual,,"Added in slot review (2026-09-30): Dole pineapple chunks, top canned fruit"
+grocery.seasonings.mayo,DW17706-12,"Best Foods, Real Mayonnaise, 15 oz (12 Pack)",12,3,0.90,0.0707,0.0411,auto,manual,,"Added in slot review (2026-09-30): Best Foods 15oz, top mayonnaise"
+grocery.seasonings.mayo,DW99920-12,"Best Foods, Real Mayonnaise, 8 oz (12 Pack)",12,4,0.90,0.0712,0.0322,auto,manual,,Added in slot review (2026-09-30): Best Foods 8oz
 scd.lemon-lime.starry.original.12oz-can,SU21606-24,"Starry, Starry Lemon, 12 oz (24 Pack)",24,1,0.55,0.0025,0.0000,auto,rule,,
 candy-snacks.gummy-chewy.hi-chew.original-mix.single,CM487969,"Hi-Chew, Original Mix, 12.7 oz (6 Pack)",6,1,0.50,0.0025,0.0012,auto,rule,,
 candy-snacks.mexican-candy.jovy.revolcaditas.single,VS007768,"Jovy, Revolcaditas Watermelon with Chili, 6 oz (24 Pack)",24,1,0.50,0.0000,0.0000,auto,rule,,
@@ -1178,8 +1187,8 @@ health-beauty.medicine.vitamin-c,CO1674070,"Emergen-C, 1000mg Vitamin C Drink Mi
 health-beauty.medicine.vitamin-c,CM519721,"Emergen-C, Crystals, Powder, 12 ct (12 Pack)",12,2,0.40,0.0000,0.0000,auto,rule,,
 health-beauty.feminine-family.lubricant,CM523179,"KY Jelly, Lubricant, 0.16 oz (1 Pack)",1,1,0.50,0.0060,0.0024,auto,rule,,
 health-beauty.feminine-family.lubricant,CM523180,"KY Jelly, Lubricant, TrueFeel Silicone, 0.16 oz (1 Pack)",1,2,0.40,0.0020,0.0006,auto,rule,,
-health-beauty.feminine-family.pregnancy-test,DW67300-1,"Paraid, Pregnancy Test, 1 ct (1 Pack)",1,1,0.50,0.0331,0.0167,auto,rule,,
-health-beauty.feminine-family.pregnancy-test,JC23969,"Paraid, Pregnancy Test (24 Pack)",24,2,0.50,0.0306,0.0000,auto,rule,,
+health-beauty.feminine-family.pregnancy-test,DW67300-1,"Paraid, Pregnancy Test, 1 ct (1 Pack)",1,1,0.75,0.0331,0.0167,auto,rule,,
+health-beauty.feminine-family.pregnancy-test,JC23969,"Paraid, Pregnancy Test (24 Pack)",24,2,0.75,0.0306,0.0000,auto,rule,,
 health-beauty.first-aid.hand-sanitizer,VS031539,"Lucky, Hand Sanitizer Aloe Vera, 8 oz (12 Pack)",12,1,0.50,0.0281,0.0089,auto,rule,,
 health-beauty.first-aid.hand-sanitizer,DW216210,"Lucky, Hand Sanitizer with Clip, 1.8 oz (24 Pack)",24,2,0.50,0.0206,0.0042,auto,rule,,
 health-beauty.first-aid.face-masks,VS024706,"Global Beauty Care, Global Beauty Gel Face Mask Cucumber, 1.15 oz (24 Pack)",24,1,0.40,0.0000,0.0000,auto,rule,,

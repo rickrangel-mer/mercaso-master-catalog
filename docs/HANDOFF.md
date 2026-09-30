@@ -57,7 +57,7 @@ Unchanged: Zyn, the CA flavored-tobacco drops, sandwich bags in department 5, Re
 1. **Share the site as a file** (the choice for now): `pnpm web:html` writes `dist/site/mercaso-liquor-catalog-<date>.html` (with price and margin) and `...-no-prices.html`. Share the priced file only privately, e.g. a restricted Drive folder; people download it and open it in a browser (Drive's preview shows only the source). Hosting behind company sign-in can come later; `pnpm web:build` still writes the multi-file site to `apps/web/out/`.
 2. **Approve the rest:** the pending rows in `data/matches/liquor.csv` (status `auto`), including the corkscrew and bottle opener.
 3. **Sourcing:** work through `docs/exploration/liquor-gaps.md` (2 must, 39 should, 96 nice).
-4. **Assortment slot review for health and beauty and grocery** (as done for household in `docs/exploration/assortment-slot-review.md`).
+4. **Slot review for health & beauty and grocery:** `docs/exploration/slot-review-hb-grocery.md`. Part A (brands, notes, match fixes) is applied, including rejecting two cotton-candy drinks that had been approved on the cotton-swab slot; 9 matches it found are proposed. Part B (25 proposals: priorities, item counts, drops, new slots such as baby wipes, instant coffee, lemon & lime juice, cat litter) waits for Rick's Decision column.
 5. **Refreshing:** `data/raw/` is gitignored; a new session runs `pnpm athena:export`, then `pnpm match` (keeps all review decisions), `pnpm gaps` and `pnpm web:html`.
 
 ## Open items for Rick

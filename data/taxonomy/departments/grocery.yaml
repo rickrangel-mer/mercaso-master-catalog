@@ -55,7 +55,8 @@ children:
         name: Canned soup
         kind: assortment_slot
         target_count: { min: 1, max: 2 }
-        brand_hints: [Campbell's, Maggi, Juanita's Menudo]
+        brand_hints: [Campbell's, Juanita's, Maggi]
+        note: Juanita's Menudo is the second seller (5.5% of stores) after Campbell's Chicken Noodle.
       - key: mac-cheese-cup
         name: Mac & cheese cup
         kind: assortment_slot
@@ -139,12 +140,12 @@ children:
         kind: assortment_slot
         match_terms: ["mayonnaise"]
         target_count: { min: 1, max: 1 }
-        brand_hints: [McCormick]
+        brand_hints: [Best Foods, McCormick]
       - key: ketchup
         name: Ketchup
         kind: assortment_slot
         target_count: { min: 1, max: 1 }
-        brand_hints: [Hunt's]
+        brand_hints: [Del Monte, Hunt's, Heinz]
       - key: mustard
         name: Mustard
         kind: assortment_slot
@@ -183,17 +184,17 @@ children:
         target_count: { min: 1, max: 1 }
         size_class: [small]
         brand_hints: [Van Holten's]
-        note: Single jar or pouch.
+        note: Single pouch. Van Holten's Pickle-in-a-Pouch Big Papa (23% of stores) and Hot Mama (21%) lead.
       - key: tuna
         name: Tuna
         kind: assortment_slot
         target_count: { min: 1, max: 1 }
-        brand_hints: [Bumble Bee, StarKist]
+        brand_hints: [StarKist, Chicken of the Sea]
       - key: sardines-oysters
         name: Sardines / oysters
         kind: assortment_slot
         target_count: { min: 1, max: 1 }
-        brand_hints: [Beach Cliff, California Girl]
+        brand_hints: [California Girl, Crown Prince, Beach Cliff]
       - key: canned-fruit
         name: Canned fruit
         kind: assortment_slot
@@ -204,6 +205,7 @@ children:
         kind: assortment_slot
         target_count: { min: 1, max: 1 }
         brand_hints: [Del Monte]
+        note: Del Monte whole kernel corn is the top seller (5.5% of stores).
       - key: tomato-enchilada-sauce
         name: Tomato / enchilada sauce
         kind: assortment_slot
@@ -241,7 +243,7 @@ children:
         name: Cooking oil
         kind: assortment_slot
         target_count: { min: 1, max: 1 }
-        brand_hints: [Mazola, 1-2-3]
+        brand_hints: [1-2-3, Mazola]
       - key: sugar
         name: Sugar
         kind: assortment_slot

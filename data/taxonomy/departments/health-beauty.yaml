@@ -20,7 +20,7 @@ children:
         target_count: { min: 2, max: 2 }
         size_class: [small]
         brand_hints: [Tylenol, Advil, Aleve]
-        note: Single-dose 2-packs.
+        note: Single-dose 2-packs, plus a small bottle. Tylenol Extra Strength 50ct is the top seller (13.5% of stores).
       - key: antacid
         name: Antacid
         kind: assortment_slot
@@ -121,14 +121,15 @@ children:
         kind: assortment_slot
         target_count: { min: 1, max: 2 }
         size_class: [small]
-        brand_hints: [Dove, Zest, Lucky]
+        brand_hints: [Dove, Irish Spring, Lucky]
       - key: body-wash
         name: Body wash / hand soap
         kind: assortment_slot
-        match_terms: ["body wash"]
+        match_terms: ["body wash", "hand soap"]
         target_count: { min: 1, max: 1 }
         size_class: [small]
-        brand_hints: [Lucky, Dove]
+        brand_hints: [Lucky, Softsoap, Dove]
+        note: Hand soap outsells body wash (Lucky 3%, Softsoap 2%; body wash under 1%).
       - key: deodorant
         name: Deodorant
         kind: assortment_slot
@@ -140,7 +141,7 @@ children:
         kind: assortment_slot
         target_count: { min: 1, max: 1 }
         size_class: [small]
-        brand_hints: [Head & Shoulders, Suave, VO5]
+        brand_hints: [VO5, Head & Shoulders, Suave]
       - key: hair-gel
         name: Hair gel / spray
         kind: assortment_slot
@@ -204,7 +205,7 @@ children:
         target_count: { min: 2, max: 2 }
         size_class: [small]
         brand_hints: [Trojan]
-        note: Counter item. Trojan ENZ, Magnum, Ultra Thin.
+        note: Counter item. Trojan Ultra Thin and Magnum lead (18% of stores each), then ENZ, Her Pleasure, Bareskin and Ultra Ribbed (12–13%).
       - key: lubricant
         name: Lubricant
         kind: assortment_slot
@@ -217,6 +218,7 @@ children:
         kind: assortment_slot
         target_count: { min: 1, max: 1 }
         size_class: [small]
+        brand_hints: [Paraid]
 
   # 7.5 First aid & hygiene
   - key: first-aid
@@ -251,12 +253,15 @@ children:
         kind: assortment_slot
         target_count: { min: 1, max: 1 }
         size_class: [small]
-        brand_hints: [Visine, Clear Eyes]
+        brand_hints: [Visine, Pure Eyes, Clear Eyes]
+        note: Pure Eyes is rising (12% of stores in 12 months, 8% in 90 days, while Visine fell to 1%).
       - key: cotton-swabs
         name: Cotton swabs
         kind: assortment_slot
+        match_terms: ["cotton swab", "q-tips"]
         target_count: { min: 1, max: 1 }
         size_class: [small]
+        brand_hints: [Q-Tips]
       - key: face-masks
         name: Face masks
         kind: assortment_slot
