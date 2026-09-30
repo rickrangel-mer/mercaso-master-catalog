@@ -18,7 +18,8 @@
     "athena:export": "tsx scripts/athena/run.ts export",
     "crosscheck": "tsx scripts/crosscheck/run.ts",
     "match": "tsx scripts/match/run.ts",
-    "gaps": "tsx scripts/match/gaps.ts"
+    "gaps": "tsx scripts/match/gaps.ts",
+    "review": "tsx scripts/match/review.ts"
   },
   "devDependencies": {
     "@aws-sdk/client-athena": "^3.1143.0",

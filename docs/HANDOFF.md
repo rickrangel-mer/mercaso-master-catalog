@@ -54,15 +54,14 @@ Unchanged: Zyn, the CA flavored-tobacco drops, sandwich bags in department 5, Re
 
 ## Next steps
 
-1. **Share the site as a file** (the choice for now): `pnpm web:html` writes `dist/site/mercaso-liquor-catalog-<date>.html` (with price and margin) and `...-no-prices.html`. Share the priced file only privately, e.g. a restricted Drive folder; people download it and open it in a browser (Drive's preview shows only the source). Hosting behind company sign-in can come later; `pnpm web:build` still writes the multi-file site to `apps/web/out/`.
-2. **Approve the rest:** the pending rows in `data/matches/liquor.csv` (status `auto`), including the corkscrew and bottle opener.
-3. **Sourcing:** work through `docs/exploration/liquor-gaps.md` (2 must, 39 should, 96 nice).
+1. **Share the site as a file** (the choice for now): `pnpm web:html` writes `dist/site/mercaso-liquor-catalog-<date>.html` (with price and margin) and `...-no-prices.html`. Share the priced file only privately, e.g. a restricted Drive folder; people download it and open it in a browser (Drive's preview shows only the source). Hosting is in the backlog (`docs/PLAN.md`, Later); `pnpm web:build` still writes the multi-file site to `apps/web/out/`.
+2. **Review sheets (Rick has them):** `pnpm review export` writes `docs/review/liquor-pending.csv` (65 pending matches on 36 items, including the corkscrew and bottle opener; put approve or reject in `decision`) and `docs/review/liquor-gaps.csv` (137 items with no SKU; write Mercaso SKUs in `mercaso_sku`, several separated by spaces or commas). Save the filled files over the same paths, then `pnpm review import`, `pnpm match`, `pnpm gaps` and `pnpm review export` again. The pending rows also show on the site: SKU table, Status = Proposed.
+3. **Sourcing:** the gap sheet above is the working list; `docs/exploration/liquor-gaps.md` is the readable version (2 must, 39 should, 96 nice).
 4. **Slot review for health & beauty and grocery:** `docs/exploration/slot-review-hb-grocery.md`. Part A (brands, notes, match fixes) is applied, including rejecting two cotton-candy drinks that had been approved on the cotton-swab slot; 9 matches it found are proposed. Part B (25 proposals: priorities, item counts, drops, new slots such as baby wipes, instant coffee, lemon & lime juice, cat litter) waits for Rick's Decision column.
 5. **Refreshing:** `data/raw/` is gitignored; a new session runs `pnpm athena:export`, then `pnpm match` (keeps all review decisions), `pnpm gaps` and `pnpm web:html`.
 
 ## Open items for Rick
 
-- **Remove `AWS_SESSION_TOKEN` from the environment settings.** The key is a long-term `AKIA` key, and AWS rejects that key when a session token comes with it. The runner now ignores the token and warns, so nothing is blocked.
 - The key belongs to the IAM user `meng.local`. If that is someone's personal user, consider a dedicated read-only user for this repo.
-- Lines 4.1–4.4 (cigarettes, cigars, pouches, smokeless) are market-knowledge drafts. Mercaso's sales agree with their order, but only a check of store shelves can confirm them.
-- Where to host the viewer, if anywhere.
+- Lines 4.1–4.4 (cigarettes, cigars, pouches, smokeless) are market-knowledge drafts. Mercaso's sales agree with their order; Rick is leaving them as they are for now (2026-09-30).
+- Negative margins on about 6 SKUs: set aside for now (Rick, 2026-09-30).

@@ -12,6 +12,8 @@ pnpm test        # unit tests for the validator and build
 pnpm typecheck
 pnpm match       # propose Mercaso SKUs into data/matches/liquor.csv (needs pnpm athena:export)
 pnpm gaps        # write docs/exploration/liquor-gaps.md from the match file
+pnpm review export  # docs/review/liquor-pending.csv (approve/reject) and liquor-gaps.csv (write SKUs)
+pnpm review import  # apply the filled-in sheets to data/matches/liquor.csv
 ```
 
 CI runs all four on every pull request and on pushes to `main`, then builds the tree viewer.

@@ -1,0 +1,138 @@
+﻿mercaso_sku,department,catalog_item,priority,type,target_skus,brand_hints,note,node_id
+,"Water, energy, sports, juice, tea & coffee",Water › Topo Chico › Twist of Lime › 12oz glass,must,Branded,,,,drinks.water.topo-chico.twist-of-lime.12oz-glass
+,Tobacco & accessories,Cigars & cigarillos › Black & Mild › Original › 5-pack,must,Branded,,,,tobacco.cigars.black-and-mild.original.5-pack
+,Soft drinks,Cola › Coca-Cola › Vanilla › 2L bottle,should,Branded,,,,scd.cola.coca-cola.vanilla.2l
+,Soft drinks,Cola › Dr Pepper › Zero Sugar › 12oz can,should,Branded,,,,scd.cola.dr-pepper.zero-sugar.12oz-can
+,Soft drinks,Cola › Dr Pepper › Zero Sugar › 2L bottle,should,Branded,,,,scd.cola.dr-pepper.zero-sugar.2l
+,Soft drinks,Cola › Dr Pepper › Diet Dr Pepper › 2L bottle,should,Branded,,,,scd.cola.dr-pepper.diet.2l
+,Soft drinks,Lemon-lime › Sprite › Zero Sugar › 2L bottle,should,Branded,,,,scd.lemon-lime.sprite.zero-sugar.2l
+,Soft drinks,Lemon-lime › Mountain Dew › Zero Sugar › 12oz can,should,Branded,,,,scd.lemon-lime.mountain-dew.zero-sugar.12oz-can
+,Soft drinks,Lemon-lime › Mountain Dew › Zero Sugar › 2L bottle,should,Branded,,,,scd.lemon-lime.mountain-dew.zero-sugar.2l
+,Soft drinks,Lemon-lime › Mountain Dew › Code Red › 2L bottle,should,Branded,,,,scd.lemon-lime.mountain-dew.code-red.2l
+,Soft drinks,"Citrus, fruit & Mexican sodas › Sunkist › Zero Sugar › 20oz bottle",should,Branded,,,,scd.fruit-mexican.sunkist.zero-sugar.20oz
+,Soft drinks,"Citrus, fruit & Mexican sodas › Sunkist › Zero Sugar › 2L bottle",should,Branded,,,,scd.fruit-mexican.sunkist.zero-sugar.2l
+,Soft drinks,"Citrus, fruit & Mexican sodas › Jarritos › Mexican Cola › 1.5L bottle",should,Branded,,,,scd.fruit-mexican.jarritos.mexican-cola.1-5l
+,Soft drinks,Root beer & cream › A&W › Root Beer Zero Sugar › 20oz bottle,should,Branded,,,,scd.root-beer-cream.a-and-w.root-beer-zero.20oz
+,Soft drinks,Root beer & cream › A&W › Root Beer Zero Sugar › 2L bottle,should,Branded,,,,scd.root-beer-cream.a-and-w.root-beer-zero.2l
+,Soft drinks,Root beer & cream › A&W › Cream Soda › 2L bottle,should,Branded,,,,scd.root-beer-cream.a-and-w.cream-soda.2l
+,Soft drinks,"Ginger ale, club soda & tonic › Canada Dry › Club Soda › 12oz can",should,Branded,,,,scd.ginger-ale-club-tonic.canada-dry.club-soda.12oz-can
+,Soft drinks,"Ginger ale, club soda & tonic › Canada Dry › Club Soda › 20oz bottle",should,Branded,,,,scd.ginger-ale-club-tonic.canada-dry.club-soda.20oz
+,Soft drinks,"Ginger ale, club soda & tonic › Canada Dry › Club Soda › 2L bottle",should,Branded,,,,scd.ginger-ale-club-tonic.canada-dry.club-soda.2l
+,Soft drinks,"Ginger ale, club soda & tonic › Canada Dry › Tonic Water › 12oz can",should,Branded,,,,scd.ginger-ale-club-tonic.canada-dry.tonic.12oz-can
+,Soft drinks,"Ginger ale, club soda & tonic › Canada Dry › Tonic Water › 20oz bottle",should,Branded,,,,scd.ginger-ale-club-tonic.canada-dry.tonic.20oz
+,Soft drinks,"Ginger ale, club soda & tonic › Canada Dry › Tonic Water › 2L bottle",should,Branded,,,,scd.ginger-ale-club-tonic.canada-dry.tonic.2l
+,"Water, energy, sports, juice, tea & coffee",Energy › Red Bull › Red Edition › 16oz can,should,Branded,,,,drinks.energy.red-bull.red-edition.16oz-can
+,"Water, energy, sports, juice, tea & coffee",Energy › Red Bull › Red Edition › 20oz can,should,Branded,,,,drinks.energy.red-bull.red-edition.20oz-can
+,"Water, energy, sports, juice, tea & coffee",Energy › Red Bull › Yellow Edition › 16oz can,should,Branded,,,,drinks.energy.red-bull.yellow-edition.16oz-can
+,"Water, energy, sports, juice, tea & coffee",Energy › Red Bull › Yellow Edition › 20oz can,should,Branded,,,,drinks.energy.red-bull.yellow-edition.20oz-can
+,"Water, energy, sports, juice, tea & coffee",Energy › Red Bull › Green Edition › 8.4oz can,should,Branded,,,,drinks.energy.red-bull.green-edition.8-4oz-can
+,"Water, energy, sports, juice, tea & coffee",Energy › Red Bull › Green Edition › 12oz can,should,Branded,,,,drinks.energy.red-bull.green-edition.12oz-can
+,"Water, energy, sports, juice, tea & coffee",Energy › Red Bull › Green Edition › 16oz can,should,Branded,,,,drinks.energy.red-bull.green-edition.16oz-can
+,"Water, energy, sports, juice, tea & coffee",Energy › Red Bull › Green Edition › 20oz can,should,Branded,,,,drinks.energy.red-bull.green-edition.20oz-can
+,"Water, energy, sports, juice, tea & coffee","Juice, nectars & punch › Kern's › Mango › 23oz can",should,Branded,,,,drinks.juice.kerns.mango.23oz-can
+,"Water, energy, sports, juice, tea & coffee","Juice, nectars & punch › Kern's › Guava › 23oz can",should,Branded,,,,drinks.juice.kerns.guava.23oz-can
+,"Water, energy, sports, juice, tea & coffee","Juice, nectars & punch › Kern's › Peach › 23oz can",should,Branded,,,,drinks.juice.kerns.peach.23oz-can
+,"Water, energy, sports, juice, tea & coffee","Juice, nectars & punch › Vita Coco (coconut water) › Pineapple › 11.5oz carton or can",should,Branded,,,,drinks.juice.vita-coco.pineapple.11-5oz
+,Candy & snacks,Chocolate bars › Hershey's › Almond › Single,should,Branded,,,,candy-snacks.chocolate.hersheys.almond.single
+,Candy & snacks,Chocolate bars › Hershey's › Almond › King size,should,Branded,,,,candy-snacks.chocolate.hersheys.almond.king
+,Candy & snacks,"Gummy, chewy & sour › Now & Later › Extreme Sour › Single",should,Branded,,,,candy-snacks.gummy-chewy.now-and-later.extreme-sour.single
+,Candy & snacks,"Gummy, chewy & sour › Snak Club › Apple Rings › 4oz peg bag",should,Branded,,,,candy-snacks.gummy-chewy.snak-club.apple-rings.4oz-peg
+,Candy & snacks,Mexican candy › Jovy › Ricas Mango › Single,should,Branded,,,,candy-snacks.mexican-candy.jovy.ricas-mango.single
+,Candy & snacks,"Salty snacks (chips, corn, popcorn) › Takis › Fuego › 4oz bag",should,Branded,,,,candy-snacks.salty-snacks.takis.fuego.4oz-xvl
+,Candy & snacks,"Cookies, crackers & snack cakes › Grandma's › Mini Sandwich Cremes › 2.5oz",should,Branded,,,,candy-snacks.cookies-cakes.grandmas.mini-sandwich-cremes.2-5oz
+,Soft drinks,Cola › Coca-Cola › Caffeine-Free › 20oz bottle,nice,Branded,,,,scd.cola.coca-cola.caffeine-free.20oz
+,Soft drinks,Cola › Coca-Cola › Caffeine-Free › 2L bottle,nice,Branded,,,,scd.cola.coca-cola.caffeine-free.2l
+,Soft drinks,Cola › RC Cola › Original › 12oz can,nice,Branded,,,,scd.cola.rc-cola.original.12oz-can
+,Soft drinks,Cola › RC Cola › Original › 20oz bottle,nice,Branded,,,,scd.cola.rc-cola.original.20oz
+,Soft drinks,Lemon-lime › Sprite › Lymonade › 12oz can,nice,Branded,,,,scd.lemon-lime.sprite.lymonade.12oz-can
+,Soft drinks,Lemon-lime › Sprite › Lymonade › 2L bottle,nice,Branded,,,,scd.lemon-lime.sprite.lymonade.2l
+,Soft drinks,Lemon-lime › Sprite › Tropical Mix › 2L bottle,nice,Branded,,,,scd.lemon-lime.sprite.tropical-mix.2l
+,Soft drinks,Lemon-lime › Starry › Original › 20oz bottle,nice,Branded,,,,scd.lemon-lime.starry.original.20oz
+,Soft drinks,Lemon-lime › Starry › Zero Sugar › 12oz can,nice,Branded,,,,scd.lemon-lime.starry.zero-sugar.12oz-can
+,Soft drinks,Lemon-lime › Starry › Zero Sugar › 20oz bottle,nice,Branded,,,,scd.lemon-lime.starry.zero-sugar.20oz
+,Soft drinks,Lemon-lime › Mountain Dew › Diet Mountain Dew › 12oz can,nice,Branded,,,,scd.lemon-lime.mountain-dew.diet.12oz-can
+,Soft drinks,"Citrus, fruit & Mexican sodas › Fanta › Grape › 12oz can",nice,Branded,,,,scd.fruit-mexican.fanta.grape.12oz-can
+,Soft drinks,"Citrus, fruit & Mexican sodas › Fanta › Grape › 20oz bottle",nice,Branded,,,,scd.fruit-mexican.fanta.grape.20oz
+,Soft drinks,"Citrus, fruit & Mexican sodas › Fanta › Grape › 2L bottle",nice,Branded,,,,scd.fruit-mexican.fanta.grape.2l
+,Soft drinks,"Citrus, fruit & Mexican sodas › Fanta › Zero Orange › 12oz can",nice,Branded,,,,scd.fruit-mexican.fanta.zero-orange.12oz-can
+,Soft drinks,"Citrus, fruit & Mexican sodas › Fanta › Zero Orange › 20oz bottle",nice,Branded,,,,scd.fruit-mexican.fanta.zero-orange.20oz
+,Soft drinks,"Citrus, fruit & Mexican sodas › Fanta › Zero Orange › 2L bottle",nice,Branded,,,,scd.fruit-mexican.fanta.zero-orange.2l
+,Soft drinks,"Citrus, fruit & Mexican sodas › Fanta Mexican › Strawberry › 500ml glass",nice,Branded,,,,scd.fruit-mexican.fanta-mexican.strawberry.500ml-glass
+,Soft drinks,"Citrus, fruit & Mexican sodas › Crush › Grape › 2L bottle",nice,Branded,,,,scd.fruit-mexican.crush.grape.2l
+,Soft drinks,"Citrus, fruit & Mexican sodas › Crush › Strawberry › 2L bottle",nice,Branded,,,,scd.fruit-mexican.crush.strawberry.2l
+,Soft drinks,"Citrus, fruit & Mexican sodas › Crush › Pineapple › 20oz bottle",nice,Branded,,,,scd.fruit-mexican.crush.pineapple.20oz
+,Soft drinks,"Citrus, fruit & Mexican sodas › Crush › Pineapple › 2L bottle",nice,Branded,,,,scd.fruit-mexican.crush.pineapple.2l
+,Soft drinks,Root beer & cream › Mug › Root Beer › 20oz bottle,nice,Branded,,,,scd.root-beer-cream.mug.root-beer.20oz
+,Soft drinks,Root beer & cream › Mug › Root Beer › 2L bottle,nice,Branded,,,,scd.root-beer-cream.mug.root-beer.2l
+,Soft drinks,Root beer & cream › Mug › Root Beer Zero Sugar › 20oz bottle,nice,Branded,,,,scd.root-beer-cream.mug.root-beer-zero.20oz
+,Soft drinks,Root beer & cream › Mug › Root Beer Zero Sugar › 2L bottle,nice,Branded,,,,scd.root-beer-cream.mug.root-beer-zero.2l
+,Soft drinks,"Ginger ale, club soda & tonic › Canada Dry › Ginger Ale Zero Sugar › 1L bottle",nice,Branded,,,,scd.ginger-ale-club-tonic.canada-dry.ginger-ale-zero.1l
+,Soft drinks,"Ginger ale, club soda & tonic › Canada Dry › Ginger Ale Zero Sugar › 2L bottle",nice,Branded,,,,scd.ginger-ale-club-tonic.canada-dry.ginger-ale-zero.2l
+,Soft drinks,"Ginger ale, club soda & tonic › Schweppes › Ginger Ale › 1L bottle",nice,Branded,,,,scd.ginger-ale-club-tonic.schweppes.ginger-ale.1l
+,Soft drinks,"Ginger ale, club soda & tonic › Schweppes › Ginger Ale › 2L bottle",nice,Branded,,,,scd.ginger-ale-club-tonic.schweppes.ginger-ale.2l
+,Soft drinks,"Ginger ale, club soda & tonic › Schweppes › Club Soda › 1L bottle",nice,Branded,,,,scd.ginger-ale-club-tonic.schweppes.club-soda.1l
+,Soft drinks,"Ginger ale, club soda & tonic › Schweppes › Club Soda › 2L bottle",nice,Branded,,,,scd.ginger-ale-club-tonic.schweppes.club-soda.2l
+,Soft drinks,"Ginger ale, club soda & tonic › Schweppes › Tonic Water › 1L bottle",nice,Branded,,,,scd.ginger-ale-club-tonic.schweppes.tonic.1l
+,Soft drinks,"Ginger ale, club soda & tonic › Schweppes › Tonic Water › 2L bottle",nice,Branded,,,,scd.ginger-ale-club-tonic.schweppes.tonic.2l
+,"Water, energy, sports, juice, tea & coffee",Water › Arrowhead › Sports cap › 16.9oz / 500ml bottle,nice,Branded,,,,drinks.water.arrowhead.sports-cap.16-9oz
+,"Water, energy, sports, juice, tea & coffee",Water › Arrowhead › Sports cap › 1L bottle,nice,Branded,,,,drinks.water.arrowhead.sports-cap.1l
+,"Water, energy, sports, juice, tea & coffee",Water › Arrowhead › Sports cap › 1.5L bottle,nice,Branded,,,,drinks.water.arrowhead.sports-cap.1-5l
+,"Water, energy, sports, juice, tea & coffee",Water › Arrowhead › Sports cap › 1 gallon,nice,Branded,,,,drinks.water.arrowhead.sports-cap.1gal
+,"Water, energy, sports, juice, tea & coffee",Water › Perrier › Strawberry › 11.15oz glass,nice,Branded,,,,drinks.water.perrier.strawberry.11-15oz-glass
+,"Water, energy, sports, juice, tea & coffee",Water › Perrier › Strawberry › 16.9oz / 500ml bottle,nice,Branded,,,,drinks.water.perrier.strawberry.16-9oz
+,"Water, energy, sports, juice, tea & coffee",Water › Perrier › Orange › 11.15oz glass,nice,Branded,,,,drinks.water.perrier.orange.11-15oz-glass
+,"Water, energy, sports, juice, tea & coffee",Water › Liquid Death › Still › 16.9oz can,nice,Branded,,,,drinks.water.liquid-death.still.16-9oz-can
+,"Water, energy, sports, juice, tea & coffee",Water › Liquid Death › Sparkling › 16.9oz can,nice,Branded,,,,drinks.water.liquid-death.sparkling.16-9oz-can
+,"Water, energy, sports, juice, tea & coffee",Energy › Monster › Rehab › 24oz can,nice,Branded,,,,drinks.energy.monster.rehab.24oz-can
+,"Water, energy, sports, juice, tea & coffee",Sports & electrolytes › Powerade › White Cherry › 20oz bottle,nice,Branded,,,,drinks.sports.powerade.white-cherry.20oz
+,"Water, energy, sports, juice, tea & coffee","Juice, nectars & punch › Kern's › Strawberry Banana › 23oz can",nice,Branded,,,,drinks.juice.kerns.strawberry-banana.23oz-can
+,"Water, energy, sports, juice, tea & coffee","Juice, nectars & punch › Kern's › Apricot › 23oz can",nice,Branded,,,,drinks.juice.kerns.apricot.23oz-can
+,"Water, energy, sports, juice, tea & coffee","Juice, nectars & punch › Minute Maid › Apple › 20oz bottle",nice,Branded,,,,drinks.juice.minute-maid.apple.20oz
+,"Water, energy, sports, juice, tea & coffee","Juice, nectars & punch › Minute Maid › Apple › 2L bottle",nice,Branded,,,,drinks.juice.minute-maid.apple.2l
+,"Water, energy, sports, juice, tea & coffee","Juice, nectars & punch › Minute Maid › Cranberry Grape › 20oz bottle",nice,Branded,,,,drinks.juice.minute-maid.cranberry-grape.20oz
+,"Water, energy, sports, juice, tea & coffee","Juice, nectars & punch › Minute Maid › Cranberry Grape › 2L bottle",nice,Branded,,,,drinks.juice.minute-maid.cranberry-grape.2l
+,"Water, energy, sports, juice, tea & coffee","Juice, nectars & punch › Ocean Spray › Cran-Grape › 32oz bottle",nice,Branded,,,,drinks.juice.ocean-spray.cran-grape.32oz
+,"Water, energy, sports, juice, tea & coffee","Juice, nectars & punch › Mott's Clamato › Picante › 10oz bottle",nice,Branded,,,,drinks.juice.motts-clamato.picante.10oz
+,"Water, energy, sports, juice, tea & coffee","Juice, nectars & punch › Mott's Clamato › Preparado › 10oz bottle",nice,Branded,,,,drinks.juice.motts-clamato.preparado.10oz
+,"Water, energy, sports, juice, tea & coffee","Juice, nectars & punch › Mott's Clamato › Preparado › 16oz bottle",nice,Branded,,,,drinks.juice.motts-clamato.preparado.16oz
+,"Water, energy, sports, juice, tea & coffee","Juice, nectars & punch › Mott's Clamato › Preparado › 64oz bottle",nice,Branded,,,,drinks.juice.motts-clamato.preparado.64oz
+,"Water, energy, sports, juice, tea & coffee","Juice, nectars & punch › Sunny D › Orange Tangerine › 16oz bottle",nice,Branded,,,,drinks.juice.sunny-d.orange-tangerine.16oz
+,"Water, energy, sports, juice, tea & coffee","Juice, nectars & punch › Sunny D › Orange Tangerine › 40oz bottle",nice,Branded,,,,drinks.juice.sunny-d.orange-tangerine.40oz
+,"Water, energy, sports, juice, tea & coffee","Juice, nectars & punch › Sunny D › Orange Tangerine › 64oz bottle",nice,Branded,,,,drinks.juice.sunny-d.orange-tangerine.64oz
+,"Water, energy, sports, juice, tea & coffee","Juice, nectars & punch › Visvita (aloe) › Guava › 1.5L bottle",nice,Branded,,,,drinks.juice.visvita.guava.1-5l
+,"Water, energy, sports, juice, tea & coffee","Juice, nectars & punch › Visvita (aloe) › Tamarindo › 1.5L bottle",nice,Branded,,,,drinks.juice.visvita.tamarindo.1-5l
+,"Water, energy, sports, juice, tea & coffee","Juice, nectars & punch › OKF (aloe) › Coconut › 1.5L bottle",nice,Branded,,,,drinks.juice.okf.coconut.1-5l
+,Candy & snacks,Chocolate bars › Snickers › White › Single,nice,Branded,,,,candy-snacks.chocolate.snickers.white.single
+,Candy & snacks,Chocolate bars › Reese's › Big Cup › Single,nice,Branded,,,,candy-snacks.chocolate.reeses.big-cup.single
+,Candy & snacks,"Gummy, chewy & sour › Trolli › Watermelon Sharks › Peg bag",nice,Branded,,,,candy-snacks.gummy-chewy.trolli.watermelon-sharks.peg
+,Candy & snacks,"Gummy, chewy & sour › Hi-Chew › Mango › Peg bag",nice,Branded,,,,candy-snacks.gummy-chewy.hi-chew.mango.peg
+,Candy & snacks,"Gummy, chewy & sour › Hi-Chew › Strawberry › Peg bag",nice,Branded,,,,candy-snacks.gummy-chewy.hi-chew.strawberry.peg
+,Candy & snacks,"Gummy, chewy & sour › Warheads › Extreme Sour › Peg bag",nice,Branded,,,,candy-snacks.gummy-chewy.warheads.extreme-sour.peg
+,Candy & snacks,"Gummy, chewy & sour › Warheads › Sour Twists › Peg bag",nice,Branded,,,,candy-snacks.gummy-chewy.warheads.sour-twists.peg
+,Candy & snacks,Hard candy & lollipops › Lemonhead (Ferrara) › Chewy › Single,nice,Branded,,,,candy-snacks.hard-candy.lemonhead.chewy.single
+,Candy & snacks,Mexican candy › Lucas › Bomvaso › Single,nice,Branded,,,,candy-snacks.mexican-candy.lucas.bomvaso.single
+,Candy & snacks,Mexican candy › Vero › Rebanaditas › Single,nice,Branded,,,,candy-snacks.mexican-candy.vero.rebanaditas.single
+,Candy & snacks,Mexican candy › Ravi › Tamarind › Single,nice,Branded,,,,candy-snacks.mexican-candy.ravi.tamarind.single
+,Candy & snacks,Mexican candy › Ravi › Chamoy › Single,nice,Branded,,,,candy-snacks.mexican-candy.ravi.chamoy.single
+,Candy & snacks,Mexican candy › Lorena › Pelón-style › Single,nice,Branded,,,,candy-snacks.mexican-candy.lorena.pelon-style.single
+,Candy & snacks,Mexican candy › Lorena › Chamoy › Single,nice,Branded,,,,candy-snacks.mexican-candy.lorena.chamoy.single
+,Candy & snacks,"Salty snacks (chips, corn, popcorn) › Frito-Lay › Cheetos Crunchy Flamin' Hot › XVL bag (about 2–2.5oz)",nice,Branded,,,,candy-snacks.salty-snacks.frito-lay.cheetos-flamin-hot.xvl
+,Candy & snacks,"Salty snacks (chips, corn, popcorn) › Frito-Lay › Cheetos Crunchy Xxtra Flamin' Hot › XVL bag (about 2–2.5oz)",nice,Branded,,,,candy-snacks.salty-snacks.frito-lay.cheetos-xxtra-flamin-hot.xvl
+,Candy & snacks,"Salty snacks (chips, corn, popcorn) › Frito-Lay › Cheetos Crunchy › XVL bag (about 2–2.5oz)",nice,Branded,,,,candy-snacks.salty-snacks.frito-lay.cheetos-crunchy.xvl
+,Candy & snacks,"Salty snacks (chips, corn, popcorn) › Frito-Lay › Doritos Nacho Cheese › XVL bag (about 2–2.5oz)",nice,Branded,,,,candy-snacks.salty-snacks.frito-lay.doritos-nacho.xvl
+,Candy & snacks,"Salty snacks (chips, corn, popcorn) › Frito-Lay › Doritos Dinamita › XVL bag (about 2–2.5oz)",nice,Branded,,,,candy-snacks.salty-snacks.frito-lay.doritos-dinamita.xvl
+,Candy & snacks,"Salty snacks (chips, corn, popcorn) › Frito-Lay › Fritos Turbos Flamas › XVL bag (about 2–2.5oz)",nice,Branded,,,,candy-snacks.salty-snacks.frito-lay.fritos-turbos-flamas.xvl
+,Candy & snacks,"Salty snacks (chips, corn, popcorn) › Frito-Lay › Munchies Flamin' Hot › XVL bag (about 2–2.5oz)",nice,Branded,,,,candy-snacks.salty-snacks.frito-lay.munchies-flamin-hot.xvl
+,Candy & snacks,"Salty snacks (chips, corn, popcorn) › Frito-Lay › Lay's Classic › XVL bag (about 2–2.5oz)",nice,Branded,,,,candy-snacks.salty-snacks.frito-lay.lays-classic.xvl
+,Candy & snacks,"Salty snacks (chips, corn, popcorn) › Frito-Lay › Ruffles Cheddar › XVL bag (about 2–2.5oz)",nice,Branded,,,,candy-snacks.salty-snacks.frito-lay.ruffles-cheddar.xvl
+,Candy & snacks,"Salty snacks (chips, corn, popcorn) › Takis › Blue Heat › 4oz bag",nice,Branded,,,,candy-snacks.salty-snacks.takis.blue-heat.4oz-xvl
+,Candy & snacks,"Salty snacks (chips, corn, popcorn) › Takis › Crunchy Fajitas › 2.5–3.25oz bag",nice,Branded,,,,candy-snacks.salty-snacks.takis.crunchy-fajitas.single-bag
+,Candy & snacks,"Salty snacks (chips, corn, popcorn) › Takis › Crunchy Fajitas › 4oz bag",nice,Branded,,,,candy-snacks.salty-snacks.takis.crunchy-fajitas.4oz-xvl
+,Candy & snacks,"Salty snacks (chips, corn, popcorn) › Chex Mix › Cheddar › 3.75oz bag",nice,Branded,,,,candy-snacks.salty-snacks.chex-mix.cheddar.3-75oz
+,Candy & snacks,"Salty snacks (chips, corn, popcorn) › Chex Mix › Bold › 3.75oz bag",nice,Branded,,,,candy-snacks.salty-snacks.chex-mix.bold.3-75oz
+,Candy & snacks,"Cookies, crackers & snack cakes › Oreo › Double Stuf › 6-count pack",nice,Branded,,,,candy-snacks.cookies-cakes.oreo.double-stuf.6ct
+,Candy & snacks,"Cookies, crackers & snack cakes › Keebler › Vanilla wafers › 1.8oz",nice,Branded,,,,candy-snacks.cookies-cakes.keebler.vanilla-wafers.1-8oz
+,Tobacco & accessories,Lighters & matches › Newport Mini Torch › Assorted › Single,nice,Branded,,,,tobacco.lighters.newport-mini-torch.assorted.single
+,Tobacco & accessories,Counter accessories › Glass tubes / one-hitters,nice,Slot,1-2,,,tobacco.accessories.glass-tubes
+,Tobacco & accessories,Counter accessories › Rolling trays,nice,Slot,1,,,tobacco.accessories.rolling-trays
+,Tobacco & accessories,Counter accessories › Lighter leashes / keychain lighters,nice,Slot,1,,,tobacco.accessories.lighter-leashes
