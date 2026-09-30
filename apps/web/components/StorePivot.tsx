@@ -11,7 +11,7 @@ interface Props {
   onJumpItem: (id: string) => void;
 }
 
-const STATE_LABEL: Record<PivotItem["state"], string> = { bought: "bought", fading: "fading", gap: "gap", hold: "supply hold" };
+const STATE_LABEL: Record<PivotItem["state"], string> = { bought: "carried", fading: "fading", gap: "gap", hold: "supply hold" };
 
 /** A store's coverage as a pivot: department → category → item, each level against its peers. */
 export function StorePivot({ file, store: s, medians, onJumpItem }: Props) {
@@ -101,8 +101,8 @@ export function StorePivot({ file, store: s, medians, onJumpItem }: Props) {
         <thead>
           <tr>
             <th>Department › category › item</th>
-            <th className="num" title="Catalog items bought from Mercaso in 12 months">
-              Bought
+            <th className="num" title={`Catalog items carried: bought from Mercaso in the last ${file.window_days} days`}>
+              Carried
             </th>
             <th className="num" title="Share of the items bought; the tick is the median of stores that order as often">
               Coverage
@@ -110,10 +110,10 @@ export function StorePivot({ file, store: s, medians, onJumpItem }: Props) {
             <th className="num" title="Median coverage of stores that order as often, and the difference in points">
               Peers
             </th>
-            <th className="num" title="Must items not bought in 90 days (supply holds not counted)">
+            <th className="num" title={`Must items not bought in the last ${file.window_days} days (supply holds not counted)`}>
               Must gaps
             </th>
-            <th className="num" title="Bought in 12 months but not in the last 90 days">
+            <th className="num" title={`Bought in 12 months but not in the last ${file.window_days} days`}>
               Fading
             </th>
             {money$ && (

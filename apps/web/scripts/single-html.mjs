@@ -34,11 +34,12 @@ const index = read("index.json");
 const catalogs = Object.fromEntries(index.map((e) => [`data/${e.file}`, read(e.file)]));
 const prices = existsSync(join(data, "prices.json")) ? read("prices.json") : null;
 const stores = existsSync(join(data, "stores.json")) ? read("stores.json") : null;
-// The no-prices file must not carry prices, margins, spend or opportunity in the store view either.
+// The no-prices file must not carry prices, margins or spend in the store view either (the site
+// computes opportunity from prices, so without them it is zero).
 const storesWithoutMoney = (f) => ({
   ...f,
-  items: f.items.map(({ price, promo, margin, ...rest }) => ({ ...rest, opportunity: 0 })),
-  stores: f.stores.map((s) => ({ ...s, spend_12m: 0, opportunity: 0 })),
+  items: f.items.map(({ price, promo, margin, ...rest }) => rest),
+  stores: f.stores.map((s) => ({ ...s, spend_12m: 0 })),
 });
 const today = new Date().toISOString().slice(0, 10);
 const snapshot = prices?.as_of || today;

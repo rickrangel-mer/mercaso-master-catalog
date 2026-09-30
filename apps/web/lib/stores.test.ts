@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import type { ItemOut, StoreFile, StoreOut } from "./stores.ts";
-import { bandOf, bought12, peerMedians, storePivot, filterStores, gapsToCsv, groupStores, hasMoney, missingToCsv, sortStores, storeGaps, storeSummary, storesMissing, storesToCsv, tierDepartmentMedians } from "./stores.ts";
+import { bandOf, carried, peerMedians, storePivot, filterStores, gapsToCsv, groupStores, hasMoney, missingToCsv, sortStores, storeGaps, storeSummary, storesMissing, storesToCsv, tierDepartmentMedians } from "./stores.ts";
 
 const item = (id: string, priority: "must" | "should" | "nice", adoption: number[], extra: Partial<ItemOut> = {}): ItemOut => ({
   id,
@@ -50,13 +50,16 @@ const store = (id: string, tier: number, must: number, extra: Partial<StoreOut> 
   opportunity: 100,
   bought: [],
   fading_items: [],
+  last_bought: [],
   ...extra,
 });
 const file: StoreFile = {
-  schema_version: 1,
+  schema_version: 2,
   store_type: "liquor",
   as_of: "2026-09-30",
   active_days: 45,
+  default_window_days: 90,
+  window_days: 90,
   tiers: ["1-5", "6-20"],
   departments: ["Soft drinks"],
   totals: { must: 2, should: 1, nice: 0 },
@@ -116,11 +119,13 @@ describe("gaps", () => {
 describe("pivot", () => {
   it("rolls a store up by department and category, with peers, gaps and fading", () => {
     const medians = peerMedians(file);
-    expect(medians[1]?.get("Soft drinks")).toBeCloseTo(2 / 3);
+    // A carries coke and pepsi (2 of 3), B carries pepsi (1 of 3): median 1/2.
+    expect(medians[1]?.get("Soft drinks")).toBeCloseTo(0.5);
     const b = file.stores[1]!;
-    expect([...bought12(b)].sort()).toEqual([0, 1]);
+    expect([...carried(b)]).toEqual([1]);
     const [dept] = storePivot(file, b, medians);
-    expect(dept).toMatchObject({ key: "Soft drinks", items: 3, bought: 2, mustGaps: 1, gaps: 1, fading: 1, expected: 180 });
+    // Coke is fading (bought 120 days ago), so it is a gap, not carried.
+    expect(dept).toMatchObject({ key: "Soft drinks", items: 3, bought: 1, mustGaps: 1, gaps: 1, fading: 1, expected: 180 });
     expect(dept!.children.map((c) => [c.key, c.label, c.items])).toEqual([["Soft drinks|Cola", "Cola", 3]]);
     // Gaps first, then fading, then held, then bought.
     expect(dept!.children[0]!.leaves.map((l) => [l.item.id, l.state, l.days])).toEqual([

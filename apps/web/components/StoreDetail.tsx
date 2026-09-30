@@ -95,7 +95,7 @@ export function StoreDetail({ file, store: s, medians, onClose, onJumpItem }: Pr
               Download all gaps
             </button>
           </div>
-          <p className="muted small">Items this store hasn&apos;t bought from us in 90 days, most bought by its peers first.</p>
+          <p className="muted small">Items this store hasn&apos;t bought from us in the last {file.window_days} days, most carried by its peers first.</p>
           <div className="controls">
             <div className="chips" role="group" aria-label="Priority">
               {PRIORITY_LEVELS.map((p) => (
@@ -118,7 +118,7 @@ export function StoreDetail({ file, store: s, medians, onClose, onJumpItem }: Pr
                 <tr>
                   <th>Item</th>
                   <th>Gap</th>
-                  <th className="num" title="Share of stores that order as often and bought it in 12 months">
+                  <th className="num" title={`Share of stores that order as often and bought it in the last ${file.window_days} days`}>
                     Peers buy
                   </th>
                   <th>Recommended SKU</th>

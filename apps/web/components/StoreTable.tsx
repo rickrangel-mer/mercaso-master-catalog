@@ -75,12 +75,12 @@ export function StoreTable({ file, medians, onOpen, onJumpItem }: Props) {
     { id: "orders", label: "Orders 12 mo", className: "num", title: "Orders in 12 months, and the trend: last 90 days against the 90 days before" },
     { id: "spend", label: "Spend 12 mo", className: "num", money: true },
     { id: "score", label: "Score", className: "num", title: "Catalog score 0–100: must, should and nice coverage weighted 3:2:1" },
-    { id: "must", label: "Must", className: "num", title: `Share of the ${file.totals.must} must items bought from Mercaso in 12 months` },
+    { id: "must", label: "Must", className: "num", title: `Share of the ${file.totals.must} must items carried: bought from Mercaso in the last ${file.window_days} days` },
     { id: null, label: "Should", className: "num" },
     { id: null, label: "Nice", className: "num" },
     { id: "vs_peers", label: "vs. peers", className: "num", title: "Must coverage minus the median of stores that order as often, in points" },
-    { id: "must_gaps", label: "Must gaps", className: "num", title: "Must items not bought in 90 days (supply holds not counted)" },
-    { id: "fading", label: "Fading", className: "num", title: "Items bought in 12 months but not in the last 90 days" },
+    { id: "must_gaps", label: "Must gaps", className: "num", title: `Must items not bought in the last ${file.window_days} days (supply holds not counted)` },
+    { id: "fading", label: "Fading", className: "num", title: `Items bought in 12 months but not in the last ${file.window_days} days` },
     { id: "opportunity", label: "Opportunity", className: "num", money: true, title: "Expected revenue a year from must and should gaps: peer adoption × typical peer volume × today's price" },
   ];
   const columns = allColumns.filter((c) => money$ || !c.money);

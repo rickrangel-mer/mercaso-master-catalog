@@ -1,8 +1,10 @@
 // Pure logic for the Stores tab: filtering, grouping and sorting stores, a store's gaps, the stores
-// missing an item, and CSV export. The data is dist/stores/<store-type>.json from `pnpm stores`.
-import type { ItemOut, StoreFile, StoreOut } from "../../../scripts/stores/lib.ts";
+// missing an item, the pivot, and CSV export. The input is a StoreFile scored for the viewer's
+// carried window by `scoreWindow` (./score.ts) from dist/stores/<store-type>.json.
+import { median, type ItemOut, type StoreFile, type StoreOut } from "./score";
 
 export type { ItemOut, StoreFile, StoreOut };
+export { median };
 
 export const pctOf = (n: number, d: number) => (d ? n / d : 0);
 export const mustPct = (f: StoreFile, s: StoreOut) => pctOf(s.must, f.totals.must);
@@ -84,13 +86,6 @@ export interface StoreGroup {
   label: string;
   stores: StoreOut[];
   stats: { stores: number; active: number; medianMust: number; opportunity: number };
-}
-
-export function median(xs: number[]): number {
-  if (xs.length === 0) return 0;
-  const s = [...xs].sort((a, b) => a - b);
-  const m = s.length >> 1;
-  return s.length % 2 ? s[m]! : (s[m - 1]! + s[m]!) / 2;
 }
 
 /** Groups in a natural order: tiers and bands ascending, status Active first, others by size. */
@@ -218,11 +213,11 @@ const p1 = (x: number) => (x * 100).toFixed(1);
 
 export function storesToCsv(f: StoreFile, list: StoreOut[]): string {
   const money = hasMoney(f);
-  const head = ["store", "store_number", "organization", "city", "zip", "status", "days_since_order", "order_tier", "orders_12m", "orders_90d", "trend", ...(money ? ["spend_12m"] : []), "catalog_score", "must_pct", "should_pct", "nice_pct", "must_vs_peers_pts", "must_gaps", "should_gaps", "fading_items", "top_must_gaps", ...(money ? ["est_opportunity_yr"] : [])];
+  const head = ["carried_window_days", "store", "store_number", "organization", "city", "zip", "status", "days_since_order", "order_tier", "orders_12m", "orders_90d", "trend", ...(money ? ["spend_12m"] : []), "catalog_score", "must_pct", "should_pct", "nice_pct", "must_vs_peers_pts", "must_gaps", "should_gaps", "fading_items", "top_must_gaps", ...(money ? ["est_opportunity_yr"] : [])];
   return csv([
     head,
     ...list.map((s) => [
-      s.name, s.number, s.organization, s.city, s.zip, s.status, String(s.days_since_order), f.tiers[s.tier] ?? "", String(s.orders_12m), String(s.orders_90d), s.trend,
+      String(f.window_days), s.name, s.number, s.organization, s.city, s.zip, s.status, String(s.days_since_order), f.tiers[s.tier] ?? "", String(s.orders_12m), String(s.orders_90d), s.trend,
       ...(money ? [s.spend_12m.toFixed(2)] : []),
       s.score.toFixed(1), p1(pctOf(s.must, f.totals.must)), p1(pctOf(s.should, f.totals.should)), p1(pctOf(s.nice, f.totals.nice)), s.vs_peers.toFixed(1),
       String(s.voids.must), String(s.voids.should), String(s.fading), s.top_voids.map((i) => f.items[i]?.item ?? "").join(" | "),
@@ -275,7 +270,7 @@ export interface PivotItem {
 export interface PivotNode {
   key: string;
   label: string;
-  /** Catalog items under the node, and those the store bought in 12 months. */
+  /** Catalog items under the node, and those the store carries (bought within the window). */
   items: number;
   bought: number;
   /** Median coverage of the node among stores in the same tier (0–1). */
@@ -289,14 +284,14 @@ export interface PivotNode {
   leaves: PivotItem[];
 }
 
-/** Items bought in 12 months: bought in 90 days plus fading. */
-export const bought12 = (s: StoreOut) => new Set([...s.bought, ...s.fading_items.map(([i]) => i)]);
+/** Items the store carries: bought within the window. */
+export const carried = (s: StoreOut) => new Set(s.bought);
 
 const catKey = (it: ItemOut) => `${it.department}|${it.category}`;
 
 /**
  * Peer medians for every department and category, per tier: the median across the tier's stores
- * of the share of the node's items each store bought in 12 months. Computed once per file.
+ * of the share of the node's items each store carries. Computed once per scored file.
  */
 export function peerMedians(f: StoreFile): Map<string, number>[] {
   const nodes = new Map<string, number[]>();
@@ -304,7 +299,7 @@ export function peerMedians(f: StoreFile): Map<string, number>[] {
     for (const k of [it.department, catKey(it)]) nodes.set(k, [...(nodes.get(k) ?? []), i]);
   });
   return f.tiers.map((_, t) => {
-    const stores = f.stores.filter((s) => s.tier === t).map(bought12);
+    const stores = f.stores.filter((s) => s.tier === t).map(carried);
     const out = new Map<string, number>();
     for (const [k, idx] of nodes) out.set(k, median(stores.map((b) => idx.filter((i) => b.has(i)).length / idx.length)));
     return out;
@@ -345,7 +340,7 @@ export function storePivot(f: StoreFile, s: StoreOut, medians: Map<string, numbe
       key,
       label,
       items: leaves.length,
-      bought: leaves.filter((l) => l.state === "bought" || l.days !== undefined).length,
+      bought: leaves.filter((l) => l.state === "bought").length,
       peers: peers.get(key) ?? 0,
       mustGaps: leaves.filter((l) => (l.state === "gap" || l.state === "fading") && l.item.priority === "must").length,
       gaps: leaves.filter((l) => l.state === "gap" || l.state === "fading").length,
