@@ -119,6 +119,17 @@ export interface ImportResult {
   problems: string[];
 }
 
+/**
+ * The SKU cell of a gap row. SKUs typed into `target_skus` by mistake are accepted too: that
+ * column only ever holds an item count such as "1" or "2-3", never letters.
+ */
+export function gapSkuCell(g: Record<string, string>): string {
+  const own = (g.mercaso_sku ?? "").trim();
+  if (own) return own;
+  const target = (g.target_skus ?? "").trim();
+  return /[a-z]/i.test(target) ? target : "";
+}
+
 /** SKUs written in a gap cell: separated by spaces, commas, semicolons or "|". */
 export const splitSkus = (cell: string) => cell.split(/[\s,;|]+/).map((s) => s.trim().toUpperCase()).filter(Boolean);
 
@@ -149,6 +160,8 @@ export function applyReview(
       problems.push(`pending ${p.node_id} ${p.mercaso_sku}: decision "${p.decision}" is not approve or reject`);
       continue;
     }
+    // Importing the same sheet twice is fine: a decision already in place is skipped quietly.
+    if (out.some((m) => m.node_id === p.node_id && m.mercaso_sku === p.mercaso_sku && m.status === verdict)) continue;
     const row = out.find((m) => m.node_id === p.node_id && m.mercaso_sku === p.mercaso_sku && m.status === "auto");
     if (!row) {
       problems.push(`pending ${p.node_id} ${p.mercaso_sku}: no pending row with that item and SKU`);
@@ -162,7 +175,7 @@ export function applyReview(
   }
 
   for (const g of gaps) {
-    for (const sku of splitSkus(g.mercaso_sku ?? "")) {
+    for (const sku of splitSkus(gapSkuCell(g))) {
       const product = products?.get(sku);
       if (products && !product) {
         problems.push(`gap ${g.node_id}: SKU ${sku} is not in products.csv`);

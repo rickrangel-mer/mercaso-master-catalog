@@ -6,7 +6,7 @@ Data: Mercaso sales to the 1,993 active CA liquor stores, 2025-09-29 to 2026-09-
 
 **Two kinds of change.**
 - **Applied in this PR (part A):** suggested brands, notes and match fixes, where sales leave no real choice. New matches are added as *proposed* (hand-added, status `auto`) so Rick approves them like any other pending match.
-- **Proposed (part B):** priority and item-count changes, drops and new slots. Nothing in part B is applied until Rick fills in the Decision column.
+- **Proposed (part B):** priority and item-count changes, drops and new slots. **Rick accepted all 25 on 2026-09-30, and they are applied in `data/`.** The products each new slot cites were approved as its matches.
 
 ## How far Mercaso reaches here
 
@@ -57,39 +57,39 @@ Bold, and the lemon & lime juice, coffee, baking soda, vinegar and cat litter ro
 | `grocery.canned-jarred.canned-fruit` | Dole pineapple chunks 3.3%; Del Monte fruit cocktail 0.8% | Pineapple proposed |
 | `grocery.dry-goods.cooking-oil` | 1-2-3 1L 13.4%, Mazola corn oil 8.4% | 1-2-3 first |
 
-After this PR there are 9 more proposed matches; they join the pending review sheet (`pnpm review export`). Coverage does not change until they are approved.
+Rick approved these 9 matches with the review (2026-09-30).
 
 ## B. Proposals for Rick
 
 | # | Slot | Now | Evidence (12-month store share) | Proposed | Decision |
 |---|---|---|---|---|---|
 | **Health & beauty** | | | | | |
-| B.1 | `health-beauty.first-aid.eye-drops` | should, 1 item | Visine 15%, Pure Eyes 12%, Clear Eyes 9%; eyecare reaches 38% | Must, 1–2 items | |
-| B.2 | `health-beauty.medicine.cough-drops` | 1 item | Four Halls flavors at 17–22% (Honey Lemon, Extra Strong, Coolwave, Cherry) | 2 items | |
-| B.3 | `health-beauty.feminine-family.condoms` | 2 items | Six Trojan lines at 12–18% | 2–3 items | |
-| B.4 | `health-beauty.personal-care.body-spray` | nice | Ten Axe scents at 3–6% | Should | |
-| B.5 | `health-beauty.feminine-family.tampons` | should | Tampax 1.5% | Nice | |
-| B.6 | `health-beauty.beauty-accessories.nail-clipper` | should | Best 2.2%, still pending | Nice | |
-| B.7 | `health-beauty.beauty-accessories.hair-accessories` | should | Scrunchies and bobby pins 0.1% or less; Genco pocket hair brush 3.0% | Rename to "Comb / hair brush" at nice, brand Genco | |
-| B.8 | Drop slots with no sales | nice | Face masks 0%; lubricant (K-Y) 0.6%, not Trojan | Drop `first-aid.face-masks` and `feminine-family.lubricant` | |
-| B.9 | New slot: baby wipes | — | Huggies 48ct 11.1% (5.2% in 90 days), Huggies 56ct 5.4%; baby wipes reach 27% | Add `feminine-family.baby-wipes` at should, brand Huggies | |
-| B.10 | New slot: breath strips | — | Listerine Pocket Fresh Cool Mint 9.9% (5.8% in 90 days), Freshburst 3.7% | Add `oral-lip.breath-strips` at should, brand Listerine | |
+| B.1 | `health-beauty.first-aid.eye-drops` | should, 1 item | Visine 15%, Pure Eyes 12%, Clear Eyes 9%; eyecare reaches 38% | Must, 1–2 items | yes |
+| B.2 | `health-beauty.medicine.cough-drops` | 1 item | Four Halls flavors at 17–22% (Honey Lemon, Extra Strong, Coolwave, Cherry) | 2 items | yes |
+| B.3 | `health-beauty.feminine-family.condoms` | 2 items | Six Trojan lines at 12–18% | 2–3 items | yes |
+| B.4 | `health-beauty.personal-care.body-spray` | nice | Ten Axe scents at 3–6% | Should | yes |
+| B.5 | `health-beauty.feminine-family.tampons` | should | Tampax 1.5% | Nice | yes |
+| B.6 | `health-beauty.beauty-accessories.nail-clipper` | should | Best 2.2%, still pending | Nice | yes |
+| B.7 | `health-beauty.beauty-accessories.hair-accessories` | should | Scrunchies and bobby pins 0.1% or less; Genco pocket hair brush 3.0% | Rename to "Comb / hair brush" at nice, brand Genco | yes |
+| B.8 | Drop slots with no sales | nice | Face masks 0%; lubricant (K-Y) 0.6%, not Trojan | Drop `first-aid.face-masks` and `feminine-family.lubricant` | yes |
+| B.9 | New slot: baby wipes | — | Huggies 48ct 11.1% (5.2% in 90 days), Huggies 56ct 5.4%; baby wipes reach 27% | Add `feminine-family.baby-wipes` at should, brand Huggies | yes |
+| B.10 | New slot: breath strips | — | Listerine Pocket Fresh Cool Mint 9.9% (5.8% in 90 days), Freshburst 3.7% | Add `oral-lip.breath-strips` at should, brand Listerine | yes |
 | **Grocery** | | | | | |
-| B.11 | `grocery.breakfast-pantry.toaster-pastry` | should, 1 item | Pop-Tarts Strawberry 18.4%, Cherry 14.5%, Blueberry 13.4%, Chocolate Chip 11.8% | Must, 2 items | |
-| B.12 | `grocery.canned-jarred.pickles` | should, 1 item | Van Holten's 21–23%; eight pouches above 4%; pickles & peppers reach 42% | Must, 2 items | |
-| B.13 | `grocery.instant-meals.vienna-sausage` | should | Libby's 14.5% | Must | |
-| B.14 | `grocery.dry-goods.cooking-oil` | should | 1-2-3 13.4% and 11.4%, Mazola 8.4%; oils reach 27% | Must | |
-| B.15 | `grocery.instant-meals.ramen-cup` | must, 3–4 items | Fourteen cups at 20–32% (Samyang Buldak, Maruchan Instant Lunch, Nongshim bowls, Tapatio) | 4–6 items | |
-| B.16 | `grocery.dry-goods.flour-masa` | nice | Maseca 6.2% | Should | |
-| B.17 | Downgrades to nice | should | Pepper 0.6%; mustard 1.8%; seasoning blend 1.4% (Knorr bouillon 2.1%); dry beans 0.5% (dry beans reach 3%) | `seasonings.pepper`, `mustard`, `seasoning-blend`, `dry-goods.dry-beans` to nice | |
-| B.18 | Pet food up | nice | Pedigree dry 17.9%, Pedigree wet 9.5%, 9 Lives wet cat 8.2%; pet food reaches 43% | `pet.dog-food-dry`, `dog-food-wet`, `cat-food-wet` to should | |
-| B.19 | New slots: cat litter, dry cat food | — | Jonny Cat 5lb 8.0%; Meow Mix 3.15lb 5.8% | Add `pet.cat-litter` at should and `pet.cat-food-dry` at nice | |
-| B.20 | New slot: instant coffee (and creamer) | — | Nescafé Clásico 50g 11.0%, 100g 10.5%, Dolca 8.3%; Folgers 4.6%; creamer N'Joy 4.2%, Coffee-mate 3.4%; reach 29% | Add `breakfast-pantry.instant-coffee` at should (Nescafé, Folgers) and `coffee-creamer` at nice | |
-| B.21 | New slot: lemon & lime juice | — | ReaLemon 2.5oz 10.9%, ReaLime 2.5oz 9.7%, 8oz 9.2%, California Wedge 7.5%; reach 30%. A drink mixer as much as a grocery item | Add `seasonings.lemon-lime-juice` at should (ReaLemon, ReaLime, California Wedge), linked from mixers | |
-| B.22 | New slot: beer salt | — | Twang Lime 4.1%, Lemon-Lime 3.7% | Add `seasonings.beer-salt` at nice, brand Twang, linked from mixers | |
-| B.23 | New slot: baking soda | — | Arm & Hammer 16oz 9.6%, 8oz 8.1% | Add `dry-goods.baking-soda` at should | |
-| B.24 | New slot: vinegar | — | Heinz white 16oz 9.9%, cider 4.1% | Add `dry-goods.vinegar` at should | |
-| B.25 | New slot: dried shrimp | — | Lupag dried shrimp 5.9%, whole shrimp 3.8% (a botana with beer) | Add `seasonings.dried-shrimp` at nice | |
+| B.11 | `grocery.breakfast-pantry.toaster-pastry` | should, 1 item | Pop-Tarts Strawberry 18.4%, Cherry 14.5%, Blueberry 13.4%, Chocolate Chip 11.8% | Must, 2 items | yes |
+| B.12 | `grocery.canned-jarred.pickles` | should, 1 item | Van Holten's 21–23%; eight pouches above 4%; pickles & peppers reach 42% | Must, 2 items | yes |
+| B.13 | `grocery.instant-meals.vienna-sausage` | should | Libby's 14.5% | Must | yes |
+| B.14 | `grocery.dry-goods.cooking-oil` | should | 1-2-3 13.4% and 11.4%, Mazola 8.4%; oils reach 27% | Must | yes |
+| B.15 | `grocery.instant-meals.ramen-cup` | must, 3–4 items | Fourteen cups at 20–32% (Samyang Buldak, Maruchan Instant Lunch, Nongshim bowls, Tapatio) | 4–6 items | yes |
+| B.16 | `grocery.dry-goods.flour-masa` | nice | Maseca 6.2% | Should | yes |
+| B.17 | Downgrades to nice | should | Pepper 0.6%; mustard 1.8%; seasoning blend 1.4% (Knorr bouillon 2.1%); dry beans 0.5% (dry beans reach 3%) | `seasonings.pepper`, `mustard`, `seasoning-blend`, `dry-goods.dry-beans` to nice | yes |
+| B.18 | Pet food up | nice | Pedigree dry 17.9%, Pedigree wet 9.5%, 9 Lives wet cat 8.2%; pet food reaches 43% | `pet.dog-food-dry`, `dog-food-wet`, `cat-food-wet` to should | yes |
+| B.19 | New slots: cat litter, dry cat food | — | Jonny Cat 5lb 8.0%; Meow Mix 3.15lb 5.8% | Add `pet.cat-litter` at should and `pet.cat-food-dry` at nice | yes |
+| B.20 | New slot: instant coffee (and creamer) | — | Nescafé Clásico 50g 11.0%, 100g 10.5%, Dolca 8.3%; Folgers 4.6%; creamer N'Joy 4.2%, Coffee-mate 3.4%; reach 29% | Add `breakfast-pantry.instant-coffee` at should (Nescafé, Folgers) and `coffee-creamer` at nice | yes |
+| B.21 | New slot: lemon & lime juice | — | ReaLemon 2.5oz 10.9%, ReaLime 2.5oz 9.7%, 8oz 9.2%, California Wedge 7.5%; reach 30%. A drink mixer as much as a grocery item | Add `seasonings.lemon-lime-juice` at should (ReaLemon, ReaLime, California Wedge), linked from mixers | yes |
+| B.22 | New slot: beer salt | — | Twang Lime 4.1%, Lemon-Lime 3.7% | Add `seasonings.beer-salt` at nice, brand Twang, linked from mixers | yes |
+| B.23 | New slot: baking soda | — | Arm & Hammer 16oz 9.6%, 8oz 8.1% | Add `dry-goods.baking-soda` at should | yes |
+| B.24 | New slot: vinegar | — | Heinz white 16oz 9.9%, cider 4.1% | Add `dry-goods.vinegar` at should | yes |
+| B.25 | New slot: dried shrimp | — | Lupag dried shrimp 5.9%, whole shrimp 3.8% (a botana with beer) | Add `seasonings.dried-shrimp` at nice | yes |
 
 Unchanged, and confirmed by sales: the must slots for antacid (Tums 22%), cough drops (Halls 22%), cold & flu, energy shots, toothpaste, toothbrush, lip balm, bar soap, deodorant, razor, pads, bandages, ramen packets, sugar, beans and jalapeños, and the Tajín and hot-sauce lines. Also left as they are: slots whose best seller is 1–5% but that a store still needs one of (shampoo, lotion, rice, tortillas, tuna).
 

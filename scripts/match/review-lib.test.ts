@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { applyReview, gapSheet, pendingSheet, splitSkus, type LeafInfo, type MatchRecord } from "./review-lib.ts";
+import { applyReview, gapSheet, gapSkuCell, pendingSheet, splitSkus, type LeafInfo, type MatchRecord } from "./review-lib.ts";
 
 const leaves: LeafInfo[] = [
   { id: "mixers.tools.corkscrew", department: "Mixers", item: "Bar tools › Corkscrew", priority: "must", kind: "Slot", target: "1", brandHints: "" },
@@ -65,6 +65,19 @@ describe("review sheets", () => {
       "gap drinks.water.topo.lime: SKU T2 is not ACTIVE (added anyway)",
       "gap drinks.water.topo.lime: SKU X9 is not in products.csv",
     ]);
+  });
+
+  it("takes SKUs typed into target_skus by mistake, but not an item count", () => {
+    expect(gapSkuCell({ mercaso_sku: "", target_skus: "DW10597-36" })).toBe("DW10597-36");
+    expect(gapSkuCell({ mercaso_sku: "", target_skus: "2-3" })).toBe("");
+    expect(gapSkuCell({ mercaso_sku: "A1", target_skus: "B2" })).toBe("A1");
+  });
+
+  it("skips decisions already applied, so a sheet can be imported twice", () => {
+    const once = applyReview(matches, [{ node_id: "mixers.tools.corkscrew", mercaso_sku: "A1", decision: "yes" }], [], null, "rick", "2026-09-30");
+    const twice = applyReview(once.matches, [{ node_id: "mixers.tools.corkscrew", mercaso_sku: "A1", decision: "yes" }], [], null, "rick", "2026-09-30");
+    expect([twice.approved, twice.problems]).toEqual([0, []]);
+    expect(twice.matches).toEqual(once.matches);
   });
 
   it("splits SKUs on common separators", () => {

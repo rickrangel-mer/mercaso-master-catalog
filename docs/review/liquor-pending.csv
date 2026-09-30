@@ -1,66 +1,32 @@
 ﻿decision,department,catalog_item,priority,type,mercaso_sku,product,case_pack,confidence,store_share_12m_pct,store_share_90d_pct,note,node_id
-,Soft drinks,Lemon-lime › Starry › Original › 12oz can,nice,Branded,SU21606-24,"Starry, Starry Lemon, 12 oz (24 Pack)",24,0.55,0.3,0.0,,scd.lemon-lime.starry.original.12oz-can
-,Candy & snacks,"Gummy, chewy & sour › Hi-Chew › Original mix › Single",should,Branded,CM487969,"Hi-Chew, Original Mix, 12.7 oz (6 Pack)",6,0.50,0.3,0.1,,candy-snacks.gummy-chewy.hi-chew.original-mix.single
-,Candy & snacks,Mexican candy › Jovy › Revolcaditas › Single,nice,Branded,VS007768,"Jovy, Revolcaditas Watermelon with Chili, 6 oz (24 Pack)",24,0.50,0.0,0.0,,candy-snacks.mexican-candy.jovy.revolcaditas.single
-,Candy & snacks,"Salty snacks (chips, corn, popcorn) › Pringles › Original › 2.5oz can",should,Branded,SL309602-12,"Pringles, Hot Ones Barbacoa, 2.5 oz (12 Pack)",12,0.55,0.8,0.9,,candy-snacks.salty-snacks.pringles.original.2-5oz
-,Candy & snacks,"Cookies, crackers & snack cakes › Ritz › Original › 1.35oz",nice,Branded,JC775358,"Ritz, Nabisco Crackers, 6 ct (6 Pack)",6,0.50,0.1,0.1,,candy-snacks.cookies-cakes.ritz.original.1-35oz
-,Candy & snacks,"Cookies, crackers & snack cakes › Gamesa › Barra de Coco › 4.9oz",nice,Branded,JC20130,"Gamesa, Barra de Coco Coconut Cookies, 4 ct (12 Pack)",12,0.50,0.1,0.1,,candy-snacks.cookies-cakes.gamesa.barra-de-coco.4-9oz
-,Tobacco & accessories,Cigars & cigarillos › Other cigars,nice,Slot,CM529848,"Black & Mild, Cigars, Original, Wood Tip, 1 ct (25 Pack)",25,0.50,1.3,1.0,,tobacco.cigars.other-cigars
-,Tobacco & accessories,Cigars & cigarillos › Other cigars,nice,Slot,CM525038,"Dutch Master, Premium Cigarillos, Original Fusion, 60 ct (30 Pack)",30,0.50,1.0,0.3,,tobacco.cigars.other-cigars
-,Tobacco & accessories,Vapes & nicotine alternatives › Disposable vapes,nice,Slot,CM450823,"Blu, Disposable E-Cigarette, Classic Tobacco, 2.4% Nicotine Strength, 1 ml (5 Pack)",5,0.40,0.1,0.0,,tobacco.nicotine.disposable-vapes
-,Tobacco & accessories,Vapes & nicotine alternatives › Disposable vapes,nice,Slot,CM464957,"LEAP Vapor, E-Cigarette, Device Kit, 1 ct (5 Pack)",5,0.40,0.0,0.0,,tobacco.nicotine.disposable-vapes
-,Tobacco & accessories,Vapes & nicotine alternatives › Juul › Tobacco pods › Pod pack,nice,Branded,CM219089,"Juul, Pods, Virginia Tobacco, 0.05, 2 ct (8 Pack)",8,0.50,0.0,0.0,,tobacco.nicotine.juul.tobacco-pods.pod-pack
-,Tobacco & accessories,Vapes & nicotine alternatives › Juul › Tobacco pods › Pod pack,nice,Branded,CM463112,"Juul, Pods, Virginia Tobacco, 0.05, 2 ct (8 Pack)",8,0.50,0.0,0.0,,tobacco.nicotine.juul.tobacco-pods.pod-pack
-,Tobacco & accessories,Smokeless & pipe tobacco › Other roll-your-own tobacco,nice,Slot,CO1870202,"Bugler, Snipe, Smoking Tobacco Pouches, 0.65 oz (6 Pack)",6,0.50,1.9,0.6,,tobacco.smokeless.other-roll-your-own
-,Tobacco & accessories,Smokeless & pipe tobacco › Other roll-your-own tobacco,nice,Slot,CM498165,"Captain Black, Pipe Tobacco, Gold, 1.5 oz (5 Pack)",5,0.40,0.0,0.0,,tobacco.smokeless.other-roll-your-own
-,Tobacco & accessories,Lighters & matches › Clipper › Classic assorted › Single,nice,Branded,MD053437,"Clipper, Lighter Gradient (48 Pack)",48,0.50,0.1,0.1,,tobacco.lighters.clipper.classic.single
-,Tobacco & accessories,Lighters & matches › D.D. Bean matchbooks › Matchbooks › Box of 50 matchbooks,nice,Branded,DW10507-20,"D.D. Bean & Sons, Matchbooks, 50 ct (20 Pack)",20,0.50,0.3,0.0,,tobacco.lighters.dd-bean.matchbooks.50ct-box
-,Tobacco & accessories,"Rolling papers, wraps & cones › Zig-Zag › King Slim › Booklet",nice,Branded,CM457544,"Zig-Zag, Rolling Papers, Organic Hemp, King Size, Slim, 1 ct (24 Pack)",24,0.50,0.1,0.0,,tobacco.papers.zig-zag.king-slim.booklet
-,Tobacco & accessories,Counter accessories › Grinders,nice,Slot,MD031939,"Ooze, Saturn Grinders Teal (1 Pack)",1,0.40,0.0,0.0,,tobacco.accessories.grinders
-,Tobacco & accessories,Counter accessories › Grinders,nice,Slot,MD031946,"Ooze, Saturn Grinders Green (1 Pack)",1,0.40,0.0,0.0,,tobacco.accessories.grinders
-,"Mixers, bar tools, cups & bags",Bar tools & openers › Corkscrew / waiter's wine key,must,Slot,VS079960,Corkscrew Bottle Opener (12 Pack),12,0.50,3.7,1.7,,mixers-bar.bar-tools.corkscrew
-,"Mixers, bar tools, cups & bags",Bar tools & openers › Corkscrew / waiter's wine key,must,Slot,MY70790,Waiters Corkscrew & Cap Opener (1 Pack),1,0.50,2.4,2.2,,mixers-bar.bar-tools.corkscrew
-,"Mixers, bar tools, cups & bags",Bar tools & openers › Corkscrew / waiter's wine key,must,Slot,MY70783,"Corkscrew & Cap Opener, 6.75 in (1 Pack)",1,0.50,2.1,1.9,,mixers-bar.bar-tools.corkscrew
-,"Mixers, bar tools, cups & bags","Bar tools & openers › Bottle opener (keychain, flat)",must,Slot,VS079960,Corkscrew Bottle Opener (12 Pack),12,0.50,3.7,1.7,,mixers-bar.bar-tools.bottle-opener
-,"Mixers, bar tools, cups & bags","Bar tools & openers › Bottle opener (keychain, flat)",must,Slot,MY70790,Waiters Corkscrew & Cap Opener (1 Pack),1,0.50,2.4,2.2,,mixers-bar.bar-tools.bottle-opener
-,"Mixers, bar tools, cups & bags","Bar tools & openers › Bottle opener (keychain, flat)",must,Slot,MY70783,"Corkscrew & Cap Opener, 6.75 in (1 Pack)",1,0.50,2.1,1.9,,mixers-bar.bar-tools.bottle-opener
-,"Mixers, bar tools, cups & bags","Cups, shot glasses & party disposables › 8oz plastic cup",nice,Slot,VS038808,"Plastic Cups 25 ct Assorted Colors, 9 oz (48 Pack)",48,0.50,2.3,1.6,,mixers-bar.cups-disposables.plastic-cup-8oz
-,"Mixers, bar tools, cups & bags","Cups, shot glasses & party disposables › 8oz plastic cup",nice,Slot,VS037920,"Cool Party Cups, Plastic Cups 25 ct Clear, 9 oz (48 Pack)",48,0.50,0.9,0.5,,mixers-bar.cups-disposables.plastic-cup-8oz
-,"Mixers, bar tools, cups & bags","Cups, shot glasses & party disposables › Bamboo skewers",nice,Slot,VS049515,"FamilyMaid, BBQ Skewers Wood 50 ct, 15.75 in (24 Pack)",24,0.40,0.4,0.1,,mixers-bar.cups-disposables.skewers
-,"Mixers, bar tools, cups & bags","Cups, shot glasses & party disposables › Bamboo skewers",nice,Slot,VS043657,"BBQ Skewer 100pc, 100 ct (24 Pack)",24,0.40,0.2,0.1,,mixers-bar.cups-disposables.skewers
-,"Mixers, bar tools, cups & bags","Cups, shot glasses & party disposables › Toothpicks",nice,Slot,VS063980,"Toothpicks With Dispenser, 4 ct (12 Pack)",12,0.50,1.8,0.1,,mixers-bar.cups-disposables.toothpicks
-,"Mixers, bar tools, cups & bags","Cups, shot glasses & party disposables › Toothpicks",nice,Slot,DW87370-1,"Toothpick, Round, 150 ct (4 Pack)",4,0.40,0.4,0.0,,mixers-bar.cups-disposables.toothpicks
-,"Mixers, bar tools, cups & bags","Cups, shot glasses & party disposables › Birthday candles",nice,Slot,VS003189,Birthday Candles Set (24 Pack),24,0.50,3.4,1.0,,mixers-bar.cups-disposables.birthday-candles
-,"Mixers, bar tools, cups & bags","Cups, shot glasses & party disposables › Birthday candles",nice,Slot,VS059170,"Party Birthday Candles Assorted Colors, 24 ct (24 Pack)",24,0.50,1.6,0.5,,mixers-bar.cups-disposables.birthday-candles
-,"Mixers, bar tools, cups & bags",Store operating supplies (bags) › Six-pack can rings,nice,Slot,DW57260-1,"Plastic Rings for 6 Pack Aluminum Soda Cans, 1000 ct (1 Pack)",1,0.50,3.9,0.6,,mixers-bar.store-bags.six-pack-rings
-,Household & kitchen,Cleaning equipment & home › Broom / dustpan,nice,Slot,CO1459286,"O'Cedar, PowerCorner, Broom & Dust Pan Set, Red (2 Pack)",2,0.40,0.2,0.0,,household.equipment-home.broom-dustpan
-,Household & kitchen,Cleaning equipment & home › Broom / dustpan,nice,Slot,VS002086,"Fiori, Broom Short Sweeper Assorted Colors (12 Pack)",12,0.40,0.1,0.0,,household.equipment-home.broom-dustpan
-,Household & kitchen,Cleaning equipment & home › Chargers & cables › USB-C cable,nice,Slot,VS080675,USB Cable Type C Fast Charger White (12 Pack),12,0.50,1.7,0.6,,household.equipment-home.chargers-cables.usb-c-cable
-,Household & kitchen,Cleaning equipment & home › Chargers & cables › USB-C cable,nice,Slot,EM006753,"emobii, CHARGE Maxx, Type-C USB Cable, Black & White (12 Pack)",12,0.40,0.4,0.1,,household.equipment-home.chargers-cables.usb-c-cable
-,Household & kitchen,Cleaning equipment & home › Chargers & cables › Lightning cable,nice,Slot,DW163340-1,"Wega Cell, IPhone Charging Cable, 1 ct (1 Pack)",1,0.50,0.7,0.1,,household.equipment-home.chargers-cables.lightning-cable
-,Household & kitchen,Cleaning equipment & home › Chargers & cables › Lightning cable,nice,Slot,VS003188,USB iPhone Charger Assorted Colors 2 Amp (36 Pack),36,0.40,0.4,0.1,,household.equipment-home.chargers-cables.lightning-cable
-,Household & kitchen,Cleaning equipment & home › Chargers & cables › Wall charger block,nice,Slot,VS002055,Fast Wall Charger 65W Usb & Type C (12 Pack),12,0.40,0.1,0.1,,household.equipment-home.chargers-cables.wall-block
-,Household & kitchen,Cleaning equipment & home › Chargers & cables › Wall charger block,nice,Slot,CM536304,"Charge Maxx, Wall Charger, USB/USB C, 1 ct (10 Pack)",10,0.40,0.1,0.0,,household.equipment-home.chargers-cables.wall-block
-,Health & beauty,Medicine (OTC) › Vitamin C / Emergen-C,nice,Slot,CO1674070,"Emergen-C, 1000mg Vitamin C Drink Mix, Variety Pack, 30 ct (4 Pack)",4,0.50,1.1,0.4,,health-beauty.medicine.vitamin-c
-,Health & beauty,Medicine (OTC) › Vitamin C / Emergen-C,nice,Slot,CM519721,"Emergen-C, Crystals, Powder, 12 ct (12 Pack)",12,0.40,0.0,0.0,,health-beauty.medicine.vitamin-c
-,Health & beauty,Feminine care & family planning › Lubricant,nice,Slot,CM523179,"KY Jelly, Lubricant, 0.16 oz (1 Pack)",1,0.50,0.6,0.2,,health-beauty.feminine-family.lubricant
-,Health & beauty,Feminine care & family planning › Lubricant,nice,Slot,CM523180,"KY Jelly, Lubricant, TrueFeel Silicone, 0.16 oz (1 Pack)",1,0.40,0.2,0.1,,health-beauty.feminine-family.lubricant
-,Health & beauty,Feminine care & family planning › Pregnancy test,nice,Slot,DW67300-1,"Paraid, Pregnancy Test, 1 ct (1 Pack)",1,0.50,3.3,1.7,,health-beauty.feminine-family.pregnancy-test
-,Health & beauty,Feminine care & family planning › Pregnancy test,nice,Slot,JC23969,"Paraid, Pregnancy Test (24 Pack)",24,0.50,3.1,0.0,,health-beauty.feminine-family.pregnancy-test
-,Health & beauty,First aid & hygiene › Hand sanitizer,should,Slot,VS031539,"Lucky, Hand Sanitizer Aloe Vera, 8 oz (12 Pack)",12,0.50,2.8,0.9,,health-beauty.first-aid.hand-sanitizer
-,Health & beauty,First aid & hygiene › Hand sanitizer,should,Slot,DW216210,"Lucky, Hand Sanitizer with Clip, 1.8 oz (24 Pack)",24,0.50,2.1,0.4,,health-beauty.first-aid.hand-sanitizer
-,Health & beauty,First aid & hygiene › Face masks,nice,Slot,VS024706,"Global Beauty Care, Global Beauty Gel Face Mask Cucumber, 1.15 oz (24 Pack)",24,0.40,0.0,0.0,,health-beauty.first-aid.face-masks
-,Health & beauty,First aid & hygiene › Face masks,nice,Slot,VS065537,"Fashion Mask, Face Mask Reusable Light Blue, 1 ct (20 Pack)",20,0.40,0.0,0.0,,health-beauty.first-aid.face-masks
-,Health & beauty,Beauty accessories › Nail clipper / file,should,Slot,VS054521,"Face One, Nail Clipper Large, 1 ct (12 Pack)",12,0.50,2.2,1.3,,health-beauty.beauty-accessories.nail-clipper
-,Health & beauty,Beauty accessories › Nail clipper / file,should,Slot,VS012350,"UBC, Nail Clippers Toe Nail In Jar (36 Pack)",36,0.50,1.1,0.0,,health-beauty.beauty-accessories.nail-clipper
-,Health & beauty,Beauty accessories › Hair ties / combs / brushes,should,Slot,CM525588,"Scunchi, Hair Clip, Crown Claw, 3 ct (3 Pack)",3,0.40,0.1,0.0,,health-beauty.beauty-accessories.hair-accessories
-,Health & beauty,Beauty accessories › Hair ties / combs / brushes,should,Slot,CM521396,"Conair, Bobby Pins, Black, 6 ct (8 Pack)",8,0.40,0.0,0.0,,health-beauty.beauty-accessories.hair-accessories
-,Health & beauty,Beauty accessories › Hair ties / combs / brushes,should,Slot,CM521394,"Scunchi, Silky Scrunchies, Silky Black, 3 ct (16 Pack)",16,0.40,0.0,0.0,,health-beauty.beauty-accessories.hair-accessories
-,Health & beauty,Beauty accessories › Lashes / nail polish,nice,Slot,VS067401,"Lucky, Nail Polish Remover Spa & Gel, 6 oz (12 Pack)",12,0.50,1.3,0.5,,health-beauty.beauty-accessories.lashes-nail-polish
-,Health & beauty,Beauty accessories › Lashes / nail polish,nice,Slot,VS042836,"Lucky, Nail Polish Remover Lemon, 6 oz (12 Pack)",12,0.50,0.6,0.0,,health-beauty.beauty-accessories.lashes-nail-polish
-,Grocery staples,Dry goods & baking › Dry beans,should,Slot,VS101019,"Peak, Pinto Beans, 1 lb (24 Pack)",24,0.50,0.5,0.1,,grocery.dry-goods.dry-beans
-,Grocery staples,Dry goods & baking › Dry beans,should,Slot,VS010201,"Peak, Pinto Beans, 2 lb (12 Pack)",12,0.50,0.5,0.1,,grocery.dry-goods.dry-beans
-,Grocery staples,Breakfast & pantry › Syrup / honey,nice,Slot,SC1721951,"Snak Club, Mike's Hot Honey, Hot Honey Bears, 4 oz (6 Pack)",6,0.50,2.3,0.8,,grocery.breakfast-pantry.syrup-honey
-,Grocery staples,Breakfast & pantry › Syrup / honey,nice,Slot,VS008710,"Forrelli, Syrup Pancake & Waffle, 12 oz (12 Pack)",12,0.50,2.2,0.1,,grocery.breakfast-pantry.syrup-honey
-,Grocery staples,Pet › Pet treats,nice,Slot,CM522183,"Friskies, Adult Cat Treats, Beachside Crunch, Party Mix, 2.1 oz (10 Pack)",10,0.50,1.1,0.2,,grocery.pet.pet-treats
-,Grocery staples,Pet › Pet treats,nice,Slot,VS011541,"Farmland Traditions, Dog Treats Beef Recipe, 1.2 oz (12 Pack)",12,0.50,0.8,0.4,,grocery.pet.pet-treats
+,Candy & snacks,Mexican candy › Jovy › Revolcaditas › Single,nice,Branded,VS077007,"Jovy, Revolcaditas Candy Assorted, 6 oz (24 Pack)",24,0.50,0.0,0.0,,candy-snacks.mexican-candy.jovy.revolcaditas.single
+,Candy & snacks,"Salty snacks (chips, corn, popcorn) › Pringles › Original › 2.5oz can",should,Branded,DW102409,"Pringles, Jalapeño Potato Crisps, 2.5 oz (12 Pack)",12,0.55,0.0,0.0,,candy-snacks.salty-snacks.pringles.original.2-5oz
+,Tobacco & accessories,Vapes & nicotine alternatives › Disposable vapes,nice,Slot,CM464966,"LEAP Vapor, E-Cigarette, Smoked Tobacco, 1 ct (5 Pack)",5,0.40,0.0,0.0,,tobacco.nicotine.disposable-vapes
+,Tobacco & accessories,Vapes & nicotine alternatives › Disposable vapes,nice,Slot,CM494017,"Vuse Alto, E-Cigarette, Teal, 1 ct (5 Pack)",5,0.40,0.0,0.0,,tobacco.nicotine.disposable-vapes
+,Tobacco & accessories,Vapes & nicotine alternatives › Juul › Tobacco pods › Pod pack,nice,Branded,CM464547,"Juul, Pods, Virginia Tobacco, 0.03, 2 ct (8 Pack)",8,0.50,0.0,0.0,,tobacco.nicotine.juul.tobacco-pods.pod-pack
+,Tobacco & accessories,Vapes & nicotine alternatives › Juul › Tobacco pods › Pod pack,nice,Branded,CM465736,"Juul, Pods, Virginia Tobacco, 0.03, 2 ct (8 Pack)",8,0.50,0.0,0.0,,tobacco.nicotine.juul.tobacco-pods.pod-pack
+,Tobacco & accessories,Lighters & matches › Clipper › Classic assorted › Single,nice,Branded,MD053574,"Clipper, Jet Torch Solid Fluo (48 Pack)",48,0.50,0.1,0.1,,tobacco.lighters.clipper.classic.single
+,Tobacco & accessories,"Rolling papers, wraps & cones › Zig-Zag › King Slim › Booklet",nice,Branded,CM468331,"Zig-Zag, King Slim Unbleached Rolling Papers, 1 ct (24 Pack)",24,0.50,0.1,0.0,,tobacco.papers.zig-zag.king-slim.booklet
+,Tobacco & accessories,Counter accessories › Grinders,nice,Slot,MD031953,"Ooze, Saturn Grinders Rasta (1 Pack)",1,0.40,0.0,0.0,,tobacco.accessories.grinders
+,Tobacco & accessories,Counter accessories › Grinders,nice,Slot,MD031960,"Ooze, Saturn Grinders Gray (1 Pack)",1,0.40,0.0,0.0,,tobacco.accessories.grinders
+,"Mixers, bar tools, cups & bags","Cups, shot glasses & party disposables › Bamboo skewers",nice,Slot,VS043662,"Bamboo Skewers Flat 25pc, 25 ct (12 Pack)",12,0.40,0.2,0.0,,mixers-bar.cups-disposables.skewers
+,"Mixers, bar tools, cups & bags","Cups, shot glasses & party disposables › Bamboo skewers",nice,Slot,VS056542,"Bamboo Skewers, 15.7 in (24 Pack)",24,0.40,0.1,0.1,,mixers-bar.cups-disposables.skewers
+,"Mixers, bar tools, cups & bags","Cups, shot glasses & party disposables › Toothpicks",nice,Slot,VS099421,"Maxam, Toothpicks Wooden 600 ct, 4 ct (24 Pack)",24,0.40,0.4,0.1,,mixers-bar.cups-disposables.toothpicks
+,"Mixers, bar tools, cups & bags","Cups, shot glasses & party disposables › Toothpicks",nice,Slot,VS010313,"Toothpicks Bamboo 600pc, 4 ct (12 Pack)",12,0.40,0.1,0.2,,mixers-bar.cups-disposables.toothpicks
+,Household & kitchen,Cleaning equipment & home › Broom / dustpan,nice,Slot,VS017410,Bimba Kids Broom Assorted Colors (24 Pack),24,0.40,0.1,0.0,,household.equipment-home.broom-dustpan
+,Household & kitchen,Cleaning equipment & home › Broom / dustpan,nice,Slot,VS043115,Broom Fan Shape Medium Assorted Colors Martin (20 Pack),20,0.40,0.1,0.0,,household.equipment-home.broom-dustpan
+,Household & kitchen,Cleaning equipment & home › Chargers & cables › USB-C cable,nice,Slot,VS031068,Usb Cable Charger Type C In Jar (40 Pack),40,0.40,0.3,0.2,,household.equipment-home.chargers-cables.usb-c-cable
+,Household & kitchen,Cleaning equipment & home › Chargers & cables › USB-C cable,nice,Slot,VS010911,"Usb Cable Type C White, 2 m (12 Pack)",12,0.40,0.3,0.1,,household.equipment-home.chargers-cables.usb-c-cable
+,Household & kitchen,Cleaning equipment & home › Chargers & cables › Lightning cable,nice,Slot,VS031065,Usb Cable For Iphone & Ipad Assorted Colors (40 Pack),40,0.40,0.4,0.2,,household.equipment-home.chargers-cables.lightning-cable
+,Household & kitchen,Cleaning equipment & home › Chargers & cables › Lightning cable,nice,Slot,VS052582,Usb Cable Iphone Assorted Colors (12 Pack),12,0.40,0.1,0.1,,household.equipment-home.chargers-cables.lightning-cable
+,Household & kitchen,Cleaning equipment & home › Chargers & cables › Wall charger block,nice,Slot,VS018831,"Power Xcel, Dual USB Car Adapter (24 Pack)",24,0.40,0.1,0.0,,household.equipment-home.chargers-cables.wall-block
+,Household & kitchen,Cleaning equipment & home › Chargers & cables › Wall charger block,nice,Slot,VS061108,Fast Charging Pd Charger Adapter Type C (32 Pack),32,0.40,0.1,0.0,,household.equipment-home.chargers-cables.wall-block
+,Health & beauty,Medicine (OTC) › Vitamin C / Emergen-C,nice,Slot,VS051170,"Emergen-C, Vitamin C Orange, 2 ct (72 Pack)",72,0.40,0.0,0.0,,health-beauty.medicine.vitamin-c
+,Health & beauty,Beauty accessories › Lashes / nail polish,nice,Slot,VS086799,"White Rain, Nail Polish Remover With Acetone, 6 oz (12 Pack)",12,0.50,0.5,0.4,,health-beauty.beauty-accessories.lashes-nail-polish
+,Health & beauty,Beauty accessories › Lashes / nail polish,nice,Slot,VS019879,"Lucky, Nail Polish Remover, 6 oz (12 Pack)",12,0.40,0.4,0.2,,health-beauty.beauty-accessories.lashes-nail-polish
+,Grocery staples,Dry goods & baking › Dry beans,nice,Slot,VS010124,"Peak, Black Beans, 2 lb (12 Pack)",12,0.40,0.4,0.1,,grocery.dry-goods.dry-beans
+,Grocery staples,Dry goods & baking › Dry beans,nice,Slot,VS012311,"Peak, Garbanzo Beans, 1 lb (24 Pack)",24,0.40,0.4,0.1,,grocery.dry-goods.dry-beans
+,Grocery staples,Breakfast & pantry › Syrup / honey,nice,Slot,VS101029,"Don Victor, Pure Honey With Honey Comb, 8 oz (6 Pack)",6,0.50,1.6,0.5,,grocery.breakfast-pantry.syrup-honey
+,Grocery staples,Breakfast & pantry › Syrup / honey,nice,Slot,VS098710,"Forrelli, Syrup Pancake & Waffle, 24 oz (12 Pack)",12,0.50,1.6,0.6,,grocery.breakfast-pantry.syrup-honey
+,Grocery staples,Pet › Pet treats,nice,Slot,JC229741,"Hillside Farms, Jerky Twist Dog Treats, Chicken & Sweet Potato, 1.5 oz (48 Pack)",48,0.40,0.4,0.2,,grocery.pet.pet-treats
+,Grocery staples,Pet › Pet treats,nice,Slot,CM417872,"Beggin' Strips, Dog Treats, Bacon & Peanut Butter, 6 oz (6 Pack)",6,0.40,0.4,0.1,,grocery.pet.pet-treats

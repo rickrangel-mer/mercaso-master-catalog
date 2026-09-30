@@ -468,6 +468,7 @@ priority:
   grocery.instant-meals.ramen-cup: must
   grocery.instant-meals.ramen-packet: must
   grocery.instant-meals.mac-cheese-cup: nice
+  grocery.instant-meals.vienna-sausage: must
 
   # 8.2 Seasonings, hot sauce & condiments
   grocery.seasonings.tajin.clasico: must
@@ -479,25 +480,38 @@ priority:
   grocery.seasonings.hot-sauce.tabasco: nice
   grocery.seasonings.salad-dressing: nice
   grocery.seasonings.soy-sauce: nice
+  grocery.seasonings.pepper: nice
+  grocery.seasonings.mustard: nice
+  grocery.seasonings.seasoning-blend: nice
+  grocery.seasonings.beer-salt: nice
+  grocery.seasonings.dried-shrimp: nice
 
   # 8.3 Canned & jarred
   grocery.canned-jarred.beans: must
   grocery.canned-jarred.jalapenos: must
+  grocery.canned-jarred.pickles: must
   grocery.canned-jarred.canned-fruit: nice
   grocery.canned-jarred.canned-vegetables: nice
   grocery.canned-jarred.nacho-cheese: nice
 
   # 8.4 Dry goods & baking
   grocery.dry-goods.sugar: must
-  grocery.dry-goods.flour-masa: nice
+  grocery.dry-goods.cooking-oil: must
+  grocery.dry-goods.dry-beans: nice
   grocery.dry-goods.gelatin-flan: nice
 
   # 8.5 Breakfast & pantry
   grocery.breakfast-pantry.peanut-butter: nice
   grocery.breakfast-pantry.syrup-honey: nice
+  grocery.breakfast-pantry.toaster-pastry: must
+  grocery.breakfast-pantry.coffee-creamer: nice
 
   # 8.6 Pet
   grocery.pet: nice
+  grocery.pet.dog-food-dry: should
+  grocery.pet.dog-food-wet: should
+  grocery.pet.cat-food-wet: should
+  grocery.pet.cat-litter: should
 
   # --- Mixers, bar tools, cups & bags -----------------------------------------
   # Mixer links carry no priority of their own; the canonical nodes do.
@@ -587,21 +601,22 @@ priority:
   health-beauty.personal-care.razor: must
   health-beauty.personal-care.shaving-cream: nice
   health-beauty.personal-care.sunscreen: nice
-  health-beauty.personal-care.body-spray: nice
 
   # 7.4 Feminine care & family planning
   health-beauty.feminine-family.pads: must
   health-beauty.feminine-family.condoms: must
-  health-beauty.feminine-family.lubricant: nice
+  health-beauty.feminine-family.tampons: nice
   health-beauty.feminine-family.pregnancy-test: nice
 
   # 7.5 First aid & hygiene
   health-beauty.first-aid.bandages: must
   health-beauty.first-aid.cotton-swabs: nice
-  health-beauty.first-aid.face-masks: nice
+  health-beauty.first-aid.eye-drops: must
 
   # 7.6 Beauty accessories
   health-beauty.beauty-accessories.lashes-nail-polish: nice
+  health-beauty.beauty-accessories.nail-clipper: nice
+  health-beauty.beauty-accessories.hair-accessories: nice
 
 notes:
   scd.cola.coca-cola-mexican: Must in the LA market.

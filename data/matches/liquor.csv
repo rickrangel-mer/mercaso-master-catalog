@@ -1132,77 +1132,139 @@ grocery.pet.dog-food-dry,JC195811,"Pedigree, Adult Dog Food, Roasted Chicken, Ri
 grocery.pet.dog-food-dry,JC175881,"Pedigree, Small Dog Food, Roasted Chicken, Rice, And Vegetables, 3.5 lb (4 Pack)",4,2,0.85,0.0938,0.0429,approved,rule,rick,"Approved in bulk at confidence 0.6+ (Rick, 2026-09-29)"
 grocery.pet.cat-food-wet,JC70325,"9 Lives, Wet Cat Food, Hearty Cuts with Beef & Chicken, 5.5 oz (24 Pack)",24,1,0.85,0.0818,0.0215,approved,rule,rick,"Approved in bulk at confidence 0.6+ (Rick, 2026-09-29)"
 grocery.pet.cat-food-wet,JC70326,"9 Lives, Wet Cat Food, Ocean Whitefish, 5.5 oz (24 Pack)",24,2,0.85,0.0687,0.0155,approved,rule,rick,"Approved in bulk at confidence 0.6+ (Rick, 2026-09-29)"
-health-beauty.medicine.pain-reliever,DW14063-50,"Tylenol, Extra Strength, 500 mg, 50 ct (1 Pack)",1,4,0.90,0.1345,0.0644,auto,manual,,Added in slot review (2026-09-30): Top seller in the slot
-health-beauty.first-aid.eye-drops,MW049750,"Pure Eyes, Redness Relief, 0.24 oz (12 Pack)",12,3,0.90,0.1174,0.0834,auto,manual,,Added in slot review (2026-09-30): Rising: 8% of stores in 90 days
-health-beauty.first-aid.cotton-swabs,DW7430-1,"Q-Tips, Cotton Swabs, 170 ct (1 Pack)",1,1,0.90,0.0426,0.0179,auto,manual,,"Added in slot review (2026-09-30): Q-Tips 170ct, the top cotton swab"
-health-beauty.personal-care.body-wash,VS090300,"Lucky, Hand Soap Ocean Fresh, 13.5 oz (12 Pack)",12,3,0.90,0.0296,0.0077,auto,manual,,"Added in slot review (2026-09-30): Lucky hand soap, top seller in the slot"
-grocery.instant-meals.canned-soup,DW13573-12,"Juanita's, Juanita's, Menudo, 15 oz (12 Pack)",12,4,0.90,0.0547,0.0155,auto,manual,,"Added in slot review (2026-09-30): Juanita's Menudo 15oz, second in canned soup"
-grocery.canned-jarred.canned-vegetables,CO425349,"Del Monte, Whole Kernel Corn, 15.25 oz (12 Pack)",12,3,0.90,0.0552,0.0226,auto,manual,,"Added in slot review (2026-09-30): Del Monte corn, top canned vegetable"
-grocery.canned-jarred.canned-fruit,DW82160-12,"Dole, Pineapple Chunks in Juice, 20 oz (12 Pack)",12,3,0.90,0.0331,0.0089,auto,manual,,"Added in slot review (2026-09-30): Dole pineapple chunks, top canned fruit"
-grocery.seasonings.mayo,DW17706-12,"Best Foods, Real Mayonnaise, 15 oz (12 Pack)",12,3,0.90,0.0707,0.0411,auto,manual,,"Added in slot review (2026-09-30): Best Foods 15oz, top mayonnaise"
-grocery.seasonings.mayo,DW99920-12,"Best Foods, Real Mayonnaise, 8 oz (12 Pack)",12,4,0.90,0.0712,0.0322,auto,manual,,Added in slot review (2026-09-30): Best Foods 8oz
-scd.lemon-lime.starry.original.12oz-can,SU21606-24,"Starry, Starry Lemon, 12 oz (24 Pack)",24,1,0.55,0.0025,0.0000,auto,rule,,
-candy-snacks.gummy-chewy.hi-chew.original-mix.single,CM487969,"Hi-Chew, Original Mix, 12.7 oz (6 Pack)",6,1,0.50,0.0025,0.0012,auto,rule,,
-candy-snacks.mexican-candy.jovy.revolcaditas.single,VS007768,"Jovy, Revolcaditas Watermelon with Chili, 6 oz (24 Pack)",24,1,0.50,0.0000,0.0000,auto,rule,,
-candy-snacks.salty-snacks.pringles.original.2-5oz,SL309602-12,"Pringles, Hot Ones Barbacoa, 2.5 oz (12 Pack)",12,1,0.55,0.0080,0.0095,auto,rule,,
-candy-snacks.cookies-cakes.ritz.original.1-35oz,JC775358,"Ritz, Nabisco Crackers, 6 ct (6 Pack)",6,1,0.50,0.0010,0.0006,auto,rule,,
-candy-snacks.cookies-cakes.gamesa.barra-de-coco.4-9oz,JC20130,"Gamesa, Barra de Coco Coconut Cookies, 4 ct (12 Pack)",12,1,0.50,0.0015,0.0012,auto,rule,,
-tobacco.cigars.other-cigars,CM529848,"Black & Mild, Cigars, Original, Wood Tip, 1 ct (25 Pack)",25,1,0.50,0.0125,0.0101,auto,rule,,
-tobacco.cigars.other-cigars,CM525038,"Dutch Master, Premium Cigarillos, Original Fusion, 60 ct (30 Pack)",30,2,0.50,0.0100,0.0030,auto,rule,,
-tobacco.nicotine.disposable-vapes,CM450823,"Blu, Disposable E-Cigarette, Classic Tobacco, 2.4% Nicotine Strength, 1 ml (5 Pack)",5,1,0.40,0.0005,0.0000,auto,rule,,
-tobacco.nicotine.disposable-vapes,CM464957,"LEAP Vapor, E-Cigarette, Device Kit, 1 ct (5 Pack)",5,2,0.40,0.0000,0.0000,auto,rule,,
-tobacco.nicotine.juul.tobacco-pods.pod-pack,CM219089,"Juul, Pods, Virginia Tobacco, 0.05, 2 ct (8 Pack)",8,1,0.50,0.0000,0.0000,auto,rule,,
-tobacco.nicotine.juul.tobacco-pods.pod-pack,CM463112,"Juul, Pods, Virginia Tobacco, 0.05, 2 ct (8 Pack)",8,2,0.50,0.0000,0.0000,auto,rule,,
-tobacco.smokeless.other-roll-your-own,CO1870202,"Bugler, Snipe, Smoking Tobacco Pouches, 0.65 oz (6 Pack)",6,1,0.50,0.0186,0.0060,auto,rule,,
-tobacco.smokeless.other-roll-your-own,CM498165,"Captain Black, Pipe Tobacco, Gold, 1.5 oz (5 Pack)",5,2,0.40,0.0000,0.0000,auto,rule,,
-tobacco.lighters.clipper.classic.single,MD053437,"Clipper, Lighter Gradient (48 Pack)",48,1,0.50,0.0005,0.0006,auto,rule,,
-tobacco.lighters.dd-bean.matchbooks.50ct-box,DW10507-20,"D.D. Bean & Sons, Matchbooks, 50 ct (20 Pack)",20,1,0.50,0.0025,0.0000,auto,rule,,
-tobacco.papers.zig-zag.king-slim.booklet,CM457544,"Zig-Zag, Rolling Papers, Organic Hemp, King Size, Slim, 1 ct (24 Pack)",24,1,0.50,0.0005,0.0000,auto,rule,,
-tobacco.accessories.grinders,MD031939,"Ooze, Saturn Grinders Teal (1 Pack)",1,1,0.40,0.0000,0.0000,auto,rule,,
-tobacco.accessories.grinders,MD031946,"Ooze, Saturn Grinders Green (1 Pack)",1,2,0.40,0.0000,0.0000,auto,rule,,
-mixers-bar.bar-tools.corkscrew,VS079960,Corkscrew Bottle Opener (12 Pack),12,1,0.50,0.0366,0.0167,auto,rule,,
-mixers-bar.bar-tools.corkscrew,MY70790,Waiters Corkscrew & Cap Opener (1 Pack),1,2,0.50,0.0236,0.0221,auto,rule,,
-mixers-bar.bar-tools.corkscrew,MY70783,"Corkscrew & Cap Opener, 6.75 in (1 Pack)",1,3,0.50,0.0211,0.0191,auto,rule,,
-mixers-bar.bar-tools.bottle-opener,VS079960,Corkscrew Bottle Opener (12 Pack),12,1,0.50,0.0366,0.0167,auto,rule,,
-mixers-bar.bar-tools.bottle-opener,MY70790,Waiters Corkscrew & Cap Opener (1 Pack),1,2,0.50,0.0236,0.0221,auto,rule,,
-mixers-bar.bar-tools.bottle-opener,MY70783,"Corkscrew & Cap Opener, 6.75 in (1 Pack)",1,3,0.50,0.0211,0.0191,auto,rule,,
-mixers-bar.cups-disposables.plastic-cup-8oz,VS038808,"Plastic Cups 25 ct Assorted Colors, 9 oz (48 Pack)",48,1,0.50,0.0226,0.0161,auto,rule,,
-mixers-bar.cups-disposables.plastic-cup-8oz,VS037920,"Cool Party Cups, Plastic Cups 25 ct Clear, 9 oz (48 Pack)",48,2,0.50,0.0090,0.0054,auto,rule,,
-mixers-bar.cups-disposables.skewers,VS049515,"FamilyMaid, BBQ Skewers Wood 50 ct, 15.75 in (24 Pack)",24,1,0.40,0.0035,0.0006,auto,rule,,
-mixers-bar.cups-disposables.skewers,VS043657,"BBQ Skewer 100pc, 100 ct (24 Pack)",24,2,0.40,0.0020,0.0006,auto,rule,,
-mixers-bar.cups-disposables.toothpicks,VS063980,"Toothpicks With Dispenser, 4 ct (12 Pack)",12,1,0.50,0.0176,0.0012,auto,rule,,
-mixers-bar.cups-disposables.toothpicks,DW87370-1,"Toothpick, Round, 150 ct (4 Pack)",4,2,0.40,0.0040,0.0000,auto,rule,,
-mixers-bar.cups-disposables.birthday-candles,VS003189,Birthday Candles Set (24 Pack),24,1,0.50,0.0341,0.0101,auto,rule,,
-mixers-bar.cups-disposables.birthday-candles,VS059170,"Party Birthday Candles Assorted Colors, 24 ct (24 Pack)",24,2,0.50,0.0156,0.0054,auto,rule,,
-mixers-bar.store-bags.six-pack-rings,DW57260-1,"Plastic Rings for 6 Pack Aluminum Soda Cans, 1000 ct (1 Pack)",1,1,0.50,0.0386,0.0060,auto,rule,,
-household.equipment-home.broom-dustpan,CO1459286,"O'Cedar, PowerCorner, Broom & Dust Pan Set, Red (2 Pack)",2,1,0.40,0.0020,0.0000,auto,rule,,
-household.equipment-home.broom-dustpan,VS002086,"Fiori, Broom Short Sweeper Assorted Colors (12 Pack)",12,2,0.40,0.0015,0.0000,auto,rule,,
-household.equipment-home.chargers-cables.usb-c-cable,VS080675,USB Cable Type C Fast Charger White (12 Pack),12,1,0.50,0.0166,0.0060,auto,rule,,
-household.equipment-home.chargers-cables.usb-c-cable,EM006753,"emobii, CHARGE Maxx, Type-C USB Cable, Black & White (12 Pack)",12,2,0.40,0.0045,0.0012,auto,rule,,
-household.equipment-home.chargers-cables.lightning-cable,DW163340-1,"Wega Cell, IPhone Charging Cable, 1 ct (1 Pack)",1,1,0.50,0.0065,0.0006,auto,rule,,
-household.equipment-home.chargers-cables.lightning-cable,VS003188,USB iPhone Charger Assorted Colors 2 Amp (36 Pack),36,2,0.40,0.0045,0.0012,auto,rule,,
-household.equipment-home.chargers-cables.wall-block,VS002055,Fast Wall Charger 65W Usb & Type C (12 Pack),12,1,0.40,0.0015,0.0012,auto,rule,,
-household.equipment-home.chargers-cables.wall-block,CM536304,"Charge Maxx, Wall Charger, USB/USB C, 1 ct (10 Pack)",10,2,0.40,0.0010,0.0000,auto,rule,,
-health-beauty.medicine.vitamin-c,CO1674070,"Emergen-C, 1000mg Vitamin C Drink Mix, Variety Pack, 30 ct (4 Pack)",4,1,0.50,0.0115,0.0036,auto,rule,,
-health-beauty.medicine.vitamin-c,CM519721,"Emergen-C, Crystals, Powder, 12 ct (12 Pack)",12,2,0.40,0.0000,0.0000,auto,rule,,
-health-beauty.feminine-family.lubricant,CM523179,"KY Jelly, Lubricant, 0.16 oz (1 Pack)",1,1,0.50,0.0060,0.0024,auto,rule,,
-health-beauty.feminine-family.lubricant,CM523180,"KY Jelly, Lubricant, TrueFeel Silicone, 0.16 oz (1 Pack)",1,2,0.40,0.0020,0.0006,auto,rule,,
-health-beauty.feminine-family.pregnancy-test,DW67300-1,"Paraid, Pregnancy Test, 1 ct (1 Pack)",1,1,0.75,0.0331,0.0167,auto,rule,,
-health-beauty.feminine-family.pregnancy-test,JC23969,"Paraid, Pregnancy Test (24 Pack)",24,2,0.75,0.0306,0.0000,auto,rule,,
-health-beauty.first-aid.hand-sanitizer,VS031539,"Lucky, Hand Sanitizer Aloe Vera, 8 oz (12 Pack)",12,1,0.50,0.0281,0.0089,auto,rule,,
-health-beauty.first-aid.hand-sanitizer,DW216210,"Lucky, Hand Sanitizer with Clip, 1.8 oz (24 Pack)",24,2,0.50,0.0206,0.0042,auto,rule,,
-health-beauty.first-aid.face-masks,VS024706,"Global Beauty Care, Global Beauty Gel Face Mask Cucumber, 1.15 oz (24 Pack)",24,1,0.40,0.0000,0.0000,auto,rule,,
-health-beauty.first-aid.face-masks,VS065537,"Fashion Mask, Face Mask Reusable Light Blue, 1 ct (20 Pack)",20,2,0.40,0.0000,0.0000,auto,rule,,
-health-beauty.beauty-accessories.nail-clipper,VS054521,"Face One, Nail Clipper Large, 1 ct (12 Pack)",12,1,0.50,0.0216,0.0125,auto,rule,,
-health-beauty.beauty-accessories.nail-clipper,VS012350,"UBC, Nail Clippers Toe Nail In Jar (36 Pack)",36,2,0.50,0.0110,0.0000,auto,rule,,
-health-beauty.beauty-accessories.hair-accessories,CM525588,"Scunchi, Hair Clip, Crown Claw, 3 ct (3 Pack)",3,1,0.40,0.0010,0.0000,auto,rule,,
-health-beauty.beauty-accessories.hair-accessories,CM521396,"Conair, Bobby Pins, Black, 6 ct (8 Pack)",8,2,0.40,0.0000,0.0000,auto,rule,,
-health-beauty.beauty-accessories.hair-accessories,CM521394,"Scunchi, Silky Scrunchies, Silky Black, 3 ct (16 Pack)",16,3,0.40,0.0000,0.0000,auto,rule,,
-health-beauty.beauty-accessories.lashes-nail-polish,VS067401,"Lucky, Nail Polish Remover Spa & Gel, 6 oz (12 Pack)",12,1,0.50,0.0130,0.0054,auto,rule,,
-health-beauty.beauty-accessories.lashes-nail-polish,VS042836,"Lucky, Nail Polish Remover Lemon, 6 oz (12 Pack)",12,2,0.50,0.0060,0.0000,auto,rule,,
-grocery.dry-goods.dry-beans,VS101019,"Peak, Pinto Beans, 1 lb (24 Pack)",24,1,0.50,0.0055,0.0012,auto,rule,,
-grocery.dry-goods.dry-beans,VS010201,"Peak, Pinto Beans, 2 lb (12 Pack)",12,2,0.50,0.0050,0.0006,auto,rule,,
-grocery.breakfast-pantry.syrup-honey,SC1721951,"Snak Club, Mike's Hot Honey, Hot Honey Bears, 4 oz (6 Pack)",6,1,0.50,0.0231,0.0077,auto,rule,,
-grocery.breakfast-pantry.syrup-honey,VS008710,"Forrelli, Syrup Pancake & Waffle, 12 oz (12 Pack)",12,2,0.50,0.0221,0.0012,auto,rule,,
-grocery.pet.pet-treats,CM522183,"Friskies, Adult Cat Treats, Beachside Crunch, Party Mix, 2.1 oz (10 Pack)",10,1,0.50,0.0105,0.0018,auto,rule,,
-grocery.pet.pet-treats,VS011541,"Farmland Traditions, Dog Treats Beef Recipe, 1.2 oz (12 Pack)",12,2,0.50,0.0075,0.0036,auto,rule,,
+health-beauty.medicine.pain-reliever,DW14063-50,"Tylenol, Extra Strength, 500 mg, 50 ct (1 Pack)",1,4,0.90,0.1345,0.0644,approved,manual,rick,"Added in slot review (2026-09-30): Top seller in the slot · Approved with the slot review (Rick, 2026-09-30)"
+health-beauty.first-aid.eye-drops,MW049750,"Pure Eyes, Redness Relief, 0.24 oz (12 Pack)",12,3,0.90,0.1174,0.0834,approved,manual,rick,"Added in slot review (2026-09-30): Rising: 8% of stores in 90 days · Approved with the slot review (Rick, 2026-09-30)"
+health-beauty.first-aid.cotton-swabs,DW7430-1,"Q-Tips, Cotton Swabs, 170 ct (1 Pack)",1,1,0.90,0.0426,0.0179,approved,manual,rick,"Added in slot review (2026-09-30): Q-Tips 170ct, the top cotton swab · Approved with the slot review (Rick, 2026-09-30)"
+health-beauty.personal-care.body-wash,VS090300,"Lucky, Hand Soap Ocean Fresh, 13.5 oz (12 Pack)",12,3,0.90,0.0296,0.0077,approved,manual,rick,"Added in slot review (2026-09-30): Lucky hand soap, top seller in the slot · Approved with the slot review (Rick, 2026-09-30)"
+grocery.instant-meals.canned-soup,DW13573-12,"Juanita's, Juanita's, Menudo, 15 oz (12 Pack)",12,4,0.90,0.0547,0.0155,approved,manual,rick,"Added in slot review (2026-09-30): Juanita's Menudo 15oz, second in canned soup · Approved with the slot review (Rick, 2026-09-30)"
+grocery.canned-jarred.canned-vegetables,CO425349,"Del Monte, Whole Kernel Corn, 15.25 oz (12 Pack)",12,3,0.90,0.0552,0.0226,approved,manual,rick,"Added in slot review (2026-09-30): Del Monte corn, top canned vegetable · Approved with the slot review (Rick, 2026-09-30)"
+grocery.canned-jarred.canned-fruit,DW82160-12,"Dole, Pineapple Chunks in Juice, 20 oz (12 Pack)",12,3,0.90,0.0331,0.0089,approved,manual,rick,"Added in slot review (2026-09-30): Dole pineapple chunks, top canned fruit · Approved with the slot review (Rick, 2026-09-30)"
+grocery.seasonings.mayo,DW17706-12,"Best Foods, Real Mayonnaise, 15 oz (12 Pack)",12,3,0.90,0.0707,0.0411,approved,manual,rick,"Added in slot review (2026-09-30): Best Foods 15oz, top mayonnaise · Approved with the slot review (Rick, 2026-09-30)"
+grocery.seasonings.mayo,DW99920-12,"Best Foods, Real Mayonnaise, 8 oz (12 Pack)",12,4,0.90,0.0712,0.0322,approved,manual,rick,"Added in slot review (2026-09-30): Best Foods 8oz · Approved with the slot review (Rick, 2026-09-30)"
+scd.lemon-lime.starry.original.12oz-can,SU21606-24,"Starry, Starry Lemon, 12 oz (24 Pack)",24,1,0.55,0.0025,0.0000,rejected,rule,rick,"Review sheet (rick, 2026-09-30)"
+candy-snacks.gummy-chewy.hi-chew.original-mix.single,CM487969,"Hi-Chew, Original Mix, 12.7 oz (6 Pack)",6,1,0.50,0.0025,0.0012,rejected,rule,rick,"Review sheet (rick, 2026-09-30)"
+candy-snacks.mexican-candy.jovy.revolcaditas.single,VS007768,"Jovy, Revolcaditas Watermelon with Chili, 6 oz (24 Pack)",24,1,0.50,0.0000,0.0000,rejected,rule,rick,"Review sheet (rick, 2026-09-30)"
+candy-snacks.salty-snacks.pringles.original.2-5oz,SL309602-12,"Pringles, Hot Ones Barbacoa, 2.5 oz (12 Pack)",12,1,0.55,0.0080,0.0095,rejected,rule,rick,"Review sheet (rick, 2026-09-30)"
+candy-snacks.cookies-cakes.ritz.original.1-35oz,JC775358,"Ritz, Nabisco Crackers, 6 ct (6 Pack)",6,1,0.50,0.0010,0.0006,rejected,rule,rick,"Review sheet (rick, 2026-09-30)"
+candy-snacks.cookies-cakes.gamesa.barra-de-coco.4-9oz,JC20130,"Gamesa, Barra de Coco Coconut Cookies, 4 ct (12 Pack)",12,1,0.50,0.0015,0.0012,rejected,rule,rick,"Review sheet (rick, 2026-09-30)"
+tobacco.cigars.other-cigars,CM529848,"Black & Mild, Cigars, Original, Wood Tip, 1 ct (25 Pack)",25,1,0.50,0.0125,0.0101,approved,rule,rick,"Review sheet (rick, 2026-09-30)"
+tobacco.cigars.other-cigars,CM525038,"Dutch Master, Premium Cigarillos, Original Fusion, 60 ct (30 Pack)",30,2,0.50,0.0100,0.0030,rejected,rule,rick,"Review sheet (rick, 2026-09-30)"
+tobacco.nicotine.disposable-vapes,CM450823,"Blu, Disposable E-Cigarette, Classic Tobacco, 2.4% Nicotine Strength, 1 ml (5 Pack)",5,1,0.40,0.0005,0.0000,rejected,rule,rick,"Review sheet (rick, 2026-09-30)"
+tobacco.nicotine.disposable-vapes,CM464957,"LEAP Vapor, E-Cigarette, Device Kit, 1 ct (5 Pack)",5,2,0.40,0.0000,0.0000,rejected,rule,rick,"Review sheet (rick, 2026-09-30)"
+tobacco.nicotine.juul.tobacco-pods.pod-pack,CM219089,"Juul, Pods, Virginia Tobacco, 0.05, 2 ct (8 Pack)",8,1,0.50,0.0000,0.0000,rejected,rule,rick,"Review sheet (rick, 2026-09-30)"
+tobacco.nicotine.juul.tobacco-pods.pod-pack,CM463112,"Juul, Pods, Virginia Tobacco, 0.05, 2 ct (8 Pack)",8,2,0.50,0.0000,0.0000,rejected,rule,rick,"Review sheet (rick, 2026-09-30)"
+tobacco.smokeless.other-roll-your-own,CO1870202,"Bugler, Snipe, Smoking Tobacco Pouches, 0.65 oz (6 Pack)",6,1,0.50,0.0186,0.0060,rejected,rule,rick,"Review sheet (rick, 2026-09-30)"
+tobacco.smokeless.other-roll-your-own,CM498165,"Captain Black, Pipe Tobacco, Gold, 1.5 oz (5 Pack)",5,2,0.40,0.0000,0.0000,rejected,rule,rick,"Review sheet (rick, 2026-09-30)"
+tobacco.lighters.clipper.classic.single,MD053437,"Clipper, Lighter Gradient (48 Pack)",48,1,0.50,0.0005,0.0006,rejected,rule,rick,"Review sheet (rick, 2026-09-30)"
+tobacco.lighters.dd-bean.matchbooks.50ct-box,DW10507-20,"D.D. Bean & Sons, Matchbooks, 50 ct (20 Pack)",20,1,0.50,0.0025,0.0000,rejected,rule,rick,"Review sheet (rick, 2026-09-30)"
+tobacco.papers.zig-zag.king-slim.booklet,CM457544,"Zig-Zag, Rolling Papers, Organic Hemp, King Size, Slim, 1 ct (24 Pack)",24,1,0.50,0.0005,0.0000,rejected,rule,rick,"Review sheet (rick, 2026-09-30)"
+tobacco.accessories.grinders,MD031939,"Ooze, Saturn Grinders Teal (1 Pack)",1,1,0.40,0.0000,0.0000,rejected,rule,rick,"Review sheet (rick, 2026-09-30)"
+tobacco.accessories.grinders,MD031946,"Ooze, Saturn Grinders Green (1 Pack)",1,2,0.40,0.0000,0.0000,rejected,rule,rick,"Review sheet (rick, 2026-09-30)"
+mixers-bar.bar-tools.corkscrew,VS079960,Corkscrew Bottle Opener (12 Pack),12,1,0.50,0.0366,0.0167,approved,rule,rick,"Review sheet (rick, 2026-09-30)"
+mixers-bar.bar-tools.corkscrew,MY70790,Waiters Corkscrew & Cap Opener (1 Pack),1,2,0.50,0.0236,0.0221,approved,rule,rick,"Review sheet (rick, 2026-09-30)"
+mixers-bar.bar-tools.corkscrew,MY70783,"Corkscrew & Cap Opener, 6.75 in (1 Pack)",1,3,0.50,0.0211,0.0191,rejected,rule,rick,"Review sheet (rick, 2026-09-30)"
+mixers-bar.bar-tools.bottle-opener,VS079960,Corkscrew Bottle Opener (12 Pack),12,1,0.50,0.0366,0.0167,rejected,rule,rick,"Review sheet (rick, 2026-09-30)"
+mixers-bar.bar-tools.bottle-opener,MY70790,Waiters Corkscrew & Cap Opener (1 Pack),1,2,0.50,0.0236,0.0221,rejected,rule,rick,"Review sheet (rick, 2026-09-30)"
+mixers-bar.bar-tools.bottle-opener,MY70783,"Corkscrew & Cap Opener, 6.75 in (1 Pack)",1,3,0.50,0.0211,0.0191,approved,rule,rick,"Review sheet (rick, 2026-09-30)"
+mixers-bar.cups-disposables.plastic-cup-8oz,VS038808,"Plastic Cups 25 ct Assorted Colors, 9 oz (48 Pack)",48,1,0.50,0.0226,0.0161,approved,rule,rick,"Review sheet (rick, 2026-09-30)"
+mixers-bar.cups-disposables.plastic-cup-8oz,VS037920,"Cool Party Cups, Plastic Cups 25 ct Clear, 9 oz (48 Pack)",48,2,0.50,0.0090,0.0054,rejected,rule,rick,"Review sheet (rick, 2026-09-30)"
+mixers-bar.cups-disposables.skewers,VS049515,"FamilyMaid, BBQ Skewers Wood 50 ct, 15.75 in (24 Pack)",24,1,0.40,0.0035,0.0006,rejected,rule,rick,"Review sheet (rick, 2026-09-30)"
+mixers-bar.cups-disposables.skewers,VS043657,"BBQ Skewer 100pc, 100 ct (24 Pack)",24,2,0.40,0.0020,0.0006,rejected,rule,rick,"Review sheet (rick, 2026-09-30)"
+mixers-bar.cups-disposables.toothpicks,VS063980,"Toothpicks With Dispenser, 4 ct (12 Pack)",12,1,0.50,0.0176,0.0012,rejected,rule,rick,"Review sheet (rick, 2026-09-30)"
+mixers-bar.cups-disposables.toothpicks,DW87370-1,"Toothpick, Round, 150 ct (4 Pack)",4,2,0.40,0.0040,0.0000,rejected,rule,rick,"Review sheet (rick, 2026-09-30)"
+mixers-bar.cups-disposables.birthday-candles,VS003189,Birthday Candles Set (24 Pack),24,1,0.50,0.0341,0.0101,approved,rule,rick,"Review sheet (rick, 2026-09-30)"
+mixers-bar.cups-disposables.birthday-candles,VS059170,"Party Birthday Candles Assorted Colors, 24 ct (24 Pack)",24,2,0.50,0.0156,0.0054,rejected,rule,rick,"Review sheet (rick, 2026-09-30)"
+mixers-bar.store-bags.six-pack-rings,DW57260-1,"Plastic Rings for 6 Pack Aluminum Soda Cans, 1000 ct (1 Pack)",1,1,0.50,0.0386,0.0060,approved,rule,rick,"Review sheet (rick, 2026-09-30)"
+household.equipment-home.broom-dustpan,CO1459286,"O'Cedar, PowerCorner, Broom & Dust Pan Set, Red (2 Pack)",2,1,0.40,0.0020,0.0000,rejected,rule,rick,"Review sheet (rick, 2026-09-30)"
+household.equipment-home.broom-dustpan,VS002086,"Fiori, Broom Short Sweeper Assorted Colors (12 Pack)",12,2,0.40,0.0015,0.0000,rejected,rule,rick,"Review sheet (rick, 2026-09-30)"
+household.equipment-home.chargers-cables.usb-c-cable,VS080675,USB Cable Type C Fast Charger White (12 Pack),12,1,0.50,0.0166,0.0060,rejected,rule,rick,"Review sheet (rick, 2026-09-30)"
+household.equipment-home.chargers-cables.usb-c-cable,EM006753,"emobii, CHARGE Maxx, Type-C USB Cable, Black & White (12 Pack)",12,2,0.40,0.0045,0.0012,rejected,rule,rick,"Review sheet (rick, 2026-09-30)"
+household.equipment-home.chargers-cables.lightning-cable,DW163340-1,"Wega Cell, IPhone Charging Cable, 1 ct (1 Pack)",1,1,0.50,0.0065,0.0006,rejected,rule,rick,"Review sheet (rick, 2026-09-30)"
+household.equipment-home.chargers-cables.lightning-cable,VS003188,USB iPhone Charger Assorted Colors 2 Amp (36 Pack),36,2,0.40,0.0045,0.0012,rejected,rule,rick,"Review sheet (rick, 2026-09-30)"
+household.equipment-home.chargers-cables.wall-block,VS002055,Fast Wall Charger 65W Usb & Type C (12 Pack),12,1,0.40,0.0015,0.0012,rejected,rule,rick,"Review sheet (rick, 2026-09-30)"
+household.equipment-home.chargers-cables.wall-block,CM536304,"Charge Maxx, Wall Charger, USB/USB C, 1 ct (10 Pack)",10,2,0.40,0.0010,0.0000,rejected,rule,rick,"Review sheet (rick, 2026-09-30)"
+health-beauty.medicine.vitamin-c,CO1674070,"Emergen-C, 1000mg Vitamin C Drink Mix, Variety Pack, 30 ct (4 Pack)",4,1,0.50,0.0115,0.0036,rejected,rule,rick,"Review sheet (rick, 2026-09-30)"
+health-beauty.medicine.vitamin-c,CM519721,"Emergen-C, Crystals, Powder, 12 ct (12 Pack)",12,2,0.40,0.0000,0.0000,rejected,rule,rick,"Review sheet (rick, 2026-09-30)"
+health-beauty.feminine-family.pregnancy-test,DW67300-1,"Paraid, Pregnancy Test, 1 ct (1 Pack)",1,1,0.75,0.0331,0.0167,approved,rule,rick,"Review sheet (rick, 2026-09-30)"
+health-beauty.feminine-family.pregnancy-test,JC23969,"Paraid, Pregnancy Test (24 Pack)",24,2,0.75,0.0306,0.0000,rejected,rule,rick,"Review sheet (rick, 2026-09-30)"
+health-beauty.first-aid.hand-sanitizer,VS031539,"Lucky, Hand Sanitizer Aloe Vera, 8 oz (12 Pack)",12,1,0.50,0.0281,0.0089,approved,rule,rick,"Review sheet (rick, 2026-09-30)"
+health-beauty.first-aid.hand-sanitizer,DW216210,"Lucky, Hand Sanitizer with Clip, 1.8 oz (24 Pack)",24,2,0.50,0.0206,0.0042,rejected,rule,rick,"Review sheet (rick, 2026-09-30)"
+health-beauty.beauty-accessories.nail-clipper,VS054521,"Face One, Nail Clipper Large, 1 ct (12 Pack)",12,1,0.50,0.0216,0.0125,approved,rule,rick,"Review sheet (rick, 2026-09-30)"
+health-beauty.beauty-accessories.nail-clipper,VS012350,"UBC, Nail Clippers Toe Nail In Jar (36 Pack)",36,2,0.50,0.0110,0.0000,rejected,rule,rick,"Review sheet (rick, 2026-09-30)"
+health-beauty.beauty-accessories.hair-accessories,CM525588,"Scunchi, Hair Clip, Crown Claw, 3 ct (3 Pack)",3,1,0.40,0.0010,0.0000,rejected,rule,rick,"Review sheet (rick, 2026-09-30)"
+health-beauty.beauty-accessories.hair-accessories,CM521396,"Conair, Bobby Pins, Black, 6 ct (8 Pack)",8,2,0.40,0.0000,0.0000,rejected,rule,rick,"Review sheet (rick, 2026-09-30)"
+health-beauty.beauty-accessories.hair-accessories,CM521394,"Scunchi, Silky Scrunchies, Silky Black, 3 ct (16 Pack)",16,3,0.40,0.0000,0.0000,rejected,rule,rick,"Review sheet (rick, 2026-09-30)"
+health-beauty.beauty-accessories.lashes-nail-polish,VS067401,"Lucky, Nail Polish Remover Spa & Gel, 6 oz (12 Pack)",12,1,0.50,0.0130,0.0054,rejected,rule,rick,"Review sheet (rick, 2026-09-30)"
+health-beauty.beauty-accessories.lashes-nail-polish,VS042836,"Lucky, Nail Polish Remover Lemon, 6 oz (12 Pack)",12,2,0.50,0.0060,0.0000,rejected,rule,rick,"Review sheet (rick, 2026-09-30)"
+grocery.dry-goods.dry-beans,VS101019,"Peak, Pinto Beans, 1 lb (24 Pack)",24,1,0.50,0.0055,0.0012,rejected,rule,rick,"Review sheet (rick, 2026-09-30)"
+grocery.dry-goods.dry-beans,VS010201,"Peak, Pinto Beans, 2 lb (12 Pack)",12,2,0.50,0.0050,0.0006,rejected,rule,rick,"Review sheet (rick, 2026-09-30)"
+grocery.breakfast-pantry.syrup-honey,SC1721951,"Snak Club, Mike's Hot Honey, Hot Honey Bears, 4 oz (6 Pack)",6,1,0.50,0.0231,0.0077,rejected,rule,rick,"Review sheet (rick, 2026-09-30)"
+grocery.breakfast-pantry.syrup-honey,VS008710,"Forrelli, Syrup Pancake & Waffle, 12 oz (12 Pack)",12,2,0.50,0.0221,0.0012,rejected,rule,rick,"Review sheet (rick, 2026-09-30)"
+grocery.pet.pet-treats,CM522183,"Friskies, Adult Cat Treats, Beachside Crunch, Party Mix, 2.1 oz (10 Pack)",10,1,0.50,0.0105,0.0018,rejected,rule,rick,"Review sheet (rick, 2026-09-30)"
+grocery.pet.pet-treats,VS011541,"Farmland Traditions, Dog Treats Beef Recipe, 1.2 oz (12 Pack)",12,2,0.50,0.0075,0.0036,rejected,rule,rick,"Review sheet (rick, 2026-09-30)"
+candy-snacks.chocolate.hersheys.almond.single,DW10597-36,"Hershey's, Milk Chocolate Bar, Almonds, 1.45 oz (36 Pack)",36,1,1.00,0.3116,0.1395,approved,manual,rick,"Added from the gap sheet (rick, 2026-09-30)"
+candy-snacks.chocolate.hersheys.almond.king,DW10547-18,"Hershey's, Milk Chocolate Bar, Almonds, King Size, 2.6 oz (18 Pack)",18,1,1.00,0.2383,0.1395,approved,manual,rick,"Added from the gap sheet (rick, 2026-09-30)"
+candy-snacks.salty-snacks.frito-lay.cheetos-flamin-hot.xvl,DW142660-32,"Frito Lay, Cheetos, Crunchy, Flamin' Hot, 2.75 oz (32 Pack)",32,1,1.00,0.0763,0.0441,approved,manual,rick,"Added from the gap sheet (rick, 2026-09-30)"
+candy-snacks.salty-snacks.frito-lay.cheetos-xxtra-flamin-hot.xvl,DW142930-32,"Cheetos, Crunchy, Xxtra Flamin' Hot, 2.75 oz (32 Pack)",32,1,1.00,0.0788,0.0453,approved,manual,rick,"Added from the gap sheet (rick, 2026-09-30)"
+candy-snacks.salty-snacks.frito-lay.cheetos-crunchy.xvl,DW143880-32,"Cheetos, Crunchy Cheese Flavored Snacks, 2.75 oz (32 Pack)",32,1,1.00,0.0587,0.0375,approved,manual,rick,"Added from the gap sheet (rick, 2026-09-30)"
+candy-snacks.salty-snacks.frito-lay.doritos-nacho.xvl,DW142350-24,"Doritos, Nacho Cheese, 2.5 oz (24 Pack)",24,1,1.00,0.0913,0.0602,approved,manual,rick,"Added from the gap sheet (rick, 2026-09-30)"
+candy-snacks.salty-snacks.frito-lay.doritos-dinamita.xvl,DW158970-32,"Doritos, Dinamita, Chile Limon, 3.5 oz (32 Pack)",32,1,1.00,0.0341,0.0179,approved,manual,rick,"Added from the gap sheet (rick, 2026-09-30)"
+candy-snacks.salty-snacks.frito-lay.fritos-turbos-flamas.xvl,DW142980-34,"Frito Lay, Fritos, Turbos Flamas, 3.5 oz (34 Pack)",34,1,1.00,0.0462,0.0268,approved,manual,rick,"Added from the gap sheet (rick, 2026-09-30)"
+candy-snacks.salty-snacks.frito-lay.lays-classic.xvl,DW142360-24,"Frito Lay, Lay's, Potato Chips, Classic, 2.25 oz (24 Pack)",24,1,1.00,0.0813,0.0536,approved,manual,rick,"Added from the gap sheet (rick, 2026-09-30)"
+candy-snacks.salty-snacks.frito-lay.ruffles-cheddar.xvl,DW142920-24,"Ruffles, Cheddar & Sour Cream, 2.13 oz (24 Pack)",24,1,1.00,0.0627,0.0346,approved,manual,rick,"Added from the gap sheet (rick, 2026-09-30)"
+candy-snacks.salty-snacks.takis.blue-heat.4oz-xvl,DW189550,"Takis, Blue Heat, 3.25 oz (20 Pack)",20,1,1.00,0.1475,0.0715,approved,manual,rick,"Added from the gap sheet (rick, 2026-09-30)"
+health-beauty.oral-lip.breath-strips,DW14090-24,"Listerine, Pocket Fresh, Cool Mint, 24 ct (12 Pack)",12,1,0.85,0.0993,0.0578,approved,rule,rick,Named in the slot review Rick approved (2026-09-30)
+health-beauty.oral-lip.breath-strips,DW14091-24,"Listerine, Pocket Fresh, Freshburst, 24 ct (12 Pack)",12,2,0.75,0.0371,0.0113,approved,rule,rick,Named in the slot review Rick approved (2026-09-30)
+health-beauty.feminine-family.baby-wipes,JC23963,"Huggies, Baby Wipes, Pure, 48 ct (10 Pack)",10,1,0.85,0.1109,0.0524,approved,rule,rick,Named in the slot review Rick approved (2026-09-30)
+health-beauty.feminine-family.baby-wipes,JC106906,"Huggies, Baby Wipes, All Over Clean, 56 ct (10 Pack)",10,2,0.85,0.0542,0.0209,approved,rule,rick,Named in the slot review Rick approved (2026-09-30)
+health-beauty.beauty-accessories.hair-accessories,VS001431,"The Genco, Pocket Hair Brush, 12 ct (6 Pack)",6,1,0.75,0.0296,0.0119,approved,rule,rick,Named in the slot review Rick approved (2026-09-30)
+grocery.seasonings.lemon-lime-juice,DW12534-24,"Realemon, Lemon Juice, 2.5 oz (24 Pack)",24,1,0.85,0.1094,0.0369,approved,rule,rick,Named in the slot review Rick approved (2026-09-30)
+grocery.seasonings.lemon-lime-juice,DW12533-24,"ReaLime, Lime Juice, 2.5 oz (24 Pack)",24,2,0.85,0.0968,0.0244,approved,rule,rick,Named in the slot review Rick approved (2026-09-30)
+grocery.seasonings.lemon-lime-juice,DW109060-12,"ReaLime, Lime Juice, 8 oz (12 Pack)",12,3,0.85,0.0923,0.0435,approved,rule,rick,Named in the slot review Rick approved (2026-09-30)
+grocery.seasonings.beer-salt,TW023133,"Twang, Lime Beer Salt Display Strip, 1 oz (12 Pack)",12,1,0.75,0.0406,0.0167,approved,rule,rick,Named in the slot review Rick approved (2026-09-30)
+grocery.seasonings.beer-salt,TW023101,"Twang, Lemon-Lime Beer Salt, 1 oz (24 Pack)",24,2,0.75,0.0371,0.0197,approved,rule,rick,Named in the slot review Rick approved (2026-09-30)
+grocery.seasonings.dried-shrimp,DW11414-12,"Lupag, Dried Shrimp, 12 ct (1 Pack)",1,1,0.85,0.0587,0.0250,approved,rule,rick,Named in the slot review Rick approved (2026-09-30)
+grocery.seasonings.dried-shrimp,DW72780-6,"Lupag, Whole Shrimp, 6 ct (1 Pack)",1,2,0.75,0.0381,0.0173,approved,rule,rick,Named in the slot review Rick approved (2026-09-30)
+grocery.dry-goods.baking-soda,DW12735-24,"Arm & Hammer, Baking Soda, 16 oz (24 Pack)",24,1,0.85,0.0963,0.0274,approved,rule,rick,Named in the slot review Rick approved (2026-09-30)
+grocery.dry-goods.baking-soda,DW13212-24,"Arm & Hammer, Baking Soda, 8 oz (24 Pack)",24,2,0.85,0.0808,0.0292,approved,rule,rick,Named in the slot review Rick approved (2026-09-30)
+grocery.dry-goods.vinegar,RF100013,"Heinz, White Vinegar, 16 oz (12 Pack)",12,1,0.85,0.0988,0.0292,approved,rule,rick,Named in the slot review Rick approved (2026-09-30)
+grocery.dry-goods.vinegar,DW12524-12,"Heinz, Vinegar Apple Cider, 16 oz (12 Pack)",12,2,0.75,0.0411,0.0143,approved,rule,rick,Named in the slot review Rick approved (2026-09-30)
+grocery.breakfast-pantry.instant-coffee,JC602918,"Nescafe, Clasico Coffee, Dark Roast, 50 gram, 1.7 oz (12 Pack)",12,1,0.85,0.1104,0.0536,approved,rule,rick,Named in the slot review Rick approved (2026-09-30)
+grocery.breakfast-pantry.instant-coffee,DW123870-6,"Nescafe, Instant Coffee, Dark Roast, 100 g (6 Pack)",6,2,0.85,0.1049,0.0387,approved,rule,rick,Named in the slot review Rick approved (2026-09-30)
+grocery.breakfast-pantry.instant-coffee,JC747566,"Nescafe, Instant Coffee, Dolca, 1.7 oz (15 Pack)",15,3,0.85,0.0833,0.0298,approved,rule,rick,Named in the slot review Rick approved (2026-09-30)
+grocery.breakfast-pantry.coffee-creamer,DW17836-8,"N'Joy, Coffee Creamer, 16 oz (8 Pack)",8,1,0.75,0.0416,0.0113,approved,rule,rick,Named in the slot review Rick approved (2026-09-30)
+grocery.breakfast-pantry.coffee-creamer,CO888471,"Coffee mate, Nestle, Coffee-Mate Creamer, Original, 11 oz (8 Pack)",8,2,0.75,0.0336,0.0137,approved,rule,rick,Named in the slot review Rick approved (2026-09-30)
+grocery.pet.cat-food-dry,DW70690-4,"Meow Mix, Original Choice, Cat Food, 3.15 lb (4 Pack)",4,1,0.85,0.0582,0.0340,approved,rule,rick,Named in the slot review Rick approved (2026-09-30)
+grocery.pet.cat-food-dry,DW3510-6,"Meow Mix, Original Cat Food, 18 oz (6 Pack)",6,2,0.75,0.0316,0.0036,approved,rule,rick,Named in the slot review Rick approved (2026-09-30)
+grocery.pet.cat-litter,JC715320,"Jonny Cat, Original Scented Clay Cat Litter, 5 lb (8 Pack)",8,1,0.85,0.0798,0.0250,approved,rule,rick,Named in the slot review Rick approved (2026-09-30)
+candy-snacks.mexican-candy.jovy.revolcaditas.single,VS077007,"Jovy, Revolcaditas Candy Assorted, 6 oz (24 Pack)",24,1,0.50,0.0000,0.0000,auto,rule,,
+candy-snacks.salty-snacks.pringles.original.2-5oz,DW102409,"Pringles, Jalapeño Potato Crisps, 2.5 oz (12 Pack)",12,1,0.55,0.0000,0.0000,auto,rule,,
+tobacco.nicotine.disposable-vapes,CM464966,"LEAP Vapor, E-Cigarette, Smoked Tobacco, 1 ct (5 Pack)",5,1,0.40,0.0000,0.0000,auto,rule,,
+tobacco.nicotine.disposable-vapes,CM494017,"Vuse Alto, E-Cigarette, Teal, 1 ct (5 Pack)",5,2,0.40,0.0000,0.0000,auto,rule,,
+tobacco.nicotine.juul.tobacco-pods.pod-pack,CM464547,"Juul, Pods, Virginia Tobacco, 0.03, 2 ct (8 Pack)",8,1,0.50,0.0000,0.0000,auto,rule,,
+tobacco.nicotine.juul.tobacco-pods.pod-pack,CM465736,"Juul, Pods, Virginia Tobacco, 0.03, 2 ct (8 Pack)",8,2,0.50,0.0000,0.0000,auto,rule,,
+tobacco.lighters.clipper.classic.single,MD053574,"Clipper, Jet Torch Solid Fluo (48 Pack)",48,1,0.50,0.0005,0.0006,auto,rule,,
+tobacco.papers.zig-zag.king-slim.booklet,CM468331,"Zig-Zag, King Slim Unbleached Rolling Papers, 1 ct (24 Pack)",24,1,0.50,0.0005,0.0000,auto,rule,,
+tobacco.accessories.grinders,MD031953,"Ooze, Saturn Grinders Rasta (1 Pack)",1,1,0.40,0.0000,0.0000,auto,rule,,
+tobacco.accessories.grinders,MD031960,"Ooze, Saturn Grinders Gray (1 Pack)",1,2,0.40,0.0000,0.0000,auto,rule,,
+mixers-bar.cups-disposables.skewers,VS043662,"Bamboo Skewers Flat 25pc, 25 ct (12 Pack)",12,1,0.40,0.0020,0.0000,auto,rule,,
+mixers-bar.cups-disposables.skewers,VS056542,"Bamboo Skewers, 15.7 in (24 Pack)",24,2,0.40,0.0015,0.0006,auto,rule,,
+mixers-bar.cups-disposables.toothpicks,VS099421,"Maxam, Toothpicks Wooden 600 ct, 4 ct (24 Pack)",24,1,0.40,0.0035,0.0012,auto,rule,,
+mixers-bar.cups-disposables.toothpicks,VS010313,"Toothpicks Bamboo 600pc, 4 ct (12 Pack)",12,2,0.40,0.0015,0.0018,auto,rule,,
+household.equipment-home.broom-dustpan,VS017410,Bimba Kids Broom Assorted Colors (24 Pack),24,1,0.40,0.0015,0.0000,auto,rule,,
+household.equipment-home.broom-dustpan,VS043115,Broom Fan Shape Medium Assorted Colors Martin (20 Pack),20,2,0.40,0.0015,0.0000,auto,rule,,
+household.equipment-home.chargers-cables.usb-c-cable,VS031068,Usb Cable Charger Type C In Jar (40 Pack),40,1,0.40,0.0030,0.0024,auto,rule,,
+household.equipment-home.chargers-cables.usb-c-cable,VS010911,"Usb Cable Type C White, 2 m (12 Pack)",12,2,0.40,0.0030,0.0012,auto,rule,,
+household.equipment-home.chargers-cables.lightning-cable,VS031065,Usb Cable For Iphone & Ipad Assorted Colors (40 Pack),40,1,0.40,0.0035,0.0024,auto,rule,,
+household.equipment-home.chargers-cables.lightning-cable,VS052582,Usb Cable Iphone Assorted Colors (12 Pack),12,2,0.40,0.0010,0.0006,auto,rule,,
+household.equipment-home.chargers-cables.wall-block,VS018831,"Power Xcel, Dual USB Car Adapter (24 Pack)",24,1,0.40,0.0010,0.0000,auto,rule,,
+household.equipment-home.chargers-cables.wall-block,VS061108,Fast Charging Pd Charger Adapter Type C (32 Pack),32,2,0.40,0.0005,0.0000,auto,rule,,
+health-beauty.medicine.vitamin-c,VS051170,"Emergen-C, Vitamin C Orange, 2 ct (72 Pack)",72,1,0.40,0.0000,0.0000,auto,rule,,
+health-beauty.beauty-accessories.lashes-nail-polish,VS086799,"White Rain, Nail Polish Remover With Acetone, 6 oz (12 Pack)",12,1,0.50,0.0055,0.0036,auto,rule,,
+health-beauty.beauty-accessories.lashes-nail-polish,VS019879,"Lucky, Nail Polish Remover, 6 oz (12 Pack)",12,2,0.40,0.0040,0.0024,auto,rule,,
+grocery.dry-goods.dry-beans,VS010124,"Peak, Black Beans, 2 lb (12 Pack)",12,1,0.40,0.0035,0.0006,auto,rule,,
+grocery.dry-goods.dry-beans,VS012311,"Peak, Garbanzo Beans, 1 lb (24 Pack)",24,2,0.40,0.0035,0.0006,auto,rule,,
+grocery.breakfast-pantry.syrup-honey,VS101029,"Don Victor, Pure Honey With Honey Comb, 8 oz (6 Pack)",6,1,0.50,0.0161,0.0048,auto,rule,,
+grocery.breakfast-pantry.syrup-honey,VS098710,"Forrelli, Syrup Pancake & Waffle, 24 oz (12 Pack)",12,2,0.50,0.0156,0.0060,auto,rule,,
+grocery.pet.pet-treats,JC229741,"Hillside Farms, Jerky Twist Dog Treats, Chicken & Sweet Potato, 1.5 oz (48 Pack)",48,1,0.40,0.0045,0.0018,auto,rule,,
+grocery.pet.pet-treats,CM417872,"Beggin' Strips, Dog Treats, Bacon & Peanut Butter, 6 oz (6 Pack)",6,2,0.40,0.0035,0.0012,auto,rule,,
