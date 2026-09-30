@@ -65,7 +65,7 @@ Store names, spend, prices and costs are never committed; they reach only the gi
 - **By department** (median store, and the 51+ tier): drinks 24% / 43%, soft drinks 19% / 33%, candy & snacks 12% / 29%, household 8% / 20%, grocery 7% / 17%, health & beauty 5% / 19%, mixers & bar 4% / 15%, tobacco 0% / 4%. Health & beauty, grocery and household are where frequent buyers still leave the most on the table.
 - **Trend among active stores:** 486 up, 595 flat, 357 down, 103 new.
 - **Most common must voids at active stores** (where at least half the store's tier buys the item): Arizona 22oz Kiwi Strawberry (884 stores), Dr Pepper 20oz (836), Arizona Watermelon (821), Arizona Fruit Punch (781), Arizona Mucho Mango (761), Sprite 2L (727), Vitaminwater XXX (709), Sprite 20oz (679), Coca-Cola Zero 20oz (668), Coca-Cola 16oz can (633).
-- **Arizona 22oz is fading across the board.** Its matched SKUs' 90-day store share is about half the 12-month share for almost every flavor (Mucho Mango 64% → 34%, Kiwi Strawberry 57% → 25%, Watermelon 62% → 28%), in a 90-day window that is mid-summer. Worth a question to the category team: supply, a price change, or a competitor.
+- **Arizona 22oz is fading across the board.** Its matched SKUs' 90-day store share is about half the 12-month share for almost every flavor (Mucho Mango 64% → 34%, Kiwi Strawberry 57% → 25%, Watermelon 62% → 28%), in a 90-day window that is mid-summer. **Cause (Rick, 2026-09-30): manufacturer and stock issues**, not stores dropping the line. Until supply recovers, Arizona fading and Arizona voids are a supply signal, not a store-health or sales signal.
 
 ## Matching fix found on the way
 
