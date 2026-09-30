@@ -1,0 +1,32 @@
+﻿decision,department,catalog_item,priority,type,mercaso_sku,product,case_pack,confidence,store_share_12m_pct,store_share_90d_pct,note,node_id
+,Candy & snacks,Mexican candy › Jovy › Revolcaditas › Single,nice,Branded,VS077007,"Jovy, Revolcaditas Candy Assorted, 6 oz (24 Pack)",24,0.50,0.0,0.0,,candy-snacks.mexican-candy.jovy.revolcaditas.single
+,Candy & snacks,"Salty snacks (chips, corn, popcorn) › Pringles › Original › 2.5oz can",should,Branded,DW102409,"Pringles, Jalapeño Potato Crisps, 2.5 oz (12 Pack)",12,0.55,0.0,0.0,,candy-snacks.salty-snacks.pringles.original.2-5oz
+,Tobacco & accessories,Vapes & nicotine alternatives › Disposable vapes,nice,Slot,CM464966,"LEAP Vapor, E-Cigarette, Smoked Tobacco, 1 ct (5 Pack)",5,0.40,0.0,0.0,,tobacco.nicotine.disposable-vapes
+,Tobacco & accessories,Vapes & nicotine alternatives › Disposable vapes,nice,Slot,CM494017,"Vuse Alto, E-Cigarette, Teal, 1 ct (5 Pack)",5,0.40,0.0,0.0,,tobacco.nicotine.disposable-vapes
+,Tobacco & accessories,Vapes & nicotine alternatives › Juul › Tobacco pods › Pod pack,nice,Branded,CM464547,"Juul, Pods, Virginia Tobacco, 0.03, 2 ct (8 Pack)",8,0.50,0.0,0.0,,tobacco.nicotine.juul.tobacco-pods.pod-pack
+,Tobacco & accessories,Vapes & nicotine alternatives › Juul › Tobacco pods › Pod pack,nice,Branded,CM465736,"Juul, Pods, Virginia Tobacco, 0.03, 2 ct (8 Pack)",8,0.50,0.0,0.0,,tobacco.nicotine.juul.tobacco-pods.pod-pack
+,Tobacco & accessories,Lighters & matches › Clipper › Classic assorted › Single,nice,Branded,MD053574,"Clipper, Jet Torch Solid Fluo (48 Pack)",48,0.50,0.1,0.1,,tobacco.lighters.clipper.classic.single
+,Tobacco & accessories,"Rolling papers, wraps & cones › Zig-Zag › King Slim › Booklet",nice,Branded,CM468331,"Zig-Zag, King Slim Unbleached Rolling Papers, 1 ct (24 Pack)",24,0.50,0.1,0.0,,tobacco.papers.zig-zag.king-slim.booklet
+,Tobacco & accessories,Counter accessories › Grinders,nice,Slot,MD031953,"Ooze, Saturn Grinders Rasta (1 Pack)",1,0.40,0.0,0.0,,tobacco.accessories.grinders
+,Tobacco & accessories,Counter accessories › Grinders,nice,Slot,MD031960,"Ooze, Saturn Grinders Gray (1 Pack)",1,0.40,0.0,0.0,,tobacco.accessories.grinders
+,"Mixers, bar tools, cups & bags","Cups, shot glasses & party disposables › Bamboo skewers",nice,Slot,VS043662,"Bamboo Skewers Flat 25pc, 25 ct (12 Pack)",12,0.40,0.2,0.0,,mixers-bar.cups-disposables.skewers
+,"Mixers, bar tools, cups & bags","Cups, shot glasses & party disposables › Bamboo skewers",nice,Slot,VS056542,"Bamboo Skewers, 15.7 in (24 Pack)",24,0.40,0.1,0.1,,mixers-bar.cups-disposables.skewers
+,"Mixers, bar tools, cups & bags","Cups, shot glasses & party disposables › Toothpicks",nice,Slot,VS099421,"Maxam, Toothpicks Wooden 600 ct, 4 ct (24 Pack)",24,0.40,0.4,0.1,,mixers-bar.cups-disposables.toothpicks
+,"Mixers, bar tools, cups & bags","Cups, shot glasses & party disposables › Toothpicks",nice,Slot,VS010313,"Toothpicks Bamboo 600pc, 4 ct (12 Pack)",12,0.40,0.1,0.2,,mixers-bar.cups-disposables.toothpicks
+,Household & kitchen,Cleaning equipment & home › Broom / dustpan,nice,Slot,VS017410,Bimba Kids Broom Assorted Colors (24 Pack),24,0.40,0.1,0.0,,household.equipment-home.broom-dustpan
+,Household & kitchen,Cleaning equipment & home › Broom / dustpan,nice,Slot,VS043115,Broom Fan Shape Medium Assorted Colors Martin (20 Pack),20,0.40,0.1,0.0,,household.equipment-home.broom-dustpan
+,Household & kitchen,Cleaning equipment & home › Chargers & cables › USB-C cable,nice,Slot,VS031068,Usb Cable Charger Type C In Jar (40 Pack),40,0.40,0.3,0.2,,household.equipment-home.chargers-cables.usb-c-cable
+,Household & kitchen,Cleaning equipment & home › Chargers & cables › USB-C cable,nice,Slot,VS010911,"Usb Cable Type C White, 2 m (12 Pack)",12,0.40,0.3,0.1,,household.equipment-home.chargers-cables.usb-c-cable
+,Household & kitchen,Cleaning equipment & home › Chargers & cables › Lightning cable,nice,Slot,VS031065,Usb Cable For Iphone & Ipad Assorted Colors (40 Pack),40,0.40,0.4,0.2,,household.equipment-home.chargers-cables.lightning-cable
+,Household & kitchen,Cleaning equipment & home › Chargers & cables › Lightning cable,nice,Slot,VS052582,Usb Cable Iphone Assorted Colors (12 Pack),12,0.40,0.1,0.1,,household.equipment-home.chargers-cables.lightning-cable
+,Household & kitchen,Cleaning equipment & home › Chargers & cables › Wall charger block,nice,Slot,VS018831,"Power Xcel, Dual USB Car Adapter (24 Pack)",24,0.40,0.1,0.0,,household.equipment-home.chargers-cables.wall-block
+,Household & kitchen,Cleaning equipment & home › Chargers & cables › Wall charger block,nice,Slot,VS061108,Fast Charging Pd Charger Adapter Type C (32 Pack),32,0.40,0.1,0.0,,household.equipment-home.chargers-cables.wall-block
+,Health & beauty,Medicine (OTC) › Vitamin C / Emergen-C,nice,Slot,VS051170,"Emergen-C, Vitamin C Orange, 2 ct (72 Pack)",72,0.40,0.0,0.0,,health-beauty.medicine.vitamin-c
+,Health & beauty,Beauty accessories › Lashes / nail polish,nice,Slot,VS086799,"White Rain, Nail Polish Remover With Acetone, 6 oz (12 Pack)",12,0.50,0.5,0.4,,health-beauty.beauty-accessories.lashes-nail-polish
+,Health & beauty,Beauty accessories › Lashes / nail polish,nice,Slot,VS019879,"Lucky, Nail Polish Remover, 6 oz (12 Pack)",12,0.40,0.4,0.2,,health-beauty.beauty-accessories.lashes-nail-polish
+,Grocery staples,Dry goods & baking › Dry beans,nice,Slot,VS010124,"Peak, Black Beans, 2 lb (12 Pack)",12,0.40,0.4,0.1,,grocery.dry-goods.dry-beans
+,Grocery staples,Dry goods & baking › Dry beans,nice,Slot,VS012311,"Peak, Garbanzo Beans, 1 lb (24 Pack)",24,0.40,0.4,0.1,,grocery.dry-goods.dry-beans
+,Grocery staples,Breakfast & pantry › Syrup / honey,nice,Slot,VS101029,"Don Victor, Pure Honey With Honey Comb, 8 oz (6 Pack)",6,0.50,1.6,0.5,,grocery.breakfast-pantry.syrup-honey
+,Grocery staples,Breakfast & pantry › Syrup / honey,nice,Slot,VS098710,"Forrelli, Syrup Pancake & Waffle, 24 oz (12 Pack)",12,0.50,1.6,0.6,,grocery.breakfast-pantry.syrup-honey
+,Grocery staples,Pet › Pet treats,nice,Slot,JC229741,"Hillside Farms, Jerky Twist Dog Treats, Chicken & Sweet Potato, 1.5 oz (48 Pack)",48,0.40,0.4,0.2,,grocery.pet.pet-treats
+,Grocery staples,Pet › Pet treats,nice,Slot,CM417872,"Beggin' Strips, Dog Treats, Bacon & Peanut Butter, 6 oz (6 Pack)",6,0.40,0.4,0.1,,grocery.pet.pet-treats

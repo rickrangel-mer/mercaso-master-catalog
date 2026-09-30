@@ -6,7 +6,7 @@ A gap is a carried item with no active Mercaso SKU matched to it, after review. 
 doesn't stock it or stocks it under a name the matcher and the review didn't connect. Either way it
 is a question for sourcing: stock it, find it, or drop it from the catalog.
 
-**901 of 1038 items have at least one Mercaso SKU; 137 have none.**
+**915 of 1047 items have at least one Mercaso SKU; 132 have none.**
 
 ## must (2)
 
@@ -15,7 +15,7 @@ is a question for sourcing: stock it, find it, or drop it from the catalog.
 | Water, energy, sports, juice, tea & coffee › Water › Topo Chico › Twist of Lime › 12oz glass | `drinks.water.topo-chico.twist-of-lime.12oz-glass` |
 | Tobacco & accessories › Cigars & cigarillos › Black & Mild › Original › 5-pack | `tobacco.cigars.black-and-mild.original.5-pack` |
 
-## should (39)
+## should (38)
 
 | Item | Id |
 |---|---|
@@ -51,15 +51,14 @@ is a question for sourcing: stock it, find it, or drop it from the catalog.
 | Water, energy, sports, juice, tea & coffee › Juice, nectars & punch › Kern's › Guava › 23oz can | `drinks.juice.kerns.guava.23oz-can` |
 | Water, energy, sports, juice, tea & coffee › Juice, nectars & punch › Kern's › Peach › 23oz can | `drinks.juice.kerns.peach.23oz-can` |
 | Water, energy, sports, juice, tea & coffee › Juice, nectars & punch › Vita Coco (coconut water) › Pineapple › 11.5oz carton or can | `drinks.juice.vita-coco.pineapple.11-5oz` |
-| Candy & snacks › Chocolate bars › Hershey's › Almond › Single | `candy-snacks.chocolate.hersheys.almond.single` |
-| Candy & snacks › Chocolate bars › Hershey's › Almond › King size | `candy-snacks.chocolate.hersheys.almond.king` |
 | Candy & snacks › Gummy, chewy & sour › Now & Later › Extreme Sour › Single | `candy-snacks.gummy-chewy.now-and-later.extreme-sour.single` |
+| Candy & snacks › Gummy, chewy & sour › Hi-Chew › Original mix › Single | `candy-snacks.gummy-chewy.hi-chew.original-mix.single` |
 | Candy & snacks › Gummy, chewy & sour › Snak Club › Apple Rings › 4oz peg bag | `candy-snacks.gummy-chewy.snak-club.apple-rings.4oz-peg` |
 | Candy & snacks › Mexican candy › Jovy › Ricas Mango › Single | `candy-snacks.mexican-candy.jovy.ricas-mango.single` |
 | Candy & snacks › Salty snacks (chips, corn, popcorn) › Takis › Fuego › 4oz bag | `candy-snacks.salty-snacks.takis.fuego.4oz-xvl` |
 | Candy & snacks › Cookies, crackers & snack cakes › Grandma's › Mini Sandwich Cremes › 2.5oz | `candy-snacks.cookies-cakes.grandmas.mini-sandwich-cremes.2-5oz` |
 
-## nice (96)
+## nice (92)
 
 | Item | Id |
 |---|---|
@@ -70,6 +69,7 @@ is a question for sourcing: stock it, find it, or drop it from the catalog.
 | Soft drinks › Lemon-lime › Sprite › Lymonade › 12oz can | `scd.lemon-lime.sprite.lymonade.12oz-can` |
 | Soft drinks › Lemon-lime › Sprite › Lymonade › 2L bottle | `scd.lemon-lime.sprite.lymonade.2l` |
 | Soft drinks › Lemon-lime › Sprite › Tropical Mix › 2L bottle | `scd.lemon-lime.sprite.tropical-mix.2l` |
+| Soft drinks › Lemon-lime › Starry › Original › 12oz can | `scd.lemon-lime.starry.original.12oz-can` |
 | Soft drinks › Lemon-lime › Starry › Original › 20oz bottle | `scd.lemon-lime.starry.original.20oz` |
 | Soft drinks › Lemon-lime › Starry › Zero Sugar › 12oz can | `scd.lemon-lime.starry.zero-sugar.12oz-can` |
 | Soft drinks › Lemon-lime › Starry › Zero Sugar › 20oz bottle | `scd.lemon-lime.starry.zero-sugar.20oz` |
@@ -139,23 +139,18 @@ is a question for sourcing: stock it, find it, or drop it from the catalog.
 | Candy & snacks › Mexican candy › Ravi › Chamoy › Single | `candy-snacks.mexican-candy.ravi.chamoy.single` |
 | Candy & snacks › Mexican candy › Lorena › Pelón-style › Single | `candy-snacks.mexican-candy.lorena.pelon-style.single` |
 | Candy & snacks › Mexican candy › Lorena › Chamoy › Single | `candy-snacks.mexican-candy.lorena.chamoy.single` |
-| Candy & snacks › Salty snacks (chips, corn, popcorn) › Frito-Lay › Cheetos Crunchy Flamin' Hot › XVL bag (about 2–2.5oz) | `candy-snacks.salty-snacks.frito-lay.cheetos-flamin-hot.xvl` |
-| Candy & snacks › Salty snacks (chips, corn, popcorn) › Frito-Lay › Cheetos Crunchy Xxtra Flamin' Hot › XVL bag (about 2–2.5oz) | `candy-snacks.salty-snacks.frito-lay.cheetos-xxtra-flamin-hot.xvl` |
-| Candy & snacks › Salty snacks (chips, corn, popcorn) › Frito-Lay › Cheetos Crunchy › XVL bag (about 2–2.5oz) | `candy-snacks.salty-snacks.frito-lay.cheetos-crunchy.xvl` |
-| Candy & snacks › Salty snacks (chips, corn, popcorn) › Frito-Lay › Doritos Nacho Cheese › XVL bag (about 2–2.5oz) | `candy-snacks.salty-snacks.frito-lay.doritos-nacho.xvl` |
-| Candy & snacks › Salty snacks (chips, corn, popcorn) › Frito-Lay › Doritos Dinamita › XVL bag (about 2–2.5oz) | `candy-snacks.salty-snacks.frito-lay.doritos-dinamita.xvl` |
-| Candy & snacks › Salty snacks (chips, corn, popcorn) › Frito-Lay › Fritos Turbos Flamas › XVL bag (about 2–2.5oz) | `candy-snacks.salty-snacks.frito-lay.fritos-turbos-flamas.xvl` |
 | Candy & snacks › Salty snacks (chips, corn, popcorn) › Frito-Lay › Munchies Flamin' Hot › XVL bag (about 2–2.5oz) | `candy-snacks.salty-snacks.frito-lay.munchies-flamin-hot.xvl` |
-| Candy & snacks › Salty snacks (chips, corn, popcorn) › Frito-Lay › Lay's Classic › XVL bag (about 2–2.5oz) | `candy-snacks.salty-snacks.frito-lay.lays-classic.xvl` |
-| Candy & snacks › Salty snacks (chips, corn, popcorn) › Frito-Lay › Ruffles Cheddar › XVL bag (about 2–2.5oz) | `candy-snacks.salty-snacks.frito-lay.ruffles-cheddar.xvl` |
-| Candy & snacks › Salty snacks (chips, corn, popcorn) › Takis › Blue Heat › 4oz bag | `candy-snacks.salty-snacks.takis.blue-heat.4oz-xvl` |
 | Candy & snacks › Salty snacks (chips, corn, popcorn) › Takis › Crunchy Fajitas › 2.5–3.25oz bag | `candy-snacks.salty-snacks.takis.crunchy-fajitas.single-bag` |
 | Candy & snacks › Salty snacks (chips, corn, popcorn) › Takis › Crunchy Fajitas › 4oz bag | `candy-snacks.salty-snacks.takis.crunchy-fajitas.4oz-xvl` |
 | Candy & snacks › Salty snacks (chips, corn, popcorn) › Chex Mix › Cheddar › 3.75oz bag | `candy-snacks.salty-snacks.chex-mix.cheddar.3-75oz` |
 | Candy & snacks › Salty snacks (chips, corn, popcorn) › Chex Mix › Bold › 3.75oz bag | `candy-snacks.salty-snacks.chex-mix.bold.3-75oz` |
 | Candy & snacks › Cookies, crackers & snack cakes › Oreo › Double Stuf › 6-count pack | `candy-snacks.cookies-cakes.oreo.double-stuf.6ct` |
 | Candy & snacks › Cookies, crackers & snack cakes › Keebler › Vanilla wafers › 1.8oz | `candy-snacks.cookies-cakes.keebler.vanilla-wafers.1-8oz` |
+| Candy & snacks › Cookies, crackers & snack cakes › Ritz › Original › 1.35oz | `candy-snacks.cookies-cakes.ritz.original.1-35oz` |
+| Candy & snacks › Cookies, crackers & snack cakes › Gamesa › Barra de Coco › 4.9oz | `candy-snacks.cookies-cakes.gamesa.barra-de-coco.4-9oz` |
+| Tobacco & accessories › Smokeless & pipe tobacco › Other roll-your-own tobacco | `tobacco.smokeless.other-roll-your-own` |
 | Tobacco & accessories › Lighters & matches › Newport Mini Torch › Assorted › Single | `tobacco.lighters.newport-mini-torch.assorted.single` |
+| Tobacco & accessories › Lighters & matches › D.D. Bean matchbooks › Matchbooks › Box of 50 matchbooks | `tobacco.lighters.dd-bean.matchbooks.50ct-box` |
 | Tobacco & accessories › Counter accessories › Glass tubes / one-hitters | `tobacco.accessories.glass-tubes` |
 | Tobacco & accessories › Counter accessories › Rolling trays | `tobacco.accessories.rolling-trays` |
 | Tobacco & accessories › Counter accessories › Lighter leashes / keychain lighters | `tobacco.accessories.lighter-leashes` |

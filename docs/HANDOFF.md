@@ -1,6 +1,6 @@
 # Handoff — Phases 1–4 done; the static site is ready
 
-Mainline: `main` (default). New work goes in PRs against `main`. Last updated 2026-09-29.
+Mainline: `main` (default). New work goes in PRs against `main`. **One open PR at a time** (Rick, 2026-09-30): finish or fold follow-up work into the open PR instead of opening a second one that edits the same files, and start the next branch from `main` only after it merges. Last updated 2026-09-30.
 
 ## Where things stand
 
@@ -14,7 +14,7 @@ Mainline: `main` (default). New work goes in PRs against `main`. Last updated 20
 
 | Leaves | Must | Should | Nice | Dropped as not sold in CA |
 |---|---|---|---|---|
-| 1,038 | 192 | 409 | 437 | 17 nodes |
+| 1,047 | 197 | 409 | 441 | 17 nodes |
 
 Before the sales cross-check: 945 leaves (191 must, 370 should, 384 nice).
 
@@ -41,7 +41,7 @@ Unchanged: Zyn, the CA flavored-tobacco drops, sandwich bags in department 5, Re
 
 - `pnpm match` proposes Mercaso SKUs into `data/matches/liquor.csv`; `pnpm gaps` writes `docs/exploration/liquor-gaps.md`. Both are in `scripts/match/`, with tests.
 - Every top pick was reviewed in-session: 52 wrong matches rejected, 16 added by hand (Marlboro Red, Tajín, Mega Chamoy and others). Rick approved the 1,081 matches at confidence 0.6 or higher; the rest stay pending.
-- Coverage: **865 of 1,038 items**, including 188 of 192 must. The 4 must misses: Topo Chico Twist of Lime and Black & Mild Original 5-pack (Mercaso has none), and the corkscrew and bottle-opener slots (correct but unbranded matches at 0.50 confidence, still pending).
+- Coverage (2026-09-30, after Rick's first review round and the H&B and grocery slot review): **897 of 1,047 items** have an approved SKU (must 195 of 197, should 370 of 409, nice 332 of 441). The 2 must misses, Topo Chico Twist of Lime and Black & Mild Original 5-pack, are products Mercaso does not stock. (At the end of Phase 4 it was 865 of 1,038, must 188 of 192.)
 - The site shows each item's matched products by name, SKU, case pack, status, 12-month and 90-day penetration (`share_12m`, `share_90d` columns in the match file, refreshed by `pnpm match`), and today's price and margin.
 
 ## Prices and margin (2026-09-29)
@@ -54,15 +54,14 @@ Unchanged: Zyn, the CA flavored-tobacco drops, sandwich bags in department 5, Re
 
 ## Next steps
 
-1. **Share the site as a file** (the choice for now): `pnpm web:html` writes `dist/site/mercaso-liquor-catalog-<date>.html` (with price and margin) and `...-no-prices.html`. Share the priced file only privately, e.g. a restricted Drive folder; people download it and open it in a browser (Drive's preview shows only the source). Hosting behind company sign-in can come later; `pnpm web:build` still writes the multi-file site to `apps/web/out/`.
-2. **Approve the rest:** the pending rows in `data/matches/liquor.csv` (status `auto`), including the corkscrew and bottle opener.
-3. **Sourcing:** work through `docs/exploration/liquor-gaps.md` (2 must, 39 should, 96 nice).
-4. **Assortment slot review for health and beauty and grocery** (as done for household in `docs/exploration/assortment-slot-review.md`).
+1. **Share the site as a file** (the choice for now): `pnpm web:html` writes `dist/site/mercaso-liquor-catalog-<date>.html` (with price and margin) and `...-no-prices.html`. Share the priced file only privately, e.g. a restricted Drive folder; people download it and open it in a browser (Drive's preview shows only the source). Hosting is in the backlog (`docs/PLAN.md`, Later); `pnpm web:build` still writes the multi-file site to `apps/web/out/`.
+2. **Review sheets, round 2:** Rick's first round is imported (2026-09-30: 10 approved, 55 rejected, 11 SKUs from the gap sheet). `docs/review/liquor-pending.csv` now holds 31 new pending matches on 18 items (mostly the matcher's next pick where Rick rejected the first) and `docs/review/liquor-gaps.csv` 132 items with no SKU. Fill `decision` (approve/reject) and `mercaso_sku` (the import also accepts SKUs typed in `target_skus`), save over the same paths, then `pnpm review import`, `pnpm match`, `pnpm gaps` and `pnpm review export`. Importing the same sheet twice is harmless.
+3. **Sourcing:** the gap sheet is the working list; `docs/exploration/liquor-gaps.md` is the readable version (2 must, 38 should, 92 nice). The two must gaps are Topo Chico Twist of Lime and Black & Mild Original 5-pack, which Mercaso does not stock.
+4. **Health & beauty and grocery slot review: done** (`docs/exploration/slot-review-hb-grocery.md`, all 25 proposals accepted 2026-09-30). Two cotton-candy drinks approved on the cotton-swab slot were rejected. Every assortment department has now had a sales review.
 5. **Refreshing:** `data/raw/` is gitignored; a new session runs `pnpm athena:export`, then `pnpm match` (keeps all review decisions), `pnpm gaps` and `pnpm web:html`.
 
 ## Open items for Rick
 
-- **Remove `AWS_SESSION_TOKEN` from the environment settings.** The key is a long-term `AKIA` key, and AWS rejects that key when a session token comes with it. The runner now ignores the token and warns, so nothing is blocked.
 - The key belongs to the IAM user `meng.local`. If that is someone's personal user, consider a dedicated read-only user for this repo.
-- Lines 4.1–4.4 (cigarettes, cigars, pouches, smokeless) are market-knowledge drafts. Mercaso's sales agree with their order, but only a check of store shelves can confirm them.
-- Where to host the viewer, if anywhere.
+- Lines 4.1–4.4 (cigarettes, cigars, pouches, smokeless) are market-knowledge drafts. Mercaso's sales agree with their order; Rick is leaving them as they are for now (2026-09-30).
+- Negative margins on about 6 SKUs: set aside for now (Rick, 2026-09-30).

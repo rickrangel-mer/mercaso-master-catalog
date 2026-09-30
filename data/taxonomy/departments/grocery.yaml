@@ -27,7 +27,7 @@ children:
         name: Ramen cup / bowl
         kind: assortment_slot
         match_terms: ["cup", "bowl"]
-        target_count: { min: 3, max: 4 }
+        target_count: { min: 4, max: 6 }
         brand_hints: [Maruchan, Nissin Cup Noodles, Nongshim, Paldo, Tapatio Big Bowl, Samyang Buldak]
       - key: ramen-packet
         name: Ramen packet
@@ -55,7 +55,8 @@ children:
         name: Canned soup
         kind: assortment_slot
         target_count: { min: 1, max: 2 }
-        brand_hints: [Campbell's, Maggi, Juanita's Menudo]
+        brand_hints: [Campbell's, Juanita's, Maggi]
+        note: Juanita's Menudo is the second seller (5.5% of stores) after Campbell's Chicken Noodle.
       - key: mac-cheese-cup
         name: Mac & cheese cup
         kind: assortment_slot
@@ -139,12 +140,12 @@ children:
         kind: assortment_slot
         match_terms: ["mayonnaise"]
         target_count: { min: 1, max: 1 }
-        brand_hints: [McCormick]
+        brand_hints: [Best Foods, McCormick]
       - key: ketchup
         name: Ketchup
         kind: assortment_slot
         target_count: { min: 1, max: 1 }
-        brand_hints: [Hunt's]
+        brand_hints: [Del Monte, Hunt's, Heinz]
       - key: mustard
         name: Mustard
         kind: assortment_slot
@@ -160,6 +161,30 @@ children:
         kind: assortment_slot
         target_count: { min: 1, max: 1 }
         brand_hints: [Kikkoman]
+      - key: lemon-lime-juice
+        name: Lemon & lime juice
+        kind: assortment_slot
+        match_terms: ["lemon juice", "lime juice"]
+        target_count: { min: 1, max: 2 }
+        size_class: [small]
+        brand_hints: [ReaLemon, ReaLime, California Wedge]
+        note: A drink mixer as much as a grocery item; linked from mixers. ReaLemon 2.5oz reaches 10.9% of stores.
+      - key: beer-salt
+        name: Beer salt
+        kind: assortment_slot
+        match_terms: ["beer salt"]
+        target_count: { min: 1, max: 1 }
+        size_class: [small]
+        brand_hints: [Twang]
+        note: Linked from mixers.
+      - key: dried-shrimp
+        name: Dried shrimp
+        kind: assortment_slot
+        match_terms: ["dried shrimp", "whole shrimp"]
+        target_count: { min: 1, max: 1 }
+        size_class: [small]
+        brand_hints: [Lupag]
+        note: A botana with beer.
 
   # 8.3 Canned & jarred
   - key: canned-jarred
@@ -180,20 +205,20 @@ children:
       - key: pickles
         name: Pickles
         kind: assortment_slot
-        target_count: { min: 1, max: 1 }
+        target_count: { min: 2, max: 2 }
         size_class: [small]
         brand_hints: [Van Holten's]
-        note: Single jar or pouch.
+        note: Single pouch. Van Holten's Pickle-in-a-Pouch Big Papa (23% of stores) and Hot Mama (21%) lead.
       - key: tuna
         name: Tuna
         kind: assortment_slot
         target_count: { min: 1, max: 1 }
-        brand_hints: [Bumble Bee, StarKist]
+        brand_hints: [StarKist, Chicken of the Sea]
       - key: sardines-oysters
         name: Sardines / oysters
         kind: assortment_slot
         target_count: { min: 1, max: 1 }
-        brand_hints: [Beach Cliff, California Girl]
+        brand_hints: [California Girl, Crown Prince, Beach Cliff]
       - key: canned-fruit
         name: Canned fruit
         kind: assortment_slot
@@ -204,6 +229,7 @@ children:
         kind: assortment_slot
         target_count: { min: 1, max: 1 }
         brand_hints: [Del Monte]
+        note: Del Monte whole kernel corn is the top seller (5.5% of stores).
       - key: tomato-enchilada-sauce
         name: Tomato / enchilada sauce
         kind: assortment_slot
@@ -241,7 +267,7 @@ children:
         name: Cooking oil
         kind: assortment_slot
         target_count: { min: 1, max: 1 }
-        brand_hints: [Mazola, 1-2-3]
+        brand_hints: [1-2-3, Mazola]
       - key: sugar
         name: Sugar
         kind: assortment_slot
@@ -267,6 +293,20 @@ children:
         kind: assortment_slot
         target_count: { min: 1, max: 1 }
         brand_hints: [Royal]
+      - key: baking-soda
+        name: Baking soda
+        kind: assortment_slot
+        match_terms: ["baking soda"]
+        target_count: { min: 1, max: 1 }
+        size_class: [small]
+        brand_hints: [Arm & Hammer]
+      - key: vinegar
+        name: Vinegar
+        kind: assortment_slot
+        match_terms: ["vinegar"]
+        target_count: { min: 1, max: 1 }
+        size_class: [small]
+        brand_hints: [Heinz]
 
   # 8.5 Breakfast & pantry
   - key: breakfast-pantry
@@ -283,7 +323,7 @@ children:
       - key: toaster-pastry
         name: Pop-Tarts / toaster pastry
         kind: assortment_slot
-        target_count: { min: 1, max: 1 }
+        target_count: { min: 2, max: 2 }
         brand_hints: [Kellogg's]
       - key: tortillas
         name: Tortillas
@@ -308,6 +348,21 @@ children:
         kind: assortment_slot
         match_terms: ["syrup", "pure honey", "honey bear", "clover honey"]
         target_count: { min: 1, max: 1 }
+      - key: instant-coffee
+        name: Instant coffee
+        kind: assortment_slot
+        match_terms: ["instant coffee", "clasico coffee", "classic roast coffee", "dolca"]
+        target_count: { min: 1, max: 2 }
+        size_class: [small]
+        brand_hints: [Nescafé, Folgers]
+        note: Nescafé Clásico reaches 11% of stores; non-beverage coffee as a whole 29%.
+      - key: coffee-creamer
+        name: Coffee creamer
+        kind: assortment_slot
+        match_terms: ["creamer"]
+        target_count: { min: 1, max: 1 }
+        size_class: [small]
+        brand_hints: [N'Joy, Coffee mate]
 
   # 8.6 Pet (nice only)
   - key: pet
@@ -340,3 +395,17 @@ children:
         match_terms: ["dog treat", "cat treat", "canine carry outs"]
         target_count: { min: 1, max: 1 }
         brand_hints: [Canine Carry Outs]
+      - key: cat-food-dry
+        name: Cat food, dry small bag
+        kind: assortment_slot
+        match_terms: ["cat food"]
+        target_count: { min: 1, max: 1 }
+        size_class: [small]
+        brand_hints: [Meow Mix]
+      - key: cat-litter
+        name: Cat litter
+        kind: assortment_slot
+        match_terms: ["cat litter"]
+        target_count: { min: 1, max: 1 }
+        size_class: [small]
+        brand_hints: [Jonny Cat]

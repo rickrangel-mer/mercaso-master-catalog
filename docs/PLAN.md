@@ -59,7 +59,8 @@ Goal: agree on the liquor-store taxonomy and where the branded/assortment line f
 - `apps/web` Next.js app loading `dist/<store-type>.json`. D3 hierarchy, collapsible horizontal tree with branches, store-type switcher, search/filter, node detail panel (attrs, priority, matched SKUs or assortment coverage), color by priority, badge by match status. Branded and assortment leaves rendered distinctly.
 - Deploy as static export or Vercel.
 - Built after Phase 2 has at least SCD encoded so the tree has real data; can start in parallel once Phase 1's JSON shape is fixed.
-- **Status: done 2026-09-29.** Restyled as a top-down org chart after Rick's Rippling example: cards with a department tint, priority tag and children|leaves badge; closed children in a two-column grid on a spine, open ones beside it; +/× on each card; zoom rail. `pnpm web:dev` runs it; `pnpm web:build` writes a static site to `apps/web/out/`. Not deployed yet; hosting is Rick's call.
+- **Status: done 2026-09-29.** Restyled as a top-down org chart after Rick's Rippling example: cards with a department tint, priority tag and children|leaves badge; closed children in a two-column grid on a spine, open ones beside it; +/× on each card; zoom rail. `pnpm web:dev` runs it; `pnpm web:build` writes a static site to `apps/web/out/`.
+- **Update 2026-09-29/30.** The site has three tabs: Overview (headline numbers and coverage), Catalog chart, and SKU table (every matched SKU with priority, type, penetration, price and margin, grouped pivot-style, CSV download). Price and margin come from a gitignored pricing export and never reach git. `pnpm web:html` builds it as one HTML file (with and without prices); sharing that file privately is the plan for now.
 
 ### Phase 4 — Matching to Mercaso's catalog
 
@@ -69,10 +70,14 @@ Goal: agree on the liquor-store taxonomy and where the branded/assortment line f
 4. **Human review**: `review-export.ts` writes low-confidence rows to CSV; reviewer sets status; import back to `data/matches/liquor.csv`.
 5. **Gap report** (`scripts/match/gaps.ts`): must-carry branded leaves with no approved SKU, and assortment leaves below `target_count`. This is a sourcing list and a first-class output.
 - **Status: done 2026-09-29.** `pnpm match` is a rule matcher (brand, variant words, size, sales rank; `match_terms` on slots); no API key was available, so Claude reviewed every top pick in-session instead of an LLM step (52 rejected, 16 added by hand). Rick approved the 1,081 matches at confidence 0.6 or higher. Coverage: 865 of 1,038 items (must 188 of 192, should 89%, nice 72%); 137 items have no Mercaso SKU (`docs/exploration/liquor-gaps.md`). Soft drinks reach 74%, not the 90% target: every miss is a product Mercaso doesn't stock (Schweppes, Mug, RC Cola, Canada Dry club soda and tonic outside 1L). Rule 4 changed the same day: chips carry 2.5–3.25oz bags beside XVL.
+- **Update 2026-09-30.** Review sheets (`pnpm review export` / `import`) round 1 imported, and the health & beauty and grocery slot review applied (25 proposals, 11 new slots). Coverage: 897 of 1,047 items, must 195 of 197.
 
 ### Later (out of scope now)
 
 Editable UI with DB persistence; laundromat and market store types (reuse taxonomy, add store-type files); API serving `dist/*.json` to the Mercaso app; per-store gap analysis (a store's order history vs. the master catalog).
+
+Backlog (future enhancements, not committed to):
+- **Host the site behind company sign-in**, so it refreshes in one place instead of sharing a file. Only worth it if regular use picks up; it contains prices and costs, so never a public host (added 2026-09-30).
 
 ## Repo layout
 

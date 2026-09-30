@@ -43,6 +43,14 @@ children:
         name: Tajín & chamoy
         kind: subcategory
         cross_ref: [grocery.seasonings.tajin, grocery.seasonings.mega]
+      - key: lemon-lime-juice
+        name: Lemon & lime juice
+        kind: subcategory
+        cross_ref: [grocery.seasonings.lemon-lime-juice]
+      - key: beer-salt
+        name: Beer salt
+        kind: subcategory
+        cross_ref: [grocery.seasonings.beer-salt]
 
   # 5.2 Bar tools & openers
   - key: bar-tools

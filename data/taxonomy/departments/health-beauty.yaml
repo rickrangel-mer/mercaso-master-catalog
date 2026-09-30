@@ -20,7 +20,7 @@ children:
         target_count: { min: 2, max: 2 }
         size_class: [small]
         brand_hints: [Tylenol, Advil, Aleve]
-        note: Single-dose 2-packs.
+        note: Single-dose 2-packs, plus a small bottle. Tylenol Extra Strength 50ct is the top seller (13.5% of stores).
       - key: antacid
         name: Antacid
         kind: assortment_slot
@@ -30,7 +30,7 @@ children:
       - key: cough-drops
         name: Cough drops
         kind: assortment_slot
-        target_count: { min: 1, max: 1 }
+        target_count: { min: 2, max: 2 }
         size_class: [small]
         brand_hints: [Halls]
       - key: cold-flu
@@ -110,6 +110,14 @@ children:
         target_count: { min: 1, max: 1 }
         size_class: [small]
         brand_hints: [Oral-B]
+      - key: breath-strips
+        name: Breath strips
+        kind: assortment_slot
+        match_terms: ["pocket fresh", "breath strip"]
+        target_count: { min: 1, max: 1 }
+        size_class: [small]
+        brand_hints: [Listerine]
+        note: Listerine Pocket Fresh Cool Mint reaches 9.9% of stores.
 
   # 7.3 Personal care
   - key: personal-care
@@ -121,14 +129,15 @@ children:
         kind: assortment_slot
         target_count: { min: 1, max: 2 }
         size_class: [small]
-        brand_hints: [Dove, Zest, Lucky]
+        brand_hints: [Dove, Irish Spring, Lucky]
       - key: body-wash
         name: Body wash / hand soap
         kind: assortment_slot
-        match_terms: ["body wash"]
+        match_terms: ["body wash", "hand soap"]
         target_count: { min: 1, max: 1 }
         size_class: [small]
-        brand_hints: [Lucky, Dove]
+        brand_hints: [Lucky, Softsoap, Dove]
+        note: Hand soap outsells body wash (Lucky 3%, Softsoap 2%; body wash under 1%).
       - key: deodorant
         name: Deodorant
         kind: assortment_slot
@@ -140,7 +149,7 @@ children:
         kind: assortment_slot
         target_count: { min: 1, max: 1 }
         size_class: [small]
-        brand_hints: [Head & Shoulders, Suave, VO5]
+        brand_hints: [VO5, Head & Shoulders, Suave]
       - key: hair-gel
         name: Hair gel / spray
         kind: assortment_slot
@@ -201,22 +210,24 @@ children:
       - key: condoms
         name: Condoms
         kind: assortment_slot
-        target_count: { min: 2, max: 2 }
+        target_count: { min: 2, max: 3 }
         size_class: [small]
         brand_hints: [Trojan]
-        note: Counter item. Trojan ENZ, Magnum, Ultra Thin.
-      - key: lubricant
-        name: Lubricant
-        kind: assortment_slot
-        match_terms: ["ky jelly", "k-y", "personal lubricant"]
-        target_count: { min: 1, max: 1 }
-        size_class: [small]
-        brand_hints: [Trojan]
+        note: Counter item. Trojan Ultra Thin and Magnum lead (18% of stores each), then ENZ, Her Pleasure, Bareskin and Ultra Ribbed (12–13%).
       - key: pregnancy-test
         name: Pregnancy test
         kind: assortment_slot
         target_count: { min: 1, max: 1 }
         size_class: [small]
+        brand_hints: [Paraid]
+      - key: baby-wipes
+        name: Baby wipes
+        kind: assortment_slot
+        match_terms: ["baby wipes"]
+        target_count: { min: 1, max: 1 }
+        size_class: [small]
+        brand_hints: [Huggies]
+        note: Huggies 48ct reaches 11% of stores; baby wipes as a whole reach 27%.
 
   # 7.5 First aid & hygiene
   - key: first-aid
@@ -249,20 +260,17 @@ children:
       - key: eye-drops
         name: Eye drops
         kind: assortment_slot
-        target_count: { min: 1, max: 1 }
+        target_count: { min: 1, max: 2 }
         size_class: [small]
-        brand_hints: [Visine, Clear Eyes]
+        brand_hints: [Visine, Pure Eyes, Clear Eyes]
+        note: Pure Eyes is rising (12% of stores in 12 months, 8% in 90 days, while Visine fell to 1%).
       - key: cotton-swabs
         name: Cotton swabs
         kind: assortment_slot
+        match_terms: ["cotton swab", "q-tips"]
         target_count: { min: 1, max: 1 }
         size_class: [small]
-      - key: face-masks
-        name: Face masks
-        kind: assortment_slot
-        match_terms: ["disposable mask", "face mask"]
-        target_count: { min: 1, max: 1 }
-        size_class: [small]
+        brand_hints: [Q-Tips]
 
   # 7.6 Beauty accessories
   - key: beauty-accessories
@@ -276,11 +284,13 @@ children:
         target_count: { min: 1, max: 1 }
         size_class: [small]
       - key: hair-accessories
-        name: Hair ties / combs / brushes
+        name: Comb / hair brush
         kind: assortment_slot
-        match_terms: ["hair tie", "hair elastic", "bobby pin", "hair clip", "scrunchie", "headband", "hair band"]
-        target_count: { min: 1, max: 2 }
+        match_terms: ["hair brush", "comb"]
+        target_count: { min: 1, max: 1 }
         size_class: [small]
+        brand_hints: [Genco]
+        note: Pocket brushes and combs sell; hair ties, scrunchies and bobby pins do not (slot review 2026-09-30).
       - key: lashes-nail-polish
         name: Lashes / nail polish
         kind: assortment_slot
