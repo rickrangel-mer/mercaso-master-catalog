@@ -7,7 +7,7 @@ import { OrgChart } from "../components/OrgChart";
 import { Overview } from "../components/Overview";
 import { SkuTable } from "../components/SkuTable";
 import { StoresView } from "../components/StoresView";
-import type { StoreFile } from "../lib/stores";
+import type { BaseFile } from "../lib/score";
 import { Toolbar } from "../components/Toolbar";
 import { loadJson } from "../lib/load";
 import { skuRows, withPrices, type PriceFile } from "../lib/table";
@@ -46,7 +46,7 @@ export default function Page() {
   const [prices, setPrices] = useState<PriceFile | null>(null);
   const [snapshot, setSnapshot] = useState<string | undefined>(undefined);
   // Optional: the store view from `pnpm stores` (store data never goes in git).
-  const [stores, setStores] = useState<StoreFile | null>(null);
+  const [stores, setStores] = useState<BaseFile | null>(null);
   const [filters, setFilters] = useState<Filters>(NO_FILTERS);
   const [expanded, setExpanded] = useState<Set<string>>(new Set([ROOT_ID]));
   const [selectedId, setSelectedId] = useState<string | null>(null);
@@ -73,7 +73,7 @@ export default function Page() {
   useEffect(() => {
     const s = window.__MERCASO_DATA__?.snapshot;
     if (typeof s === "string") setSnapshot(s);
-    loadJson<StoreFile>("data/stores.json")
+    loadJson<BaseFile>("data/stores.json")
       .then((f) => setStores(f))
       .catch(() => setStores(null));
     loadJson<PriceFile>("data/prices.json")
@@ -183,7 +183,7 @@ export default function Page() {
       {tab === "overview" && <div className="page">{index ? <Overview index={index} rows={rows} onTab={setTab} onJump={jumpTo} /> : loading}</div>}
       {tab === "stores" && (
         <div className="page">
-          <StoresView file={stores} onJumpItem={jumpTo} />
+          <StoresView base={stores} onJumpItem={jumpTo} />
         </div>
       )}
       {tab === "table" && <div className="page">{index ? <SkuTable rows={rows} pricesAsOf={prices?.as_of} onJump={jumpTo} /> : loading}</div>}

@@ -1,26 +1,27 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { gapsToCsv, hasMoney, mustPct, pctOf, storeGaps, tierDepartmentMedians, tierLabel, type StoreFile, type StoreOut } from "../lib/stores";
+import { gapsToCsv, hasMoney, mustPct, pctOf, storeGaps, tierLabel, type StoreFile, type StoreOut } from "../lib/stores";
 import { PRIORITY_LEVELS, type Priority } from "../lib/tree";
 import { downloadCsv, fmt, money, pct } from "./format";
+import { StorePivot } from "./StorePivot";
 
 interface Props {
   file: StoreFile;
   store: StoreOut;
+  medians: Map<string, number>[];
   onClose: () => void;
   onJumpItem: (id: string) => void;
 }
 
 const SHOW = 25;
 
-export function StoreDetail({ file, store: s, onClose, onJumpItem }: Props) {
+export function StoreDetail({ file, store: s, medians, onClose, onJumpItem }: Props) {
   const money$ = hasMoney(file);
   const [priorities, setPriorities] = useState<Priority[]>(["must", "should"]);
   const [kind, setKind] = useState<"all" | "fading">("all");
   const [limit, setLimit] = useState(SHOW);
   const gaps = useMemo(() => storeGaps(file, s), [file, s]);
-  const deptMedians = useMemo(() => tierDepartmentMedians(file)[s.tier] ?? [], [file, s.tier]);
   const inPriority = gaps.filter((g) => priorities.includes(g.item.priority));
   const shown = inPriority.filter((g) => kind === "all" || g.fadingDays !== undefined);
   const peerMust = file.tier_median_must[s.tier] ?? 0;
@@ -83,24 +84,8 @@ export function StoreDetail({ file, store: s, onClose, onJumpItem }: Props) {
         </div>
 
         <section>
-          <h3 className="section-title">Coverage by department</h3>
-          <p className="muted small">Bar: this store. Tick: the median of stores that order as often.</p>
-          <div className="bars">
-            {file.departments.map((d, i) => (
-              <div key={d} className="bar-row">
-                <span className="bar-label" title={d}>
-                  {d}
-                </span>
-                <span className="bar-track with-tick" role="img" aria-label={`${d}: ${pct(s.departments[i] ?? 0)}, peers ${pct(deptMedians[i] ?? 0)}`}>
-                  <span className="bar-fill" style={{ width: `${Math.max((s.departments[i] ?? 0) * 100, 1)}%` }} />
-                  <span className="tick" style={{ left: `${(deptMedians[i] ?? 0) * 100}%` }} />
-                </span>
-                <span className="bar-value">
-                  <strong>{pct(s.departments[i] ?? 0)}</strong> <span className="muted">peers {pct(deptMedians[i] ?? 0)}</span>
-                </span>
-              </div>
-            ))}
-          </div>
+          <h3 className="section-title">Coverage by department, category and item</h3>
+          <StorePivot file={file} store={s} medians={medians} onJumpItem={onJumpItem} />
         </section>
 
         <section>
@@ -110,7 +95,7 @@ export function StoreDetail({ file, store: s, onClose, onJumpItem }: Props) {
               Download all gaps
             </button>
           </div>
-          <p className="muted small">Items this store hasn&apos;t bought from us in 90 days, most bought by its peers first.</p>
+          <p className="muted small">Items this store hasn&apos;t bought from us in the last {file.window_days} days, most carried by its peers first.</p>
           <div className="controls">
             <div className="chips" role="group" aria-label="Priority">
               {PRIORITY_LEVELS.map((p) => (
@@ -133,7 +118,7 @@ export function StoreDetail({ file, store: s, onClose, onJumpItem }: Props) {
                 <tr>
                   <th>Item</th>
                   <th>Gap</th>
-                  <th className="num" title="Share of stores that order as often and bought it in 12 months">
+                  <th className="num" title={`Share of stores that order as often and bought it in the last ${file.window_days} days`}>
                     Peers buy
                   </th>
                   <th>Recommended SKU</th>

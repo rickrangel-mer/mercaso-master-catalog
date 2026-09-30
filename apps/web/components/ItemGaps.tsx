@@ -62,7 +62,7 @@ export function ItemGaps({ file, onOpenStore, onJumpItem }: Props) {
   return (
     <div className="item-gaps">
       <p className="muted">
-        One row per catalog item: how many active stores haven&apos;t bought it from us in 90 days
+        One row per catalog item: how many active stores haven&apos;t bought it from us in the last {file.window_days} days
         {money$ ? ", and the revenue if they bought it like their peers. This is the list for the pricing program and for pushes." : ". This is the list for pushes."} Click
         a row for the stores.
       </p>
@@ -111,8 +111,8 @@ export function ItemGaps({ file, onOpenStore, onJumpItem }: Props) {
                   {sortHeader("margin", "Margin", "(price − average cost without CRV) ÷ price")}
                 </>
               )}
-              {sortHeader("adoption", "Stores buying", "Share of all stores that bought it in 12 months")}
-              {sortHeader("missing", "Active stores missing it", "Active stores that haven't bought it in 90 days")}
+              {sortHeader("adoption", "Stores carrying", `Share of all stores that bought it in the last ${file.window_days} days`)}
+              {sortHeader("missing", "Active stores missing it", `Active stores that haven't bought it in the last ${file.window_days} days`)}
               {money$ && sortHeader("opportunity", "Opportunity / yr", "Sum over those stores of peer adoption × typical peer volume × price")}
               <th aria-label="Open" />
             </tr>

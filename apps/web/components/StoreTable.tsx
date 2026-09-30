@@ -17,10 +17,13 @@ import {
   type StoreSortKey,
 } from "../lib/stores";
 import { downloadCsv, fmt, money, pct } from "./format";
+import { StorePivot } from "./StorePivot";
 
 interface Props {
   file: StoreFile;
+  medians: Map<string, number>[];
   onOpen: (id: string) => void;
+  onJumpItem: (id: string) => void;
 }
 
 const GROUPS: { id: StoreGroupBy; label: string }[] = [
@@ -42,7 +45,15 @@ const TREND: Record<StoreOut["trend"], { mark: string; label: string }> = {
 
 const PAGE = 150;
 
-export function StoreTable({ file, onOpen }: Props) {
+export function StoreTable({ file, medians, onOpen, onJumpItem }: Props) {
+  const [expandedStores, setExpandedStores] = useState<Set<string>>(new Set());
+  const toggleStore = (id: string) =>
+    setExpandedStores((prev) => {
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id);
+      else next.add(id);
+      return next;
+    });
   const money$ = hasMoney(file);
   const [filters, setFilters] = useState<StoreFilters>({ query: "", status: "all", tiers: file.tiers.map((_, i) => i), trend: "all" });
   const [groupBy, setGroupBy] = useState<StoreGroupBy>("tier");
@@ -64,12 +75,12 @@ export function StoreTable({ file, onOpen }: Props) {
     { id: "orders", label: "Orders 12 mo", className: "num", title: "Orders in 12 months, and the trend: last 90 days against the 90 days before" },
     { id: "spend", label: "Spend 12 mo", className: "num", money: true },
     { id: "score", label: "Score", className: "num", title: "Catalog score 0–100: must, should and nice coverage weighted 3:2:1" },
-    { id: "must", label: "Must", className: "num", title: `Share of the ${file.totals.must} must items bought from Mercaso in 12 months` },
+    { id: "must", label: "Must", className: "num", title: `Share of the ${file.totals.must} must items carried: bought from Mercaso in the last ${file.window_days} days` },
     { id: null, label: "Should", className: "num" },
     { id: null, label: "Nice", className: "num" },
     { id: "vs_peers", label: "vs. peers", className: "num", title: "Must coverage minus the median of stores that order as often, in points" },
-    { id: "must_gaps", label: "Must gaps", className: "num", title: "Must items not bought in 90 days (supply holds not counted)" },
-    { id: "fading", label: "Fading", className: "num", title: "Items bought in 12 months but not in the last 90 days" },
+    { id: "must_gaps", label: "Must gaps", className: "num", title: `Must items not bought in the last ${file.window_days} days (supply holds not counted)` },
+    { id: "fading", label: "Fading", className: "num", title: `Items bought in 12 months but not in the last ${file.window_days} days` },
     { id: "opportunity", label: "Opportunity", className: "num", money: true, title: "Expected revenue a year from must and should gaps: peer adoption × typical peer volume × today's price" },
   ];
   const columns = allColumns.filter((c) => money$ || !c.money);
@@ -139,7 +150,7 @@ export function StoreTable({ file, onOpen }: Props) {
         </div>
       </div>
       <p className="table-summary muted">
-        <strong>{fmt(filtered.length)}</strong> stores · <strong>{fmt(filtered.filter((s) => s.status === "Active").length)}</strong> active. Click a store to see its gaps.
+        <strong>{fmt(filtered.length)}</strong> stores · <strong>{fmt(filtered.filter((s) => s.status === "Active").length)}</strong> active. Click a row to break the store down by department, category and item; click its name for the store detail.
       </p>
 
       <div className="table-wrap">
@@ -195,11 +206,17 @@ export function StoreTable({ file, onOpen }: Props) {
                   )}
                   {expanded &&
                     g.stores.slice(0, limit).map((s) => (
-                      <tr key={s.id} className="clickable" onClick={() => onOpen(s.id)}>
+                      <Fragment key={s.id}>
+                      <tr className={`clickable ${expandedStores.has(s.id) ? "is-expanded" : ""}`} onClick={() => toggleStore(s.id)} aria-expanded={expandedStores.has(s.id)}>
                         <td className="product">
-                          <button type="button" className="linklike quiet" onClick={(e) => (e.stopPropagation(), onOpen(s.id))}>
-                            {s.name || s.number}
-                          </button>
+                          <span className="store-name">
+                            <span className="caret" aria-hidden="true">
+                              {expandedStores.has(s.id) ? "▾" : "▸"}
+                            </span>
+                            <button type="button" className="linklike" onClick={(e) => (e.stopPropagation(), onOpen(s.id))} title="Open the store's detail and gap list">
+                              {s.name || s.number}
+                            </button>
+                          </span>
                           <span className="mono muted">
                             {s.number} · {s.city} {s.zip}
                           </span>
@@ -236,6 +253,14 @@ export function StoreTable({ file, onOpen }: Props) {
                         <td className="num">{fmt(s.fading)}</td>
                         {money$ && <td className="num">{money(s.opportunity)}</td>}
                       </tr>
+                      {expandedStores.has(s.id) && (
+                        <tr className="pivot-row">
+                          <td colSpan={columns.length}>
+                            <StorePivot file={file} store={s} medians={medians} onJumpItem={onJumpItem} />
+                          </td>
+                        </tr>
+                      )}
+                      </Fragment>
                     ))}
                   {expanded && g.stores.length > limit && (
                     <tr>

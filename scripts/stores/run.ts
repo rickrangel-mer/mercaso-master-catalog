@@ -3,7 +3,9 @@
  * Mercaso, its peers, its voids and its health. Reads data/raw/liquor_stores.csv and
  * liquor_store_skus.csv (`pnpm athena:export liquor-stores liquor-store-skus`), plus
  * data/raw/pricing.csv when present. Writes, all under the gitignored dist/stores/:
- *   liquor.json         everything the site's Stores tab needs
+ *   liquor.json         the base file for the site's Stores tab, which scores it in the browser for
+ *                       whatever "carried" window the viewer picks
+ * The CSVs are scored for the default window: an item counts as carried if bought in 90 days.
  *   liquor-stores.csv   one row per store (the store table)
  *   liquor-voids.csv    per store, its 30 missing must/should items most bought by its peers
  *                       (the rep and pricing list; items on supply hold are left out; the site
@@ -18,7 +20,7 @@ import { loadCatalog } from "../lib/load.ts";
 import { summarizeMatches } from "../lib/matches.ts";
 import { buildCatalogJson } from "../lib/output.ts";
 import { leafInfo } from "../match/review-lib.ts";
-import { scoreStores, TIERS, type Price } from "./lib.ts";
+import { buildBase, scoreWindow, TIERS, type Price } from "./lib.ts";
 
 const ROOT = process.cwd();
 const OUT = join(ROOT, "dist/stores");
@@ -51,7 +53,7 @@ const prices = existsSync(join(ROOT, "data/raw/pricing.csv"))
     )
   : null;
 
-const file = scoreStores({
+const base = buildBase({
   asOf: storeRows[0]?.as_of ?? new Date().toISOString().slice(0, 10),
   storeType: "liquor",
   leaves,
@@ -74,9 +76,10 @@ const file = scoreStores({
   prices,
   holds: liquor.resolved.def.supply_hold ?? {},
 });
+const file = scoreWindow(base, base.default_window_days);
 
 mkdirSync(OUT, { recursive: true });
-writeFileSync(join(OUT, "liquor.json"), JSON.stringify(file));
+writeFileSync(join(OUT, "liquor.json"), JSON.stringify(base));
 
 const pct = (a: number, b: number) => (b ? ((a / b) * 100).toFixed(1) : "");
 const T = file.totals;
@@ -124,5 +127,6 @@ const kb = (f: string) => `${Math.round(readFileSync(join(OUT, f)).length / 1024
 const heldItems = file.items.filter((i) => i.hold).length;
 if (heldItems) console.log(`${heldItems} items on supply hold: left out of fading, voids and opportunity.`);
 console.log(`${file.stores.length} stores (${active} active in ${file.active_days} days), ${file.items.length} catalog items with a Mercaso SKU; as of ${file.as_of}.`);
+console.log(`Scored for a ${file.window_days}-day carried window (the site lets the viewer change it).`);
 console.log(`Median must coverage by tier ${file.tiers.map((t, i) => `${t}: ${(file.tier_median_must[i]! * 100).toFixed(0)}%`).join(", ")}.`);
 console.log(`wrote dist/stores/liquor.json (${kb("liquor.json")}), liquor-stores.csv, liquor-voids.csv (${voidRows.length - 1} rows)${prices ? "" : "; no pricing.csv, so no revenue estimates"}.`);

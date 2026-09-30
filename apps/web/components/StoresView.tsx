@@ -1,22 +1,37 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { BANDS, hasMoney, storeSummary, tierLabel, type StoreFile } from "../lib/stores";
+import { scoreWindow, type BaseFile } from "../lib/score";
+import { BANDS, hasMoney, peerMedians, storeSummary, tierLabel } from "../lib/stores";
 import { ItemGaps } from "./ItemGaps";
 import { StoreDetail } from "./StoreDetail";
 import { fmt, pct } from "./format";
 import { StoreTable } from "./StoreTable";
 
 interface Props {
-  file: StoreFile | null;
+  base: BaseFile | null;
   onJumpItem: (id: string) => void;
 }
 
+const WINDOW_PRESETS = [30, 60, 90, 180, 365];
 
-export function StoresView({ file, onJumpItem }: Props) {
+
+export function StoresView({ base, onJumpItem }: Props) {
   const [view, setView] = useState<"stores" | "items">("stores");
+  // The "carried" window: an item counts as carried if the store bought it in the last N days.
+  const [days, setDays] = useState<number | null>(null);
+  const [draft, setDraft] = useState("");
+  const windowDays = days ?? base?.default_window_days ?? 90;
+  const file = useMemo(() => (base ? scoreWindow(base, windowDays) : null), [base, windowDays]);
+  const applyDraft = () => {
+    const n = Number(draft);
+    if (Number.isFinite(n) && n >= 1) setDays(Math.min(365, Math.round(n)));
+    setDraft("");
+  };
   const [storeId, setStoreId] = useState<string | null>(null);
   const summary = useMemo(() => (file ? storeSummary(file) : null), [file]);
+  // Peer medians per department and category, per tier, for the store pivots.
+  const medians = useMemo(() => (file ? peerMedians(file) : []), [file]);
   const store = file && storeId ? (file.stores.find((s) => s.id === storeId) ?? null) : null;
 
   useEffect(() => {
@@ -26,7 +41,7 @@ export function StoresView({ file, onJumpItem }: Props) {
     return () => window.removeEventListener("keydown", onKey);
   }, [store]);
 
-  if (!file || !summary) {
+  if (!base || !file || !summary) {
     return (
       <div className="stores-view">
         <p className="muted">
@@ -44,9 +59,37 @@ export function StoresView({ file, onJumpItem }: Props) {
       <div className="block-head">
         <h2>How much of the catalog each store buys from Mercaso</h2>
         <p className="muted">
-          {fmt(summary.stores)} California liquor stores that ordered in the last 12 months, as of {file.as_of}. A store is active if it ordered in the last {file.active_days} days. A gap is a catalog item the store
-          hasn&apos;t bought from us in 90 days; stores are compared with stores that order as often as they do.
+          {fmt(summary.stores)} California liquor stores that ordered in the last 12 months, as of {file.as_of}. A store is active if it ordered in the last {file.active_days} days. An item counts as
+          carried if the store bought it from us in the last {file.window_days} days; anything else is a gap. Stores are compared with stores that order as often as they do.
         </p>
+      </div>
+
+      <div className="window-control" role="group" aria-label="Carried window">
+        <span className="window-label">Count an item as carried if bought in the last</span>
+        <div className="chips">
+          {WINDOW_PRESETS.map((d) => (
+            <button key={d} type="button" className="chip" aria-pressed={windowDays === d} onClick={() => setDays(d)}>
+              {d} days
+            </button>
+          ))}
+        </div>
+        <label className="field inline">
+          <span className="visually-hidden">Other number of days</span>
+          <input
+            type="number"
+            min={1}
+            max={365}
+            inputMode="numeric"
+            placeholder={WINDOW_PRESETS.includes(windowDays) ? "other" : String(windowDays)}
+            value={draft}
+            onChange={(e) => setDraft(e.target.value)}
+            onKeyDown={(e) => e.key === "Enter" && applyDraft()}
+            onBlur={() => draft && applyDraft()}
+            className="days-input"
+          />
+          <span>days</span>
+        </label>
+        <span className="muted small">Fading: bought in 12 months but not in the last {file.window_days} days.</span>
       </div>
 
       <section className="tiles" aria-label="Headline numbers">
@@ -58,7 +101,7 @@ export function StoresView({ file, onJumpItem }: Props) {
           </div>
         </div>
         <div className="tile">
-          <div className="tile-label">Must items an active store buys</div>
+          <div className="tile-label">Must items an active store carries</div>
           <div className="tile-value">{pct(summary.medianMustActive)}</div>
           <div className="tile-sub muted">median, of {file.totals.must} must items</div>
         </div>
@@ -78,7 +121,7 @@ export function StoresView({ file, onJumpItem }: Props) {
         <section className="card-block">
           <div className="block-head">
             <h3>Stores by must coverage</h3>
-            <p className="muted">Share of the {file.totals.must} must items each store bought from Mercaso in 12 months.</p>
+            <p className="muted">Share of the {file.totals.must} must items each store carries (bought from Mercaso in the last {file.window_days} days).</p>
           </div>
           <div className="bars">
             {BANDS.map((label, b) => {
@@ -122,7 +165,7 @@ export function StoresView({ file, onJumpItem }: Props) {
       {heldCount > 0 && (
         <p className="hold-note">
           <span className="tag hold-tag">supply hold</span> {heldCount} items are on supply hold ({holds.map((h) => `${h.hold!.reason.replace(/\.$/, "")}, since ${h.hold!.since}`).join("; ")}). They
-          still count as bought, but not as gaps or opportunity.
+          still count as carried when bought, but never as gaps or opportunity.
         </p>
       )}
 
@@ -135,10 +178,10 @@ export function StoresView({ file, onJumpItem }: Props) {
         </button>
       </div>
 
-      {view === "stores" ? <StoreTable file={file} onOpen={setStoreId} /> : <ItemGaps file={file} onOpenStore={setStoreId} onJumpItem={onJumpItem} />}
+      {view === "stores" ? <StoreTable file={file} medians={medians} onOpen={setStoreId} onJumpItem={onJumpItem} /> : <ItemGaps file={file} onOpenStore={setStoreId} onJumpItem={onJumpItem} />}
       {!hasMoney(file) && <p className="muted small">This build has no prices, so spend, price, margin and opportunity are hidden.</p>}
 
-      {store && <StoreDetail file={file} store={store} onClose={() => setStoreId(null)} onJumpItem={onJumpItem} />}
+      {store && <StoreDetail file={file} store={store} medians={medians} onClose={() => setStoreId(null)} onJumpItem={onJumpItem} />}
     </div>
   );
 }
