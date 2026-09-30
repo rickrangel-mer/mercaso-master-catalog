@@ -128,6 +128,18 @@ export interface StoreFile {
   stores: StoreOut[];
 }
 
+/**
+ * Store text that reaches the site must not carry contact details. Mercaso's organization name is
+ * often the owner's email, and a few store names include one; emails are removed.
+ */
+export function withoutContact(text: string): string {
+  return text
+    .replace(/[\w.+-]+@[\w-]+(\.[\w-]+)+/g, "")
+    .replace(/\s*[-–|,(]*\s*\)?\s*$/, "")
+    .replace(/\s{2,}/g, " ")
+    .trim();
+}
+
 const daysBetween = (from: string, to: string) => Math.round((Date.parse(to) - Date.parse(from)) / 86_400_000);
 
 export function median(xs: number[]): number {
@@ -284,8 +296,8 @@ export function scoreStores(input: ScoreInput): StoreFile {
     return {
       id: s.store_id,
       number: s.store_number,
-      name: s.store_name,
-      organization: s.organization_name,
+      name: withoutContact(s.store_name),
+      organization: withoutContact(s.organization_name),
       city: s.city,
       zip: s.postal_code,
       status: days <= ACTIVE_DAYS ? "Active" : "Inactive",
