@@ -53,6 +53,19 @@ export function prepareSql(sql: string): string {
   return sql.trim().replace(/;\s*$/, "");
 }
 
+/**
+ * Fills the {{CATALOG_SKUS}} placeholder with a quoted SKU list. SKUs are checked against a strict
+ * pattern first, so nothing from the match file can change the query's meaning.
+ */
+export function fillCatalogSkus(sql: string, skus: string[]): string {
+  if (!sql.includes("{{CATALOG_SKUS}}")) return sql;
+  const list = [...new Set(skus)].sort();
+  if (list.length === 0) throw new Error("{{CATALOG_SKUS}}: the match file has no SKUs");
+  const bad = list.filter((s) => !/^[A-Za-z0-9_-]+$/.test(s));
+  if (bad.length > 0) throw new Error(`{{CATALOG_SKUS}}: unexpected characters in SKU(s) ${bad.slice(0, 5).join(", ")}`);
+  return sql.replaceAll("{{CATALOG_SKUS}}", list.map((s) => `'${s}'`).join(", "));
+}
+
 /** Turns one page of GetQueryResults into rows of strings. The first page's first row is the header. */
 export function pageToRows(resultSet: ResultSet | undefined): string[][] {
   return (resultSet?.Rows ?? []).map((r) => (r.Data ?? []).map((d) => d.VarCharValue ?? ""));
