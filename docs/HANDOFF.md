@@ -2,7 +2,7 @@
 
 Mainline: `main` (default). New work goes in PRs against `main`. **One open PR at a time** (Rick, 2026-09-30): finish or fold follow-up work into the open PR instead of opening a second one that edits the same files, and start the next branch from `main` only after it merges. Last updated 2026-10-08.
 
-**Next session starts with the member-discount side project:** read `docs/exploration/member-discount.md` (goal, Rick's discount rule and 5% margin floor, the membership query, what to reuse, and eight decisions to settle before building).
+**Member-discount side project: first version built, waiting for Rick's review** of `dist/member-discount/liquor.csv` before any site work. Read `docs/exploration/member-discount.md` (rule, Rick's decisions of 2026-10-08, what was built and the first run).
 
 ## Where things stand
 
@@ -62,8 +62,8 @@ Unchanged: Zyn, the CA flavored-tobacco drops, sandwich bags in department 5, Re
 4. **Health & beauty and grocery slot review: done** (`docs/exploration/slot-review-hb-grocery.md`, all 25 proposals accepted 2026-09-30). Two cotton-candy drinks approved on the cotton-swab slot were rejected. Every assortment department has now had a sales review.
 5. **Store penetration (Phase 5):** 5a is in (`docs/exploration/store-penetration.md`, `pnpm stores`). 5b, the Stores tab, is in too. Emails that Mercaso keeps in the organization-name field (1,899 of 1,993 stores) and in one store name are stripped before anything reaches the site. Arizona 22oz is fading at most stores (90-day share about half the 12-month share) because of manufacturer and stock issues (Rick, 2026-09-30), so read Arizona voids as supply, not store health. Two unmatched Arizona SKUs (Blueberry White Tea NON PRE-PRICED 36% of stores, Lemonade PRE-PRICED 31%) are catalog candidates.
 6. **Store view definitions, confirmed by Rick (2026-10-08):** catalog score weights must, should and nice coverage 3:2:1 (keep as is). Peer adoption is the share of stores in the same order-frequency tier that carry the item within the window. Opportunity = peer adoption × typical peer cases a year (12 months) × today's price, summed over must and should gaps, each SKU once.
-7. **Side project, member discounts:** `docs/exploration/member-discount.md`. 1,138 active member stores (496 liquor stores); discount $0.50 / $1 / $2 per SKU when member penetration is under 15% / 10% / 5%, never below a 5% margin.
-8. **Refreshing:** `data/raw/` is gitignored; a new session runs `pnpm athena:export` (`liquor-store-skus` after `pnpm match`, since it uses the match file), then `pnpm match` (keeps all review decisions), `pnpm gaps`, `pnpm stores` and `pnpm web:html`.
+7. **Side project, member discounts:** `docs/exploration/member-discount.md`. 1,138 active member stores (496 liquor stores); discount $0.50 / $1 / $2 per case when liquor-member penetration of the catalog item (90 days) is under 15% / 10% / 5%, stepped down to keep a 5% margin. `pnpm athena:export pricing member-stores member-store-skus`, then `pnpm member-discount` → `dist/member-discount/`. First run: 371 must/should SKUs get a discount. Next: Rick reviews the CSV; then optionally a site view.
+8. **Refreshing:** `data/raw/` is gitignored; a new session runs `pnpm athena:export` (`liquor-store-skus` after `pnpm match`, since it uses the match file), then `pnpm match` (keeps all review decisions), `pnpm gaps`, `pnpm stores`, `pnpm member-discount` and `pnpm web:html`.
 
 ## Open items for Rick
 

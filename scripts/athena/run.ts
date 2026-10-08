@@ -2,7 +2,7 @@
  * Runs the Athena queries in scripts/athena/sql/ and saves the results under data/raw/.
  *
  *   pnpm athena:check              confirm the credentials and Athena access
- *   pnpm athena:export             run every export (products, liquor sales, pricing, stores)
+ *   pnpm athena:export             run every export (products, liquor sales, pricing, stores, members)
  *   pnpm athena:export products    run one export by name
  *
  * Settings come from the environment: AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, optional
@@ -29,6 +29,8 @@ const EXPORTS: Record<string, { sql: string; out: string }> = {
   pricing: { sql: "scripts/athena/sql/pricing.sql", out: "data/raw/pricing.csv" },
   "liquor-stores": { sql: "scripts/athena/sql/liquor_stores.sql", out: "data/raw/liquor_stores.csv" },
   "liquor-store-skus": { sql: "scripts/athena/sql/liquor_store_skus.sql", out: "data/raw/liquor_store_skus.csv" },
+  "member-stores": { sql: "scripts/athena/sql/member_stores.sql", out: "data/raw/member_stores.csv" },
+  "member-store-skus": { sql: "scripts/athena/sql/member_store_skus.sql", out: "data/raw/member_store_skus.csv" },
 };
 
 /** Every SKU in the liquor match file that is not rejected, for {{CATALOG_SKUS}}. */

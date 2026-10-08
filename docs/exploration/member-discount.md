@@ -1,6 +1,6 @@
 # Member discount — handoff for the side project
 
-Started 2026-10-08. A side project built on the master catalog and the store view (Phase 5). Nothing is built yet; this is the brief, what we already know, and the decisions to settle first.
+Started 2026-10-08. A side project built on the master catalog and the store view (Phase 5). The first version is built (`pnpm member-discount`, see **Built** below) and waiting for Rick's review of the CSV before any site work.
 
 ## Goal
 
@@ -48,7 +48,7 @@ First look (2026-10-08): **1,138 active member stores** (also 296 cancelled and 
 | Restaurant | 40 |
 | Others | 33 |
 
-Also seen in Athena: `dw.ods_ims_item.membership_discount`, an item-level member discount that may already exist. Check whether it is current and how the new discount should stack with it.
+Also seen in Athena: `dw.ods_ims_item.membership_discount`, an item-level member discount. Checked 2026-10-08: it is 0.00 on every item in the latest snapshot except one non-catalog SKU at $0.01, so no catalog SKU has a member discount today. `pricing.sql` now exports it (`member_discount`) and the new discount stacks on top of it.
 
 ## What we can reuse
 
@@ -66,7 +66,34 @@ Also seen in Athena: `dw.ods_ims_item.membership_discount`, an item-level member
 3. **Output:** `dist/member-discount/liquor.csv` (gitignored), one row per SKU: catalog item, priority, department, SKU and product, member penetration (and the non-member liquor-store penetration for context), band, price, promo, cost, margin before and after, discount, and the exclusion reason. Plus a short summary: SKUs per band, how many failed the floor, and the cost of the program at current member volumes.
 4. **Review with Rick**, then optionally a site view.
 
-## Decisions to settle first
+## Decisions (Rick, 2026-10-08)
+
+1. **Which members:** the discount is meant for every member, but this first version measures penetration over the **496 liquor-store members**, matching the liquor catalog. All-member penetration (1,138) is shown for context.
+2. **Window:** 90 days.
+3. **Per catalog item:** a store that buys any approved SKU of the item counts. The discount then goes on every approved SKU of the item, each checked against its own price and cost.
+4. **Per case.**
+5. **Floor:** step down $2 → $1 → $0.50; drop the SKU if even $0.50 breaks the 5% margin.
+6. **Priorities:** must and should.
+7. **Floor items:** an item needs some purchasing: items no store (member or not) bought in the window are excluded (`no_sales`). Items bought by other stores but by no liquor member are kept and flagged (`no_member_buyers`).
+8. **Stacking:** the discount comes off the promo price when on promo, and on top of any existing member discount; the floor holds after everything. The CSV and summary split promo from non-promo SKUs.
+
+**Membership timeline:** a store counts when it has an ACTIVE row in the latest snapshot. Some stores have several membership rows; the export flags ACTIVE rows to double-check: a cancelled or suspended row updated after the active one (1 store on 2026-10-08), a period that ended without a renewal yet (16, mostly due the day of the snapshot) and cancel at period end (8). They are counted as members for now.
+
+## Built (2026-10-08)
+
+```
+pnpm athena:export pricing member-stores member-store-skus
+pnpm member-discount
+```
+
+- `member_stores.sql` → `data/raw/member_stores.csv`: every active member (any store type) and every CA liquor store, with store type, member flag, timeline flags and orders in 90 days. Store ids only: no names or contact details.
+- `member_store_skus.sql` → `data/raw/member_store_skus.csv`: store × catalog SKU over 90 days for those stores (same order rules as `liquor_store_skus.sql`).
+- `scripts/member-discount/` (logic in `lib.ts`, tests beside it): item penetration through the store view's `buildBase` + `scoreWindow`, for liquor members, non-member liquor stores that ordered in the window, and all members. Then the band, the floor (`max_discount_at_floor`, whole cents), the stepped-down discount and the exclusion reason (`penetration_15pct_plus`, `supply_hold`, `no_sales`, `no_price`, `no_cost`, `margin_floor`). A SKU on two items (cigarette pack and carton) gets one row, following the item more members buy.
+- Output (gitignored): `dist/member-discount/liquor.csv`, one row per approved must/should SKU, and `liquor-summary.md` with SKUs per discount (promo split), the reasons for no discount, and the cost at current member volumes (discount × member cases in 90 days, liquor members and all members, no lift assumed).
+
+First run (2026-10-08, counts only): 760 SKUs on 560 must/should items scored; **371 SKUs (255 items) get a discount**: 71 at $2, 175 at $1, 125 at $0.50, of which 60 are on promo; 66 were stepped down. 313 SKUs are at 15% or more; 59 fail the floor even at $0.50 (most 20oz sodas and cigarettes); 3 are on supply hold, 6 had no sales, 1 has no price, 7 no Finale cost.
+
+## Decisions as first listed
 
 1. **Which members:** liquor-store members only (496, matching the liquor catalog), or every member store type (1,138)? The catalog is built for liquor stores, so other types would be scored against items they may not carry.
 2. **Window:** penetration over how many days? The program is only four months old, so 90 days (the site's default) or "since the store joined" are the natural choices; 12 months would mix pre-membership buying.

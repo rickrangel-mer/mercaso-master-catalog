@@ -1,0 +1,167 @@
+/**
+ * Member discounts for the liquor master catalog. Reads data/raw/member_stores.csv,
+ * member_store_skus.csv and pricing.csv (`pnpm athena:export pricing member-stores
+ * member-store-skus`). Writes, under the gitignored dist/member-discount/:
+ *   liquor.csv          one row per approved SKU of a must or should item: member penetration
+ *                       (liquor-store members, 90 days, per catalog item), non-member and all-member
+ *                       penetration for context, band, price, cost, margins, discount and the
+ *                       exclusion reason
+ *   liquor-summary.md   SKUs per discount, how many failed the floor, and the program's cost at
+ *                       current member volumes
+ * Prices, costs and member lists stay out of git.
+ */
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
+import { join } from "node:path";
+import { parse } from "csv-parse/sync";
+import { toCsv } from "../athena/lib.ts";
+import { loadCatalog } from "../lib/load.ts";
+import { summarizeMatches } from "../lib/matches.ts";
+import { buildCatalogJson } from "../lib/output.ts";
+import { leafInfo } from "../match/review-lib.ts";
+import { MARGIN_FLOOR, memberDiscounts, summarize, type SkuPrice } from "./lib.ts";
+
+const ROOT = process.cwd();
+const OUT = join(ROOT, "dist/member-discount");
+const WINDOW_DAYS = 90;
+const STORE_TYPE = "Liquor store";
+const read = (file: string, hint: string): Record<string, string>[] => {
+  const path = join(ROOT, file);
+  if (!existsSync(path)) {
+    console.error(`${file} is missing. ${hint}`);
+    process.exit(1);
+  }
+  return parse(readFileSync(path, "utf8"), { columns: true });
+};
+
+const { storeTypes } = loadCatalog(ROOT);
+const liquor = storeTypes.find((s) => s.resolved.def.store_type === "liquor");
+if (!liquor) throw new Error("store type liquor not found");
+const leaves = leafInfo(buildCatalogJson(liquor.resolved, summarizeMatches(liquor.matches, liquor.resolved)).departments);
+const approved = read("data/matches/liquor.csv", "")
+  .filter((r) => r.status === "approved")
+  .map((r) => ({ node_id: r.node_id!, sku: r.mercaso_sku!, title: r.title ?? "", case_pack: r.case_pack ?? "", share_12m: Number(r.share_12m) || 0 }));
+const hint = "Run pnpm athena:export pricing member-stores member-store-skus.";
+const storeRows = read("data/raw/member_stores.csv", hint);
+const skuRows = read("data/raw/member_store_skus.csv", hint);
+const priceRows = read("data/raw/pricing.csv", hint);
+if (priceRows[0] && !("member_discount" in priceRows[0])) {
+  console.error("data/raw/pricing.csv has no member_discount column; rerun pnpm athena:export pricing.");
+  process.exit(1);
+}
+const prices = new Map<string, SkuPrice>(
+  priceRows.map((r) => [
+    r.sku_number!,
+    {
+      price: Number(r.price),
+      promo: r.price_type === "PROMO",
+      regular_price: Number(r.regular_price),
+      ...(r.average_cost === "" ? {} : { cost: Number(r.average_cost) }),
+      member_discount: Number(r.member_discount) || 0,
+    },
+  ]),
+);
+const asOf = storeRows[0]?.as_of ?? new Date().toISOString().slice(0, 10);
+const stores = storeRows.map((r) => ({
+  store_id: r.store_id!,
+  store_type: r.store_type ?? "",
+  member: r.member === "yes",
+  last_order_date: r.last_order_date ?? "",
+  orders_90d: Number(r.orders_90d) || 0,
+}));
+
+const rows = memberDiscounts({
+  asOf,
+  leaves,
+  approved,
+  stores,
+  storeSkus: skuRows.map((r) => ({ store_id: r.store_id!, sku: r.sku!, cases: Number(r.cases) || 0, last_order_date: r.last_order_date ?? "" })),
+  prices,
+  holds: liquor.resolved.def.supply_hold ?? {},
+  storeType: STORE_TYPE,
+  windowDays: WINDOW_DAYS,
+  priorities: ["must", "should"],
+});
+
+const members = stores.filter((s) => s.member && s.store_type === STORE_TYPE);
+const counts = {
+  members: members.length,
+  all_members: stores.filter((s) => s.member).length,
+  nonmembers: stores.filter((s) => !s.member && s.store_type === STORE_TYPE && s.orders_90d > 0).length,
+};
+const sum = summarize(rows, counts);
+
+const pct = (x: number | undefined) => (x === undefined ? "" : (x * 100).toFixed(1));
+const money = (x: number | undefined) => (x === undefined ? "" : x.toFixed(2));
+mkdirSync(OUT, { recursive: true });
+writeFileSync(
+  join(OUT, "liquor.csv"),
+  toCsv([
+    ["department", "category", "catalog_item", "priority", "mercaso_sku", "product", "case_pack", "member_pen_pct", "member_buyers", "nonmember_pen_pct", "nonmember_buyers", "all_member_pen_pct", "sku_member_pen_pct", "no_member_buyers", "band_discount", "on_promo", "price_no_crv", "regular_price", "cost_no_crv", "existing_member_discount", "margin_before_pct", "max_discount_at_floor", "discount", "stepped_down", "member_price", "margin_after_pct", "excluded", "member_cases_90d", "all_member_cases_90d", "est_cost_90d_all_members", "also_in", "node_id"],
+    ...rows.map((r) => [
+      r.department, r.category, r.item, r.priority, r.sku, r.title, r.case_pack,
+      pct(r.member_pen), String(r.member_buyers), pct(r.nonmember_pen), String(r.nonmember_buyers), pct(r.all_member_pen), pct(r.sku_member_pen),
+      r.no_member_buyers ? "yes" : "", money(r.band || undefined), r.promo === undefined ? "" : r.promo ? "yes" : "no",
+      money(r.price), money(r.regular_price), money(r.cost), money(r.existing_member_discount || undefined),
+      pct(r.margin_before), money(r.max_discount), money(r.discount || undefined), r.stepped_down ? "yes" : "",
+      r.discount && r.price !== undefined ? money(r.price - r.existing_member_discount - r.discount) : "", pct(r.margin_after),
+      r.excluded ?? "", String(r.member_cases), String(r.all_member_cases), r.discount ? money(r.discount * r.all_member_cases) : "",
+      r.also_in.join(" | "), r.node_id,
+    ]),
+  ]),
+);
+
+// Membership timeline: ACTIVE rows worth a second look (kept in the member set).
+const flagged = {
+  newer_inactive: storeRows.filter((r) => r.member === "yes" && r.newer_inactive_row === "yes").length,
+  expired: storeRows.filter((r) => r.member === "yes" && r.expires_at !== "" && r.expires_at! < asOf).length,
+  leaving: storeRows.filter((r) => r.member === "yes" && r.cancel_at_period_end === "yes").length,
+};
+const usd = (x: number) => `$${Math.round(x).toLocaleString("en-US")}`;
+const discounted = rows.filter((r) => r.discount > 0);
+const n = (d: string) => sum.by_discount[d] ?? 0;
+const p = (d: string) => sum.by_discount_promo[d] ?? 0;
+const ex = (k: string) => sum.excluded[k] ?? 0;
+const summary = `# Member discounts — liquor catalog (${asOf})
+
+Penetration: share of the ${sum.members} active liquor-store members that bought the catalog item (any approved SKU) from Mercaso in the last ${WINDOW_DAYS} days. Must and should items only. Discount per case on every approved SKU of the item, stepped down ($2 → $1 → $0.50) to keep a ${MARGIN_FLOOR * 100}% margin after any promo and existing member discount.
+
+Context: ${sum.all_members} active members of every store type; ${sum.nonmembers} non-member liquor stores that ordered in the window.
+
+## SKUs per discount
+
+| Discount | SKUs | of which on promo |
+|---|---|---|
+| $2.00 | ${n("2")} | ${p("2")} |
+| $1.00 | ${n("1")} | ${p("1")} |
+| $0.50 | ${n("0.5")} | ${p("0.5")} |
+| **Total** | **${discounted.length}** (${new Set(discounted.map((r) => r.node_id)).size} items) | ${p("2") + p("1") + p("0.5")} |
+
+${sum.stepped_down} SKUs were stepped down to a smaller band to fit the floor.
+
+## Not discounted (${sum.skus} SKUs on ${sum.items} items scored)
+
+| Reason | SKUs |
+|---|---|
+| 15% or more of members buy the item | ${ex("penetration_15pct_plus")} |
+| Failed the 5% floor even at $0.50 | ${ex("margin_floor")} |
+| Supply hold (Arizona) | ${ex("supply_hold")} |
+| No sales to any store in ${WINDOW_DAYS} days | ${ex("no_sales")} |
+| No price (not active) | ${ex("no_price")} |
+| No Finale cost | ${ex("no_cost")} |
+
+${sum.no_member_buyers} SKUs belong to items no liquor member bought in the window though other stores did (flagged \`no_member_buyers\`; they get the $2 band if the floor allows).
+
+## Cost at current member volumes (no lift assumed)
+
+| Members | ${WINDOW_DAYS} days | A year (× 365/${WINDOW_DAYS}) |
+|---|---|---|
+| Liquor-store members | ${usd(sum.cost_window_members)} | ${usd((sum.cost_window_members * 365) / WINDOW_DAYS)} |
+| All members | ${usd(sum.cost_window_all_members)} | ${usd((sum.cost_window_all_members * 365) / WINDOW_DAYS)} |
+
+## Membership timeline
+
+All ${sum.all_members} stores with an ACTIVE row in the latest snapshot are counted. To double-check: ${flagged.newer_inactive} with a cancelled or suspended membership updated after the active one, ${flagged.expired} whose period ended before ${asOf} without a renewal yet, ${flagged.leaving} set to cancel at period end.
+`;
+writeFileSync(join(OUT, "liquor-summary.md"), summary);
+console.log(summary);
+console.log(`wrote dist/member-discount/liquor.csv (${rows.length} rows) and liquor-summary.md`);

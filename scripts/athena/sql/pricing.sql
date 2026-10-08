@@ -8,6 +8,8 @@
 -- unit, times package_size) is taken out to compare like with like:
 --   margin = (price - (average_cost - regular_crv * package_size)) / price.
 -- Finale's own crv column is blank for some items, so the item table's CRV is used.
+-- Member discount: the item's existing membership_discount (dw.ods_ims_item, per case), 0 when unset;
+-- `pnpm member-discount` stacks the new discount on top of it.
 -- Snapshots: the latest partition on or before today for every table.
 WITH anchor AS (SELECT CAST(current_date AS varchar) AS run_dt),
 item AS (
@@ -32,6 +34,13 @@ cost AS (
   SELECT product_id, average_cost, dt AS cost_dt
   FROM ods.ods_finale_report_of_product_full
   WHERE dt = (SELECT max(dt) FROM "ods"."ods_finale_report_of_product_full$partitions" WHERE dt <= (SELECT run_dt FROM anchor))
+),
+member AS (
+  SELECT sku_number, max(TRY_CAST(membership_discount AS double)) AS member_discount
+  FROM dw.ods_ims_item
+  WHERE __dt = (SELECT max(__dt) FROM dw.ods_ims_item WHERE __dt <= (SELECT run_dt FROM anchor))
+    AND deleted_at IS NULL
+  GROUP BY sku_number
 )
 SELECT
   i.sku_number,
@@ -42,8 +51,10 @@ SELECT
   round(c.average_cost, 4) AS average_cost_with_crv,
   round(COALESCE(i.regular_crv, 0) * i.package_size, 2) AS case_crv,
   round(c.average_cost - COALESCE(i.regular_crv, 0) * i.package_size, 4) AS average_cost,
-  c.cost_dt
+  c.cost_dt,
+  coalesce(m.member_discount, 0) AS member_discount
 FROM item i
 LEFT JOIN promo p ON i.item_id = p.item_id
 LEFT JOIN cost c ON c.product_id = i.sku_number
+LEFT JOIN member m ON m.sku_number = i.sku_number
 ORDER BY i.sku_number;
