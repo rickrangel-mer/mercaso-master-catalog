@@ -2,12 +2,15 @@
  * Member discounts for the liquor master catalog. Reads data/raw/member_stores.csv,
  * member_store_skus.csv and pricing.csv (`pnpm athena:export pricing member-stores
  * member-store-skus`). Writes, under the gitignored dist/member-discount/:
- *   liquor.csv          one row per approved SKU of a must or should item: member penetration
+ *   liquor.csv          one row per approved SKU of a scored item: member penetration
  *                       (liquor-store members, 90 days, per catalog item), non-member and all-member
  *                       penetration for context, band, price, cost, margins, discount and the
  *                       exclusion reason
  *   liquor-summary.md   SKUs per discount, how many failed the floor, and the program's cost at
  *                       current member volumes
+ * Variants (`pnpm member-discount v2`):
+ *   v1 (default)        must and should items → liquor.csv, liquor-summary.md
+ *   v2                  must, should and nice items → liquor-v2.csv, liquor-v2-summary.md
  * Prices, costs and member lists stay out of git.
  */
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
@@ -19,11 +22,23 @@ import { summarizeMatches } from "../lib/matches.ts";
 import { buildCatalogJson } from "../lib/output.ts";
 import { leafInfo } from "../match/review-lib.ts";
 import { MARGIN_FLOOR, memberDiscounts, summarize, type SkuPrice } from "./lib.ts";
+import type { Priority } from "../../apps/web/lib/score.ts";
 
 const ROOT = process.cwd();
 const OUT = join(ROOT, "dist/member-discount");
 const WINDOW_DAYS = 90;
 const STORE_TYPE = "Liquor store";
+const VARIANTS: Record<string, { file: string; priorities: Priority[] }> = {
+  v1: { file: "liquor", priorities: ["must", "should"] },
+  v2: { file: "liquor-v2", priorities: ["must", "should", "nice"] },
+};
+const variantName = process.argv[2] ?? "v1";
+const variant = VARIANTS[variantName];
+if (!variant) {
+  console.error(`Unknown variant "${variantName}". Known: ${Object.keys(VARIANTS).join(", ")}.`);
+  process.exit(1);
+}
+const priorityText = variant.priorities.join(", ").replace(/, ([^,]*)$/, " and $1");
 const read = (file: string, hint: string): Record<string, string>[] => {
   const path = join(ROOT, file);
   if (!existsSync(path)) {
@@ -79,7 +94,7 @@ const rows = memberDiscounts({
   holds: liquor.resolved.def.supply_hold ?? {},
   storeType: STORE_TYPE,
   windowDays: WINDOW_DAYS,
-  priorities: ["must", "should"],
+  priorities: variant.priorities,
 });
 
 const members = stores.filter((s) => s.member && s.store_type === STORE_TYPE);
@@ -94,7 +109,7 @@ const pct = (x: number | undefined) => (x === undefined ? "" : (x * 100).toFixed
 const money = (x: number | undefined) => (x === undefined ? "" : x.toFixed(2));
 mkdirSync(OUT, { recursive: true });
 writeFileSync(
-  join(OUT, "liquor.csv"),
+  join(OUT, `${variant.file}.csv`),
   toCsv([
     ["department", "category", "catalog_item", "priority", "mercaso_sku", "product", "case_pack", "member_pen_pct", "member_buyers", "nonmember_pen_pct", "nonmember_buyers", "all_member_pen_pct", "sku_member_pen_pct", "no_member_buyers", "band_discount", "on_promo", "price_no_crv", "regular_price", "cost_no_crv", "existing_member_discount", "margin_before_pct", "max_discount_at_floor", "discount", "stepped_down", "member_price", "margin_after_pct", "excluded", "member_cases_90d", "all_member_cases_90d", "est_cost_90d_all_members", "also_in", "node_id"],
     ...rows.map((r) => [
@@ -121,9 +136,9 @@ const discounted = rows.filter((r) => r.discount > 0);
 const n = (d: string) => sum.by_discount[d] ?? 0;
 const p = (d: string) => sum.by_discount_promo[d] ?? 0;
 const ex = (k: string) => sum.excluded[k] ?? 0;
-const summary = `# Member discounts — liquor catalog (${asOf})
+const summary = `# Member discounts — liquor catalog, ${variantName} (${asOf})
 
-Penetration: share of the ${sum.members} active liquor-store members that bought the catalog item (any approved SKU) from Mercaso in the last ${WINDOW_DAYS} days. Must and should items only. Discount per case on every approved SKU of the item, stepped down ($2 → $1 → $0.50) to keep a ${MARGIN_FLOOR * 100}% margin after any promo and existing member discount.
+Penetration: share of the ${sum.members} active liquor-store members that bought the catalog item (any approved SKU) from Mercaso in the last ${WINDOW_DAYS} days. ${priorityText[0]!.toUpperCase()}${priorityText.slice(1)} items. Discount per case on every approved SKU of the item, stepped down ($2 → $1 → $0.50) to keep a ${MARGIN_FLOOR * 100}% margin after any promo and existing member discount.
 
 Context: ${sum.all_members} active members of every store type; ${sum.nonmembers} non-member liquor stores that ordered in the window.
 
@@ -162,6 +177,6 @@ ${sum.no_member_buyers} SKUs belong to items no liquor member bought in the wind
 
 All ${sum.all_members} stores with an ACTIVE row in the latest snapshot are counted. To double-check: ${flagged.newer_inactive} with a cancelled or suspended membership updated after the active one, ${flagged.expired} whose period ended before ${asOf} without a renewal yet, ${flagged.leaving} set to cancel at period end.
 `;
-writeFileSync(join(OUT, "liquor-summary.md"), summary);
+writeFileSync(join(OUT, `${variant.file}-summary.md`), summary);
 console.log(summary);
-console.log(`wrote dist/member-discount/liquor.csv (${rows.length} rows) and liquor-summary.md`);
+console.log(`wrote dist/member-discount/${variant.file}.csv (${rows.length} rows) and ${variant.file}-summary.md`);

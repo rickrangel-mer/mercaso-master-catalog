@@ -83,7 +83,8 @@ Also seen in Athena: `dw.ods_ims_item.membership_discount`, an item-level member
 
 ```
 pnpm athena:export pricing member-stores member-store-skus
-pnpm member-discount
+pnpm member-discount       # v1: must and should → liquor.csv
+pnpm member-discount v2    # v2: must, should and nice → liquor-v2.csv
 ```
 
 - `member_stores.sql` → `data/raw/member_stores.csv`: every active member (any store type) and every CA liquor store, with store type, member flag, timeline flags and orders in 90 days. Store ids only: no names or contact details.
@@ -92,6 +93,8 @@ pnpm member-discount
 - Output (gitignored): `dist/member-discount/liquor.csv`, one row per approved must/should SKU, and `liquor-summary.md` with SKUs per discount (promo split), the reasons for no discount, and the cost at current member volumes (discount × member cases in 90 days, liquor members and all members, no lift assumed).
 
 First run (2026-10-08, counts only): 760 SKUs on 560 must/should items scored; **371 SKUs (255 items) get a discount**: 71 at $2, 175 at $1, 125 at $0.50, of which 60 are on promo; 66 were stepped down. 313 SKUs are at 15% or more; 59 fail the floor even at $0.50 (most 20oz sodas and cigarettes); 3 are on supply hold, 6 had no sales, 1 has no price, 7 no Finale cost.
+
+**v2 (Rick asked, 2026-10-08): nice items too**, to see what it looks like; everything else as v1. 1,145 SKUs on 883 items scored; **655 SKUs (493 items) get a discount**: 156 at $2, 295 at $1, 204 at $0.50, 94 on promo; 133 stepped down. Nice adds 284 discounted SKUs (238 items), mostly candy and snacks (112) and drinks (74); 59 nice SKUs are at 15% or more and 31 fail the floor. Cost at current member volumes is about 1.8× v1's (`liquor-v2-summary.md`).
 
 ## Decisions as first listed
 
