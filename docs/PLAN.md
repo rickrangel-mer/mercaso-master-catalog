@@ -78,6 +78,10 @@ Goal: agree on the liquor-store taxonomy and where the branded/assortment line f
 - Stores active in 12 months; status Active (ordered in 45 days) or Inactive; peers by order frequency; all brands count.
 - 5a (done 2026-09-30): Athena exports `liquor-stores` and `liquor-store-skus`, `pnpm stores` scoring with tests, the two tables as CSV in `dist/stores/`. 5b (done 2026-09-30): the Stores tab on the site, in both builds; the no-prices file drops prices, margins, spend and opportunity from the store view too.
 
+### Side project — member discounts (started 2026-10-08)
+
+- Extra discounts for members on catalog SKUs that few member stores buy: under 15% $0.50, under 10% $1, under 5% $2, never below a 5% margin. Brief and open decisions: `docs/exploration/member-discount.md`.
+
 ### Later (out of scope now)
 
 Editable UI with DB persistence; laundromat and market store types (reuse taxonomy, add store-type files); API serving `dist/*.json` to the Mercaso app; per-store gap analysis (now Phase 5).
