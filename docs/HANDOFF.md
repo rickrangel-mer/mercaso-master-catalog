@@ -1,14 +1,16 @@
-# Handoff — Phases 1–4 done; the static site is ready
+# Handoff — catalog, matching, site and store view done; member-discount side project next
 
-Mainline: `main` (default). New work goes in PRs against `main`. **One open PR at a time** (Rick, 2026-09-30): finish or fold follow-up work into the open PR instead of opening a second one that edits the same files, and start the next branch from `main` only after it merges. Last updated 2026-09-30.
+Mainline: `main` (default). New work goes in PRs against `main`. **One open PR at a time** (Rick, 2026-09-30): finish or fold follow-up work into the open PR instead of opening a second one that edits the same files, and start the next branch from `main` only after it merges. Last updated 2026-10-08.
+
+**Next session starts with the member-discount side project:** read `docs/exploration/member-discount.md` (goal, Rick's discount rule and 5% margin floor, the membership query, what to reuse, and eight decisions to settle before building).
 
 ## Where things stand
 
-- `docs/PLAN.md` — the approved plan. Phases 0–4 and 2.5 are done.
+- `docs/PLAN.md` — the approved plan. Phases 0–5 and 2.5 are done.
 - `docs/data-model.md` — file formats, commands, and what the validator checks. Read this before touching `data/`.
 - `docs/exploration/liquor.md` — the liquor-store outline, the ten **modeling rules**, and the **encoding conventions** used to turn the outline into data.
 - `data/taxonomy/departments/` — all eight departments. `data/store-types/liquor.yaml` — liquor priorities, notes, `state: CA`.
-- `apps/web` — the static site (Next.js, static export), in three tabs: **Overview** (headline numbers, coverage by department and priority, open must items), **Catalog chart** (the top-down org chart, d3-zoom) and **SKU table** (every matched Mercaso SKU with priority, type, penetration, price and margin; pivot-style groups with subtotals, sort, filter, CSV download). The tab is in the URL hash (`#overview`, `#chart`, `#table`). A fourth tab, **Stores** (`#stores`), shows store penetration from `pnpm stores`: headline numbers, stores by must coverage, a store table (group by order frequency, coverage, status, city or organization; download CSV), a "carried" window control (an item counts as carried if bought in the last N days; default 90; everything re-scores in the browser), a store row that expands into a pivot (department → category → item, each against peers), a store drawer with the same pivot and the store's gaps, and an "Items to push" view listing which active stores miss each item. `pnpm web:dev` to run it; `pnpm web:html` builds it as a single HTML file to share.
+- `apps/web` — the static site (Next.js, static export), in three tabs: **Overview** (headline numbers, coverage by department and priority, open must items), **Catalog chart** (the top-down org chart, d3-zoom) and **SKU table** (every matched Mercaso SKU with priority, type, penetration, price and margin; pivot-style groups with subtotals, sort, filter, CSV download). The tab is in the URL hash (`#overview`, `#chart`, `#table`). A fourth tab, **Stores** (`#stores`), shows store penetration from `pnpm stores`: headline numbers, stores by must coverage, a store table (a flat list sorted by opportunity by default; can group by order frequency, coverage, status, city or organization; download CSV), a "carried" window control (an item counts as carried if bought in the last N days; default 90; everything re-scores in the browser), a store row that expands into a pivot (department → category → item, each against peers), a store drawer with the same pivot and the store's gaps, and an "Items to push" view listing which active stores miss each item. `pnpm web:dev` to run it; `pnpm web:html` builds it as a single HTML file to share.
 
 ## Numbers (liquor store, CA build)
 
@@ -59,7 +61,9 @@ Unchanged: Zyn, the CA flavored-tobacco drops, sandwich bags in department 5, Re
 3. **Sourcing:** the gap sheet is the working list; `docs/exploration/liquor-gaps.md` is the readable version (2 must, 38 should, 92 nice). The two must gaps are Topo Chico Twist of Lime and Black & Mild Original 5-pack, which Mercaso does not stock.
 4. **Health & beauty and grocery slot review: done** (`docs/exploration/slot-review-hb-grocery.md`, all 25 proposals accepted 2026-09-30). Two cotton-candy drinks approved on the cotton-swab slot were rejected. Every assortment department has now had a sales review.
 5. **Store penetration (Phase 5):** 5a is in (`docs/exploration/store-penetration.md`, `pnpm stores`). 5b, the Stores tab, is in too. Emails that Mercaso keeps in the organization-name field (1,899 of 1,993 stores) and in one store name are stripped before anything reaches the site. Arizona 22oz is fading at most stores (90-day share about half the 12-month share) because of manufacturer and stock issues (Rick, 2026-09-30), so read Arizona voids as supply, not store health. Two unmatched Arizona SKUs (Blueberry White Tea NON PRE-PRICED 36% of stores, Lemonade PRE-PRICED 31%) are catalog candidates.
-6. **Refreshing:** `data/raw/` is gitignored; a new session runs `pnpm athena:export` (`liquor-store-skus` after `pnpm match`, since it uses the match file), then `pnpm match` (keeps all review decisions), `pnpm gaps`, `pnpm stores` and `pnpm web:html`.
+6. **Store view definitions, confirmed by Rick (2026-10-08):** catalog score weights must, should and nice coverage 3:2:1 (keep as is). Peer adoption is the share of stores in the same order-frequency tier that carry the item within the window. Opportunity = peer adoption × typical peer cases a year (12 months) × today's price, summed over must and should gaps, each SKU once.
+7. **Side project, member discounts:** `docs/exploration/member-discount.md`. 1,138 active member stores (496 liquor stores); discount $0.50 / $1 / $2 per SKU when member penetration is under 15% / 10% / 5%, never below a 5% margin.
+8. **Refreshing:** `data/raw/` is gitignored; a new session runs `pnpm athena:export` (`liquor-store-skus` after `pnpm match`, since it uses the match file), then `pnpm match` (keeps all review decisions), `pnpm gaps`, `pnpm stores` and `pnpm web:html`.
 
 ## Open items for Rick
 
