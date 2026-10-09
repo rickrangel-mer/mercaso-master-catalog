@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import type { LeafInfo } from "../match/review-lib.ts";
-import { bandFor, maxDiscount, memberDiscounts, stepDown, summarize, type MemberDiscountInput, type MemberStore, type SkuPrice } from "./lib.ts";
+import { bandFor, checkWave, maxDiscount, memberDiscounts, stepDown, summarize, type MemberDiscountInput, type MemberStore, type SkuPrice, type SkuRow } from "./lib.ts";
 
 const leaf = (id: string, item: string, priority: string): LeafInfo => ({ id, department: "Drinks", item, priority, kind: "Branded", target: "", brandHints: "" });
 
@@ -196,5 +196,38 @@ describe("memberDiscounts", () => {
     expect(s.no_member_buyers).toBe(2); // juice, and Arizona (held)
     // CAN 0.5 × 6 + CANNP 0.5 × 2 + M 1 × 2 (all members); juice has no member cases.
     expect(s.cost_window_all_members).toBe(6);
+  });
+});
+
+describe("checkWave", () => {
+  const row = (sku: string, extra: Partial<SkuRow>): SkuRow =>
+    ({ sku, title: sku, node_id: sku, band: 1, price: 20, cost: 15, existing_member_discount: 0, max_discount: 4.21, discount: 1, ...extra }) as SkuRow;
+  const rows = [
+    row("OK", {}),
+    // Today's scoring gives $0.50 (penetration rose), but the wave's $1 still fits the floor.
+    row("MOVED", { band: 0.5, discount: 0.5 }),
+    // Cost rose overnight: the floor now allows $0.31.
+    row("COST", { cost: 18.7, max_discount: 0.31, discount: 0, excluded: "margin_floor" }),
+  ];
+  const { rows: out, missing } = checkWave(rows, [
+    { sku: "OK", discount: 1 },
+    { sku: "MOVED", discount: 1 },
+    { sku: "COST", discount: 0.5 },
+    { sku: "GONE", discount: 2 },
+  ]);
+  const get = (sku: string) => out.find((r) => r.sku === sku)!;
+
+  it("keeps the wave's discount and flags what changed", () => {
+    expect(get("OK")).toMatchObject({ discount: 1, recomputed_discount: 1, check: "ok" });
+    expect(get("MOVED")).toMatchObject({ discount: 1, recomputed_discount: 0.5, check: "band_changed" });
+    expect(get("COST")).toMatchObject({ discount: 0.5, recomputed_discount: 0, check: "floor_breaks" });
+    expect(get("COST").margin_after).toBeCloseTo((19.5 - 18.7) / 19.5, 4);
+    expect(missing).toEqual(["GONE"]);
+  });
+
+  it("counts wave rows by the wave's discount", () => {
+    const s = summarize(out, { members: 1, all_members: 1, nonmembers: 1 });
+    expect(s.by_discount).toEqual({ "2": 0, "1": 2, "0.5": 1 });
+    expect(s.excluded).toEqual({});
   });
 });

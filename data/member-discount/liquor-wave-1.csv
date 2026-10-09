@@ -1,0 +1,291 @@
+mercaso_sku,node_id,department,catalog_item,priority,product,discount
+DW3830-24,candy-snacks.chocolate.snickers.almond.king,Candy & snacks,Chocolate bars › Snickers › Almond › King size,should,"Snickers, Almond Candy Bar, Sharing Size, 3.29 oz (24 Pack)",0.50
+DW10525-24,candy-snacks.chocolate.m-and-ms.milk-chocolate.king,Candy & snacks,Chocolate bars › M&M's › Milk Chocolate › King size,must,"M&M's, Milk Chocolate Candy, Sharing Size, 3.14 oz (24 Pack)",1.00
+DW10546-18,candy-snacks.chocolate.hersheys.milk-chocolate.king,Candy & snacks,Chocolate bars › Hershey's › Milk Chocolate › King size,should,"Hershey's, Milk Chocolate Bar, King Size, 2.6 oz (18 Pack)",0.50
+DW670-18,candy-snacks.chocolate.hersheys.cookies-n-creme.king,Candy & snacks,Chocolate bars › Hershey's › Cookies 'n' Creme › King size,should,"Hershey's, Candy Bar, Cookies 'N' Cream, King Size, 2.6 oz (18 Pack)",1.00
+DW212230,candy-snacks.chocolate.almond-joy.original.single,Candy & snacks,Chocolate bars › Almond Joy › Original › Single,should,"Almond Joy, Chocolate Bar, Coconut and Almonds, 1.61 oz (24 Pack)",1.00
+DW127330-36,candy-snacks.chocolate.butterfinger.original.single,Candy & snacks,Chocolate bars › Butterfinger › Original › Single,should,"Butterfinger, Candy Bars, Singles, 1.9 oz (36 Pack)",1.00
+DW10643-36,candy-snacks.chocolate.nestle-crunch.original.single,Candy & snacks,Chocolate bars › Nestlé Crunch › Original › Single,should,"Nestle, Crunch, Chocolate Bar, Singles, 1.55 oz (36 Pack)",0.50
+DW10537-18,candy-snacks.chocolate.pay-day.original.king,Candy & snacks,Chocolate bars › Pay Day › Original › King size,should,"PAYDAY, Hershey's, Peanut and Caramel Candy, King Size, 3.4 oz (18 Pack)",1.00
+DW11023-40,candy-snacks.gum-mints.wrigleys.doublemint.5-stick,Candy & snacks,Gum & mints › Wrigley's › Doublemint › 5-stick pack,should,"Wrigley's, Doublemint Gum, Twin Box Pack, 5 ct (40 Pack)",1.00
+CO5580,candy-snacks.gum-mints.wrigleys.juicy-fruit.5-stick,Candy & snacks,Gum & mints › Wrigley's › Juicy Fruit › 5-stick pack,should,"Wrigley's, Juicy Fruit Gum, Original, 5 ct (40 Pack)",1.00
+DW36150-10,candy-snacks.gum-mints.wrigleys.juicy-fruit.15-stick,Candy & snacks,Gum & mints › Wrigley's › Juicy Fruit › 15-stick pack,should,"Wrigley's, Juicy Fruit Gum, Original, 15 ct (10 Pack)",0.50
+DF777068,candy-snacks.gum-mints.tic-tac.orange.pack,Candy & snacks,Gum & mints › Tic Tac › Orange › Pack,should,"Tic Tac, Mints, Orange, 1.7 oz (12 Pack)",1.00
+DW50970-12,candy-snacks.gum-mints.tic-tac.freshmint.pack,Candy & snacks,Gum & mints › Tic Tac › Freshmint › Pack,must,"Tic Tac, Mints, Freshmints, 1 oz (12 Pack)",1.00
+DW11253-12,candy-snacks.gum-mints.altoids.peppermint.tin,Candy & snacks,Gum & mints › Altoids › Peppermint › Tin,should,"Altoids, Classic Breath Mints, Peppermint, 1.76 oz (12 Pack)",0.50
+DW10-15,candy-snacks.gum-mints.mentos.fruit.roll,Candy & snacks,Gum & mints › Mentos › Fruit › Roll,should,"Mentos, Chewy Mint Candy, Mixed Fruit, 1.32 oz (15 Pack)",1.00
+DW101590-12,candy-snacks.gummy-chewy.haribo.sour-gold-bears.peg,Candy & snacks,"Gummy, chewy & sour › Haribo › Sour Gold Bears › Peg bag",should,"Haribo, Gummi Candy, Sour Gold Bears, Share Size, 4.5 oz (12 Pack)",0.50
+JC13946,candy-snacks.gummy-chewy.haribo.happy-cola.peg,Candy & snacks,"Gummy, chewy & sour › Haribo › Happy Cola › Peg bag",should,"Haribo, Gummies, Happy Cola, 4 oz (12 Pack)",1.00
+DW17408-24,candy-snacks.gummy-chewy.sour-punch.strawberry.single,Candy & snacks,"Gummy, chewy & sour › Sour Punch Straws › Strawberry › Single",should,"Sour Punch, Straws, Strawberry, 2 oz (24 Pack)",0.50
+DW10819-24,candy-snacks.gummy-chewy.sour-punch.blue-raspberry.single,Candy & snacks,"Gummy, chewy & sour › Sour Punch Straws › Blue Raspberry › Single",should,"Sour Punch, Straws, Blue Raspberry, 2 oz (24 Pack)",0.50
+DW10528-24,candy-snacks.gummy-chewy.skittles.original.king,Candy & snacks,"Gummy, chewy & sour › Skittles › Original › King size",must,"Skittles, Candy, Original, Share Size, 4 oz (24 Pack)",1.00
+DW10529-24,candy-snacks.gummy-chewy.skittles.sour.king,Candy & snacks,"Gummy, chewy & sour › Skittles › Sour › King size",should,"Skittles, Candy, Sour, Share Size, 3.3 oz (24 Pack)",1.00
+DW10564-36,candy-snacks.gummy-chewy.starburst.original.single,Candy & snacks,"Gummy, chewy & sour › Starburst › Original › Single",must,"Starburst, Original, 2.07 oz (36 Pack)",1.00
+DW10713-24,candy-snacks.gummy-chewy.starburst.original.king,Candy & snacks,"Gummy, chewy & sour › Starburst › Original › King size",must,"Starburst, Original, Share Size, 3.45 oz (24 Pack)",2.00
+JT203096,candy-snacks.gummy-chewy.airheads.assorted.single,Candy & snacks,"Gummy, chewy & sour › Airheads › Assorted › Single",should,"Airheads, Airheads, 5 Assorted Bars, 2.75 oz (18 Pack), 2.75 oz (18 Pack)",2.00
+DW10954-18,candy-snacks.gummy-chewy.airheads.xtremes.single,Candy & snacks,"Gummy, chewy & sour › Airheads › Xtremes › Single",should,"Airheads, Xtremes, Sour Belts, Rainbow Berry, 2 oz (18 Pack)",1.00
+DW62710-24,candy-snacks.gummy-chewy.now-and-later.original.single,Candy & snacks,"Gummy, chewy & sour › Now & Later › Original › Single",should,"Now and Later, Mixed Fruit Chews, Original Mix, 2.44 oz (24 Pack)",1.00
+DW44910-6,candy-snacks.gummy-chewy.hi-chew.original-mix.peg,Candy & snacks,"Gummy, chewy & sour › Hi-Chew › Original mix › Peg bag",should,"Hi-Chew, Tropical Mix, Peggable, 3.53 oz (6 Pack)",2.00
+CM634659,candy-snacks.gummy-chewy.life-savers.five-flavor.peg,Candy & snacks,"Gummy, chewy & sour › Life Savers Gummies › Five Flavor › Peg bag",should,"Life Savers, Five Flavor Hard Candy Peg Bag, 6.25 oz (12 Pack)",1.00
+DW83230-15,candy-snacks.gummy-chewy.life-savers.wild-berry.peg,Candy & snacks,"Gummy, chewy & sour › Life Savers Gummies › Wild Berry › Peg bag",should,"Life Savers, Gummies, Wild Berries, 4.2 oz (15 Pack)",1.00
+DW186570,candy-snacks.gummy-chewy.nerds.gummy-clusters.peg,Candy & snacks,"Gummy, chewy & sour › Nerds › Gummy Clusters › Peg bag",must,"Nerds, Gummy Clusters, Rainbow, Share Pouch, 3 oz (12 Pack)",0.50
+DW11709-12,candy-snacks.gummy-chewy.snak-club.sour-worms.4oz-peg,Candy & snacks,"Gummy, chewy & sour › Snak Club › Sour Worms › 4oz peg bag",should,"Snak Club, Sour Worms, Snack Size, 4 oz (12 Pack)",1.00
+DW17483-12,candy-snacks.gummy-chewy.snak-club.gummy-bears.4oz-peg,Candy & snacks,"Gummy, chewy & sour › Snak Club › Gummy Bears › 4oz peg bag",should,"Snak Club, Gummy Bears, Snack Size, 4 oz (12 Pack)",1.00
+DW11391-30,candy-snacks.mexican-candy.de-la-rosa.mazapan.single,Candy & snacks,Mexican candy › De la Rosa › Mazapán › Single,must,"De La Rosa, Peanut Candy, Mazapan, 1 oz (30 Pack)",0.50
+DW78170-12,candy-snacks.mexican-candy.pelon.pelo-rico.single,Candy & snacks,Mexican candy › Pelon › Pelo Rico › Single,must,"Pelon, Pelo Rico, 1 oz (12 Pack)",0.50
+DW4730-4,candy-snacks.mexican-candy.pelon.pelonazo.single,Candy & snacks,Mexican candy › Pelon › Pelonazo › Single,should,"Pelon, Pelonazo with Tamarind, 3.5 oz (4 Pack)",0.50
+DW13569-1,candy-snacks.mexican-candy.vero.mango-con-chile.single,Candy & snacks,Mexican candy › Vero › Mango con Chile › Single,should,"Vero, Chili Lollipops, Mango, 40 ct (1 Pack)",1.00
+DW11462-12,candy-snacks.mexican-candy.indy.hormigas.single,Candy & snacks,Mexican candy › Indy › Hormigas › Single,should,"Indy, Hormigas, 13 g (12 Pack)",0.50
+DW39990-12,candy-snacks.mexican-candy.hola.tamarind.single,Candy & snacks,Mexican candy › Hola › Tamarind candies › Single,should,"Hola, Saladitos, Sweet & Sour Salted Plum, 3.5 oz (12 Pack)",1.00
+DW93290-20,candy-snacks.mexican-candy.pica.pica-gomas.single,Candy & snacks,Mexican candy › Pica › Pica Gomas › Single,should,"Zumba, Pica Goma Sandia, Watermelon Gummies, 20 count, 20 ct (20 Pack)",1.00
+DW142660-32,candy-snacks.salty-snacks.frito-lay.cheetos-flamin-hot.single-bag,Candy & snacks,"Salty snacks (chips, corn, popcorn) › Frito-Lay › Cheetos Crunchy Flamin' Hot › 2.5–3.25oz bag",should,"Frito Lay, Cheetos, Crunchy, Flamin' Hot, 2.75 oz (32 Pack)",1.00
+DW142930-32,candy-snacks.salty-snacks.frito-lay.cheetos-xxtra-flamin-hot.single-bag,Candy & snacks,"Salty snacks (chips, corn, popcorn) › Frito-Lay › Cheetos Crunchy Xxtra Flamin' Hot › 2.5–3.25oz bag",should,"Cheetos, Crunchy, Xxtra Flamin' Hot, 2.75 oz (32 Pack)",1.00
+DW142330-28,candy-snacks.salty-snacks.frito-lay.chesters-fries-flamin-hot.single-bag,Candy & snacks,"Salty snacks (chips, corn, popcorn) › Frito-Lay › Chester's Fries Flamin' Hot › 2.5–3.25oz bag",should,"Chester's, Fries, Flamin' Hot, 2.63 oz (28 Pack)",1.00
+DW142350-24,candy-snacks.salty-snacks.frito-lay.doritos-nacho.single-bag,Candy & snacks,"Salty snacks (chips, corn, popcorn) › Frito-Lay › Doritos Nacho Cheese › 2.5–3.25oz bag",should,"Doritos, Nacho Cheese, 2.5 oz (24 Pack)",1.00
+DW189550,candy-snacks.salty-snacks.takis.blue-heat.single-bag,Candy & snacks,"Salty snacks (chips, corn, popcorn) › Takis › Blue Heat › 2.5–3.25oz bag",should,"Takis, Blue Heat, 3.25 oz (20 Pack)",1.00
+DW73690-12,candy-snacks.salty-snacks.pringles.sour-cream-onion.2-5oz,Candy & snacks,"Salty snacks (chips, corn, popcorn) › Pringles › Sour Cream & Onion › 2.5oz can",should,"Pringles, Potato Chips, Sour Cream & Onion, 2.5 oz (12 Pack)",0.50
+DW11756-12,candy-snacks.nuts-seeds.david.ranch.5-25oz,Candy & snacks,Nuts & seeds › David › Ranch › 5.25oz,must,"David Seeds, Sunflower Seeds, Jumbo, Ranch, 5.25 oz (12 Pack)",1.00
+DW11799-18,candy-snacks.nuts-seeds.corn-nuts.original.1-7oz,Candy & snacks,Nuts & seeds › Corn Nuts › Original › 1.7oz,should,"Corn Nuts, Crunchy Corn Kernels, Original, 1.7 oz (18 Pack)",1.00
+DW11729-12,candy-snacks.nuts-seeds.corn-nuts.original.4oz,Candy & snacks,Nuts & seeds › Corn Nuts › Original › 4oz,should,"Corn Nuts, Crunchy Corn Kernels, Original, 4 oz (12 Pack)",1.00
+DW11798-18,candy-snacks.nuts-seeds.corn-nuts.ranch.1-7oz,Candy & snacks,Nuts & seeds › Corn Nuts › Ranch › 1.7oz,should,"Corn Nuts, Crunchy Corn Kernels, Ranch, 1.7 oz (18 Pack)",0.50
+DW11727-12,candy-snacks.nuts-seeds.corn-nuts.ranch.4oz,Candy & snacks,Nuts & seeds › Corn Nuts › Ranch › 4oz,should,"Corn Nuts, Crunchy Corn Kernels, Ranch, 4 oz (12 Pack)",0.50
+DW11773-18,candy-snacks.nuts-seeds.planters.salted.1-75oz,Candy & snacks,Nuts & seeds › Planters › Salted › 1.5–1.75oz,should,"Planters, Salted Peanuts, 1.75 oz (18 Pack)",2.00
+DW17503-12,candy-snacks.nuts-seeds.blue-diamond.smokehouse.1-5oz,Candy & snacks,Nuts & seeds › Blue Diamond › Smokehouse › 1.5oz,should,"Blue Diamond Almonds, Smokehouse, 1.5 oz (12 Pack)",1.00
+DW101940-12,candy-snacks.nuts-seeds.wonderful-pistachios.roasted-salted.1-25oz,Candy & snacks,Nuts & seeds › Wonderful Pistachios › Roasted Salted › 1.25oz,should,"Wonderful, Pistachios, Roasted & Salted, 1.25 oz (12 Pack)",1.00
+CO1188569,candy-snacks.meat-snacks-bars.jack-links.original.3-25oz,Candy & snacks,Meat snacks & bars › Jack Link's › Original jerky › 3.25oz,should,"Jack Link's, Beef Jerky, Original, 3.25 oz (3 Pack)",1.00
+DW2130-1,candy-snacks.meat-snacks-bars.jack-links.original.3-25oz,Candy & snacks,Meat snacks & bars › Jack Link's › Original jerky › 3.25oz,should,"Jack Link's, Beef Jerky, Original, 3.25 oz (1 Pack)",1.00
+DW39470-12,candy-snacks.meat-snacks-bars.jack-links.teriyaki.1oz,Candy & snacks,Meat snacks & bars › Jack Link's › Teriyaki jerky › 1oz,should,"Jack Link's, Beef Jerky, Teriyaki, 1 oz (12 Pack)",1.00
+CM443654,candy-snacks.meat-snacks-bars.jack-links.teriyaki.3-25oz,Candy & snacks,Meat snacks & bars › Jack Link's › Teriyaki jerky › 3.25oz,should,"Jack Link's, Beef Jerky, Teriyaki, 3.25 oz (8 Pack)",1.00
+CO11888310,candy-snacks.meat-snacks-bars.jack-links.teriyaki.3-25oz,Candy & snacks,Meat snacks & bars › Jack Link's › Teriyaki jerky › 3.25oz,should,"Jack Link's, Beef Jerky, Teriyaki, 3.25 oz (3 Pack)",1.00
+DW6330-1,candy-snacks.meat-snacks-bars.jack-links.teriyaki.3-25oz,Candy & snacks,Meat snacks & bars › Jack Link's › Teriyaki jerky › 3.25oz,should,"Jack Link's, Beef Jerky, Teriyaki, 3.25 oz (1 Pack)",1.00
+DW167990-24,candy-snacks.meat-snacks-bars.slim-jim.giant-original.single,Candy & snacks,Meat snacks & bars › Slim Jim › Giant Original › Single,must,"Slim Jim, Smoked Meat Sticks, Giant Size, Original, 0.97 oz (24 Pack)",0.50
+DW22260-18,candy-snacks.meat-snacks-bars.slim-jim.monster-original.single,Candy & snacks,Meat snacks & bars › Slim Jim › Monster Original › Single,should,"Slim Jim, Smoked Meat Sticks, Monster Size, Original, 1.94 oz (18 Pack)",1.00
+DW168020-18,candy-snacks.meat-snacks-bars.slim-jim.monster-tabasco.single,Candy & snacks,Meat snacks & bars › Slim Jim › Monster Tabasco › Single,should,"Slim Jim, Smoked Meat Sticks, Monster Size, Tabasco, 1.94 oz (18 Pack)",2.00
+DW1400-12,candy-snacks.meat-snacks-bars.clif-bar.chocolate-chip.2-4oz,Candy & snacks,Meat snacks & bars › Clif Bar › Chocolate Chip › 2.4oz,should,"Clif, Bar, Chocolate Chip, 2.4 oz (12 Pack)",2.00
+JC18770,candy-snacks.cookies-cakes.oreo.original.6ct,Candy & snacks,"Cookies, crackers & snack cakes › Oreo › Original › 6-count pack",must,"Oreo, Chocolate Sandwich Cookies, 6 ct (30 Pack)",1.00
+CO1664082,candy-snacks.cookies-cakes.oreo.original.king-4oz,Candy & snacks,"Cookies, crackers & snack cakes › Oreo › Original › King 4oz",must,"Nabisco, Oreo Sandwich Cookies, 13 ct (12 Pack)",1.00
+DW132250-8,candy-snacks.cookies-cakes.chips-ahoy.original.king,Candy & snacks,"Cookies, crackers & snack cakes › Chips Ahoy › Original › King size",should,"Chips Ahoy, Chocolate Chip Cookies, King Size, 3.75 oz (8 Pack)",0.50
+DW66490-30,candy-snacks.cookies-cakes.grandmas.peanut-butter.2-5oz,Candy & snacks,"Cookies, crackers & snack cakes › Grandma's › Peanut Butter › 2.5oz",should,"Grandma's, Cookies, Big Cookie, Peanut Butter, 2.5 oz (60 Pack)",2.00
+DW33030-12,candy-snacks.cookies-cakes.keebler.sandwich-crackers.1-8oz,Candy & snacks,"Cookies, crackers & snack cakes › Keebler › Cheese & Peanut Butter sandwich crackers › 1.8oz",should,"Keebler, Cheese & Peanut Butter Sandwich Crackers, Snack Pack, 1.8 oz (12 Pack)",0.50
+DW95680-24,candy-snacks.cookies-cakes.gamesa.marias.4-9oz,Candy & snacks,"Cookies, crackers & snack cakes › Gamesa › Marías › 4.9oz",should,"Gamesa, Marias, 4.9 oz (24 Pack)",2.00
+DW156990-8,candy-snacks.cookies-cakes.bon-appetit.concha.single,Candy & snacks,"Cookies, crackers & snack cakes › Bon Appetit › Concha › Single",should,"Bon Appetit, Concha, 5 oz (8 Pack)",1.00
+DW12741-16,candy-snacks.cookies-cakes.welchs-fruit-snacks.mixed-fruit.2-25oz,Candy & snacks,"Cookies, crackers & snack cakes › Welch's Fruit Snacks › Mixed Fruit › 2.25oz",should,"Welch's, Fruit Snack, 3 Flavors, 2.25 oz (16 Pack)",1.00
+CO227395,tobacco.cigars.swisher-sweets.original.2-pack,Tobacco & accessories,Cigars & cigarillos › Swisher Sweets › Original › 2-pack,must,"Swisher, Sweets, Classic, 2/$1.49, 60 ct (30 Pack)",2.00
+DW156860-30,tobacco.cigars.swisher-sweets.diamond.2-pack,Tobacco & accessories,Cigars & cigarillos › Swisher Sweets › Diamond › 2-pack,must,"Swisher, Sweets, Diamond, 2/$1.49, 60 ct (30 Pack)",0.50
+DW0010375,tobacco.cigars.black-and-mild.original.single,Tobacco & accessories,Cigars & cigarillos › Black & Mild › Original › Single,must,"Black & Mild, Black And Mild Original (25 Pack)",1.00
+CM507626,tobacco.cigars.unflavored-cigarillos,Tobacco & accessories,Cigars & cigarillos › Unflavored cigarillos,should,"Dutch Master, Cigarillos, Filtered, Gold Fusion, 60 ct (30 Pack)",2.00
+CO1896848,tobacco.nicotine.other-pouches,Tobacco & accessories,Vapes & nicotine alternatives › Other nicotine pouches,should,"Velo, Plus Smooth, Pouches, 6mg, 20 ct (5 Pack)",0.50
+CO1870202,tobacco.smokeless.bugler.original.pouch,Tobacco & accessories,Smokeless & pipe tobacco › Bugler (roll-your-own) › Original › Pouch,should,"Bugler, Snipe, Smoking Tobacco Pouches, 0.65 oz (6 Pack)",2.00
+DW10506-50,tobacco.lighters.bic.classic.single,Tobacco & accessories,Lighters & matches › Bic › Classic assorted › Single,must,"Bic, Lighter, 1 ct (50 Pack)",2.00
+DW17379-50,tobacco.lighters.bic.mini.single,Tobacco & accessories,Lighters & matches › Bic › Mini › Single,should,"Bic, Mini Lighters, 1 ct (50 Pack)",2.00
+DW10513-50,tobacco.lighters.value-lighters,Tobacco & accessories,Lighters & matches › Value disposable lighters,must,"King, Lighter, 1 ct (50 Pack)",2.00
+DW142530-20,tobacco.lighters.eagle-torch.small.single,Tobacco & accessories,Lighters & matches › Eagle Torch › Small › Single,must,"Eagle 20's, Eagle Torch Lighter Small, 1 ct (20 Pack)",2.00
+DW142540-15,tobacco.lighters.eagle-torch.large.single,Tobacco & accessories,Lighters & matches › Eagle Torch › Large › Single,should,"Eagle 20's, Eagle Torch Lighter Large, 1 ct (15 Pack)",1.00
+DW101760-12,tobacco.lighters.butane-refill,Tobacco & accessories,Lighters & matches › Butane refill,should,"Neon, Butane Gas, 7X, 300 ml (12 Pack)",0.50
+DW14950-12,tobacco.lighters.butane-refill,Tobacco & accessories,Lighters & matches › Butane refill,should,"Neon, Refined Butane Gas, 300 ml (12 Pack)",0.50
+CO1344303,tobacco.papers.raw.classic.booklet,Tobacco & accessories,"Rolling papers, wraps & cones › RAW › Classic 1¼ › Booklet",must,"Raw, Classic Rolling Papers, 1-1/4 Size (24 Pack)",0.50
+CO3162303,tobacco.papers.raw.cones.cone-3pk,Tobacco & accessories,"Rolling papers, wraps & cones › RAW › Cones › 3-cone pack",should,"Raw, Classic Cones, 192 ct (32 Pack)",1.00
+DW141640-25,tobacco.papers.blunt-wraps,Tobacco & accessories,"Rolling papers, wraps & cones › Blunt wraps",should,"Grabba Leaf, Cig Wraps (25 Pack)",2.00
+DW141650-10,tobacco.papers.blunt-wraps,Tobacco & accessories,"Rolling papers, wraps & cones › Blunt wraps",should,"Grabba Leaf, Cig Wraps Green, 10 ct (10 Pack)",2.00
+VS079960,mixers-bar.bar-tools.corkscrew,"Mixers, bar tools, cups & bags",Bar tools & openers › Corkscrew / waiter's wine key,must,Corkscrew Bottle Opener (12 Pack),1.00
+DW153260,mixers-bar.bar-tools.rimming-tray,"Mixers, bar tools, cups & bags",Bar tools & openers › Michelada rim dip / rimming salt,should,"Baja Micheladas, Rim Dip, Chamoy, 8 oz (1 Pack)",0.50
+DW213800,mixers-bar.bar-tools.rimming-tray,"Mixers, bar tools, cups & bags",Bar tools & openers › Michelada rim dip / rimming salt,should,"Baja Micheladas, Rim Dip, Mango Habanero, 8 oz (1 Pack)",0.50
+JC118362,mixers-bar.cups-disposables.party-cup-16oz,"Mixers, bar tools, cups & bags","Cups, shot glasses & party disposables › 16oz plastic party cup (red/blue)",must,"Ultimate Home, Party Cups, Red, 12 ct (24 Pack)",1.00
+JC83730,mixers-bar.cups-disposables.party-cup-16oz,"Mixers, bar tools, cups & bags","Cups, shot glasses & party disposables › 16oz plastic party cup (red/blue)",must,"Imperial Plastics, Plastic Cups, Assorted Colors, 15 ct (48 Pack)",1.00
+VS050774,mixers-bar.cups-disposables.party-cup-16oz,"Mixers, bar tools, cups & bags","Cups, shot glasses & party disposables › 16oz plastic party cup (red/blue)",must,"Cool Party Cups, Plastic Cups 16 ct 4 Assorted Colors, 16 oz (48 Pack)",1.00
+VS061402,mixers-bar.cups-disposables.shot-glass-1oz,"Mixers, bar tools, cups & bags","Cups, shot glasses & party disposables › Plastic shot cup (1–2oz)",must,"Shot Cups Plastic Red, 20 ct, 2 oz (24 Pack)",1.00
+DW18540-18,mixers-bar.cups-disposables.foam-cup-12oz,"Mixers, bar tools, cups & bags","Cups, shot glasses & party disposables › Foam cup 12–16oz",must,"Axxion, Foam Cup, 12 oz, 18 ct (18 Pack)",0.50
+JC22067,mixers-bar.cups-disposables.foam-cup-12oz,"Mixers, bar tools, cups & bags","Cups, shot glasses & party disposables › Foam cup 12–16oz",must,"Axxion, Foam Plate, Plain, 8 7/8"", 22 ct (24 Pack)",0.50
+WL376316,mixers-bar.cups-disposables.foam-cup-12oz,"Mixers, bar tools, cups & bags","Cups, shot glasses & party disposables › Foam cup 12–16oz",must,"Axxion, Foam Cup, oz, 16 ct (16 Pack)",0.50
+VS26587,mixers-bar.cups-disposables.plates-9in,"Mixers, bar tools, cups & bags","Cups, shot glasses & party disposables › Plates 9–10"", foam or paper",should,"Blue Star, Paper Plates, Rose, 10 in (24 Pack)",1.00
+VS99697-40,mixers-bar.cups-disposables.plates-9in,"Mixers, bar tools, cups & bags","Cups, shot glasses & party disposables › Plates 9–10"", foam or paper",should,"Axxion, Foam Plate, Plain, 10 1/4"", 14 ct (40 Pack)",1.00
+JC20349,mixers-bar.cups-disposables.foam-bowls,"Mixers, bar tools, cups & bags","Cups, shot glasses & party disposables › Foam bowls",should,"Axxion, Foam Bowl, 12 oz, 20 ct (48 Pack)",2.00
+JC240051,mixers-bar.cups-disposables.foam-bowls,"Mixers, bar tools, cups & bags","Cups, shot glasses & party disposables › Foam bowls",should,"Axxion, Foam Bowl, 30 oz, 10 ct (48 Pack)",2.00
+VS026152,mixers-bar.cups-disposables.plastic-forks,"Mixers, bar tools, cups & bags","Cups, shot glasses & party disposables › Plastic forks",should,"Blue Star, Polypropylene White Forks, 51 ct (24 Pack)",1.00
+VS061268,mixers-bar.cups-disposables.plastic-forks,"Mixers, bar tools, cups & bags","Cups, shot glasses & party disposables › Plastic forks",should,"Blue Star, Polypropylene White Forks Plastic, 36 ct (24 Pack)",1.00
+SIS4928,mixers-bar.cups-disposables.plastic-spoons,"Mixers, bar tools, cups & bags","Cups, shot glasses & party disposables › Plastic spoons",should,"Heavy Duty Cutlery, Clear Plastic Spoons, 36 ct (48 Pack)",2.00
+VS026127,mixers-bar.cups-disposables.plastic-spoons,"Mixers, bar tools, cups & bags","Cups, shot glasses & party disposables › Plastic spoons",should,"Blue Star, Polypropylene White Spoons Plastic, 36 ct (24 Pack)",1.00
+JU091924,mixers-bar.cups-disposables.cocktail-jug,"Mixers, bar tools, cups & bags","Cups, shot glasses & party disposables › Mixed cocktail jug, 1 gallon",should,"Mixed Cocktail Jug, 1 Gallon (12 Pack)",1.00
+JU091925,mixers-bar.cups-disposables.cocktail-jug,"Mixers, bar tools, cups & bags","Cups, shot glasses & party disposables › Mixed cocktail jug, 1 gallon",should,"Mixed Cocktail Jug, 2 gal (6 Pack)",1.00
+JC162302,mixers-bar.cups-disposables.wine-gift-bag,"Mixers, bar tools, cups & bags","Cups, shot glasses & party disposables › Wine bottle gift bag",should,"Wine Bottle, Gift Bags Hologram Assorted, Colors (12 Pack)",1.00
+JJ30010B,mixers-bar.store-bags.t-shirt-bag-10x5x19,"Mixers, bar tools, cups & bags","Store operating supplies (bags) › T-shirt bag, black 10×5×19 (""Thank You"")",must,"Reusable ""Thank You"" T-Shirt Bag, Black, 10"" x 5"" x 19"", 300 ct (1 Pack)",1.00
+DW19500-1,mixers-bar.store-bags.t-shirt-bag-single-bottle,"Mixers, bar tools, cups & bags","Store operating supplies (bags) › T-shirt bag, black 8×4×16 / 6×4×15 (single bottle)",must,"Plastic Bags, Black, 8"" x 5"" x 16"", 700 ct (1 Pack)",1.00
+JJ3008B,mixers-bar.store-bags.t-shirt-bag-single-bottle,"Mixers, bar tools, cups & bags","Store operating supplies (bags) › T-shirt bag, black 8×4×16 / 6×4×15 (single bottle)",must,"Reusable ""Thank You"" T-Shirt Bag, Black, 8"" x 5"" x 16"" (300 Pack)",1.00
+CO272686,mixers-bar.store-bags.t-shirt-bag-12x7x22,"Mixers, bar tools, cups & bags","Store operating supplies (bags) › T-shirt bag, 12×7×22 (large, black or white)",should,"Duro, Plas-T-Sak Medium Plastic Bag, 11.5"" x 6.5"" x 21.5"", Black, Count (1000 Pack)",1.00
+JJ40012B,mixers-bar.store-bags.t-shirt-bag-12x7x22,"Mixers, bar tools, cups & bags","Store operating supplies (bags) › T-shirt bag, 12×7×22 (large, black or white)",should,"Regular T-Shirt Bag, Black, 12"" x 7"" x 22"" (400 Pack)",1.00
+DW16920-1,mixers-bar.store-bags.kraft-bag-2lb,"Mixers, bar tools, cups & bags",Store operating supplies (bags) › Kraft paper bag 2lb (bottle bag),must,"Duro, Kraft Paper Bags, Brown, 2 lb Capacity, 500 ct (1 Pack)",0.50
+JJ500002,mixers-bar.store-bags.kraft-bag-2lb,"Mixers, bar tools, cups & bags",Store operating supplies (bags) › Kraft paper bag 2lb (bottle bag),must,"Daisy, Brown Paper Bag #2, Small (500 Pack)",0.50
+JJ500004,mixers-bar.store-bags.kraft-bag-4lb,"Mixers, bar tools, cups & bags",Store operating supplies (bags) › Kraft paper bag 4lb (bottle bag),must,"Daisy, Brown Paper Bag #4, Big (500 Pack)",1.00
+JJ20013B,mixers-bar.store-bags.reusable-bag,"Mixers, bar tools, cups & bags",Store operating supplies (bags) › Reusable bag 13×7×21,should,"Reusable ""Thank You"" T-Shirt Bag, Black, 13"" x 7"" x 21"" (200 Pack)",1.00
+JC058701,mixers-bar.trash-storage-bags.kitchen-trash-13gal,"Mixers, bar tools, cups & bags",Trash & storage bags › Kitchen trash bag 13gal,must,"Ri-Pac, Drawstring Kitchen Bag 13 Gallon, 40 ct (24 Pack)",1.00
+VS056413,mixers-bar.trash-storage-bags.kitchen-trash-13gal,"Mixers, bar tools, cups & bags",Trash & storage bags › Kitchen trash bag 13gal,must,"Ri-Pac, Tall Kitchen Bags 12 ct, 13 gal (24 Pack)",2.00
+JC51424,mixers-bar.trash-storage-bags.trash-30gal,"Mixers, bar tools, cups & bags",Trash & storage bags › Large trash bag 26–33gal,should,"Ri-Pac, Trash Bags, 30 Gallon Drawstring, 10 ct (24 Pack)",2.00
+JC111791,household.cleaning.dish-soap,Household & kitchen,Cleaning solutions › Dish soap,must,"Dawn, Liquid Dish Soap, Simply Clean, 14.6 oz (20 Pack)",0.50
+JC053621,household.cleaning.scouring-powder,Household & kitchen,Cleaning solutions › Scouring powder,should,"Ajax, With Bleach Powder Cleanser, 21 oz (12 Pack)",1.00
+VS056544,household.cleaning.scouring-powder,Household & kitchen,Cleaning solutions › Scouring powder,should,"Comet, Powder Lavender, 21 oz (12 Pack)",1.00
+DW12503-36,household.laundry.detergent-powder,Household & kitchen,"Laundry › Laundry detergent, powder",must,"Roma, Powder Laundry Detergent, 500 g (36 Pack)",0.50
+JC600065,household.laundry.detergent-powder,Household & kitchen,"Laundry › Laundry detergent, powder",must,"Tide, Powder Laundry Detergent, 218 g (20 Pack)",0.50
+VS002093,household.laundry.detergent-powder,Household & kitchen,"Laundry › Laundry detergent, powder",must,"Ariel, Detergent Oxi Azul, 500 g (18 Pack)",0.50
+JC00571,household.laundry.laundry-bar-soap,Household & kitchen,Laundry › Bar soap for laundry,should,"Zote, Laundry Soap, Pink, 14.1 oz (25 Pack)",2.00
+JC00572,household.laundry.laundry-bar-soap,Household & kitchen,Laundry › Bar soap for laundry,should,"Zote, Laundry Soap, Pink, 7 oz (50 Pack)",2.00
+JC15136,household.laundry.fabric-softener,Household & kitchen,Laundry › Fabric softener,must,"Suavitel, Liquid Fabric Softener, Fresca Primavera, 450 ml (12 Pack)",0.50
+JC15141,household.laundry.fabric-softener,Household & kitchen,Laundry › Fabric softener,must,"Suavitel, Liquid Fabric Softener, Aroma de Sol, 450 ml (12 Pack)",0.50
+JC22226,household.laundry.dryer-sheets,Household & kitchen,Laundry › Dryer sheets,should,"Gain, Fabric Softener, Dryer Sheets, Original, 15 ct (15 Pack)",1.00
+JC26681,household.laundry.dryer-sheets,Household & kitchen,Laundry › Dryer sheets,should,"Bounce, Fabric Softener, Dryer Sheets, Outdoor Fresh, 15 ct (15 Pack)",1.00
+DW13343-12,household.laundry.stain-remover,Household & kitchen,Laundry › Stain remover,should,"Soilove, Soil Stain Remover, 16 oz (12 Pack)",0.50
+VS012059,household.laundry.stain-remover,Household & kitchen,Laundry › Stain remover,should,"Tide, To Go Instant Stain Remover, 0.33 oz (6 Pack)",1.00
+DW13331-18,household.paper.napkins,Household & kitchen,Paper & disposables › Napkins,must,"Melody, Paper Napkin, 180 ct (18 Pack)",1.00
+JC50463,household.paper.napkins,Household & kitchen,Paper & disposables › Napkins,must,"Soft Touch, Napkins, 180 ct (18 Pack)",1.00
+VS012025,household.paper.aluminum-foil,Household & kitchen,Paper & disposables › Aluminum foil,should,"Premier, Aluminum Foil, 25 sq ft (35 Pack)",2.00
+JC303114,household.air-candles-pest.air-freshener-small,Household & kitchen,"Air care, candles & pest › Air freshener, car or small",should,"Little Trees, Car Air Freshener, New Car, 1 ct (24 Pack)",2.00
+VS063506,household.air-candles-pest.air-freshener-small,Household & kitchen,"Air care, candles & pest › Air freshener, car or small",should,"Little Trees, Car Air Freshener, Black Ice, 24 ct (1 Pack)",2.00
+JC05221,household.air-candles-pest.religious-candle,Household & kitchen,"Air care, candles & pest › Religious candle (veladora)",must,"Veladora, Candle, White (12 Pack)",0.50
+VS260004,household.air-candles-pest.religious-candle,Household & kitchen,"Air care, candles & pest › Religious candle (veladora)",must,"Veladora, Religious Candle, San Judas Tadeo, Green, 8 in (12 Pack)",0.50
+DW52720-12,household.air-candles-pest.incense,Household & kitchen,"Air care, candles & pest › Incense",should,"Nag Champa, Black Incense, 15 g (12 Pack)",1.00
+DW91580-12,household.air-candles-pest.incense,Household & kitchen,"Air care, candles & pest › Incense",should,"Nag Champa, Incense, 12 ct (12 Pack)",1.00
+JC11717,household.air-candles-pest.pest-control,Household & kitchen,"Air care, candles & pest › Roach / ant / mosquito",should,"Raid, Ant & Roach Killer, Fragrance Free, 17.5 oz (12 Pack)",0.50
+JC26479,household.air-candles-pest.pest-control,Household & kitchen,"Air care, candles & pest › Roach / ant / mosquito",should,"Raid, Ant & Roach Killer, Lemon Scent, 17.5 oz (12 Pack)",0.50
+JC73963,household.air-candles-pest.pest-control,Household & kitchen,"Air care, candles & pest › Roach / ant / mosquito",should,"Raid, Ant & Roach Killer, Lavender, 17.5 oz (12 Pack)",0.50
+CO1717853,household.equipment-home.sponges,Household & kitchen,Cleaning equipment & home › Sponges / scrubbers,must,"Scotch Brite, 3M, Scotch-Brite, Heavy Duty Scrub Sponge (24 Pack)",1.00
+VS042030,household.equipment-home.sponges,Household & kitchen,Cleaning equipment & home › Sponges / scrubbers,must,"Scotch Brite, Scrub Sponge 3X Scrub Power (24 Pack)",1.00
+VS110208,household.equipment-home.sponges,Household & kitchen,Cleaning equipment & home › Sponges / scrubbers,must,"Chore Boy, Copper Scrubbers (36 Pack)",1.00
+DW13898-12,household.equipment-home.super-glue,Household & kitchen,Cleaning equipment & home › Super glue,should,"Krazy Glue, All Purpose, 1 ct (12 Pack)",0.50
+JC70158,household.equipment-home.super-glue,Household & kitchen,Cleaning equipment & home › Super glue,should,"Krazy Glue, All Purpose, 0.07 oz (48 Pack)",0.50
+JC220085,household.equipment-home.batteries.aa,Household & kitchen,Cleaning equipment & home › Batteries › AA,must,"Duracell, Batteries, AA, 2 ct (14 Pack)",1.00
+JC220256,household.equipment-home.batteries.aa,Household & kitchen,Cleaning equipment & home › Batteries › AA,must,"Duracell, Batteries, AA, 4 ct (14 Pack)",1.00
+JC220086,household.equipment-home.batteries.aaa,Household & kitchen,Cleaning equipment & home › Batteries › AAA,must,"Duracell, Batteries, AAA, 2 ct (18 Pack)",2.00
+JC220257,household.equipment-home.batteries.aaa,Household & kitchen,Cleaning equipment & home › Batteries › AAA,must,"Duracell, Batteries, AAA, 4 ct (18 Pack)",2.00
+CM439065,household.equipment-home.batteries.9v,Household & kitchen,Cleaning equipment & home › Batteries › 9V,should,"Duracell, Alkaline Batteries, Coppertop 9V, 2 ct (1 Pack)",1.00
+JC29827,household.equipment-home.grilling-fire.charcoal-lighter-fluid,Household & kitchen,"Cleaning equipment & home › Charcoal, lighter fluid & firewood › Charcoal lighter fluid",should,"Charcoal Master, Charcoal Master, Lighter Fluid, Odorless, 16 oz (12 Pack), 16 oz (12 Pack)",1.00
+JC29830,household.equipment-home.grilling-fire.charcoal-lighter-fluid,Household & kitchen,"Cleaning equipment & home › Charcoal, lighter fluid & firewood › Charcoal lighter fluid",should,"Charcoal Master, Lighter Fluid, Odorless, 32 oz (12 Pack)",1.00
+DW68830-1,household.equipment-home.grilling-fire.firewood,Household & kitchen,"Cleaning equipment & home › Charcoal, lighter fluid & firewood › Firewood / fire logs",should,"Firemaster, Firewood (1 Pack)",1.00
+DW87640-6,household.auto.motor-oil,Household & kitchen,"Automotive › Motor oil, 1qt",should,"Chevron, Supreme, Conventional Motor Oil, 10W-30, API SP Engine Protection, 1 qt (6 Pack)",1.00
+DW183490-1,health-beauty.medicine.cold-flu,Health & beauty,Medicine (OTC) › Cold & flu,must,"Vicks, Nyquil, Cold & Flu Medicine, Cherry - Short Dated, 4 oz (1 Pack)",1.00
+JC605417,health-beauty.medicine.cold-flu,Health & beauty,Medicine (OTC) › Cold & flu,must,"NyQuil, Severe Cold & Flu, 2 Liquidcaps, 32 ct (1 Pack)",1.00
+JC616916,health-beauty.medicine.cold-flu,Health & beauty,Medicine (OTC) › Cold & flu,must,"Dayquil, Severe Cold & Flu, 2 Liquidcaps (32 Pack)",1.00
+JC667504,health-beauty.medicine.vapor-rub,Health & beauty,Medicine (OTC) › Vapor rub,should,"VapoRub, VapoRub, Vicks Ointment, 0.45 oz, 12 g (24 Pack), 12 g (24 Pack)",0.50
+CO1691190,health-beauty.medicine.allergy,Health & beauty,Medicine (OTC) › Allergy,should,"Benadryl, Allergy Tablets, 6 ct (6 Pack)",1.00
+DW170920-12,health-beauty.medicine.allergy,Health & beauty,Medicine (OTC) › Allergy,should,"Benadryl, Allergy Tablets, 2 ct (12 Pack)",1.00
+JC50248,health-beauty.medicine.allergy,Health & beauty,Medicine (OTC) › Allergy,should,"Benadryl, Allergy Tablets, 2 ct (25 Pack)",1.00
+CO301363,health-beauty.medicine.energy-shot,Health & beauty,Medicine (OTC) › Energy shot,must,"5-Hour Energy, Regular Strength, Berry, 1.93 oz (24 Pack)",1.00
+CO301376,health-beauty.medicine.energy-shot,Health & beauty,Medicine (OTC) › Energy shot,must,"5-Hour Energy, Extra Strength, Berry, 1.93 oz (24 Pack)",1.00
+DW3450-12,health-beauty.medicine.energy-shot,Health & beauty,Medicine (OTC) › Energy shot,must,"5-Hour Energy, Extra Strength, Berry, 1.93 oz (12 Pack)",1.00
+DW50-12,health-beauty.medicine.energy-shot,Health & beauty,Medicine (OTC) › Energy shot,must,"5-Hour Energy, Regular Strength, Berry, 1.93 oz (12 Pack)",1.00
+JC872971,health-beauty.oral-lip.toothpaste,Health & beauty,Oral care & lip › Toothpaste,must,"Colgate, Toothpaste, Cavity Protection Regular, 2.5 oz (24 Pack)",2.00
+JC107186,health-beauty.oral-lip.toothbrush,Health & beauty,Oral care & lip › Toothbrush,must,"Colgate, Toothbrush, Premier Clean (12 Pack)",1.00
+DW14258-1,health-beauty.oral-lip.mouthwash,Health & beauty,Oral care & lip › Mouthwash,should,"Listerine, Mouthwash, Cool Mint, 3.2 oz (1 Pack)",0.50
+DW14259-1,health-beauty.oral-lip.mouthwash,Health & beauty,Oral care & lip › Mouthwash,should,"Listerine, Mouthwash, Cool Mint, 250 ml, 8.4 oz (1 Pack)",0.50
+JC108426,health-beauty.oral-lip.lip-balm,Health & beauty,Oral care & lip › Lip balm,must,"ChapStick, Lip Moisturizer and SPF 15 2 in 1, 0.15 oz (12 Pack)",2.00
+JC116849,health-beauty.oral-lip.lip-balm,Health & beauty,Oral care & lip › Lip balm,must,"Carmex, Lip Balm, Tube Carded Original, 0.35 oz (12 Pack)",1.00
+JC209561,health-beauty.oral-lip.lip-balm,Health & beauty,Oral care & lip › Lip balm,must,"ChapStick, Lip Balm Classic, Original, 0.15 oz (12 Pack)",2.00
+DW14090-24,health-beauty.oral-lip.breath-strips,Health & beauty,Oral care & lip › Breath strips,should,"Listerine, Pocket Fresh, Cool Mint, 24 ct (12 Pack)",1.00
+DW14091-24,health-beauty.oral-lip.breath-strips,Health & beauty,Oral care & lip › Breath strips,should,"Listerine, Pocket Fresh, Freshburst, 24 ct (12 Pack)",1.00
+DW23080-1,health-beauty.personal-care.bar-soap,Health & beauty,Personal care › Bar soap,must,"Dove, Beauty Bar Soap, Pink Rosa, 4.75 oz (12 Pack)",1.00
+JC51153,health-beauty.personal-care.bar-soap,Health & beauty,Personal care › Bar soap,must,"Dove, Beauty Bar Soap, White, 4.7 oz (48 Pack)",1.00
+SS046815,health-beauty.personal-care.body-wash,Health & beauty,Personal care › Body wash / hand soap,should,"Dove, Body Wash Hydrate, 15.2 oz (6 Pack)",2.00
+VS019978,health-beauty.personal-care.body-wash,Health & beauty,Personal care › Body wash / hand soap,should,"Lucky, Body Wash Lavender Bouquet, 13 oz (12 Pack)",2.00
+VS090300,health-beauty.personal-care.body-wash,Health & beauty,Personal care › Body wash / hand soap,should,"Lucky, Hand Soap Ocean Fresh, 13.5 oz (12 Pack)",1.00
+DW138050-1,health-beauty.personal-care.deodorant,Health & beauty,Personal care › Deodorant,must,"Old Spice, Deodorant, Pure Sport, 2.25 oz (1 Pack)",0.50
+DW58340,health-beauty.personal-care.deodorant,Health & beauty,Personal care › Deodorant,must,"Axe, Body Spray, Deodorant, Excite, 4 oz (1 Pack)",0.50
+JC57851,health-beauty.personal-care.deodorant,Health & beauty,Personal care › Deodorant,must,"Old Spice, Deodorant, Pure Sport, 2.25 oz (12 Pack)",0.50
+JC58475,health-beauty.personal-care.deodorant,Health & beauty,Personal care › Deodorant,must,"Axe, Body Spray Deodorant, Excite, 4 oz (12 Pack)",0.50
+JC69474,health-beauty.personal-care.deodorant,Health & beauty,Personal care › Deodorant,must,"Speed Stick, Deodorant, Cool Clean, 1.8 oz (12 Pack)",0.50
+SS039501,health-beauty.personal-care.deodorant,Health & beauty,Personal care › Deodorant,must,"Old Spice, Deodorant, Pure Sport, 2.25 oz (3 Pack)",0.50
+SS094025,health-beauty.personal-care.deodorant,Health & beauty,Personal care › Deodorant,must,"Speed Stick, Deodorant, Cool Clean, 1.8 oz (6 Pack)",0.50
+VS018782,health-beauty.personal-care.shampoo,Health & beauty,Personal care › Shampoo / conditioner,should,"VO5, Shampoo Ocean Refresh, 15 oz (6 Pack)",1.00
+VS019840,health-beauty.personal-care.shampoo,Health & beauty,Personal care › Shampoo / conditioner,should,"VO5, Shampoo Pomegranate, 15 oz (6 Pack)",1.00
+DW33060-1,health-beauty.personal-care.hair-gel,Health & beauty,Personal care › Hair gel / spray,should,"Super Wet, Hair Gel, Clear, 8.8 oz (1 Pack)",0.50
+SS087897,health-beauty.personal-care.hair-gel,Health & beauty,Personal care › Hair gel / spray,should,"Moco de Gorila, Styling Gel Yellow (Punk), 11.9 oz (12 Pack)",1.00
+JC56928,health-beauty.personal-care.razor,Health & beauty,"Personal care › Razor, disposable",must,"Gillette, Plus Pivot Razors, Blue II, 2 ct (12 Pack)",1.00
+VS068260,health-beauty.personal-care.razor,Health & beauty,"Personal care › Razor, disposable",must,"Gillette, Blue II Plus Razors, 2 ct (12 Pack)",1.00
+JC58706,health-beauty.personal-care.lotion,Health & beauty,Personal care › Petroleum jelly / lotion,should,"Vaseline, Vaseline, Pure Petroleum Jelly, Original, 1.69 oz (12 Pack), 1.69 oz (12 Pack)",1.00
+DW78720-1,health-beauty.personal-care.body-spray,Health & beauty,Personal care › Cologne / body spray,should,"Axe, Body Spray, Apollo, 5 oz (1 Pack)",0.50
+JC34353,health-beauty.feminine-family.pads,Health & beauty,Feminine care & family planning › Pads,must,"Always, Maxi Pads, Wings Protection, 10 ct (8 Pack)",1.00
+JC69647,health-beauty.feminine-family.pads,Health & beauty,Feminine care & family planning › Pads,must,"Always, Maxi Pads, Classic Normal, 10 ct (16 Pack)",2.00
+JC106906,health-beauty.feminine-family.baby-wipes,Health & beauty,Feminine care & family planning › Baby wipes,should,"Huggies, Baby Wipes, All Over Clean, 56 ct (10 Pack)",1.00
+JC23963,health-beauty.feminine-family.baby-wipes,Health & beauty,Feminine care & family planning › Baby wipes,should,"Huggies, Baby Wipes, Pure, 48 ct (10 Pack)",1.00
+DW13914-1,health-beauty.first-aid.bandages,Health & beauty,First aid & hygiene › Bandages,must,"SuperBand, Band Aid, Flexible Fabric Adhesive Bandages Travel Pack, 8 ct (12 Pack)",1.00
+VS021905,health-beauty.first-aid.bandages,Health & beauty,First aid & hygiene › Bandages,must,"Pure-Aid, Bandages, Assorted Sizes, 100 ct (12 Pack)",1.00
+JC76123,health-beauty.first-aid.rubbing-alcohol,Health & beauty,First aid & hygiene › Rubbing alcohol,should,"Rubbing Alcohol, Isopropyl, 50%, 16 oz (24 Pack)",2.00
+JC110827,health-beauty.first-aid.hydrogen-peroxide,Health & beauty,First aid & hygiene › Hydrogen peroxide,should,"Swan, Hydrogen Peroxide, 16 oz (12 Pack)",0.50
+VS031539,health-beauty.first-aid.hand-sanitizer,Health & beauty,First aid & hygiene › Hand sanitizer,should,"Lucky, Hand Sanitizer Aloe Vera, 8 oz (12 Pack)",2.00
+DW17729-24,grocery.instant-meals.ramen-packet,Grocery staples,Instant meals › Ramen packet,must,"Nissin, Top Ramen, Chicken, 3 oz (24 Pack)",0.50
+JC002022,grocery.instant-meals.ramen-packet,Grocery staples,Instant meals › Ramen packet,must,"Nissin, Top Ramen Chicken, 3 oz (48 Pack)",0.50
+JC185456,grocery.instant-meals.ramen-packet,Grocery staples,Instant meals › Ramen packet,must,"Maruchan, Ramen Noodle Soup, Beef, 3 oz (24 Pack)",0.50
+JC185457,grocery.instant-meals.ramen-packet,Grocery staples,Instant meals › Ramen packet,must,"Maruchan, Ramen Noodle Soup, Shrimp, 3 oz (24 Pack)",0.50
+DW16094-12,grocery.instant-meals.canned-chili-pasta,Grocery staples,Instant meals › Canned chili / pasta,should,"Hormel, Chili, With Beans, 15 oz (12 Pack)",1.00
+JC12817,grocery.instant-meals.canned-chili-pasta,Grocery staples,Instant meals › Canned chili / pasta,should,"Hormel, Chili No Beans, 15 oz (12 Pack)",1.00
+VS022318,grocery.instant-meals.canned-chili-pasta,Grocery staples,Instant meals › Canned chili / pasta,should,"Hormel, Chili With Beans, 15 oz (12 Pack)",1.00
+JC08451,grocery.instant-meals.vienna-sausage,Grocery staples,Instant meals › Vienna sausage,must,"Libby's, Vienna Sausage, Chicken, Beef & Pork, 4.6 oz (18 Pack)",0.50
+JC08452,grocery.instant-meals.vienna-sausage,Grocery staples,Instant meals › Vienna sausage,must,"Libby's, Sausage, Chicken, 4.6 oz (24 Pack)",1.00
+CO202085,grocery.instant-meals.spam,Grocery staples,Instant meals › Spam / luncheon meat,should,"Spam, Classic, 12 oz (8 Pack)",1.00
+JT7000027,grocery.instant-meals.spam,Grocery staples,Instant meals › Spam / luncheon meat,should,"Hormel, Spam, Lunch Meat, 12 oz (12 Pack)",2.00
+DW13000-48,grocery.instant-meals.canned-soup,Grocery staples,Instant meals › Canned soup,should,"Campbell's, Cream of Chicken Soup, 10.5 oz (48 Pack)",1.00
+DW13573-12,grocery.instant-meals.canned-soup,Grocery staples,Instant meals › Canned soup,should,"Juanita's, Juanita's, Menudo, 15 oz (12 Pack)",1.00
+DW70250-8,grocery.instant-meals.canned-soup,Grocery staples,Instant meals › Canned soup,should,"Campbell's, Cream of Chicken Soup, 10.5 oz (8 Pack)",1.00
+JC180041,grocery.instant-meals.canned-soup,Grocery staples,Instant meals › Canned soup,should,"Maggi, Chicken Noodle Soup Mix, 2.11 oz (24 Pack)",1.00
+JC38750,grocery.instant-meals.canned-soup,Grocery staples,Instant meals › Canned soup,should,"Campbell's, Campbell’s, Chicken Noodle Soup, 10.75 oz (12 Pack)",1.00
+DW35580-12,grocery.seasonings.mega.chamoy.bottle,Grocery staples,"Seasonings, hot sauce & condiments › Mega › Chamoy › Standard bottle",should,"Mega Chamoy, Original, 33 oz (12 Pack)",1.00
+VS020620,grocery.seasonings.mega.chamoy.bottle,Grocery staples,"Seasonings, hot sauce & condiments › Mega › Chamoy › Standard bottle",should,"Mega Chamoy, Original, 12.5 oz (12 Pack)",1.00
+DW13639-24,grocery.seasonings.hot-sauce.valentina.original.12-5oz,Grocery staples,"Seasonings, hot sauce & condiments › Hot sauce › Valentina › Original › 12.5oz bottle",must,"Valentina, Salsa Picante, 12.5 oz (24 Pack)",0.50
+DW138520-12,grocery.seasonings.hot-sauce.valentina.original.12-5oz,Grocery staples,"Seasonings, hot sauce & condiments › Hot sauce › Valentina › Original › 12.5oz bottle",must,"Valentina, Salsa Picante, 12.5 oz (12 Pack)",0.50
+DW68300-12,grocery.seasonings.hot-sauce.el-yucateco.red-habanero.4oz,Grocery staples,"Seasonings, hot sauce & condiments › Hot sauce › El Yucateco › Red Habanero › 4oz bottle",should,"El Yucateco, Red Habanero Hot Sauce, 4 oz (12 Pack)",2.00
+JC01001,grocery.seasonings.salt,Grocery staples,"Seasonings, hot sauce & condiments › Salt",should,"Morton, Canister, Plain Salt, 26 oz (24 Pack)",1.00
+JC01003,grocery.seasonings.salt,Grocery staples,"Seasonings, hot sauce & condiments › Salt",should,"Morton, Canister, Iodized Salt, 26 oz (24 Pack)",1.00
+DW17706-12,grocery.seasonings.mayo,Grocery staples,"Seasonings, hot sauce & condiments › Mayonnaise",should,"Best Foods, Real Mayonnaise, 15 oz (12 Pack)",0.50
+DW99920-12,grocery.seasonings.mayo,Grocery staples,"Seasonings, hot sauce & condiments › Mayonnaise",should,"Best Foods, Real Mayonnaise, 8 oz (12 Pack)",0.50
+JC16492,grocery.seasonings.mayo,Grocery staples,"Seasonings, hot sauce & condiments › Mayonnaise",should,"McCormick, Mayonnaise With Lime, 14 oz (12 Pack)",0.50
+JC16651,grocery.seasonings.mayo,Grocery staples,"Seasonings, hot sauce & condiments › Mayonnaise",should,"McCormick, Mayonnaise, 7 oz (24 Pack)",0.50
+DW121720-12,grocery.seasonings.ketchup,Grocery staples,"Seasonings, hot sauce & condiments › Ketchup",should,"Hunt's, Tomato Ketchup Squeeze, 20 oz (12 Pack)",2.00
+JC247220,grocery.seasonings.ketchup,Grocery staples,"Seasonings, hot sauce & condiments › Ketchup",should,"Del Monte, Tomato Ketchup, 24 oz (12 Pack)",2.00
+DW109060-12,grocery.seasonings.lemon-lime-juice,Grocery staples,"Seasonings, hot sauce & condiments › Lemon & lime juice",should,"ReaLime, Lime Juice, 8 oz (12 Pack)",0.50
+DW12533-24,grocery.seasonings.lemon-lime-juice,Grocery staples,"Seasonings, hot sauce & condiments › Lemon & lime juice",should,"ReaLime, Lime Juice, 2.5 oz (24 Pack)",0.50
+DW12534-24,grocery.seasonings.lemon-lime-juice,Grocery staples,"Seasonings, hot sauce & condiments › Lemon & lime juice",should,"Realemon, Lemon Juice, 2.5 oz (24 Pack)",0.50
+DW23840-12,grocery.canned-jarred.beans,Grocery staples,Canned & jarred › Refried / whole beans,must,"Rosarita, Traditional Refried Beans, 16 oz (12 Pack)",2.00
+DW2560-12,grocery.canned-jarred.beans,Grocery staples,Canned & jarred › Refried / whole beans,must,"Sun Vista, Canned Black Beans, 15 oz (12 Pack)",2.00
+DW4470-12,grocery.canned-jarred.beans,Grocery staples,Canned & jarred › Refried / whole beans,must,"Sun Vista, Canned Pinto Beans, 15 oz (12 Pack)",2.00
+JT13867,grocery.canned-jarred.beans,Grocery staples,Canned & jarred › Refried / whole beans,must,"Rosarita, Traditional Refried Beans, 16 oz (24 Pack)",2.00
+DW13625-24,grocery.canned-jarred.jalapenos,Grocery staples,Canned & jarred › Jalapeños / chipotle,must,"La Costeña, Whole Jalapenos, 7 oz (24 Pack), 7 oz (24 Pack)",1.00
+DW13628-24,grocery.canned-jarred.jalapenos,Grocery staples,Canned & jarred › Jalapeños / chipotle,must,"La Costeña, Sliced Jalapeño Peppers, 7 oz (24 Pack), 7 oz (24 Pack)",1.00
+DW13632-24,grocery.canned-jarred.jalapenos,Grocery staples,Canned & jarred › Jalapeños / chipotle,must,"La Costeña, Chipotle Peppers, 7 oz (24 Pack), 7 oz (24 Pack)",1.00
+DW1520-48,grocery.canned-jarred.tuna,Grocery staples,Canned & jarred › Tuna,should,"StarKist, Chunk Light Tuna in Water, 5 oz (48 Pack)",2.00
+DW1530-48,grocery.canned-jarred.tuna,Grocery staples,Canned & jarred › Tuna,should,"StarKist, Chunk Light Tuna in Oil, 5 oz (48 Pack)",2.00
+DW13056-12,grocery.canned-jarred.sardines-oysters,Grocery staples,Canned & jarred › Sardines / oysters,should,"California Girl, Sardines, Tomato, 15 oz (12 Pack)",0.50
+JC123491,grocery.canned-jarred.sardines-oysters,Grocery staples,Canned & jarred › Sardines / oysters,should,"California Girl, Smoked Oysters, 3 oz (12 Pack)",1.00
+DW12690-48,grocery.canned-jarred.tomato-enchilada-sauce,Grocery staples,Canned & jarred › Tomato / enchilada sauce,should,"Hunt's, Tomato Sauce, 8 oz (48 Pack)",2.00
+DW142890-24,grocery.canned-jarred.tomato-enchilada-sauce,Grocery staples,Canned & jarred › Tomato / enchilada sauce,should,"El Pato, Hot Tomato Sauce, 7.75 oz (24 Pack)",2.00
+DW64930-24,grocery.dry-goods.rice,Grocery staples,Dry goods & baking › Rice,should,"Mahatma, Enriched Extra Long Grain White Rice, 1 lb (24 Pack)",1.00
+JC16180,grocery.dry-goods.rice,Grocery staples,Dry goods & baking › Rice,should,"Parrot, Jasmine Rice, 1 lb (24 Pack)",1.00
+DW77990-20,grocery.dry-goods.pasta,Grocery staples,Dry goods & baking › Pasta,should,"La Moderna, Pasta, Fideo, 7.05 oz (20 Pack)",1.00
+JC00005,grocery.dry-goods.pasta,Grocery staples,Dry goods & baking › Pasta,should,"La Moderna, Pasta, Spaghetti, 7.05 oz (20 Pack)",1.00
+JC12960,grocery.dry-goods.pasta,Grocery staples,Dry goods & baking › Pasta,should,"La Moderna, Pasta, Spaghetti, 16 oz (20 Pack)",2.00
+DW12518-12,grocery.dry-goods.cooking-oil,Grocery staples,Dry goods & baking › Cooking oil,must,"1-2-3, Vegetable Oil, 1 L (12 Pack)",0.50
+DW17643-24,grocery.dry-goods.cooking-oil,Grocery staples,Dry goods & baking › Cooking oil,must,"1-2-3, Vegetable Oil, 16.9 oz (24 Pack)",0.50
+DW17630-24,grocery.dry-goods.sugar,Grocery staples,Dry goods & baking › Sugar,must,"C&H, C&H Granulated White Sugar, 1 lb (24 Pack)",0.50
+JC03062,grocery.dry-goods.sugar,Grocery staples,Dry goods & baking › Sugar,must,"C&H, Granulated Pure Cane Sugar, 4 lb (10 Pack)",0.50
+DW13546-10,grocery.dry-goods.flour-masa,Grocery staples,Dry goods & baking › Flour / masa,should,"Maseca, Corn Flour, 4.4 lb (10 Pack)",2.00
+VS072979,grocery.dry-goods.flour-masa,Grocery staples,Dry goods & baking › Flour / masa,should,"Maseca, Instant Corn Flour Tamal, 4 lb (10 Pack)",2.00
+DW61710-8,grocery.dry-goods.evaporated-milk,Grocery staples,Dry goods & baking › Evaporated milk,should,"Carnation, Nestle Evaporated Milk, 12 oz (8 Pack)",2.00
+JC778539,grocery.dry-goods.evaporated-milk,Grocery staples,Dry goods & baking › Evaporated milk,should,"Nestle, Carnation Evaporated Milk, 12 oz (12 Pack)",2.00
+VS010110,grocery.dry-goods.evaporated-milk,Grocery staples,Dry goods & baking › Evaporated milk,should,"Nestle, Carnation Evaporated Milk, 12 oz (24 Pack)",2.00
+DW12735-24,grocery.dry-goods.baking-soda,Grocery staples,Dry goods & baking › Baking soda,should,"Arm & Hammer, Baking Soda, 16 oz (24 Pack)",1.00
+DW13212-24,grocery.dry-goods.baking-soda,Grocery staples,Dry goods & baking › Baking soda,should,"Arm & Hammer, Baking Soda, 8 oz (24 Pack)",1.00
+DW12524-12,grocery.dry-goods.vinegar,Grocery staples,Dry goods & baking › Vinegar,should,"Heinz, Vinegar Apple Cider, 16 oz (12 Pack)",2.00
+RF100013,grocery.dry-goods.vinegar,Grocery staples,Dry goods & baking › Vinegar,should,"Heinz, White Vinegar, 16 oz (12 Pack)",2.00
+DW12776-6,grocery.breakfast-pantry.cereal,Grocery staples,Breakfast & pantry › Cereal,should,"Kellogg's, Cereal In A Cup, Froot Loops, 1.5 oz (6 Pack)",0.50
+DW12778-6,grocery.breakfast-pantry.cereal,Grocery staples,Breakfast & pantry › Cereal,should,"Frosted Flakes, Kellogg's, Cereal In A Cup, 2.1 oz (6 Pack)",0.50
+DW12779-6,grocery.breakfast-pantry.cereal,Grocery staples,Breakfast & pantry › Cereal,should,"Kellogg's, Cereal In A Cup, Apple Jack, 1.5 oz (6 Pack)",0.50
+DW11559-1,grocery.breakfast-pantry.toaster-pastry,Grocery staples,Breakfast & pantry › Pop-Tarts / toaster pastry,must,"Pop-Tarts, Kellogg's Pop Tarts, Frost Cherry, pieces, 3.3 oz (6 Pack)",0.50
+DW11567-1,grocery.breakfast-pantry.toaster-pastry,Grocery staples,Breakfast & pantry › Pop-Tarts / toaster pastry,must,"Kellogg's, Pop Tarts, Frosted Strawberry, 3.3 oz (6 Pack)",0.50
+MI27853,grocery.breakfast-pantry.tortillas,Grocery staples,Breakfast & pantry › Tortillas,should,"Calidad, White Corn Tortillas (6 Pack)",2.00
+MI41052,grocery.breakfast-pantry.tortillas,Grocery staples,Breakfast & pantry › Tortillas,should,"Guerrero, Corn Yellow Tortillas (6 Pack)",2.00
+MI48702,grocery.breakfast-pantry.tortillas,Grocery staples,Breakfast & pantry › Tortillas,should,"Calidad, White Corn Tortillas (24 Pack)",2.00
+VS062714,grocery.breakfast-pantry.tostadas,Grocery staples,Breakfast & pantry › Tostadas,should,"Los Pericos, Tostadas, 10 ct, 4.5 oz (15 Pack)",1.00
+DW123870-6,grocery.breakfast-pantry.instant-coffee,Grocery staples,Breakfast & pantry › Instant coffee,should,"Nescafe, Instant Coffee, Dark Roast, 100 g (6 Pack)",0.50
+JC602918,grocery.breakfast-pantry.instant-coffee,Grocery staples,Breakfast & pantry › Instant coffee,should,"Nescafe, Clasico Coffee, Dark Roast, 50 gram, 1.7 oz (12 Pack)",0.50
+JC747566,grocery.breakfast-pantry.instant-coffee,Grocery staples,Breakfast & pantry › Instant coffee,should,"Nescafe, Instant Coffee, Dolca, 1.7 oz (15 Pack)",0.50
+DW93810-12,grocery.pet.dog-food-wet,Grocery staples,"Pet › Dog food, wet single",should,"Pedigree, Chopped Ground Dinner, Chicken, 13.2 oz (12 Pack)",1.00
+DW93850-12,grocery.pet.dog-food-wet,Grocery staples,"Pet › Dog food, wet single",should,"Pedigree, Chopped Ground Dinner, Beef, 13.2 oz (12 Pack)",1.00
+JC70325,grocery.pet.cat-food-wet,Grocery staples,"Pet › Cat food, wet single",should,"9 Lives, Wet Cat Food, Hearty Cuts with Beef & Chicken, 5.5 oz (24 Pack)",2.00
+JC70326,grocery.pet.cat-food-wet,Grocery staples,"Pet › Cat food, wet single",should,"9 Lives, Wet Cat Food, Ocean Whitefish, 5.5 oz (24 Pack)",2.00
+JC715320,grocery.pet.cat-litter,Grocery staples,Pet › Cat litter,should,"Jonny Cat, Original Scented Clay Cat Litter, 5 lb (8 Pack)",2.00

@@ -85,6 +85,7 @@ Also seen in Athena: `dw.ods_ims_item.membership_discount`, an item-level member
 pnpm athena:export pricing member-stores member-store-skus
 pnpm member-discount       # v1: must and should → liquor.csv
 pnpm member-discount v2    # v2: must, should and nice → liquor-v2.csv
+pnpm member-discount wave-1   # re-check wave 1 against today's prices → liquor-wave-1.csv
 ```
 
 - `member_stores.sql` → `data/raw/member_stores.csv`: every active member (any store type) and every CA liquor store, with store type, member flag, timeline flags and orders in 90 days. Store ids only: no names or contact details.
@@ -95,6 +96,14 @@ pnpm member-discount v2    # v2: must, should and nice → liquor-v2.csv
 First run (2026-10-08, counts only): 760 SKUs on 560 must/should items scored; **371 SKUs (255 items) get a discount**: 71 at $2, 175 at $1, 125 at $0.50, of which 60 are on promo; 66 were stepped down. 313 SKUs are at 15% or more; 59 fail the floor even at $0.50 (most 20oz sodas and cigarettes); 3 are on supply hold, 6 had no sales, 1 has no price, 7 no Finale cost.
 
 **v2 (Rick asked, 2026-10-08): nice items too**, to see what it looks like; everything else as v1. 1,145 SKUs on 883 items scored; **655 SKUs (493 items) get a discount**: 156 at $2, 295 at $1, 204 at $0.50, 94 on promo; 133 stepped down. Nice adds 284 discounted SKUs (238 items), mostly candy and snacks (112) and drinks (74); 59 nice SKUs are at 15% or more and 31 fail the floor. Cost at current member volumes is about 1.8× v1's (`liquor-v2-summary.md`).
+
+## Wave 1 (Rick, 2026-10-09)
+
+Rick picked the first wave from the v1 CSV: every discounted v1 SKU **except the two drinks departments** (Soft drinks; Water, energy, sports, juice, tea & coffee), with v1's discounts unchanged. **290 SKUs on 179 items**: 63 at $2, 142 at $1, 85 at $0.50; 38 on promo. By department: grocery staples 80, candy and snacks 71, health and beauty 49, household 40, mixers and bar 33, tobacco 17.
+
+The wave is frozen in `data/member-discount/liquor-wave-1.csv` (SKU, item and discount; no prices or costs). `pnpm member-discount wave-1` keeps those discounts and re-checks each SKU against the latest `pricing.csv` and member data: `ok`, `band_changed` (today's scoring would give another amount; the wave's still fits the floor) or `floor_breaks` (the wave's discount now breaks the 5% margin). Run it with fresh prices before the wave goes live, and again whenever promos change.
+
+First re-check with 2026-10-09 prices: 287 ok, **3 break the floor** because Finale's average cost rose overnight (prices unchanged): Nerds Gummy Clusters 3oz 12-pack (cost now above price), Best Foods Mayonnaise 8oz 12-pack ($0.50 wave, $0.31 room) and Sun Vista Pinto Beans 15oz 12-pack ($2 wave, $1.30 room). Waiting for Rick's call.
 
 ## Decisions as first listed
 

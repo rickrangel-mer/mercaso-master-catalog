@@ -282,7 +282,7 @@ export function summarize(rows: SkuRow[], counts: { members: number; all_members
   let cm = 0;
   let ca = 0;
   for (const r of rows) {
-    if (r.excluded) excluded[r.excluded] = (excluded[r.excluded] ?? 0) + 1;
+    if (r.discount === 0) excluded[r.excluded ?? "none"] = (excluded[r.excluded ?? "none"] ?? 0) + 1;
     else {
       by[String(r.discount)]!++;
       if (r.promo) byPromo[String(r.discount)]!++;
@@ -302,4 +302,49 @@ export function summarize(rows: SkuRow[], counts: { members: number; all_members
     cost_window_members: Math.round(cm),
     cost_window_all_members: Math.round(ca),
   };
+}
+
+/** A wave: SKUs and discounts Rick approved to run, frozen in data/member-discount/. */
+export interface WaveEntry {
+  sku: string;
+  discount: number;
+}
+
+export type WaveCheck = "ok" | "band_changed" | "floor_breaks";
+
+export interface WaveRow extends SkuRow {
+  /** The discount the scoring gives today (0 when excluded); `discount` holds the wave's. */
+  recomputed_discount: number;
+  /** ok; band_changed: today's scoring gives another amount, the wave's still fits the floor;
+   *  floor_breaks: at today's price and cost the wave's discount breaks the 5% margin. */
+  check: WaveCheck;
+}
+
+/**
+ * Re-checks a wave against today's scoring: the wave's discount stays (it is the decision), but a
+ * SKU whose price or cost moved so the discount breaks the floor, or whose band moved, is flagged.
+ * SKUs no longer scored (not approved any more) come back in `missing`.
+ */
+export function checkWave(rows: SkuRow[], wave: WaveEntry[]): { rows: WaveRow[]; missing: string[] } {
+  const bySku = new Map(rows.map((r) => [r.sku, r]));
+  const out: WaveRow[] = [];
+  const missing: string[] = [];
+  for (const w of wave) {
+    const r = bySku.get(w.sku);
+    if (!r) {
+      missing.push(w.sku);
+      continue;
+    }
+    const fits = r.max_discount !== undefined && w.discount <= r.max_discount + 1e-9;
+    const net = r.price === undefined ? undefined : r.price - r.existing_member_discount - w.discount;
+    out.push({
+      ...r,
+      discount: w.discount,
+      recomputed_discount: r.discount,
+      stepped_down: r.band > 0 && w.discount < r.band,
+      ...(net !== undefined && r.cost !== undefined && net > 0 ? { margin_after: round((net - r.cost) / net) } : {}),
+      check: !fits ? "floor_breaks" : r.discount !== w.discount ? "band_changed" : "ok",
+    });
+  }
+  return { rows: out, missing };
 }

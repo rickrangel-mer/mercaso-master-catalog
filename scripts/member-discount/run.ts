@@ -11,6 +11,9 @@
  * Variants (`pnpm member-discount v2`):
  *   v1 (default)        must and should items → liquor.csv, liquor-summary.md
  *   v2                  must, should and nice items → liquor-v2.csv, liquor-v2-summary.md
+ *   wave-1              the SKUs and discounts Rick approved to run first
+ *                       (data/member-discount/liquor-wave-1.csv), re-checked against today's prices
+ *                       and scoring → liquor-wave-1.csv, liquor-wave-1-summary.md
  * Prices, costs and member lists stay out of git.
  */
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
@@ -21,16 +24,17 @@ import { loadCatalog } from "../lib/load.ts";
 import { summarizeMatches } from "../lib/matches.ts";
 import { buildCatalogJson } from "../lib/output.ts";
 import { leafInfo } from "../match/review-lib.ts";
-import { MARGIN_FLOOR, memberDiscounts, summarize, type SkuPrice } from "./lib.ts";
+import { checkWave, MARGIN_FLOOR, memberDiscounts, summarize, type SkuPrice, type SkuRow, type WaveRow } from "./lib.ts";
 import type { Priority } from "../../apps/web/lib/score.ts";
 
 const ROOT = process.cwd();
 const OUT = join(ROOT, "dist/member-discount");
 const WINDOW_DAYS = 90;
 const STORE_TYPE = "Liquor store";
-const VARIANTS: Record<string, { file: string; priorities: Priority[] }> = {
+const VARIANTS: Record<string, { file: string; priorities: Priority[]; wave?: string }> = {
   v1: { file: "liquor", priorities: ["must", "should"] },
   v2: { file: "liquor-v2", priorities: ["must", "should", "nice"] },
+  "wave-1": { file: "liquor-wave-1", priorities: ["must", "should", "nice"], wave: "data/member-discount/liquor-wave-1.csv" },
 };
 const variantName = process.argv[2] ?? "v1";
 const variant = VARIANTS[variantName];
@@ -84,7 +88,7 @@ const stores = storeRows.map((r) => ({
   orders_90d: Number(r.orders_90d) || 0,
 }));
 
-const rows = memberDiscounts({
+const scored = memberDiscounts({
   asOf,
   leaves,
   approved,
@@ -96,7 +100,16 @@ const rows = memberDiscounts({
   windowDays: WINDOW_DAYS,
   priorities: variant.priorities,
 });
+const wave = variant.wave
+  ? checkWave(scored, read(variant.wave, "").map((r) => ({ sku: r.mercaso_sku!, discount: Number(r.discount) })))
+  : undefined;
+const rows: (SkuRow | WaveRow)[] = wave?.rows ?? scored;
+const waveCheck = (r: SkuRow | WaveRow) => ("check" in r ? [r.check, money(r.recomputed_discount || undefined)] : []);
 
+const pct = (x: number | undefined) => (x === undefined ? "" : (x * 100).toFixed(1));
+function money(x: number | undefined) {
+  return x === undefined ? "" : x.toFixed(2);
+}
 const members = stores.filter((s) => s.member && s.store_type === STORE_TYPE);
 const counts = {
   members: members.length,
@@ -105,13 +118,11 @@ const counts = {
 };
 const sum = summarize(rows, counts);
 
-const pct = (x: number | undefined) => (x === undefined ? "" : (x * 100).toFixed(1));
-const money = (x: number | undefined) => (x === undefined ? "" : x.toFixed(2));
 mkdirSync(OUT, { recursive: true });
 writeFileSync(
   join(OUT, `${variant.file}.csv`),
   toCsv([
-    ["department", "category", "catalog_item", "priority", "mercaso_sku", "product", "case_pack", "member_pen_pct", "member_buyers", "nonmember_pen_pct", "nonmember_buyers", "all_member_pen_pct", "sku_member_pen_pct", "no_member_buyers", "band_discount", "on_promo", "price_no_crv", "regular_price", "cost_no_crv", "existing_member_discount", "margin_before_pct", "max_discount_at_floor", "discount", "stepped_down", "member_price", "margin_after_pct", "excluded", "member_cases_90d", "all_member_cases_90d", "est_cost_90d_all_members", "also_in", "node_id"],
+    ["department", "category", "catalog_item", "priority", "mercaso_sku", "product", "case_pack", "member_pen_pct", "member_buyers", "nonmember_pen_pct", "nonmember_buyers", "all_member_pen_pct", "sku_member_pen_pct", "no_member_buyers", "band_discount", "on_promo", "price_no_crv", "regular_price", "cost_no_crv", "existing_member_discount", "margin_before_pct", "max_discount_at_floor", "discount", "stepped_down", "member_price", "margin_after_pct", "excluded", "member_cases_90d", "all_member_cases_90d", "est_cost_90d_all_members", "also_in", "node_id", ...(wave ? ["wave_check", "discount_today"] : [])],
     ...rows.map((r) => [
       r.department, r.category, r.item, r.priority, r.sku, r.title, r.case_pack,
       pct(r.member_pen), String(r.member_buyers), pct(r.nonmember_pen), String(r.nonmember_buyers), pct(r.all_member_pen), pct(r.sku_member_pen),
@@ -120,7 +131,7 @@ writeFileSync(
       pct(r.margin_before), money(r.max_discount), money(r.discount || undefined), r.stepped_down ? "yes" : "",
       r.discount && r.price !== undefined ? money(r.price - r.existing_member_discount - r.discount) : "", pct(r.margin_after),
       r.excluded ?? "", String(r.member_cases), String(r.all_member_cases), r.discount ? money(r.discount * r.all_member_cases) : "",
-      r.also_in.join(" | "), r.node_id,
+      r.also_in.join(" | "), r.node_id, ...waveCheck(r),
     ]),
   ]),
 );
@@ -136,9 +147,32 @@ const discounted = rows.filter((r) => r.discount > 0);
 const n = (d: string) => sum.by_discount[d] ?? 0;
 const p = (d: string) => sum.by_discount_promo[d] ?? 0;
 const ex = (k: string) => sum.excluded[k] ?? 0;
+const waveRows = wave?.rows ?? [];
+const checks = (c: string) => waveRows.filter((r) => r.check === c);
+const listed = (rs: WaveRow[]) => rs.map((r) => `- ${r.sku} ${r.title}: wave $${r.discount.toFixed(2)}, ${r.check === "floor_breaks" ? `floor allows $${money(r.max_discount) || "?"}` : `today's scoring gives ${r.recomputed_discount ? `$${r.recomputed_discount.toFixed(2)}` : `none (${r.excluded})`}`}`).join("\n");
+const notDiscounted = wave
+  ? `## Wave check against today's prices and scoring
+
+The wave's discounts are the decision; this re-checks them. ${checks("ok").length} SKUs as approved, ${checks("band_changed").length} where today's scoring would give another amount (the wave's still fits the floor), **${checks("floor_breaks").length} where the wave's discount now breaks the ${MARGIN_FLOOR * 100}% floor**${wave.missing.length ? `, ${wave.missing.length} no longer approved in the match file (${wave.missing.join(", ")})` : ""}.
+${checks("floor_breaks").length ? `\nBreaks the floor (fix before running):\n\n${listed(checks("floor_breaks"))}\n` : ""}${checks("band_changed").length ? `\nBand changed:\n\n${listed(checks("band_changed"))}\n` : ""}`
+  : `## Not discounted (${sum.skus} SKUs on ${sum.items} items scored)
+
+| Reason | SKUs |
+|---|---|
+| 15% or more of members buy the item | ${ex("penetration_15pct_plus")} |
+| Failed the 5% floor even at $0.50 | ${ex("margin_floor")} |
+| Supply hold (Arizona) | ${ex("supply_hold")} |
+| No sales to any store in ${WINDOW_DAYS} days | ${ex("no_sales")} |
+| No price (not active) | ${ex("no_price")} |
+| No Finale cost | ${ex("no_cost")} |
+
+${sum.no_member_buyers} SKUs belong to items no liquor member bought in the window though other stores did (flagged \`no_member_buyers\`; they get the $2 band if the floor allows).`;
+const scope = wave
+  ? `The SKUs and discounts approved for this wave (\`${variant.wave}\`), scored the same way as v1: penetration is the share`
+  : `Penetration: share`;
 const summary = `# Member discounts — liquor catalog, ${variantName} (${asOf})
 
-Penetration: share of the ${sum.members} active liquor-store members that bought the catalog item (any approved SKU) from Mercaso in the last ${WINDOW_DAYS} days. ${priorityText[0]!.toUpperCase()}${priorityText.slice(1)} items. Discount per case on every approved SKU of the item, stepped down ($2 → $1 → $0.50) to keep a ${MARGIN_FLOOR * 100}% margin after any promo and existing member discount.
+${scope} of the ${sum.members} active liquor-store members that bought the catalog item (any approved SKU) from Mercaso in the last ${WINDOW_DAYS} days. ${wave ? "" : `${priorityText[0]!.toUpperCase()}${priorityText.slice(1)} items. `}Discount per case on every approved SKU of the item, stepped down ($2 → $1 → $0.50) to keep a ${MARGIN_FLOOR * 100}% margin after any promo and existing member discount.
 
 Context: ${sum.all_members} active members of every store type; ${sum.nonmembers} non-member liquor stores that ordered in the window.
 
@@ -153,18 +187,7 @@ Context: ${sum.all_members} active members of every store type; ${sum.nonmembers
 
 ${sum.stepped_down} SKUs were stepped down to a smaller band to fit the floor.
 
-## Not discounted (${sum.skus} SKUs on ${sum.items} items scored)
-
-| Reason | SKUs |
-|---|---|
-| 15% or more of members buy the item | ${ex("penetration_15pct_plus")} |
-| Failed the 5% floor even at $0.50 | ${ex("margin_floor")} |
-| Supply hold (Arizona) | ${ex("supply_hold")} |
-| No sales to any store in ${WINDOW_DAYS} days | ${ex("no_sales")} |
-| No price (not active) | ${ex("no_price")} |
-| No Finale cost | ${ex("no_cost")} |
-
-${sum.no_member_buyers} SKUs belong to items no liquor member bought in the window though other stores did (flagged \`no_member_buyers\`; they get the $2 band if the floor allows).
+${notDiscounted}
 
 ## Cost at current member volumes (no lift assumed)
 
