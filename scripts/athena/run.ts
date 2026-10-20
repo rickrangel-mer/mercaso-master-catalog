@@ -19,12 +19,13 @@ import {
 } from "@aws-sdk/client-athena";
 import { GetCallerIdentityCommand, STSClient } from "@aws-sdk/client-sts";
 import { parse } from "csv-parse/sync";
-import { configFromEnv, credentialsFromEnv, explainAwsError, fillCatalogSkus, pageToRows, prepareSql, toCsv, type AthenaConfig } from "./lib.ts";
+import { configFromEnv, credentialsFromEnv, explainAwsError, fillCatalogSkus, fillStoreType, pageToRows, prepareSql, toCsv, type AthenaConfig } from "./lib.ts";
 
 const ROOT = process.cwd();
-const EXPORTS: Record<string, { sql: string; out: string }> = {
+const EXPORTS: Record<string, { sql: string; out: string; storeType?: string }> = {
   products: { sql: "scripts/athena/sql/products.sql", out: "data/raw/products.csv" },
-  "liquor-sales": { sql: "scripts/athena/sql/liquor_sales_by_sku.sql", out: "data/raw/liquor_sales_by_sku.csv" },
+  "liquor-sales": { sql: "scripts/athena/sql/sales_by_sku.sql", out: "data/raw/liquor_sales_by_sku.csv", storeType: "Liquor store" },
+  "laundromat-sales": { sql: "scripts/athena/sql/sales_by_sku.sql", out: "data/raw/laundromat_sales_by_sku.csv", storeType: "Laundromat" },
   "liquor-reach": { sql: "scripts/athena/sql/liquor_reach_by_category.sql", out: "data/raw/liquor_reach_by_category.csv" },
   pricing: { sql: "scripts/athena/sql/pricing.sql", out: "data/raw/pricing.csv" },
   "liquor-stores": { sql: "scripts/athena/sql/liquor_stores.sql", out: "data/raw/liquor_stores.csv" },
@@ -108,7 +109,7 @@ async function main() {
       console.error(`Unknown export "${name}". Known: ${Object.keys(EXPORTS).join(", ")}.`);
       process.exit(1);
     }
-    const sql = readFileSync(join(ROOT, job.sql), "utf8");
+    const sql = fillStoreType(readFileSync(join(ROOT, job.sql), "utf8"), job.storeType);
     const rows = await runQuery(athena, config, sql.includes("{{CATALOG_SKUS}}") ? fillCatalogSkus(sql, catalogSkus()) : sql, name);
     mkdirSync(join(ROOT, "data/raw"), { recursive: true });
     writeFileSync(join(ROOT, job.out), toCsv(rows));

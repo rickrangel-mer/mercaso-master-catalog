@@ -17,7 +17,12 @@ const dist = join(here, "../../../dist");
 const pricingCsv = join(here, "../../../data/raw/pricing.csv");
 const out = join(here, "../public/data");
 
-const files = existsSync(dist) ? readdirSync(dist).filter((f) => f.endsWith(".json")).sort() : [];
+// Liquor first: the site opens on the first catalog, and liquor is the one most people use.
+const files = existsSync(dist)
+  ? readdirSync(dist)
+      .filter((f) => f.endsWith(".json"))
+      .sort((a, b) => Number(b === "liquor.json") - Number(a === "liquor.json") || a.localeCompare(b))
+  : [];
 if (files.length === 0) {
   console.error("No catalogs in dist/. Run `pnpm build` at the repo root first.");
   process.exit(1);

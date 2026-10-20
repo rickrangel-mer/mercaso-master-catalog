@@ -1,0 +1,325 @@
+# Laundromat (CA). Drafted 2026-10-20 from laundromat sales (docs/exploration/laundromat.md);
+# Rick reviews. Scope (Rick, 2026-10-20): customer laundry and wash-and-fold bulk (department
+# laundry), plus vending drinks and snacks reused from the liquor tree. Store operating supplies
+# (janitorial, restroom paper) are out of scope.
+#
+# Priority from the share of CA laundromats (230 that ordered in 12 months) that bought the item,
+# counting any approved SKU in data/matches/laundromat.csv: must 30% or more, should 10–30%,
+# nice 3–10%. Where the 90-day share is under half or over double the 12-month share (fading,
+# discontinued or new), the 90-day share decides. Items under 3% are not carried. The comment on
+# each line is the 12-month / 90-day share.
+store_type: laundromat
+name: Laundromat
+description: >-
+  CA laundromat: laundry products sold at the counter or vended, wash-and-fold bulk, and vending
+  drinks and snacks.
+state: CA
+
+include:
+  - laundry
+  # Vending: Soft drinks
+  - scd.cola.coca-cola.classic.12oz-can
+  - scd.cola.coca-cola.classic.500ml
+  - scd.cola.coca-cola.classic.20oz
+  - scd.cola.coca-cola.zero-sugar.12oz-can
+  - scd.cola.coca-cola.diet.12oz-can
+  - scd.cola.pepsi.original.12oz-can
+  - scd.cola.pepsi.original.20oz
+  - scd.cola.dr-pepper.original.12oz-can
+  - scd.cola.shasta.cola.12oz-can
+  - scd.cola.shasta.tiki-punch.12oz-can
+  - scd.cola.shasta.grape.12oz-can
+  - scd.cola.shasta.orange.12oz-can
+  - scd.cola.shasta.kiwi-strawberry.12oz-can
+  - scd.lemon-lime.sprite.original.12oz-can
+  - scd.lemon-lime.sprite.original.20oz
+  - scd.lemon-lime.7up.original.12oz-can
+  - scd.lemon-lime.mountain-dew.original.12oz-can
+  - scd.fruit-mexican.fanta.orange.12oz-can
+  - scd.fruit-mexican.fanta.strawberry.12oz-can
+  - scd.fruit-mexican.squirt.original.12oz-can
+  - scd.root-beer-cream.a-and-w.root-beer.12oz-can
+  - scd.ginger-ale-club-tonic.canada-dry.ginger-ale.12oz-can
+  # Vending: Water, energy, sports, juice, tea & coffee
+  - drinks.water.arrowhead.spring.16-9oz
+  - drinks.water.aquafina.original.20oz
+  - drinks.water.dasani.original.16-9oz
+  - drinks.water.value-water
+  - drinks.water.perrier.original.16-9oz
+  - drinks.water.perrier.lime.16-9oz
+  - drinks.energy.red-bull.original.8-4oz-can
+  - drinks.energy.monster.original.16oz-can
+  - drinks.energy.monster.ultra-zero.16oz-can
+  - drinks.energy.monster.lo-carb.16oz-can
+  - drinks.sports.gatorade.fruit-punch.20oz
+  - drinks.sports.gatorade.cool-blue.20oz
+  - drinks.sports.gatorade.lemon-lime.20oz
+  - drinks.sports.gatorade.orange.20oz
+  - drinks.sports.gatorade.lime-cucumber.20oz
+  - drinks.sports.gatorade.fierce-grape.20oz
+  - drinks.sports.powerade.fruit-punch.20oz
+  - drinks.juice.kerns.mango.11-5oz-can
+  - drinks.juice.visvita.original.16-9oz
+  - drinks.juice.visvita.pomegranate.16-9oz
+  - drinks.juice.visvita.strawberry.16-9oz
+  - drinks.juice.parrot.with-pulp.10-5oz
+  - drinks.juice.parrot.with-pulp.16-6oz
+  - drinks.tea-coffee.arizona.green-tea.22oz-can
+  - drinks.tea-coffee.arizona.mucho-mango.22oz-can
+  - drinks.tea-coffee.arizona.lemon-tea.22oz-can
+  - drinks.tea-coffee.arizona.kiwi-strawberry.22oz-can
+  - drinks.tea-coffee.arizona.fruit-punch.22oz-can
+  - drinks.tea-coffee.arizona.watermelon.22oz-can
+  - drinks.tea-coffee.arizona.grapeade.22oz-can
+  - drinks.tea-coffee.arizona.orangeade.22oz-can
+  - drinks.tea-coffee.snapple.kiwi-strawberry.16oz
+  - drinks.tea-coffee.snapple.mango-madness.16oz
+  - drinks.tea-coffee.starbucks-frappuccino.mocha.9-5oz-glass
+  - drinks.tea-coffee.nesquik.chocolate.14oz
+  # Vending: Candy & snacks
+  - candy-snacks.chocolate.snickers.original.single
+  - candy-snacks.chocolate.reeses.cups.single
+  - candy-snacks.chocolate.m-and-ms.peanut.single
+  - candy-snacks.chocolate.kit-kat.original.single
+  - candy-snacks.gummy-chewy.skittles.original.single
+  - candy-snacks.gummy-chewy.skittles.sour.single
+  - candy-snacks.mexican-candy.lucas.salsagheti.single
+  - candy-snacks.salty-snacks.frito-lay.cheetos-flamin-hot.vending-bag
+  - candy-snacks.salty-snacks.frito-lay.cheetos-crunchy.vending-bag
+  - candy-snacks.salty-snacks.frito-lay.doritos-nacho.vending-bag
+  - candy-snacks.salty-snacks.frito-lay.munchies-flamin-hot.vending-bag
+  - candy-snacks.salty-snacks.chip-variety-pack
+  - candy-snacks.salty-snacks.takis.fuego.single-bag
+  - candy-snacks.salty-snacks.takis.fuego.vending-bag
+  - candy-snacks.cookies-cakes.oreo.original.6ct
+  - candy-snacks.cookies-cakes.grandmas.mini-sandwich-cremes.3-71oz
+  - candy-snacks.cookies-cakes.famous-amos.chocolate-chip.2oz
+  - candy-snacks.cookies-cakes.knotts.strawberry.2oz
+  - candy-snacks.cookies-cakes.knotts.raspberry.2oz
+  - candy-snacks.cookies-cakes.hello-panda.chocolate.single
+
+priority:
+  # Laundry
+  laundry.detergent-liquid.gain.original.10oz: must  # 68% / 65%
+  laundry.detergent-liquid.gain.original.25oz: must  # 40% / 40%
+  laundry.detergent-liquid.gain.ultra-oxi-waterfall.10oz: should  # 14% / 8%
+  laundry.detergent-liquid.tide.original.8oz: nice  # 8% / 10%
+  laundry.detergent-liquid.tide.original.10oz: must  # 34% / 35%
+  laundry.detergent-liquid.tide.original.25oz: must  # 35% / 34%
+  laundry.detergent-liquid.tide.original.32oz: nice  # 6% / 5%
+  laundry.detergent-liquid.tide.original-with-bleach.25oz: nice  # 5% / 5%
+  laundry.detergent-liquid.tide-simply.clean-fresh.10oz: must  # 54% / 45%
+  laundry.detergent-liquid.tide-simply.oxi.10oz: must  # 38% / 28%
+  laundry.detergent-liquid.tide-simply.oxi.32oz: nice  # 5% / 3%
+  laundry.detergent-liquid.tide-simply.daybreak-fresh.25oz: must  # 30% / 25%
+  laundry.detergent-liquid.tide-simply.daybreak-fresh.32oz: nice  # 7% / 5%
+  laundry.detergent-liquid.tide-simply.refreshing-breeze.8oz: nice  # 4% / 5%
+  laundry.detergent-liquid.tide-simply.refreshing-breeze.32oz: nice  # 5% / 3%
+  laundry.detergent-liquid.foca.original.16oz: should  # 20% / 17%
+  laundry.detergent-liquid.foca.original.1l: should  # 26% / 21%
+  laundry.detergent-liquid.roma.original.16oz: should  # 14% / 11%
+  laundry.detergent-liquid.roma.original.1l: should  # 19% / 13%
+  laundry.detergent-liquid.ariel.revitacolor.400ml-pouch: nice  # 4% / 2%
+  laundry.detergent-liquid.ace.regular.750ml: nice  # 5% / 5%
+  laundry.detergent-liquid.zote.pink.1l: nice  # 7% / 3%
+  laundry.detergent-liquid.blanca-nieves.original.1l: nice  # 4% / 3%
+  laundry.detergent-liquid.las-totally-awesome.oxygen.64oz: nice  # 4% / 2%
+  laundry.detergent-liquid.tide-pods.spring-meadow.16ct: nice  # 3% / 2%
+  laundry.detergent-powder.ariel.original.250g: must  # 59% / 50%
+  laundry.detergent-powder.ariel.original.500g: must  # 37% / 22%
+  laundry.detergent-powder.ariel.original.850g: nice  # 8% / 7%
+  laundry.detergent-powder.ariel.original.1kg: nice  # 5% / 4%
+  laundry.detergent-powder.ariel.oxi-azul.500g: must  # 45% / 32%
+  laundry.detergent-powder.ariel.with-downy.1-5kg: nice  # 3% / 2%
+  laundry.detergent-powder.tide.original.single-use: nice  # 14% / 5%
+  laundry.detergent-powder.tide.original.218g: must  # 45% / 39%
+  laundry.detergent-powder.tide.original.500g: should  # 21% / 20%
+  laundry.detergent-powder.tide.with-downy.350g: must  # 37% / 27%
+  laundry.detergent-powder.tide.with-downy.690g: should  # 10% / 6%
+  laundry.detergent-powder.roma.original.250g: should  # 22% / 13%
+  laundry.detergent-powder.roma.original.500g: must  # 30% / 22%
+  laundry.detergent-powder.roma.original.1kg: nice  # 9% / 7%
+  laundry.detergent-powder.roma.original.5kg: nice  # 5% / 5%
+  laundry.detergent-powder.roma.original.10kg: nice  # 5% / 4%
+  laundry.detergent-powder.foca.original.250g: nice  # 18% / 3%
+  laundry.detergent-powder.foca.original.500g: should  # 29% / 20%
+  laundry.detergent-powder.foca.original.1kg: nice  # 7% / 5%
+  laundry.detergent-powder.foca.original.10kg: nice  # 5% / 3%
+  laundry.detergent-powder.blanca-nieves.original.250g: nice  # 5% / 3%
+  laundry.detergent-powder.lirio.original.500g: nice  # 3% / 4%
+  laundry.softener.suavitel.fresca-primavera.450ml: must  # 79% / 77%
+  laundry.softener.suavitel.fresca-primavera.850ml: should  # 27% / 21%
+  laundry.softener.suavitel.fresca-primavera.1l: nice  # 8% / 9%
+  laundry.softener.suavitel.fresca-primavera.46oz: should  # 13% / 10%
+  laundry.softener.suavitel.fresca-primavera.8-5l: nice  # 4% / 4%
+  laundry.softener.suavitel.aroma-de-sol.450ml: must  # 58% / 54%
+  laundry.softener.suavitel.aroma-de-sol.850ml: should  # 20% / 15%
+  laundry.softener.suavitel.aroma-de-sol.46oz: should  # 11% / 9%
+  laundry.softener.suavitel.anochecer.850ml: nice  # 8% / 8%
+  laundry.softener.suavitel.lavender.13-5oz: nice  # 6% / 5%
+  laundry.softener.suavitel.lavender.46oz: nice  # 8% / 8%
+  laundry.softener.suavitel.waterfall-mist.13-5oz: nice  # 5% / 5%
+  laundry.softener.suavitel.field-flowers.13-5oz: nice  # 4% / 3%
+  laundry.softener.suavitel-complete.aroma-de-sol.700ml: should  # 13% / 11%
+  laundry.softener.suavitel-complete.fresca-primavera.700ml: should  # 11% / 10%
+  laundry.softener.suavitel-complete.acqua.700ml: nice  # 8% / 8%
+  laundry.softener.downy.aroma-floral.360ml: must  # 70% / 65%
+  laundry.softener.downy.aroma-floral.750ml: should  # 0% / 0%
+  laundry.softener.downy.aroma-floral.2-6l: nice  # 10% / 7%
+  laundry.softener.downy.april-fresh.8oz: nice  # 8% / 11%
+  laundry.softener.downy.april-fresh.10oz: must  # 47% / 38%
+  laundry.softener.downy.april-fresh.567ml: nice  # 4% / 3%
+  laundry.softener.downy.elegance.750ml: should  # 25% / 21%
+  laundry.softener.downy.passion.750ml: should  # 23% / 20%
+  laundry.softener.downy.romance.750ml: should  # 21% / 19%
+  laundry.softener.downy.romance.2-6l: nice  # 4% / 4%
+  laundry.softener.downy.intense-floral.567ml: nice  # 9% / 5%
+  laundry.softener.downy.intense-floral.750ml: should  # 20% / 25%
+  laundry.softener.downy.amanecer.360ml: nice  # 8% / 4%
+  laundry.softener.downy.amanecer.567ml: nice  # 3% / 2%
+  laundry.softener.downy.amanecer.750ml: should  # 10% / 10%
+  laundry.softener.downy.cool-cotton.10oz: should  # 11% / 9%
+  laundry.softener.downy.suave-gentil.750ml: nice  # 8% / 10%
+  laundry.softener.downy.intense-exotico.567ml: nice  # 3% / 2%
+  laundry.softener.downy.intense-exotico.750ml: nice  # 7% / 8%
+  laundry.softener.gain.original.10oz: should  # 14% / 11%
+  laundry.softener.gain.super-fresh-blast.10oz: nice  # 9% / 6%
+  laundry.softener.ensueno.baby.22oz: nice  # 9% / 7%
+  laundry.softener.ensueno.spring-fresh.22oz: nice  # 5% / 5%
+  laundry.softener.ensueno.violet.22oz: nice  # 3% / 3%
+  laundry.dryer-sheets.bounce.outdoor-fresh.15ct: must  # 55% / 52%
+  laundry.dryer-sheets.bounce.outdoor-fresh.34ct: nice  # 4% / 2%
+  laundry.dryer-sheets.gain.original.15ct: must  # 49% / 46%
+  laundry.dryer-sheets.gain.super-fresh-blast.15ct: nice  # 6% / 3%
+  laundry.dryer-sheets.suavitel.fresca-primavera.20ct: must  # 40% / 29%
+  laundry.dryer-sheets.suavitel.fresca-primavera.36ct: nice  # 5% / 3%
+  laundry.dryer-sheets.suavitel.lavender.18ct: must  # 41% / 34%
+  laundry.dryer-sheets.suavitel.aroma-de-sol.18ct: must  # 32% / 27%
+  laundry.dryer-sheets.suavitel.waterfall-mist.18ct: should  # 20% / 13%
+  laundry.bleach-stain.clorox.regular.11oz: must  # 67% / 67%
+  laundry.bleach-stain.clorox.regular.24oz: should  # 13% / 12%
+  laundry.bleach-stain.clorox.regular.43oz: nice  # 7% / 7%
+  laundry.bleach-stain.clorox.regular.121oz: nice  # 5% / 3%
+  laundry.bleach-stain.cloralen.regular.16-9oz: must  # 58% / 52%
+  laundry.bleach-stain.cloralen.regular.32oz: should  # 15% / 13%
+  laundry.bleach-stain.cloralen.color-safe.32oz: nice  # 5% / 4%
+  laundry.bleach-stain.las-totally-awesome.bleach.96oz: should  # 13% / 9%
+  laundry.bleach-stain.las-totally-awesome.bleach.1gal: nice  # 7% / 5%
+  laundry.bleach-stain.soilove.original.16oz: must  # 73% / 71%
+  laundry.bleach-stain.soilove.original.1gal: nice  # 5% / 4%
+  laundry.bleach-stain.soilove.spray.22oz: nice  # 4% / 3%
+  laundry.bleach-stain.zote.pink.7oz-bar: nice  # 6% / 3%
+  laundry.bleach-stain.zote.pink.14oz-bar: nice  # 5% / 3%
+  laundry.accessories.laundry-bag: nice  # 7% / 4%
+  # Vending: Soft drinks
+  scd.cola.coca-cola.classic.12oz-can: must  # 42% / 39%
+  scd.cola.coca-cola.classic.500ml: should  # 11% / 7%
+  scd.cola.coca-cola.classic.20oz: should  # 10% / 10%
+  scd.cola.coca-cola.zero-sugar.12oz-can: nice  # 10% / 7%
+  scd.cola.coca-cola.diet.12oz-can: should  # 20% / 18%
+  scd.cola.pepsi.original.12oz-can: should  # 22% / 19%
+  scd.cola.pepsi.original.20oz: nice  # 3% / 3%
+  scd.cola.dr-pepper.original.12oz-can: should  # 19% / 18%
+  scd.cola.shasta.cola.12oz-can: nice  # 5% / 5%
+  scd.cola.shasta.tiki-punch.12oz-can: nice  # 7% / 6%
+  scd.cola.shasta.grape.12oz-can: nice  # 5% / 3%
+  scd.cola.shasta.orange.12oz-can: nice  # 5% / 3%
+  scd.cola.shasta.kiwi-strawberry.12oz-can: nice  # 3% / 2%
+  scd.lemon-lime.sprite.original.12oz-can: should  # 28% / 23%
+  scd.lemon-lime.sprite.original.20oz: nice  # 5% / 6%
+  scd.lemon-lime.7up.original.12oz-can: should  # 10% / 7%
+  scd.lemon-lime.mountain-dew.original.12oz-can: nice  # 7% / 5%
+  scd.fruit-mexican.fanta.orange.12oz-can: should  # 15% / 9%
+  scd.fruit-mexican.fanta.strawberry.12oz-can: nice  # 7% / 5%
+  scd.fruit-mexican.squirt.original.12oz-can: should  # 24% / 23%
+  scd.root-beer-cream.a-and-w.root-beer.12oz-can: nice  # 6% / 3%
+  scd.ginger-ale-club-tonic.canada-dry.ginger-ale.12oz-can: should  # 15% / 13%
+  # Vending: Water, energy, sports, juice, tea & coffee
+  drinks.water.arrowhead.spring.16-9oz: nice  # 6% / 5%
+  drinks.water.aquafina.original.20oz: nice  # 3% / 3%
+  drinks.water.dasani.original.16-9oz: nice  # 4% / 3%
+  drinks.water.value-water: should  # 27% / 27%
+  drinks.water.perrier.original.16-9oz: nice  # 5% / 4%
+  drinks.water.perrier.lime.16-9oz: nice  # 4% / 3%
+  drinks.energy.red-bull.original.8-4oz-can: should  # 10% / 9%
+  drinks.energy.monster.original.16oz-can: should  # 28% / 23%
+  drinks.energy.monster.ultra-zero.16oz-can: nice  # 4% / 2%
+  drinks.energy.monster.lo-carb.16oz-can: nice  # 3% / 2%
+  drinks.sports.gatorade.fruit-punch.20oz: should  # 21% / 16%
+  drinks.sports.gatorade.cool-blue.20oz: should  # 17% / 16%
+  drinks.sports.gatorade.lemon-lime.20oz: nice  # 10% / 6%
+  drinks.sports.gatorade.orange.20oz: should  # 15% / 12%
+  drinks.sports.gatorade.lime-cucumber.20oz: nice  # 6% / 3%
+  drinks.sports.gatorade.fierce-grape.20oz: nice  # 3% / 3%
+  drinks.sports.powerade.fruit-punch.20oz: nice  # 4% / 3%
+  drinks.juice.kerns.mango.11-5oz-can: nice  # 5% / 5%
+  drinks.juice.visvita.original.16-9oz: nice  # 6% / 5%
+  drinks.juice.visvita.pomegranate.16-9oz: nice  # 3% / 3%
+  drinks.juice.visvita.strawberry.16-9oz: nice  # 3% / 3%
+  drinks.juice.parrot.with-pulp.10-5oz: nice  # 7% / 4%
+  drinks.juice.parrot.with-pulp.16-6oz: should  # 22% / 20%
+  drinks.tea-coffee.arizona.green-tea.22oz-can: should  # 23% / 18%
+  drinks.tea-coffee.arizona.mucho-mango.22oz-can: should  # 23% / 14%
+  drinks.tea-coffee.arizona.lemon-tea.22oz-can: nice  # 7% / 5%
+  drinks.tea-coffee.arizona.kiwi-strawberry.22oz-can: nice  # 15% / 6%
+  drinks.tea-coffee.arizona.fruit-punch.22oz-can: should  # 16% / 12%
+  drinks.tea-coffee.arizona.watermelon.22oz-can: should  # 22% / 14%
+  drinks.tea-coffee.arizona.grapeade.22oz-can: nice  # 10% / 5%
+  drinks.tea-coffee.arizona.orangeade.22oz-can: nice  # 7% / 3%
+  drinks.tea-coffee.snapple.kiwi-strawberry.16oz: nice  # 5% / 5%
+  drinks.tea-coffee.snapple.mango-madness.16oz: nice  # 5% / 4%
+  drinks.tea-coffee.starbucks-frappuccino.mocha.9-5oz-glass: nice  # 5% / 3%
+  drinks.tea-coffee.nesquik.chocolate.14oz: nice  # 6% / 5%
+  # Vending: Candy & snacks
+  candy-snacks.chocolate.snickers.original.single: should  # 14% / 9%
+  candy-snacks.chocolate.reeses.cups.single: nice  # 7% / 5%
+  candy-snacks.chocolate.m-and-ms.peanut.single: should  # 11% / 9%
+  candy-snacks.chocolate.kit-kat.original.single: nice  # 10% / 3%
+  candy-snacks.gummy-chewy.skittles.original.single: nice  # 8% / 8%
+  candy-snacks.gummy-chewy.skittles.sour.single: nice  # 5% / 3%
+  candy-snacks.mexican-candy.lucas.salsagheti.single: nice  # 8% / 4%
+  candy-snacks.salty-snacks.frito-lay.cheetos-flamin-hot.vending-bag: nice  # 7% / 5%
+  candy-snacks.salty-snacks.frito-lay.cheetos-crunchy.vending-bag: nice  # 3% / 2%
+  candy-snacks.salty-snacks.frito-lay.doritos-nacho.vending-bag: nice  # 5% / 3%
+  candy-snacks.salty-snacks.frito-lay.munchies-flamin-hot.vending-bag: nice  # 3% / 2%
+  candy-snacks.salty-snacks.chip-variety-pack: should  # 14% / 14%
+  candy-snacks.salty-snacks.takis.fuego.single-bag: nice  # 6% / 5%
+  candy-snacks.salty-snacks.takis.fuego.vending-bag: nice  # 6% / 3%
+  candy-snacks.cookies-cakes.oreo.original.6ct: should  # 11% / 8%
+  candy-snacks.cookies-cakes.grandmas.mini-sandwich-cremes.3-71oz: nice  # 7% / 7%
+  candy-snacks.cookies-cakes.famous-amos.chocolate-chip.2oz: nice  # 10% / 10%
+  candy-snacks.cookies-cakes.knotts.strawberry.2oz: nice  # 9% / 3%
+  candy-snacks.cookies-cakes.knotts.raspberry.2oz: nice  # 5% / 3%
+  candy-snacks.cookies-cakes.hello-panda.chocolate.single: nice  # 6% / 3%
+
+notes:
+  laundry.softener.downy.aroma-floral.750ml: >-
+    Must-level demand (31% of laundromats in 12 months), but Mercaso's 800ml SKUs have not sold
+    since July; the active 700ml SKU has no laundromat sales yet. Should until it does.
+  scd.cola.coca-cola.classic.500ml: The 16.9oz bottle, added for laundromats (not carried by liquor stores).
+
+supply_hold:
+  drinks.tea-coffee.arizona.green-tea.22oz-can:
+    reason: Manufacturer and stock issues (as for liquor stores).
+    since: "2026-09-30"
+  drinks.tea-coffee.arizona.mucho-mango.22oz-can:
+    reason: Manufacturer and stock issues (as for liquor stores).
+    since: "2026-09-30"
+  drinks.tea-coffee.arizona.lemon-tea.22oz-can:
+    reason: Manufacturer and stock issues (as for liquor stores).
+    since: "2026-09-30"
+  drinks.tea-coffee.arizona.kiwi-strawberry.22oz-can:
+    reason: Manufacturer and stock issues (as for liquor stores).
+    since: "2026-09-30"
+  drinks.tea-coffee.arizona.fruit-punch.22oz-can:
+    reason: Manufacturer and stock issues (as for liquor stores).
+    since: "2026-09-30"
+  drinks.tea-coffee.arizona.watermelon.22oz-can:
+    reason: Manufacturer and stock issues (as for liquor stores).
+    since: "2026-09-30"
+  drinks.tea-coffee.arizona.grapeade.22oz-can:
+    reason: Manufacturer and stock issues (as for liquor stores).
+    since: "2026-09-30"
+  drinks.tea-coffee.arizona.orangeade.22oz-can:
+    reason: Manufacturer and stock issues (as for liquor stores).
+    since: "2026-09-30"

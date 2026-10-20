@@ -2,7 +2,7 @@
 
 import { useMemo, useState, type CSSProperties } from "react";
 import { approvedSkuCount, coverageByDepartment, mustGaps, type SkuRow } from "../lib/table";
-import { PRIORITY_LEVELS, type CatalogIndex, type Priority } from "../lib/tree";
+import { PRIORITY_LEVELS, storesNoun, type CatalogIndex, type Priority } from "../lib/tree";
 import type { Tab } from "./Header";
 
 interface Props {
@@ -36,7 +36,7 @@ export function Overview({ index, rows, onTab, onJump }: Props) {
       <section className="intro">
         <h2>What a {catalog.name.toLowerCase()} should carry, and the Mercaso SKUs that fill it</h2>
         <p className="muted">
-          {catalog.description} Priorities and penetration come from 12 months of Mercaso sales to California liquor stores.
+          {catalog.description} Priorities and penetration come from 12 months of Mercaso sales to California {storesNoun(catalog.name)}.
         </p>
       </section>
 
@@ -125,7 +125,7 @@ export function Overview({ index, rows, onTab, onJump }: Props) {
             — every Mercaso SKU with its priority, penetration and slot, grouped like a pivot table. Filter, sort, and download as CSV.
           </li>
           <li>
-            <strong>Penetration</strong> is the share of California liquor stores that bought the SKU from Mercaso in the last 12 months (and in the last 90 days).
+            <strong>Penetration</strong> is the share of California {storesNoun(catalog.name)} that bought the SKU from Mercaso in the last 12 months (and in the last 90 days).
           </li>
         </ul>
       </section>

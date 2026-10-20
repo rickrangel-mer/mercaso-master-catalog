@@ -12,13 +12,15 @@ import {
   type SkuRow,
   type SortKey,
 } from "../lib/table";
-import { PRIORITY_LEVELS, type Priority } from "../lib/tree";
+import { PRIORITY_LEVELS, storesNoun, type Priority } from "../lib/tree";
 
 interface Props {
   rows: SkuRow[];
   /** Date of the price and cost snapshot; undefined when the site was built without prices. */
   pricesAsOf?: string | undefined;
   onJump: (id: string) => void;
+  /** The store type's name, e.g. "Liquor store"; penetration is the share of these stores. */
+  storeName: string;
 }
 
 const GROUPS: { id: GroupBy; label: string }[] = [
@@ -34,7 +36,7 @@ const COLUMNS: { id: SortKey | null; label: string; className?: string; title?: 
   { id: "item", label: "Catalog item" },
   { id: "priority", label: "Priority" },
   { id: null, label: "Type", title: "Branded: a specific brand, flavor and size. Slot: an open shelf spot any fitting product can fill." },
-  { id: "share12", label: "Penetration 12 mo", className: "num", title: "Share of California liquor stores that bought this SKU from Mercaso in the last 12 months" },
+  { id: "share12", label: "Penetration 12 mo", className: "num", title: "Share of California {stores} that bought this SKU from Mercaso in the last 12 months" },
   { id: "share90", label: "90 days", className: "num", title: "Same share over the last 90 days" },
   { id: null, label: "Case", className: "num" },
   { id: "price", label: "Price", className: "num price-col", title: "Today's case price without CRV; the promo price when the item is on promo" },
@@ -46,7 +48,7 @@ const pct = (x: number | undefined) => (x === undefined ? "–" : `${(x * 100).t
 const margin = (x: number) => `${(x * 100).toFixed(1)}%`;
 const fmt = (n: number) => n.toLocaleString("en-US");
 
-export function SkuTable({ rows, pricesAsOf, onJump }: Props) {
+export function SkuTable({ rows, pricesAsOf, onJump, storeName }: Props) {
   const hasPrices = pricesAsOf !== undefined;
   const columns = hasPrices ? COLUMNS : COLUMNS.filter((c) => !c.className?.includes("price-col"));
   const [filters, setFilters] = useState<RowFilters>({ query: "", priorities: [...PRIORITY_LEVELS], status: "all", includeGaps: false });
@@ -84,7 +86,7 @@ export function SkuTable({ rows, pricesAsOf, onJump }: Props) {
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
-    a.download = "mercaso-liquor-catalog-skus.csv";
+    a.download = `mercaso-${storeName.toLowerCase().replace(/\s+/g, "-")}-catalog-skus.csv`;
     a.click();
     URL.revokeObjectURL(url);
   };
@@ -95,7 +97,7 @@ export function SkuTable({ rows, pricesAsOf, onJump }: Props) {
         <h2>Every Mercaso SKU in the catalog</h2>
         <p className="muted">
           One row per Mercaso SKU matched to a catalog item. Groups start closed: open one to see its SKUs, or search to open them all.
-          Penetration is the share of California liquor stores that bought the SKU.
+          Penetration is the share of California {storesNoun(storeName)} that bought the SKU.
           {hasPrices && <> Price is today&apos;s case price without CRV (promo price when on promo); margin uses average cost without CRV, as of {pricesAsOf}.</>}
         </p>
       </div>
@@ -169,7 +171,7 @@ export function SkuTable({ rows, pricesAsOf, onJump }: Props) {
                 <th
                   key={c.label}
                   className={c.className}
-                  title={c.title}
+                  title={c.title?.replace("{stores}", storesNoun(storeName))}
                   aria-sort={c.id && sort.key === c.id ? (sort.dir === "asc" ? "ascending" : "descending") : undefined}
                 >
                   {c.id ? (

@@ -1,16 +1,16 @@
--- Export: trailing-12-month sales to liquor stores, one row per SKU (Phase 2.5 cross-check).
--- Save the result as data/raw/liquor_sales_by_sku.csv (gitignored).
+-- Export: trailing-12-month sales to one store type, one row per SKU (Phase 2.5 cross-check).
+-- The runner fills {{STORE_TYPE}} ('Liquor store' for liquor-sales, 'Laundromat' for
+-- laundromat-sales) and saves data/raw/<store-type>_sales_by_sku.csv (gitignored).
 --
 -- Joins: line items -> orders (order_id) -> stores (store_id) -> store type (Rick's query).
--- Counts only liquor stores in CA, only orders not cancelled (cancelled_at), and quantities
+-- Counts only stores of the type in CA, only orders not cancelled (cancelled_at), and quantities
 -- after refunds. The latest dt of each table holds full history; tenant_id is ignored.
 -- Quantities are cases; `units` multiplies by the case pack.
--- `store_share` is the fraction of active liquor stores that bought the SKU at least once,
--- which is the best single signal for "should every liquor store carry this".
+-- `store_share` is the fraction of active stores of the type that bought the SKU at least once,
+-- which is the best single signal for "should every store of this type carry this".
 -- A SKU discontinued mid-year keeps its full-year share, and its replacement looks weak, so
 -- the export also carries first and last order dates and the share over the last 90 days
 -- (store_share_90d, against stores active in those 90 days).
--- For another store type, change the one store_type literal below (e.g. 'Laundromat').
 WITH stores AS (
   SELECT si.store_id,
          -- The manual sheet wins, but a blank override must not hide the store's own type.
@@ -23,23 +23,23 @@ WITH stores AS (
   WHERE si.dt = (SELECT max(dt) FROM dim.dim_store_mercaso_store_info_full)
   GROUP BY 1, 2, 3
 ),
-liquor_stores AS (
+typed_stores AS (
   SELECT DISTINCT store_id
   FROM stores
-  WHERE store_type = 'Liquor store'
+  WHERE store_type = '{{STORE_TYPE}}'
 ),
 orders AS (
   SELECT o.order_id, o.store_id, o.created_at
   FROM dwm.dwm_trade_order_detail_full o
-  JOIN liquor_stores ls ON ls.store_id = o.store_id
+  JOIN typed_stores ts ON ts.store_id = o.store_id
   WHERE o.dt = (SELECT max(dt) FROM dwm.dwm_trade_order_detail_full)
     AND o.cancelled_at IS NULL
     AND o.created_at >= date_add('month', -12, current_timestamp)
     AND coalesce(o.shipping_province_code, 'CA') = 'CA'
 ),
 active AS (
-  SELECT count(DISTINCT store_id) AS liquor_stores_active,
-         count(DISTINCT CASE WHEN created_at >= date_add('day', -90, current_timestamp) THEN store_id END) AS liquor_stores_active_90d
+  SELECT count(DISTINCT store_id) AS stores_active,
+         count(DISTINCT CASE WHEN created_at >= date_add('day', -90, current_timestamp) THEN store_id END) AS stores_active_90d
   FROM orders
 ),
 lines AS (
@@ -64,11 +64,11 @@ SELECT
   sum(l.current_total_amount) AS revenue,
   count(DISTINCT l.order_id) AS orders,
   count(DISTINCT o.store_id) AS stores_buying,
-  max(a.liquor_stores_active) AS liquor_stores_active,
-  round(CAST(count(DISTINCT o.store_id) AS double) / max(a.liquor_stores_active), 4) AS store_share,
+  max(a.stores_active) AS stores_active,
+  round(CAST(count(DISTINCT o.store_id) AS double) / max(a.stores_active), 4) AS store_share,
   count(DISTINCT CASE WHEN o.created_at >= date_add('day', -90, current_timestamp) THEN o.store_id END) AS stores_buying_90d,
   round(CAST(count(DISTINCT CASE WHEN o.created_at >= date_add('day', -90, current_timestamp) THEN o.store_id END) AS double)
-        / max(a.liquor_stores_active_90d), 4) AS store_share_90d,
+        / max(a.stores_active_90d), 4) AS store_share_90d,
   CAST(min(o.created_at) AS date) AS first_order_date,
   CAST(max(o.created_at) AS date) AS last_order_date
 FROM lines l

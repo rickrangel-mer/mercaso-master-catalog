@@ -1,0 +1,233 @@
+node_id,mercaso_sku,title,case_pack,rank,confidence,share_12m,share_90d,status,source,reviewer,note
+scd.cola.coca-cola.classic.12oz-can,DW48830-35,"Coca-Cola, Soda, Classic, 12 oz (35 Pack)",35,1,0.95,0.3957,0.3526,approved,rule,rick,"Approved for liquor: Approved in bulk at confidence 0.6+ (Rick, 2026-09-29)"
+scd.cola.coca-cola.classic.12oz-can,DW124890-24,"Coca-Cola, Soda, Classic, 12 oz (24 Pack)",24,2,0.95,0.1087,0.0751,approved,rule,rick,"Approved for liquor: Approved in bulk at confidence 0.6+ (Rick, 2026-09-29)"
+scd.cola.coca-cola.classic.12oz-can,CO891742,"Coca-Cola, Classic Soda, 12 oz (35 Pack)",35,1,0.95,0.0522,0.0405,approved,rule,claude,
+scd.cola.coca-cola.classic.20oz,DW12282-24,"Coca-Cola, Soda, Classic, 20 oz (24 Pack)",24,1,0.95,0.1000,0.0983,approved,rule,rick,"Approved for liquor: Approved in bulk at confidence 0.6+ (Rick, 2026-09-29)"
+scd.cola.coca-cola.zero-sugar.12oz-can,CO891742,"Coca-Cola, Soda, Zero Sugar, 12 oz (35 Pack)",35,1,0.95,0.0522,0.0405,approved,rule,rick,"Approved for liquor: Approved in bulk at confidence 0.6+ (Rick, 2026-09-29)"
+scd.cola.coca-cola.zero-sugar.12oz-can,DW124910-24,"Coca-Cola, Soda, Zero, 12 oz (24 Pack)",24,1,0.95,0.0696,0.0347,approved,rule,claude,
+scd.cola.coca-cola.diet.12oz-can,DW35960-35,"Coca-Cola, Soda, Diet, 12 oz (35 Pack)",35,1,0.95,0.1478,0.1272,approved,rule,rick,"Approved for liquor: Approved in bulk at confidence 0.6+ (Rick, 2026-09-29)"
+scd.cola.coca-cola.diet.12oz-can,DW18220-24,"Coca-Cola, Diet Soda, 12 oz (24 Pack)",24,1,0.95,0.1000,0.0751,approved,rule,claude,
+scd.cola.pepsi.original.12oz-can,DW18460-24,"Pepsi, Soda, 12 oz (24 Pack)",24,1,0.95,0.1870,0.0925,approved,rule,rick,"Approved for liquor: Approved in bulk at confidence 0.6+ (Rick, 2026-09-29)"
+scd.cola.pepsi.original.12oz-can,JC657081,"Pepsi, Original Cola Soda, 12 oz (36 Pack)",36,1,0.95,0.1043,0.1156,approved,rule,claude,
+scd.cola.pepsi.original.20oz,DW12384-24,"Pepsi, Original, 20 oz (24 Pack)",24,1,0.95,0.0304,0.0289,approved,rule,rick,"Approved for liquor: Approved in bulk at confidence 0.6+ (Rick, 2026-09-29)"
+scd.cola.dr-pepper.original.12oz-can,DW18240-24,"Dr. Pepper, Soda, 12 oz (24 Pack)",24,1,0.95,0.1565,0.1214,approved,rule,rick,"Approved for liquor: Approved in bulk at confidence 0.6+ (Rick, 2026-09-29)"
+scd.cola.dr-pepper.original.12oz-can,MM021707,"Dr. Pepper, Original Soda, 12 oz (36 Pack)",36,1,0.95,0.1217,0.1040,approved,rule,claude,
+scd.cola.shasta.cola.12oz-can,DW33180-24,"Shasta, Cola, 12 oz (24 Pack)",24,1,0.95,0.0522,0.0462,approved,rule,rick,"Approved for liquor: Approved in bulk at confidence 0.6+ (Rick, 2026-09-29)"
+scd.cola.shasta.tiki-punch.12oz-can,DW33220-24,"Shasta, Tiki Punch, 12 oz (24 Pack)",24,1,0.95,0.0696,0.0578,approved,rule,rick,"Approved for liquor: Approved in bulk at confidence 0.6+ (Rick, 2026-09-29)"
+scd.cola.shasta.grape.12oz-can,DW34500-24,"Shasta, Grape, 12 oz (24 Pack)",24,1,0.95,0.0522,0.0347,approved,rule,rick,"Approved for liquor: Approved in bulk at confidence 0.6+ (Rick, 2026-09-29)"
+scd.cola.shasta.grape.12oz-can,DW139220-24,"Shasta, Grapefruit Zazz Soda, 12 oz (24 Pack)",24,1,0.85,0.0348,0.0231,rejected,rule,claude,"Review: Grapefruit Zazz, not Grape"
+scd.cola.shasta.orange.12oz-can,DW33200-24,"Shasta, Orange, 12 oz (24 Pack)",24,1,0.95,0.0522,0.0289,approved,rule,rick,"Approved for liquor: Approved in bulk at confidence 0.6+ (Rick, 2026-09-29)"
+scd.cola.shasta.kiwi-strawberry.12oz-can,DW131920-24,"Shasta, Kiwi Strawberry, 12 oz (24 Pack)",24,1,0.95,0.0348,0.0231,approved,rule,rick,"Approved for liquor: Approved in bulk at confidence 0.6+ (Rick, 2026-09-29)"
+scd.lemon-lime.sprite.original.12oz-can,DW93960-35,"Sprite, Soda, 12 oz (35 Pack)",35,1,0.95,0.2304,0.1445,approved,rule,rick,"Approved for liquor: Approved in bulk at confidence 0.6+ (Rick, 2026-09-29)"
+scd.lemon-lime.sprite.original.12oz-can,DW12285-24,"Sprite, Original Lemon Lime Soda, 12 oz (24 Pack)",24,1,0.95,0.1217,0.0925,approved,rule,claude,
+scd.lemon-lime.sprite.original.20oz,DW12288-24,"Sprite, Soda, 20 oz (24 Pack)",24,1,0.95,0.0522,0.0578,approved,rule,rick,"Approved for liquor: Approved in bulk at confidence 0.6+ (Rick, 2026-09-29)"
+scd.lemon-lime.7up.original.12oz-can,DW18440-24,"7 Up, Soda, 12 oz (24 Pack)",24,1,0.95,0.0870,0.0578,approved,rule,rick,"Approved for liquor: Approved in bulk at confidence 0.6+ (Rick, 2026-09-29)"
+scd.lemon-lime.7up.original.12oz-can,JT440947,"7 Up, Soda, 12 oz (36 Pack)",36,2,0.95,0.0391,0.0173,approved,rule,rick,"Approved for liquor: Approved in bulk at confidence 0.6+ (Rick, 2026-09-29)"
+scd.lemon-lime.mountain-dew.original.12oz-can,DW12383-24,"Mountain Dew, Soda, 12 oz (24 Pack)",24,1,0.95,0.0435,0.0231,approved,rule,rick,"Approved for liquor: Approved in bulk at confidence 0.6+ (Rick, 2026-09-29)"
+scd.lemon-lime.mountain-dew.original.12oz-can,JC657101,"Mountain Dew, Original Soda, 12 oz (36 Pack)",36,1,0.85,0.0304,0.0289,approved,rule,claude,
+scd.fruit-mexican.fanta.orange.12oz-can,DW21020-24,"Fanta, Orange Soda, Two 12 Packs, 12 oz (24 Pack)",24,1,0.95,0.1522,0.0867,approved,rule,rick,"Approved for liquor: Approved in bulk at confidence 0.6+ (Rick, 2026-09-29)"
+scd.fruit-mexican.fanta.strawberry.12oz-can,DW68400-24,"Fanta, Strawberry, Soda, Two 12 Packs, 12 oz (24 Pack)",24,1,0.95,0.0739,0.0520,approved,rule,rick,"Approved for liquor: Approved in bulk at confidence 0.6+ (Rick, 2026-09-29)"
+scd.fruit-mexican.squirt.original.12oz-can,DW12309-24,"Squirt, Soda, 12 oz (24 Pack)",24,1,0.95,0.1696,0.1329,approved,rule,rick,"Approved for liquor: Approved in bulk at confidence 0.6+ (Rick, 2026-09-29)"
+scd.fruit-mexican.squirt.original.12oz-can,JT440948,"Squirt, Original Grapefruit Soda, 12 oz (36 Pack)",36,1,0.95,0.1391,0.1098,approved,rule,claude,
+scd.root-beer-cream.a-and-w.root-beer.12oz-can,DW12341-24,"A&W, Root Beer, 12 oz (24 Pack)",24,1,0.95,0.0565,0.0347,approved,rule,rick,"Approved for liquor: Approved in bulk at confidence 0.6+ (Rick, 2026-09-29)"
+scd.ginger-ale-club-tonic.canada-dry.ginger-ale.12oz-can,DW47410-24,"Canada Dry, Ginger Ale, 12 oz (24 Pack)",24,1,0.95,0.1435,0.0983,approved,rule,rick,"Approved for liquor: Approved in bulk at confidence 0.6+ (Rick, 2026-09-29)"
+scd.ginger-ale-club-tonic.canada-dry.ginger-ale.12oz-can,CO779330,"Canada Dry, Ginger Ale, 12 oz (36 Pack)",36,2,0.95,0.0478,0.0462,approved,rule,rick,"Approved for liquor: Approved in bulk at confidence 0.6+ (Rick, 2026-09-29)"
+drinks.water.arrowhead.spring.16-9oz,DW103360,"Arrowhead, Mountain Spring Water, 16.9 oz (24 Pack)",24,1,0.95,0.0391,0.0347,approved,rule,rick,"Approved for liquor: Approved in bulk at confidence 0.6+ (Rick, 2026-09-29)"
+drinks.water.arrowhead.spring.16-9oz,CO1918284,"Arrowhead, Mountain Spring Water, 16.9 oz (40 Pack)",40,2,0.85,0.0304,0.0347,approved,rule,rick,"Approved for liquor: Approved in bulk at confidence 0.6+ (Rick, 2026-09-29)"
+drinks.water.aquafina.original.20oz,DW12217-24,"Aquafina, Water, 20 oz (24 Pack)",24,1,0.95,0.0304,0.0289,approved,rule,rick,"Approved for liquor: Approved in bulk at confidence 0.6+ (Rick, 2026-09-29)"
+drinks.water.dasani.original.16-9oz,DW89180-32,"Dasani, Water, 16.9 oz (32 Pack)",32,1,0.95,0.0391,0.0347,approved,rule,rick,"Approved for liquor: Approved in bulk at confidence 0.6+ (Rick, 2026-09-29)"
+drinks.water.value-water,JC90582,"Crystal Geyser, Alpine Spring Water, 1 gal (6 Pack)",6,1,0.85,0.0130,0.0116,approved,rule,rick,"Approved for liquor: Approved in bulk at confidence 0.6+ (Rick, 2026-09-29)"
+drinks.water.value-water,AW10000-6,"Niagara, Purified Drinking Water, 1 gal (6 Pack)",6,2,0.85,0.0217,0.0289,approved,rule,rick,"Approved for liquor: Approved in bulk at confidence 0.6+ (Rick, 2026-09-29)"
+drinks.water.value-water,DW142130-24,"Niagara, Purified Water, 16.9 oz (24 Pack)",24,1,0.85,0.1870,0.2023,approved,rule,claude,
+drinks.water.value-water,JC112621,"Crystal Geyser, Alpine Spring Water, 16.9 oz (24 Pack)",24,2,0.85,0.1217,0.0809,approved,rule,claude,
+drinks.water.perrier.original.16-9oz,CO1792368,"Perrier, Maison Ultimate Sparkling Water, 16.9 oz (24 Pack)",24,1,0.95,0.0478,0.0405,approved,rule,rick,"Approved for liquor: Approved in bulk at confidence 0.6+ (Rick, 2026-09-29)"
+drinks.water.perrier.lime.16-9oz,DW199940,"Perrier, Maison Lime Sparkling Water, 16.9 oz (24 Pack)",24,1,0.95,0.0391,0.0289,approved,rule,rick,"Approved for liquor: Approved in bulk at confidence 0.6+ (Rick, 2026-09-29)"
+drinks.energy.red-bull.original.8-4oz-can,DW12419-24,"Red Bull, Energy Drink, 8.4 oz (24 Pack)",24,1,0.95,0.1000,0.0867,approved,rule,rick,"Approved for liquor: Approved in bulk at confidence 0.6+ (Rick, 2026-09-29)"
+drinks.energy.monster.original.16oz-can,DW12429-24,"Monster, Energy Drink, 16 oz (24 Pack)",24,1,0.95,0.2783,0.2254,approved,rule,rick,"Approved for liquor: Approved in bulk at confidence 0.6+ (Rick, 2026-09-29)"
+drinks.energy.monster.ultra-zero.16oz-can,DW71250-24,"Monster, Energy Drink, Zero Ultra, 16 oz (24 Pack)",24,1,0.95,0.0435,0.0231,approved,rule,rick,"Approved for liquor: Approved in bulk at confidence 0.6+ (Rick, 2026-09-29)"
+drinks.energy.monster.lo-carb.16oz-can,DW12432-24,"Monster, Energy Drink, Lo-Carb, 16 oz (24 Pack)",24,1,0.95,0.0304,0.0173,approved,rule,rick,"Approved for liquor: Approved in bulk at confidence 0.6+ (Rick, 2026-09-29)"
+drinks.sports.gatorade.fruit-punch.20oz,DW11979-24,"Gatorade, Sports Drink, Fruit Punch, 20 oz (24 Pack)",24,1,0.95,0.2130,0.1561,approved,rule,rick,"Approved for liquor: Approved in bulk at confidence 0.6+ (Rick, 2026-09-29)"
+drinks.sports.gatorade.cool-blue.20oz,DW11976-24,"Gatorade, Sports Drink, Cool Blue, 20 oz (24 Pack)",24,1,0.95,0.1739,0.1561,approved,rule,rick,"Approved for liquor: Approved in bulk at confidence 0.6+ (Rick, 2026-09-29)"
+drinks.sports.gatorade.lemon-lime.20oz,DW11981-24,"Gatorade, Sports Drink, Lemon Lime, 20 oz (24 Pack)",24,1,0.95,0.0957,0.0636,approved,rule,rick,"Approved for liquor: Approved in bulk at confidence 0.6+ (Rick, 2026-09-29)"
+drinks.sports.gatorade.orange.20oz,DW17524-24,"Gatorade, Sports Drink, Orange, 20 oz (24 Pack)",24,1,0.95,0.1522,0.1098,approved,rule,rick,"Approved for liquor: Approved in bulk at confidence 0.6+ (Rick, 2026-09-29)"
+drinks.sports.gatorade.lime-cucumber.20oz,DW120350-24,"Gatorade, Sports Drink, Lime Cucumber, 20 oz (24 Pack)",24,1,0.95,0.0565,0.0347,approved,rule,rick,"Approved for liquor: Approved in bulk at confidence 0.6+ (Rick, 2026-09-29)"
+drinks.sports.gatorade.fierce-grape.20oz,DW12002-24,"Gatorade, Sports Drink, Fierce Grape, 20 oz (24 Pack)",24,1,0.95,0.0304,0.0289,approved,rule,rick,"Approved for liquor: Approved in bulk at confidence 0.6+ (Rick, 2026-09-29)"
+drinks.sports.powerade.fruit-punch.20oz,DW12047-24,"Powerade, Fruit Punch, 20 oz (24 Pack)",24,1,0.95,0.0391,0.0347,approved,rule,rick,"Approved for liquor: Approved in bulk at confidence 0.6+ (Rick, 2026-09-29)"
+drinks.juice.kerns.mango.11-5oz-can,DW12129-24,"Kern's, Nectar, Mango, 11.5 oz (24 Pack)",24,1,0.95,0.0522,0.0462,approved,rule,rick,"Approved for liquor: Approved in bulk at confidence 0.6+ (Rick, 2026-09-29)"
+drinks.juice.kerns.mango.11-5oz-can,DW12112-24,"Kern's, Guava Nectar Drink, 11.5 oz (24 Pack)",24,1,0.85,0.0478,0.0173,rejected,rule,claude,"Review: Guava, not Mango"
+drinks.juice.kerns.mango.11-5oz-can,CO897224,"Kern's, Variety Pack, Nectar Drink, 11.5 oz (30 Pack)",30,2,0.85,0.0435,0.0347,rejected,rule,claude,Review: variety pack
+drinks.juice.kerns.mango.11-5oz-can,DW12128-24,"Kern's, Peach Nectar Drink, 11.5 oz (24 Pack)",24,3,0.85,0.0348,0.0173,rejected,rule,claude,"Review: Peach, not Mango"
+drinks.juice.visvita.original.16-9oz,DW73850-20,"Visvita, Aloe Vera Drink, Original, 16.9 oz (20 Pack)",20,1,0.95,0.0609,0.0462,approved,rule,rick,"Approved for liquor: Approved in bulk at confidence 0.6+ (Rick, 2026-09-29)"
+drinks.juice.visvita.pomegranate.16-9oz,DW73860-20,"Visvita, Aloe Vera Drink, Pomegranate, 16.9 oz (20 Pack)",20,1,0.95,0.0348,0.0231,approved,rule,rick,"Approved for liquor: Approved in bulk at confidence 0.6+ (Rick, 2026-09-29)"
+drinks.juice.visvita.strawberry.16-9oz,DW107080-20,"Visvita, Aloe Vera Drink, Strawberry, 16.9 oz (20 Pack)",20,1,0.95,0.0348,0.0289,approved,rule,rick,"Approved for liquor: Approved in bulk at confidence 0.6+ (Rick, 2026-09-29)"
+drinks.juice.parrot.with-pulp.10-5oz,DW3460-24,"Parrot, Coconut Water with Pulp, 10.5 oz (24 Pack)",24,1,0.95,0.0739,0.0405,approved,rule,rick,"Approved for liquor: Approved in bulk at confidence 0.6+ (Rick, 2026-09-29)"
+drinks.juice.parrot.with-pulp.16-6oz,SH19144-24,"Parrot, Coconut Water with Pulp, 16.6 oz (24 Pack)",24,1,0.95,0.2174,0.2023,approved,rule,rick,"Approved for liquor: Approved in bulk at confidence 0.6+ (Rick, 2026-09-29)"
+drinks.juice.parrot.with-pulp.16-6oz,SH192087,"Parrot, Original Aloe Vera Drink, 16.9 oz (20 Pack)",20,1,0.85,0.0304,0.0116,rejected,rule,claude,"Review: Parrot aloe drink, not mango with pulp"
+drinks.tea-coffee.arizona.green-tea.22oz-can,DW11877-24,"Arizona, Green Tea with Ginseng and Honey, 22 oz (24 Pack)",24,1,0.95,0.2304,0.1676,approved,rule,rick,"Approved for liquor: Approved in bulk at confidence 0.6+ (Rick, 2026-09-29)"
+drinks.tea-coffee.arizona.green-tea.22oz-can,ARI00001,"Arizona, Green Tea with Ginseng and Honey, NON PRE-PRICED, 22 oz (24 Pack)",24,2,0.95,0.0522,0.0520,approved,manual,claude,Approved for liquor: Same product as DW11877-24 (different price label or case count); added so store purchases count (2026-09-30)
+drinks.tea-coffee.arizona.mucho-mango.22oz-can,DW11885-24,"Arizona, Mucho Mango, 22 oz (24 Pack)",24,1,0.95,0.2217,0.1272,approved,rule,rick,"Approved for liquor: Approved in bulk at confidence 0.6+ (Rick, 2026-09-29)"
+drinks.tea-coffee.arizona.mucho-mango.22oz-can,ARI00002,"Arizona, Mucho Mango, NON PRE-PRICED, 22 oz (24 Pack)",24,2,0.95,0.0522,0.0405,approved,manual,claude,Approved for liquor: Same product as DW11885-24 (different price label or case count); added so store purchases count (2026-09-30)
+drinks.tea-coffee.arizona.lemon-tea.22oz-can,DW16127-24,"Arizona, Lemon Tea, 22 oz (24 Pack)",24,1,0.95,0.0609,0.0231,approved,rule,rick,"Approved for liquor: Approved in bulk at confidence 0.6+ (Rick, 2026-09-29)"
+drinks.tea-coffee.arizona.lemon-tea.22oz-can,ARI00007,"Arizona, Lemon Tea, NON PRE-PRICED, 22 oz (24 Pack)",24,2,0.95,0.0217,0.0289,approved,manual,claude,Approved for liquor: Same product as DW16127-24 (different price label or case count); added so store purchases count (2026-09-30)
+drinks.tea-coffee.arizona.lemon-tea.22oz-can,DW11883-24,"Arizona, Lemonade Fruit Juice Cocktail, 22 oz (24 Pack)",24,1,0.85,0.0478,0.0116,rejected,rule,claude,"Review: Lemonade, not Lemon Tea"
+drinks.tea-coffee.arizona.kiwi-strawberry.22oz-can,DW16132-24,"Arizona, Kiwi Strawberry, 22 oz (24 Pack)",24,1,0.95,0.1522,0.0347,approved,rule,rick,"Approved for liquor: Approved in bulk at confidence 0.6+ (Rick, 2026-09-29)"
+drinks.tea-coffee.arizona.kiwi-strawberry.22oz-can,ARI00004,"Arizona, Kiwi Strawberry, NON PRE-PRICED, 22 oz (24 Pack)",24,2,0.95,0.0435,0.0231,approved,manual,claude,Approved for liquor: Same product as DW16132-24 (different price label or case count); added so store purchases count (2026-09-30)
+drinks.tea-coffee.arizona.fruit-punch.22oz-can,DW11879-24,"Arizona, Fruit Punch, 22 oz (24 Pack)",24,1,0.95,0.1478,0.0809,approved,rule,rick,"Approved for liquor: Approved in bulk at confidence 0.6+ (Rick, 2026-09-29)"
+drinks.tea-coffee.arizona.fruit-punch.22oz-can,ARI00005,"Arizona, Fruit Punch, NON PRE-PRICED, 22 oz (24 Pack)",24,2,0.95,0.0696,0.0751,approved,manual,claude,Approved for liquor: Same product as DW11879-24 (different price label or case count); added so store purchases count (2026-09-30)
+drinks.tea-coffee.arizona.watermelon.22oz-can,DW18190-24,"Arizona, Watermelon, 22 oz (24 Pack)",24,1,0.95,0.2043,0.1156,approved,rule,rick,"Approved for liquor: Approved in bulk at confidence 0.6+ (Rick, 2026-09-29)"
+drinks.tea-coffee.arizona.watermelon.22oz-can,ARI00003,"Arizona, Watermelon, NON PRE-PRICED, 22 oz (24 Pack)",24,2,0.95,0.0435,0.0347,approved,manual,claude,Approved for liquor: Same product as DW18190-24 (different price label or case count); added so store purchases count (2026-09-30)
+drinks.tea-coffee.arizona.grapeade.22oz-can,DW16124-24,"Arizona, Grapeade, 22 oz (24 Pack)",24,1,0.95,0.1043,0.0520,approved,rule,rick,"Approved for liquor: Approved in bulk at confidence 0.6+ (Rick, 2026-09-29)"
+drinks.tea-coffee.arizona.orangeade.22oz-can,DW11878-24,"Arizona, Orangeade, 22 oz (24 Pack)",24,1,0.95,0.0739,0.0347,approved,rule,rick,"Approved for liquor: Approved in bulk at confidence 0.6+ (Rick, 2026-09-29)"
+drinks.tea-coffee.snapple.kiwi-strawberry.16oz,DW61150-12,"Snapple, Kiwi Strawberry, 16 oz (12 Pack)",12,1,0.95,0.0478,0.0520,approved,rule,rick,"Approved for liquor: Approved in bulk at confidence 0.6+ (Rick, 2026-09-29)"
+drinks.tea-coffee.snapple.mango-madness.16oz,DW61120-12,"Snapple, Mango Madness, 16 oz (12 Pack)",12,1,0.95,0.0522,0.0405,approved,rule,rick,"Approved for liquor: Approved in bulk at confidence 0.6+ (Rick, 2026-09-29)"
+drinks.tea-coffee.starbucks-frappuccino.mocha.9-5oz-glass,JC110351,"Starbucks, Frappuccino, Mocha, 9.5 oz (15 Pack)",15,1,0.95,0.0522,0.0347,approved,rule,rick,"Approved for liquor: Approved in bulk at confidence 0.6+ (Rick, 2026-09-29)"
+drinks.tea-coffee.nesquik.chocolate.14oz,DW5040-12,"Nesquik, Chocolate Milk, 14 oz (12 Pack)",12,1,0.95,0.0565,0.0462,approved,rule,rick,"Approved for liquor: Approved in bulk at confidence 0.6+ (Rick, 2026-09-29)"
+candy-snacks.chocolate.snickers.original.single,DW10557-48,"Snickers, Milk Chocolate, Candy Bar, 1.86 oz (48 Pack)",48,1,0.95,0.1391,0.0867,approved,rule,rick,"Approved for liquor: Approved in bulk at confidence 0.6+ (Rick, 2026-09-29)"
+candy-snacks.chocolate.reeses.cups.single,DW10613-36,"Reese's, Milk Chocolate, Peanut Butter Cups, 1.5 oz (36 Pack)",36,1,0.95,0.0696,0.0520,approved,rule,rick,"Approved for liquor: Approved in bulk at confidence 0.6+ (Rick, 2026-09-29)"
+candy-snacks.chocolate.m-and-ms.peanut.single,DW10559-48,"M&M's, Chocolate Candy, Peanut, 1.74 oz (48 Pack)",48,1,0.95,0.1087,0.0925,approved,rule,rick,"Approved for liquor: Approved in bulk at confidence 0.6+ (Rick, 2026-09-29)"
+candy-snacks.chocolate.kit-kat.original.single,DW10601-36,"Kit Kat, Milk Chocolate, Wafer Bar, 1.5 oz (36 Pack)",36,1,0.95,0.0957,0.0347,approved,rule,rick,"Approved for liquor: Approved in bulk at confidence 0.6+ (Rick, 2026-09-29)"
+candy-snacks.gummy-chewy.skittles.original.single,DW10567-36,"Skittles, Candy, Original, 2.17 oz (36 Pack)",36,1,0.95,0.0826,0.0751,approved,rule,rick,"Approved for liquor: Approved in bulk at confidence 0.6+ (Rick, 2026-09-29)"
+candy-snacks.gummy-chewy.skittles.sour.single,DW10522-24,"Skittles, Candy, Sour, 1.8 oz (24 Pack)",24,1,0.95,0.0522,0.0347,approved,rule,rick,"Approved for liquor: Approved in bulk at confidence 0.6+ (Rick, 2026-09-29)"
+candy-snacks.mexican-candy.lucas.salsagheti.single,JC16970,"Lucas, Salsagheti Watermelon Candy, 0.8 oz (12 Pack)",12,1,0.7,0.0609,0.0289,approved,rule,rick,"Approved for liquor: Approved in bulk at confidence 0.6+ (Rick, 2026-09-29)"
+candy-snacks.mexican-candy.lucas.salsagheti.single,DW16660-12,"Lucas, Skwinkles, Salsagheti, Mango, 0.85 oz (12 Pack)",12,1,0.70,0.0522,0.0231,approved,rule,claude,
+candy-snacks.salty-snacks.takis.fuego.single-bag,JC778367,"Takis, Fuego, 3.25 oz (20 Pack)",20,1,0.95,0.0565,0.0462,approved,rule,rick,"Approved for liquor: Approved in bulk at confidence 0.6+ (Rick, 2026-09-29)"
+candy-snacks.cookies-cakes.oreo.original.6ct,JC18770,"Oreo, Chocolate Sandwich Cookies, 6 ct (30 Pack)",30,1,0.95,0.1130,0.0809,approved,rule,rick,"Approved for liquor: Approved in bulk at confidence 0.6+ (Rick, 2026-09-29)"
+candy-snacks.cookies-cakes.hello-panda.chocolate.single,DW178530-6,"Hello Panda, Meiji Biscuits, Chocolate, 2.2 oz (6 Pack)",6,1,0.7,0.0565,0.0347,approved,rule,rick,"Approved for liquor: Approved in bulk at confidence 0.6+ (Rick, 2026-09-29)"
+candy-snacks.cookies-cakes.hello-panda.chocolate.single,DW178540-6,"Hello Panda, Meiji Biscuits, Strawberry, 2.2 oz (6 Pack)",6,1,0.60,0.0391,0.0173,rejected,rule,claude,"Review: Strawberry, not Chocolate"
+scd.cola.coca-cola.classic.500ml,DW17970-24,"Coca-Cola, Classic Soda, 16.9 oz (24 Pack)",24,1,0.95,0.1130,0.0694,approved,rule,claude,
+candy-snacks.salty-snacks.frito-lay.cheetos-flamin-hot.vending-bag,DW34900-64,"Frito Lay, Cheetos, Flamin' Hot Crunchy, 2 oz (64 Pack)",64,1,0.95,0.0696,0.0462,approved,rule,claude,
+candy-snacks.salty-snacks.frito-lay.cheetos-crunchy.vending-bag,CO874511,"Frito Lay, Cheetos, Crunchy, 1 oz (50 Pack)",50,1,0.85,0.0304,0.0173,approved,rule,claude,
+candy-snacks.salty-snacks.frito-lay.doritos-nacho.vending-bag,DW34860-64,"Frito Lay, Doritos, Nacho Cheese, 1.75 oz (64 Pack)",64,1,0.85,0.0478,0.0289,approved,rule,claude,
+candy-snacks.salty-snacks.frito-lay.munchies-flamin-hot.vending-bag,DW34790-64,"Frito Lay, Munchies Cheese Fix, Flamin' Hot, 1.75 oz (64 Pack)",64,1,0.85,0.0304,0.0173,approved,rule,claude,
+candy-snacks.salty-snacks.chip-variety-pack,CO1692572,"Frito Lay, Variety Pack (30 Pack)",30,1,0.85,0.1000,0.1098,approved,rule,claude,
+candy-snacks.salty-snacks.chip-variety-pack,CO1618629,"Frito Lay, Variety Pack (30 Pack)",30,2,0.85,0.0870,0.0867,approved,rule,claude,
+candy-snacks.salty-snacks.chip-variety-pack,CO1542578,"Frito Lay, Variety Pack, Flamin' Hot Mix, 1 oz (54 Pack)",54,3,0.85,0.0522,0.0405,approved,rule,claude,
+candy-snacks.salty-snacks.takis.fuego.vending-bag,CO1782493,"Takis, Fuego, 1 oz (50 Pack)",50,1,0.95,0.0565,0.0347,approved,rule,claude,
+candy-snacks.cookies-cakes.grandmas.mini-sandwich-cremes.3-71oz,DW72200-24,"Grandma's, Cookies, Mini Sandwich Cremes, Vanilla, 3.71 oz (24 Pack)",24,1,0.95,0.0739,0.0694,approved,rule,claude,
+candy-snacks.cookies-cakes.famous-amos.chocolate-chip.2oz,JC19799,"Famous Amos, Chocolate Chip Cookies, 2 oz (42 Pack)",42,1,0.95,0.0957,0.0983,approved,rule,claude,
+candy-snacks.cookies-cakes.knotts.strawberry.2oz,DW168602-36,"Knotts Berry Farm, Shortbread Cookie, Strawberry, 2 oz (36 Pack)",36,1,0.95,0.0870,0.0347,approved,rule,claude,
+candy-snacks.cookies-cakes.knotts.raspberry.2oz,JC118552,"Knotts Berry Farm, Shortbread Cookie, Raspberry, 2 oz (36 Pack)",36,1,0.95,0.0522,0.0347,approved,rule,claude,
+laundry.detergent-liquid.gain.original.10oz,JC00470,"Gain, Liquid Laundry Detergent, Original, 10 oz (12 Pack)",12,1,,0.6783,0.6474,approved,manual,claude,Archived in the item master but still ordered by laundromats (last order 2026-10-19)
+laundry.detergent-liquid.gain.original.10oz,JC22411,"Gain, Flings, 3 In 1, Original, 16 ct (6 Pack)",6,1,0.65,0.0174,0.0058,rejected,rule,claude,"Review: Gain Flings pods, not liquid"
+laundry.detergent-liquid.gain.original.25oz,JC12783,"Gain, Liquid Detergent, 25 oz (6 Pack)",6,1,0.95,0.4043,0.3988,approved,rule,claude,
+laundry.detergent-liquid.gain.ultra-oxi-waterfall.10oz,VS012594,"Gain, Liquid Detergent +Ultra Oxi Waterfall, 10 oz (12 Pack)",12,1,0.95,0.1435,0.0751,approved,rule,claude,
+laundry.detergent-liquid.tide.original.8oz,PG226515,"Tide, Liquid Detergent, 8 oz (12 Pack)",12,1,0.95,0.0783,0.1040,approved,rule,claude,
+laundry.detergent-liquid.tide.original.10oz,DW67800-12,"Tide, Liquid Laundry Detergent, Original, 10 oz (12 Pack)",12,1,,0.3391,0.3468,approved,manual,claude,Archived in the item master but still ordered by laundromats (last order 2026-09-30)
+laundry.detergent-liquid.tide.original.10oz,VS099550,"Tide, Pods HE Original Coldwater, 42 ct (4 Pack)",4,1,0.55,0.0043,0.0000,rejected,rule,claude,"Review: Tide Pods, not liquid"
+laundry.detergent-liquid.tide.original.25oz,DW30960-6,"Tide, Liquid Laundry Detergent, Original, 25 oz (6 Pack)",6,1,0.95,0.3478,0.3353,approved,rule,claude,
+laundry.detergent-liquid.tide.original.32oz,VS212071,"Tide, Liquid Laundry Detergent, Original, 34 oz (6 Pack)",6,1,0.95,0.0609,0.0462,approved,rule,claude,
+laundry.detergent-liquid.tide.original-with-bleach.25oz,JC114099,"Tide, Liquid Laundry Detergent, Original with Bleach, 25 oz (6 Pack), 25 oz (6 Pack)",6,1,0.95,0.0522,0.0520,approved,rule,claude,
+laundry.detergent-liquid.tide-simply.oxi.10oz,VS066138,"Tide, Simply Liquid Laundry Detergent, +Oxi, 10 oz (12 Pack)",12,1,,0.3826,0.2832,approved,manual,claude,Archived in the item master but still ordered by laundromats (last order 2026-10-12)
+laundry.detergent-liquid.tide-simply.oxi.10oz,JC111860,"Tide, Pods, Ultra Oxi, 12 ct (6 Pack)",6,1,0.65,0.0217,0.0000,rejected,rule,claude,"Review: Tide Pods, not liquid"
+laundry.detergent-liquid.tide-simply.oxi.32oz,JC105200,"Tide, Simply Liquid Laundry Detergent, Oxi, 31 oz (6 Pack)",6,1,0.85,0.0478,0.0289,approved,rule,claude,
+laundry.detergent-liquid.tide-simply.daybreak-fresh.25oz,JC29185,"Tide, Simply Liquid Laundry Detergent, Daybreak Fresh, 25 oz (6 Pack)",6,1,0.95,0.3043,0.2486,approved,rule,claude,
+laundry.detergent-liquid.tide-simply.daybreak-fresh.32oz,VS011209,"Tide, Simply Liquid Laundry Detergent, Daybreak Fresh, 32 oz (6 Pack)",6,1,0.95,0.0652,0.0405,approved,rule,claude,
+laundry.detergent-liquid.tide-simply.refreshing-breeze.8oz,PG265109,"Tide, Liquid Detergent, Simply Refreshing Breeze, 8 oz (12 Pack)",12,1,0.85,0.0391,0.0520,approved,rule,claude,
+laundry.detergent-liquid.tide-simply.refreshing-breeze.32oz,VS020934,"Tide, Simply Liquid HE Refreshing Breeze, 32 oz (6 Pack)",6,1,0.95,0.0522,0.0289,approved,rule,claude,
+laundry.detergent-liquid.foca.original.16oz,JC118444,"Foca, Liquid Laundry Detergent, 16 oz (12 Pack)",12,1,0.95,0.1957,0.1734,approved,rule,claude,
+laundry.detergent-liquid.foca.original.1l,DW155640-12,"Foca, Liquid Laundry Detergent, 33 oz (12 Pack)",12,1,0.95,0.2565,0.2139,approved,rule,claude,
+laundry.detergent-liquid.roma.original.16oz,JC118442,"Roma, Liquid Laundry Detergent, 16 oz (12 Pack)",12,1,0.95,0.1435,0.1098,approved,rule,claude,
+laundry.detergent-liquid.roma.original.1l,DW155730-12,"Roma, Liquid Laundry Detergent, 33 oz (12 Pack)",12,1,0.95,0.1870,0.1272,approved,rule,claude,
+laundry.detergent-liquid.ariel.revitacolor.400ml-pouch,VS097791,"Ariel, Liquid Pouch Revitacolor H.E, 400 ml (9 Pack)",9,1,0.85,0.0391,0.0231,approved,rule,claude,
+laundry.detergent-liquid.ace.regular.750ml,JC275752,"Ace, Liquid Laundry Detergent, Regular, 800 ml (9 Pack)",9,1,0.95,0.0522,0.0462,approved,rule,claude,
+laundry.detergent-liquid.zote.pink.1l,JC113222,"Zote, Liquid Laundry Soap, Pink, 1 L (12 Pack)",12,1,0.95,0.0652,0.0347,approved,rule,claude,
+laundry.detergent-liquid.blanca-nieves.original.1l,JC44885,"Blanca Nieves, Liquid Laundry Detergent, 33.81 oz (12 Pack)",12,1,0.85,0.0391,0.0289,approved,rule,claude,
+laundry.detergent-liquid.las-totally-awesome.oxygen.64oz,JC84325,"Awesome, LA’s Totally Liquid Laundry Detergent, Oxygen Powered, 64 oz (8 Pack)",8,1,,0.0435,0.0231,approved,manual,claude,Review: the matcher picked cleaning vinegar
+laundry.detergent-liquid.las-totally-awesome.oxygen.64oz,JC100494,"Awesome, LA's Totally Cleaning Vinegar, 64 oz (6 Pack)",6,1,0.85,0.0478,0.0231,rejected,rule,claude,"Review: cleaning vinegar, not detergent"
+laundry.detergent-liquid.tide-pods.spring-meadow.16ct,DW89290-6,"Tide, Pods, Spring Meadow, 16 ct (6 Pack)",6,1,0.85,0.0304,0.0231,approved,rule,claude,
+laundry.detergent-powder.ariel.original.250g,DW194370,"Ariel, Powder Detergent, 5 Load, 250 g (48 Pack)",48,1,0.95,0.4565,0.3179,approved,rule,claude,
+laundry.detergent-powder.ariel.original.250g,DW29940-36,"Ariel, Detergente En Polvo, 250 g (36 Pack)",36,1,,0.3826,0.2659,approved,manual,claude,Same 250g Ariel powder in a 36-count case
+laundry.detergent-powder.ariel.original.500g,VS94597-24,"Ariel, Powder Laundry Detergent, 17 oz, 500 g (24 Pack)",24,1,0.95,0.3696,0.2197,approved,rule,claude,
+laundry.detergent-powder.ariel.original.850g,VS020852,"Ariel, Detergent Original, 850 g (10 Pack)",10,1,0.95,0.0783,0.0694,approved,rule,claude,
+laundry.detergent-powder.ariel.original.1kg,DW191570,"Ariel, Powder Laundry Detergent, 1kg, 35.2 oz (9 Pack)",9,1,0.95,0.0522,0.0405,approved,rule,claude,
+laundry.detergent-powder.ariel.oxi-azul.500g,VS002093,"Ariel, Detergent Oxi Azul, 500 g (18 Pack)",18,1,0.95,0.4478,0.3179,approved,rule,claude,
+laundry.detergent-powder.ariel.with-downy.1-5kg,VS053382,"Ariel, Detergent With Downy, 1.5 kg (6 Pack)",6,1,0.85,0.0304,0.0173,approved,rule,claude,
+laundry.detergent-powder.tide.original.single-use,VS049340,"Tide, Powder Laundry Detergent, Original Scent, Single Use, 1.1 oz (156 Pack)",156,1,0.95,0.1435,0.0462,approved,rule,claude,
+laundry.detergent-powder.tide.original.218g,JC600065,"Tide, Powder Laundry Detergent, 218 g (20 Pack)",20,1,0.95,0.4478,0.3931,approved,rule,claude,
+laundry.detergent-powder.tide.original.500g,DW83590-12,"Tide, Powder Laundry Detergent, Original, 508 Gram, 508 g (12 Pack)",12,1,0.95,0.2130,0.1965,approved,rule,claude,
+laundry.detergent-powder.tide.with-downy.350g,JC778289,"Tide, with Downy, Powder Laundry Detergent, 350 g (36 Pack)",36,1,,0.3696,0.2659,approved,manual,claude,Archived in the item master but still ordered by laundromats (last order 2026-09-19)
+laundry.detergent-powder.tide.with-downy.350g,VS003726,"Tide, Pods Xl 2 In 1 with Downy, 9 ct (6 Pack)",6,1,0.50,0.0000,0.0000,rejected,rule,claude,"Review: Tide Pods, not powder"
+laundry.detergent-powder.tide.with-downy.690g,JC282782,"Tide, with Downy, Powder Laundry Detergent, 690 g (18 Pack)",18,1,0.95,0.1043,0.0636,approved,rule,claude,
+laundry.detergent-powder.roma.original.250g,JC40457,"Roma, Powder Laundry Detergent, 250 g (72 Pack)",72,1,0.95,0.2174,0.1329,approved,rule,claude,
+laundry.detergent-powder.roma.original.500g,DW12503-36,"Roma, Powder Laundry Detergent, 500 g (36 Pack)",36,1,0.95,0.3043,0.2197,approved,rule,claude,
+laundry.detergent-powder.roma.original.1kg,DW13686-18,"Roma, Powder Laundry Detergent, 1 kg (18 Pack)",18,1,0.95,0.0870,0.0694,approved,rule,claude,
+laundry.detergent-powder.roma.original.5kg,JC40463,"Roma, Powder Laundry Detergent, 5 kg (4 Pack)",4,1,0.95,0.0522,0.0462,approved,rule,claude,
+laundry.detergent-powder.roma.original.10kg,JC28176,"Roma, Powder Laundry Detergent, 10 kg (1 Pack)",1,1,0.85,0.0478,0.0405,approved,rule,claude,
+laundry.detergent-powder.foca.original.250g,JC52662,"Foca, Powder Laundry Detergent, 250 g (72 Pack)",72,1,0.95,0.1826,0.0347,approved,rule,claude,
+laundry.detergent-powder.foca.original.500g,DW17795-36,"Foca, Powder Laundry Detergent, 500 g (36 Pack)",36,1,0.95,0.2870,0.2023,approved,rule,claude,
+laundry.detergent-powder.foca.original.1kg,DW13654-18,"Foca, Powder Laundry Detergent, 1 kg (18 Pack)",18,1,0.95,0.0739,0.0462,approved,rule,claude,
+laundry.detergent-powder.foca.original.10kg,CO1870959,"Foca, Powder Laundry Detergent, 10 kg (1 Pack)",1,1,0.85,0.0478,0.0289,approved,rule,claude,
+laundry.detergent-powder.blanca-nieves.original.250g,VS004488,"Blanca Nieves, Laundry Detergent, 8.81 oz (72 Pack)",72,1,0.85,0.0478,0.0347,approved,rule,claude,
+laundry.detergent-powder.lirio.original.500g,JC90055,"Lirio, Laundry Detergent, Fresh Breeze Essence, 17.6 oz, 500 g (20 Pack)",20,1,0.85,0.0348,0.0405,approved,rule,claude,
+laundry.softener.suavitel.fresca-primavera.450ml,JC15136,"Suavitel, Liquid Fabric Softener, Fresca Primavera, 450 ml (12 Pack)",12,1,0.95,0.7870,0.7688,approved,rule,claude,
+laundry.softener.suavitel.fresca-primavera.1l,VS003029,"Suavitel, Liquid Fabric Softener, Fresca Primavera, 1 L (12 Pack)",12,1,0.95,0.0826,0.0925,approved,rule,claude,
+laundry.softener.suavitel.fresca-primavera.46oz,JC133855,"Suavitel, Liquid Fabric Softener, Fresca Primavera, 46 oz (6 Pack)",6,1,0.95,0.1261,0.1040,approved,rule,claude,
+laundry.softener.suavitel.fresca-primavera.8-5l,JC27610,"Suavitel, Liquid Fabric Softener, Fresca Primavera, 8.5 L (2 Pack)",2,1,0.85,0.0391,0.0405,approved,rule,claude,
+laundry.softener.suavitel.aroma-de-sol.450ml,JC15141,"Suavitel, Liquid Fabric Softener, Aroma de Sol, 450 ml (12 Pack)",12,1,0.95,0.5783,0.5376,approved,rule,claude,
+laundry.softener.suavitel.aroma-de-sol.46oz,JC133856,"Suavitel, Liquid Fabric Softener, Aroma de Sol, 46 oz (6 Pack)",6,1,0.95,0.1130,0.0867,approved,rule,claude,
+laundry.softener.suavitel.lavender.13-5oz,VS043920,"Suavitel, Soothing Lavender, 13.5 oz (12 Pack)",12,1,0.95,0.0565,0.0462,approved,rule,claude,
+laundry.softener.suavitel.lavender.46oz,SS097341,"Suavitel, Liquid Fabric Softener, Lavender, 46 oz (6 Pack)",6,1,0.95,0.0783,0.0751,approved,rule,claude,
+laundry.softener.suavitel.waterfall-mist.13-5oz,VS024446,"Suavitel, Waterfall Mist, 13.5 oz (12 Pack)",12,1,0.95,0.0522,0.0462,approved,rule,claude,
+laundry.softener.suavitel.field-flowers.13-5oz,VS042430,"Suavitel, Field Flowers, 13.5 oz (12 Pack)",12,1,0.85,0.0435,0.0289,approved,rule,claude,
+laundry.softener.suavitel-complete.aroma-de-sol.700ml,JC184229,"Suavitel, Complete Liquid Fabric Softener, Aroma de Sol, 700 ml (12 Pack)",12,1,0.95,0.1261,0.1098,approved,rule,claude,
+laundry.softener.suavitel-complete.fresca-primavera.700ml,JC184230,"Suavitel, Complete Liquid Fabric Softener, Fresca Primavera, 700 ml (12 Pack)",12,1,0.95,0.1087,0.1040,approved,rule,claude,
+laundry.softener.suavitel-complete.acqua.700ml,JC115615,"Suavitel, Complete Liquid Fabric Softener, Acqua, 700 ml (12 Pack)",12,1,0.95,0.0783,0.0809,approved,rule,claude,
+laundry.softener.downy.aroma-floral.360ml,JC118791,"Downy, Fabric Softener, Aroma Floral, 360 ml (12 Pack)",12,1,0.95,0.7000,0.6474,approved,rule,claude,
+laundry.softener.downy.aroma-floral.750ml,VS019625,"Downy, Aroma Floral, 700 ml (12 Pack)",12,1,0.75,0.0000,0.0000,approved,rule,claude,Active 700ml Aroma Floral; replaces the 800ml SKUs that stopped selling in July
+laundry.softener.downy.aroma-floral.2-6l,JC175831,"Downy, Fabric Softener, Aroma Floral, 2.8 L (6 Pack)",6,1,0.95,0.0957,0.0694,approved,rule,claude,
+laundry.softener.downy.april-fresh.8oz,PG227754,"Downy, Fabric Softener, April Fresh, 8 oz (12 Pack)",12,1,0.95,0.0826,0.1098,approved,rule,claude,
+laundry.softener.downy.april-fresh.10oz,JC26748,"Downy, Liquid Fabric Softener, April Fresh, 10 oz (12 Pack)",12,1,,0.4652,0.3757,approved,manual,claude,Archived in the item master but still ordered by laundromats (last order 2026-09-15)
+laundry.softener.downy.april-fresh.10oz,JC29878,"Downy, Dryer Sheets, April Fresh, 34 ct (12 Pack)",12,1,0.75,0.0565,0.0231,rejected,rule,claude,"Review: dryer sheets, not liquid softener"
+laundry.softener.downy.april-fresh.567ml,JC22679,"Downy, Ultra Liquid Fabric Softener, April Fresh, 19 oz (6 Pack)",6,1,,0.0391,0.0289,approved,manual,claude,Review: 19oz bottle
+laundry.softener.downy.april-fresh.567ml,JC29878,"Downy, Dryer Sheets, April Fresh, 34 ct (12 Pack)",12,1,0.75,0.0565,0.0231,rejected,rule,claude,"Review: dryer sheets, not liquid softener"
+laundry.softener.downy.elegance.750ml,JC100903,"Downy, Liquid Fabric Softener, Elegance, 750 ml (9 Pack)",9,1,0.95,0.2478,0.2081,approved,rule,claude,
+laundry.softener.downy.passion.750ml,JC100904,"Downy, Liquid Fabric Softener, Passion, 750 ml (9 Pack)",9,1,0.95,0.2261,0.2023,approved,rule,claude,
+laundry.softener.downy.romance.750ml,SS039490,"Downy, Liquid Fabric Softener, Romance, 750 ml (9 Pack)",9,1,0.95,0.2130,0.1908,approved,rule,claude,
+laundry.softener.downy.romance.2-6l,JC129502,"Downy, Liquid Fabric Softener, Romance, 2.6 L (6 Pack)",6,1,0.85,0.0391,0.0405,approved,rule,claude,
+laundry.softener.downy.intense-floral.567ml,VS021022,"Downy, Intense Floral, 567 ml (12 Pack)",12,1,0.95,0.0870,0.0462,approved,rule,claude,
+laundry.softener.downy.intense-floral.750ml,VS054137,"Downy, Intense Floral, 730 ml (9 Pack)",9,1,0.95,0.2043,0.2486,approved,rule,claude,
+laundry.softener.downy.amanecer.360ml,VS096219,"Downy, Amanecer, 12.2 oz (12 Pack)",12,1,0.95,0.0826,0.0347,approved,rule,claude,
+laundry.softener.downy.amanecer.567ml,VS025214,"Downy, Intense Amanecer, 567 ml (12 Pack)",12,1,0.85,0.0304,0.0173,approved,rule,claude,
+laundry.softener.downy.amanecer.750ml,JC119243,"Downy, Liquid Fabric Softener, Amanecer, 730 ml (9 Pack)",9,1,0.95,0.1043,0.0983,approved,rule,claude,
+laundry.softener.downy.cool-cotton.10oz,JC104112,"Downy, Liquid Fabric Softener, Cool Cotton, 10 oz (12 Pack)",12,1,,0.1130,0.0925,approved,manual,claude,Archived in the item master but still ordered by laundromats (last order 2026-09-23)
+laundry.softener.downy.cool-cotton.10oz,VS010049,"Downy, Ultra Cool Cotton Fabric Softener (4 Pack)",4,1,0.55,0.0000,0.0000,rejected,rule,claude,Review: no size; the 10oz bottle is JC104112
+laundry.softener.downy.suave-gentil.750ml,VS054076,"Downy, Suave & Gentil Fabric Softener, 730 ml (9 Pack)",9,1,0.95,0.0826,0.0983,approved,rule,claude,
+laundry.softener.downy.intense-exotico.567ml,VS052119,"Downy, Intense Exotico, 567 ml (12 Pack)",12,1,0.85,0.0304,0.0231,approved,rule,claude,
+laundry.softener.downy.intense-exotico.750ml,VS253977,"Downy, Intense Exótico Fabric Softener, 730 ml (9 Pack)",9,1,0.95,0.0652,0.0694,approved,rule,claude,
+laundry.softener.gain.original.10oz,DW137580-12,"Gain, Liquid Fabric Softener, Original, 10 oz (12 Pack)",12,1,0.95,0.1391,0.1098,approved,rule,claude,
+laundry.softener.gain.super-fresh-blast.10oz,VS048962,"Gain, Fabric Softener Super Fresh Blast, 10 oz (12 Pack)",12,1,0.95,0.0870,0.0578,approved,rule,claude,
+laundry.softener.ensueno.baby.22oz,JC100764,"Ensueño, Liquid Fabric Softener, Baby, 22 oz (12 Pack)",12,1,0.95,0.0870,0.0694,approved,rule,claude,
+laundry.softener.ensueno.spring-fresh.22oz,JC100761,"Ensueño, Liquid Fabric Softener, Spring Fresh, 22 oz (12 Pack)",12,1,0.95,0.0522,0.0462,approved,rule,claude,
+laundry.softener.ensueno.violet.22oz,JC100763,"Ensueño, Liquid Fabric Softener, Violet Bouquet, 22 oz (12 Pack)",12,1,0.85,0.0348,0.0289,approved,rule,claude,
+laundry.dryer-sheets.bounce.outdoor-fresh.15ct,JC26681,"Bounce, Fabric Softener, Dryer Sheets, Outdoor Fresh, 15 ct (15 Pack)",15,1,0.95,0.5522,0.5202,approved,rule,claude,
+laundry.dryer-sheets.bounce.outdoor-fresh.34ct,DW72520-12,"Bounce, Fabric Softener, Dryer Sheets, Outdoor Fresh, 34 ct (12 Pack)",12,1,0.85,0.0391,0.0231,approved,rule,claude,
+laundry.dryer-sheets.gain.original.15ct,JC22226,"Gain, Fabric Softener, Dryer Sheets, Original, 15 ct (15 Pack)",15,1,0.95,0.4913,0.4566,approved,rule,claude,
+laundry.dryer-sheets.gain.super-fresh-blast.15ct,JC117170,"Gain, Fabric Softener Dryer Sheets, Super Fresh Blast, 15 ct (15 Pack)",15,1,0.95,0.0609,0.0347,approved,rule,claude,
+laundry.dryer-sheets.suavitel.fresca-primavera.20ct,JC116204,"Suavitel, Fabric Softener Dryer Sheets, Fresca Primavera, 20 ct (15 Pack)",15,1,0.95,0.3957,0.2832,approved,rule,claude,
+laundry.dryer-sheets.suavitel.fresca-primavera.36ct,JC116205,"Suavitel, Complete Fabric Softener Dryer Sheets, Fresca Primavera, 36 ct (12 Pack)",12,1,0.95,0.0522,0.0289,approved,rule,claude,
+laundry.dryer-sheets.suavitel.lavender.18ct,JC391973,"Suavitel, Complete Fabric Softener Dryer Sheets, Lavender, 18 ct (15 Pack)",15,1,0.95,0.4130,0.3410,approved,rule,claude,
+laundry.dryer-sheets.suavitel.aroma-de-sol.18ct,JC391971,"Suavitel, Complete Fabric Softener Dryer Sheets, Aroma de Sol, 18 ct (15 Pack)",15,1,0.95,0.3217,0.2717,approved,rule,claude,
+laundry.dryer-sheets.suavitel.waterfall-mist.18ct,JC391970,"Suavitel, Complete Fabric Softener Dryer Sheets, Waterfall Mist, 18 ct (15 Pack)",15,1,0.95,0.2043,0.1272,approved,rule,claude,
+laundry.bleach-stain.clorox.regular.11oz,JC109310,"Clorox, Bleach, Disinfecting, 11 oz (28 Pack)",28,1,0.95,0.6696,0.6705,approved,rule,claude,
+laundry.bleach-stain.clorox.regular.24oz,JC82450,"Clorox, Bleach, Disinfecting, 24 oz (12 Pack)",12,1,0.95,0.1348,0.1214,approved,rule,claude,
+laundry.bleach-stain.clorox.regular.43oz,JC108890,"Clorox, Bleach, Original, 43 oz (6 Pack)",6,1,0.95,0.0739,0.0694,approved,rule,claude,
+laundry.bleach-stain.clorox.regular.121oz,JC82589,"Clorox, Bleach, Disinfecting, 121 oz (3 Pack)",3,1,0.95,0.0522,0.0347,approved,rule,claude,
+laundry.bleach-stain.cloralen.regular.16-9oz,DW13677-20,"Cloralen, Bleach, 16.9 oz (20 Pack)",20,1,0.95,0.5783,0.5202,approved,rule,claude,
+laundry.bleach-stain.cloralen.regular.32oz,JC86000,"Cloralen, Bleach, Regular, 32 oz (15 Pack)",15,1,0.95,0.1478,0.1272,approved,rule,claude,
+laundry.bleach-stain.cloralen.color-safe.32oz,JC86366,"Cloralen, Stain Remover, Color Safe, 32 oz (15 Pack)",15,1,0.85,0.0478,0.0405,approved,rule,claude,
+laundry.bleach-stain.las-totally-awesome.bleach.96oz,JC80429,"Awesome, LA’s Totally Bleach, Fresh Scent, 96 oz (6 Pack)",6,1,0.95,0.1261,0.0925,approved,rule,claude,
+laundry.bleach-stain.las-totally-awesome.bleach.1gal,JC80428,"Awesome, LA’s Totally Bleach, Fresh Scent, 128 oz (4 Pack)",4,1,0.95,0.0696,0.0462,approved,rule,claude,
+laundry.bleach-stain.soilove.original.16oz,DW13343-12,"Soilove, Soil Stain Remover, 16 oz (12 Pack)",12,1,0.95,0.7348,0.7052,approved,rule,claude,
+laundry.bleach-stain.soilove.original.1gal,JC108761,"Soilove, Laundry Soil-Stain Remover, 1 gal (4 Pack)",4,1,0.85,0.0478,0.0405,approved,rule,claude,
+laundry.bleach-stain.soilove.spray.22oz,JC220005,"Soilove, Laundry Stain Remover Spray, 22 oz (12 Pack)",12,1,0.85,0.0435,0.0347,approved,rule,claude,
+laundry.bleach-stain.zote.pink.7oz-bar,JC00572,"Zote, Laundry Soap, Pink, 7 oz (50 Pack)",50,1,0.95,0.0565,0.0347,approved,rule,claude,
+laundry.bleach-stain.zote.pink.14oz-bar,JC00571,"Zote, Laundry Soap, Pink, 14.1 oz (25 Pack)",25,1,0.85,0.0478,0.0347,approved,rule,claude,
+laundry.accessories.laundry-bag,SS023633,"Pride, Laundry Bag Assorted Colors, 29x20x11 in (36 Pack)",36,1,0.40,0.0000,0.0000,approved,rule,claude,
+laundry.accessories.laundry-bag,VS013880,"Laundry Bags With Zipper Assorted Colors, 19x20 in (12 Pack)",12,2,0.40,0.0000,0.0000,approved,rule,claude,
+laundry.accessories.laundry-bag,VS098939,Laundry Bag W-zipper 26x22x12 (12 Pack),12,3,0.40,0.0000,0.0000,rejected,rule,claude,Review: slot holds two bags
+laundry.accessories.laundry-bag,VS005841,Laundry Bag Assorted Colors & Print (12 Pack) (12 Pack),12,1,,0.0391,0.0231,approved,manual,claude,Archived in the item master but still ordered by laundromats (last order 2026-08-11)
+laundry.accessories.laundry-bag,JC25631,"Laundry Bag with Zipper, 25.5 x 29.5 x 11"" (12 Pack)",12,1,,0.0391,0.0231,approved,manual,claude,Archived in the item master but still ordered by laundromats (last order 2026-09-13)
+laundry.detergent-liquid.tide-simply.clean-fresh.10oz,DW137560-12,"Tide, Simply Liquid Laundry Detergent, Clean & Fresh, 10 oz (12 Pack)",12,1,,0.5391,0.4451,approved,manual,claude,Archived in the item master but still ordered by laundromats (last order 2026-09-30)
+laundry.softener.suavitel.fresca-primavera.850ml,DW67780-12,"Suavitel, Liquid Fabric Softener, Fresca Primavera, 850 ml (12 Pack)",12,1,,0.2739,0.2139,approved,manual,claude,Archived in the item master but still ordered by laundromats (last order 2026-09-10)
+laundry.softener.suavitel.aroma-de-sol.850ml,JC86624,"Suavitel, Liquid Fabric Softener, Aroma de Sol, 850 ml (12 Pack)",12,1,,0.1957,0.1503,approved,manual,claude,Archived in the item master but still ordered by laundromats (last order 2026-09-30)
+laundry.softener.suavitel.anochecer.850ml,JC59926,"Suavitel, Liquid Fabric Softener, Anochecer, 850 ml (12 Pack)",12,1,,0.0826,0.0751,approved,manual,claude,Archived in the item master but still ordered by laundromats (last order 2026-09-26)

@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { configFromEnv, credentialsFromEnv, explainAwsError, fillCatalogSkus, pageToRows, prepareSql, toCsv } from "./lib.ts";
+import { configFromEnv, credentialsFromEnv, explainAwsError, fillCatalogSkus, fillStoreType, pageToRows, prepareSql, toCsv } from "./lib.ts";
 
 describe("configFromEnv", () => {
   const keys = { AWS_ACCESS_KEY_ID: "k", AWS_SECRET_ACCESS_KEY: "s" };
@@ -64,5 +64,17 @@ describe("fillCatalogSkus", () => {
   it("refuses SKUs that could change the query", () => {
     expect(() => fillCatalogSkus("IN ({{CATALOG_SKUS}})", ["A1", "x') OR ('1'='1"])).toThrow(/unexpected characters/);
     expect(() => fillCatalogSkus("IN ({{CATALOG_SKUS}})", [])).toThrow(/no SKUs/);
+  });
+});
+
+describe("fillStoreType", () => {
+  it("fills the store type, and leaves SQL without the placeholder alone", () => {
+    expect(fillStoreType("WHERE store_type = '{{STORE_TYPE}}'", "Laundromat")).toBe("WHERE store_type = 'Laundromat'");
+    expect(fillStoreType("SELECT 1", undefined)).toBe("SELECT 1");
+  });
+
+  it("refuses a missing or unsafe store type", () => {
+    expect(() => fillStoreType("'{{STORE_TYPE}}'", undefined)).toThrow(/names no store type/);
+    expect(() => fillStoreType("'{{STORE_TYPE}}'", "x' OR '1'='1")).toThrow(/unexpected characters/);
   });
 });

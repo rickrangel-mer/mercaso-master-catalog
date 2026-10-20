@@ -66,6 +66,14 @@ export function fillCatalogSkus(sql: string, skus: string[]): string {
   return sql.replaceAll("{{CATALOG_SKUS}}", list.map((s) => `'${s}'`).join(", "));
 }
 
+/** Fills the {{STORE_TYPE}} placeholder with a store type name (letters, digits, spaces, / & -). */
+export function fillStoreType(sql: string, storeType: string | undefined): string {
+  if (!sql.includes("{{STORE_TYPE}}")) return sql;
+  if (!storeType) throw new Error("{{STORE_TYPE}}: this export names no store type");
+  if (!/^[A-Za-z0-9 /&-]+$/.test(storeType)) throw new Error(`{{STORE_TYPE}}: unexpected characters in "${storeType}"`);
+  return sql.replaceAll("{{STORE_TYPE}}", storeType);
+}
+
 /** Turns one page of GetQueryResults into rows of strings. The first page's first row is the header. */
 export function pageToRows(resultSet: ResultSet | undefined): string[][] {
   return (resultSet?.Rows ?? []).map((r) => (r.Data ?? []).map((d) => d.VarCharValue ?? ""));

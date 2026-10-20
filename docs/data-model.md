@@ -10,10 +10,10 @@ pnpm validate    # check every data file; exits 1 on errors
 pnpm build       # write dist/<store-type>.json (refuses if validation fails)
 pnpm test        # unit tests for the validator and build
 pnpm typecheck
-pnpm match       # propose Mercaso SKUs into data/matches/liquor.csv (needs pnpm athena:export)
-pnpm gaps        # write docs/exploration/liquor-gaps.md from the match file
-pnpm review export  # docs/review/liquor-pending.csv (approve/reject) and liquor-gaps.csv (write SKUs)
-pnpm review import  # apply the filled-in sheets to data/matches/liquor.csv
+pnpm match [store-type]   # propose Mercaso SKUs into data/matches/<store-type>.csv (default liquor; needs pnpm athena:export)
+pnpm gaps [store-type]    # write docs/exploration/<store-type>-gaps.md from the match file
+pnpm review export [store-type]  # docs/review/<store-type>-pending.csv (approve/reject) and -gaps.csv (write SKUs)
+pnpm review import [store-type]  # apply the filled-in sheets to data/matches/<store-type>.csv
 pnpm stores      # store penetration: dist/stores/liquor.json, liquor-stores.csv, liquor-voids.csv (docs/exploration/store-penetration.md)
 pnpm member-discount  # member discounts: dist/member-discount/liquor.csv and liquor-summary.md (docs/exploration/member-discount.md)
 ```
@@ -22,7 +22,7 @@ CI runs all four on every pull request and on pushes to `main`, then builds the 
 
 `pnpm web:dev` builds the catalog and starts the viewer. It reads `dist/*.json`, copied into `apps/web/public/data/` by its `copy-data` script.
 
-`pnpm web:html` builds the same site as one self-contained HTML file (code, styles and data inlined, via esbuild; `apps/web/scripts/single-html.mjs`). It writes `dist/site/mercaso-liquor-catalog-<date>.html` with price and margin (when `data/raw/pricing.csv` exists) and `...-no-prices.html` without them. The files open straight from disk and make no network requests; the date is the price and cost snapshot and shows in the header.
+`pnpm web:html` builds the same site as one self-contained HTML file (code, styles and data inlined, via esbuild; `apps/web/scripts/single-html.mjs`). It writes `dist/site/mercaso-master-catalog-<date>.html` with price and margin (when `data/raw/pricing.csv` exists) and `...-no-prices.html` without them. The files open straight from disk and make no network requests; the date is the price and cost snapshot and shows in the header.
 
 ## Files
 
@@ -128,9 +128,9 @@ A priority covers the node's whole subtree until a descendant sets its own. Ever
 node_id,mercaso_sku,title,case_pack,rank,confidence,share_12m,share_90d,status,source,reviewer,note
 ```
 
-`node_id` must be a size or assortment-slot leaf. `title` is Mercaso's item title, shown in the viewer. `share_12m` and `share_90d` are the share of active CA liquor stores that bought the SKU in the last 12 months and 90 days (0 to 1), refreshed by `pnpm match`. `status` is `auto`, `approved` or `rejected`. `source` is `rule`, `llm` or `manual`. Approved and rejected rows need a reviewer. `case_pack` carries the case option (rule 3), so one leaf can hold a 24-count and a 35-count row.
+`node_id` must be a size or assortment-slot leaf. `title` is Mercaso's item title, shown in the viewer. `share_12m` and `share_90d` are the share of the store type's active CA stores (liquor stores, laundromats) that bought the SKU in the last 12 months and 90 days (0 to 1), refreshed by `pnpm match`. `status` is `auto`, `approved` or `rejected`. `source` is `rule`, `llm` or `manual`. Approved and rejected rows need a reviewer. `case_pack` carries the case option (rule 3), so one leaf can hold a 24-count and a 35-count row.
 
-`pnpm match` (`scripts/match/`) proposes rows as `auto`/`rule`, ranked by how many CA liquor stores bought each SKU. A branded leaf gets its top seller plus other case packs of that product; a slot gets its suggested brands first. Rerunning keeps approved, rejected and `manual` rows and adds no proposals to a leaf that already has an approved or hand-added SKU, so a review is never lost. To fix a wrong match, set it to `rejected` with a reviewer and rerun; the next candidate takes its place.
+`pnpm match` (`scripts/match/`) proposes rows as `auto`/`rule`, ranked by how many CA stores of the type bought each SKU (from `data/raw/<store-type>_sales_by_sku.csv`). A branded leaf gets its top seller plus other case packs of that product; a slot gets its suggested brands first. Rerunning keeps approved, rejected and `manual` rows and adds no proposals to a leaf that already has an approved or hand-added SKU, so a review is never lost. To fix a wrong match, set it to `rejected` with a reviewer and rerun; the next candidate takes its place. A leaf two store types share (laundromats reuse liquor's drink and snack leaves) starts from the other type's approved SKUs, copied as approved with a note; the matcher then adds only SKUs at least 3% of this type's stores bought (another case pack, say).
 
 The build computes coverage per leaf from approved rows:
 

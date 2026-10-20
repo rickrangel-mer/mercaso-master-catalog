@@ -20,7 +20,7 @@ export interface SkuRow {
   title?: string;
   status?: SkuStatus;
   casePack?: number;
-  /** Share of CA liquor stores that bought the SKU (0–1). */
+  /** Share of the store type's CA stores that bought the SKU (0–1). */
   share12?: number;
   share90?: number;
   /** Today's case price without CRV (the promo price when on promo). Present only when the site has prices. */

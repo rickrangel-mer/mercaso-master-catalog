@@ -82,9 +82,14 @@ Goal: agree on the liquor-store taxonomy and where the branded/assortment line f
 
 - Extra discounts for members on catalog SKUs that few member stores buy: under 15% $0.50, under 10% $1, under 5% $2, never below a 5% margin. Brief and open decisions: `docs/exploration/member-discount.md`.
 
+### Laundromat store type (started 2026-10-20)
+
+- The second store type, built from what CA laundromats buy from Mercaso (no prior outline): a new branded `laundry` department (customer laundry and wash-and-fold bulk), plus vending drinks and snacks reused from the liquor tree. Store operating supplies are out of scope (Rick). Priorities from the share of laundromats buying each item: must 30%+, should 10–30%, nice 3–10%.
+- **Status: draft, encoded and matched (188 items: 26 must, 52 should, 110 nice), waiting for Rick's review.** `docs/exploration/laundromat.md`. Member discounts for laundromats come after the review.
+
 ### Later (out of scope now)
 
-Editable UI with DB persistence; laundromat and market store types (reuse taxonomy, add store-type files); API serving `dist/*.json` to the Mercaso app; per-store gap analysis (now Phase 5).
+Editable UI with DB persistence; market store types (reuse taxonomy, add store-type files); API serving `dist/*.json` to the Mercaso app; per-store gap analysis (now Phase 5).
 
 Backlog (future enhancements, not committed to):
 - **Host the site behind company sign-in**, so it refreshes in one place instead of sharing a file. Only worth it if regular use picks up; it contains prices and costs, so never a public host (added 2026-09-30).

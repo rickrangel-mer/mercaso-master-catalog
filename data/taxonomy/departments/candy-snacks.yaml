@@ -518,6 +518,7 @@ children:
       3oz: { name: 3oz bag, size_class: single }
       3-75oz: { name: 3.75oz bag, size_class: single }
       bag: { name: Single bag, size_class: single }
+      vending-bag: { name: 1–2oz vending bag, size_class: single }
     children:
       - key: frito-lay
         name: Frito-Lay
@@ -527,28 +528,35 @@ children:
           small bags 8–24% (rule 4 revised 2026-09-29).
         sizes: [single-bag, xvl]
         children:
-          - { key: cheetos-flamin-hot, name: Cheetos Crunchy Flamin' Hot, kind: variant }
+          - { key: cheetos-flamin-hot, name: Cheetos Crunchy Flamin' Hot, kind: variant, sizes: [single-bag, xvl, vending-bag] }
           - { key: cheetos-xxtra-flamin-hot, name: Cheetos Crunchy Xxtra Flamin' Hot, kind: variant }
           - { key: cheetos-flamin-hot-limon, name: Cheetos Crunchy Flamin' Hot Limón, kind: variant, sizes: [single-bag] }
-          - { key: cheetos-crunchy, name: Cheetos Crunchy, kind: variant }
-          - { key: chesters-fries-flamin-hot, name: Chester's Fries Flamin' Hot, kind: variant, sizes: [single-bag] }
-          - { key: doritos-nacho, name: Doritos Nacho Cheese, kind: variant }
-          - { key: doritos-cool-ranch, name: Doritos Cool Ranch, kind: variant, sizes: [single-bag] }
+          - { key: cheetos-crunchy, name: Cheetos Crunchy, kind: variant, sizes: [single-bag, xvl, vending-bag] }
+          - { key: chesters-fries-flamin-hot, name: Chester's Fries Flamin' Hot, kind: variant, sizes: [single-bag, vending-bag] }
+          - { key: doritos-nacho, name: Doritos Nacho Cheese, kind: variant, sizes: [single-bag, xvl, vending-bag] }
+          - { key: doritos-cool-ranch, name: Doritos Cool Ranch, kind: variant, sizes: [single-bag, vending-bag] }
           - { key: doritos-flamin-hot-nacho, name: Doritos Flamin' Hot Nacho, kind: variant, sizes: [single-bag] }
           - { key: doritos-flamas, name: Doritos Flamas, kind: variant, sizes: [single-bag] }
           - { key: doritos-dinamita, name: Doritos Dinamita, kind: variant, sizes: [xvl] }
           - { key: fritos-original, name: Fritos Original, kind: variant, sizes: [single-bag] }
           - { key: fritos-turbos-flamas, name: Fritos Turbos Flamas, kind: variant, sizes: [xvl] }
           - { key: funyuns-flamin-hot, name: Funyuns Flamin' Hot, kind: variant, sizes: [xvl] }
-          - { key: munchies-flamin-hot, name: Munchies Flamin' Hot, kind: variant }
-          - { key: lays-classic, name: Lay's Classic, kind: variant, sizes: [xvl] }
+          - { key: munchies-flamin-hot, name: Munchies Flamin' Hot, kind: variant, sizes: [single-bag, xvl, vending-bag] }
+          - { key: lays-classic, name: Lay's Classic, kind: variant, sizes: [xvl, vending-bag] }
           - { key: ruffles-cheddar, name: Ruffles Cheddar, kind: variant, sizes: [xvl] }
+      - key: chip-variety-pack
+        name: Chip variety pack (1–2oz bags)
+        kind: assortment_slot
+        match_terms: ["variety pack"]
+        target_count: { min: 1, max: 2 }
+        brand_hints: [Frito Lay]
+        note: Vending; club-store case of mixed 1oz bags. Laundromats buy these (10% of them for the top pack).
       - key: takis
         name: Takis
         kind: brand_line
         sizes: [single-bag, 4oz-xvl]
         children:
-          - { key: fuego, name: Fuego, kind: variant }
+          - { key: fuego, name: Fuego, kind: variant, sizes: [single-bag, 4oz-xvl, vending-bag] }
           - { key: blue-heat, name: Blue Heat, kind: variant }
           - { key: crunchy-fajitas, name: Crunchy Fajitas, kind: variant }
       - key: pringles
@@ -784,6 +792,8 @@ children:
       3oz-mini: { name: 3oz mini bag, size_class: single }
       4oz: { name: 4oz, size_class: single }
       4-9oz: { name: 4.9oz, size_class: single }
+      2oz: { name: 2oz, size_class: single }
+      3-71oz: { name: 3.71oz, size_class: single }
     children:
       - key: oreo
         name: Oreo
@@ -805,7 +815,22 @@ children:
         sizes: [2-5oz]
         children:
           - { key: peanut-butter, name: Peanut Butter, kind: variant }
-          - { key: mini-sandwich-cremes, name: Mini Sandwich Cremes, kind: variant }
+          - { key: mini-sandwich-cremes, name: Mini Sandwich Cremes, kind: variant, sizes: [2-5oz, 3-71oz] }
+      - key: famous-amos
+        name: Famous Amos
+        kind: brand_line
+        note: Vending cookie (laundromats).
+        sizes: [2oz]
+        children:
+          - { key: chocolate-chip, name: Chocolate Chip, kind: variant }
+      - key: knotts
+        name: Knott's Berry Farm
+        kind: brand_line
+        note: Vending shortbread (laundromats).
+        sizes: [2oz]
+        children:
+          - { key: strawberry, name: Strawberry Shortbread, kind: variant }
+          - { key: raspberry, name: Raspberry Shortbread, kind: variant }
       - key: keebler
         name: Keebler
         kind: brand_line

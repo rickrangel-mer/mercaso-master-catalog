@@ -36,7 +36,7 @@ children:
         note: The 24oz bottle replaced the 1L in April 2026 (sales cross-check 1.1).
         sizes: [12oz-can, 16oz-can, 20oz, 24oz, 2l]
         children:
-          - { key: classic, name: Classic, kind: variant }
+          - { key: classic, name: Classic, kind: variant, sizes: [12oz-can, 16oz-can, 500ml, 20oz, 24oz, 2l] }
           - { key: zero-sugar, name: Zero Sugar, kind: variant }
           - { key: diet, name: Diet Coke, kind: variant }
           - { key: cherry, name: Cherry, kind: variant, sizes: [12oz-can, 16oz-can, 20oz, 2l] }

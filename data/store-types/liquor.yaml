@@ -27,6 +27,23 @@ include:
   - health-beauty
   - grocery
 
+# Laundromat additions to the shared taxonomy (vending sizes and lines, docs/exploration/laundromat.md).
+# Not reviewed for liquor stores, so liquor leaves them out.
+exclude:
+  - scd.cola.coca-cola.classic.500ml
+  - candy-snacks.salty-snacks.frito-lay.cheetos-flamin-hot.vending-bag
+  - candy-snacks.salty-snacks.frito-lay.cheetos-crunchy.vending-bag
+  - candy-snacks.salty-snacks.frito-lay.chesters-fries-flamin-hot.vending-bag
+  - candy-snacks.salty-snacks.frito-lay.doritos-nacho.vending-bag
+  - candy-snacks.salty-snacks.frito-lay.doritos-cool-ranch.vending-bag
+  - candy-snacks.salty-snacks.frito-lay.munchies-flamin-hot.vending-bag
+  - candy-snacks.salty-snacks.frito-lay.lays-classic.vending-bag
+  - candy-snacks.salty-snacks.chip-variety-pack
+  - candy-snacks.salty-snacks.takis.fuego.vending-bag
+  - candy-snacks.cookies-cakes.grandmas.mini-sandwich-cremes.3-71oz
+  - candy-snacks.cookies-cakes.famous-amos
+  - candy-snacks.cookies-cakes.knotts
+
 priority:
   # --- SCD ---------------------------------------------------------------
   # Single-serve is the core. Take-home 2L is must only for the top two cola

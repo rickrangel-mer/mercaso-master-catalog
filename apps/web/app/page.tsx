@@ -183,10 +183,14 @@ export default function Page() {
       {tab === "overview" && <div className="page">{index ? <Overview index={index} rows={rows} onTab={setTab} onJump={jumpTo} /> : loading}</div>}
       {tab === "stores" && (
         <div className="page">
-          <StoresView base={stores} onJumpItem={jumpTo} />
+          {stores && stores.store_type !== storeType ? (
+            <p className="muted">The store view covers {stores.store_type} stores only so far; switch the store type to see it.</p>
+          ) : (
+            <StoresView base={stores} onJumpItem={jumpTo} />
+          )}
         </div>
       )}
-      {tab === "table" && <div className="page">{index ? <SkuTable rows={rows} pricesAsOf={prices?.as_of} onJump={jumpTo} /> : loading}</div>}
+      {tab === "table" && <div className="page">{index ? <SkuTable rows={rows} pricesAsOf={prices?.as_of} onJump={jumpTo} storeName={index.catalog.name} /> : loading}</div>}
       {tab === "chart" && (
         <>
           <Toolbar filters={filters} onFilters={setFilters} onExpandAll={expandAll} onCollapseAll={collapseAll} />

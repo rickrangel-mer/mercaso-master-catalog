@@ -75,7 +75,7 @@ try {
 }
 const isLive = (r: SalesRow) => r.status === "ACTIVE" || r.status === "";
 const live = rows.filter(isLive);
-const activeStores = Number(raw[0]?.liquor_stores_active) || 0;
+const activeStores = Number(raw[0]?.stores_active ?? raw[0]?.liquor_stores_active) || 0;
 
 // Share of stores buying anything in each Mercaso category; optional.
 const reach = new Map<string, number>();

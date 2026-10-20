@@ -34,6 +34,7 @@ export const DEPARTMENT_SCOPE: Record<string, string[]> = {
   household: ["Household & Kitchen", "Cleaning & Laundry", "Restaurants & Bars", "Stationery & School Supplies", "Auto & Electronics", "Party & Gift Supplies", "Store Supplies"],
   "health-beauty": ["Health & Beauty", "Baby", "Beverage"],
   grocery: ["Grocery", "Pet", "Candy & Snacks"],
+  laundry: ["Cleaning & Laundry", "Restaurants & Bars"],
 };
 
 /** Variant names that mean "the plain one"; they match SKUs that name no sibling variant. */

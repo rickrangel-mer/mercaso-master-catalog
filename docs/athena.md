@@ -30,7 +30,7 @@ All in `scripts/athena/sql/`:
 | File | Purpose | Output |
 |---|---|---|
 | `products.sql` | Live items with UPCs and attributes, no prices or costs | `data/raw/products.csv` |
-| `liquor_sales_by_sku.sql` | Trailing 12 months, CA liquor stores, one row per SKU: cases, units, revenue, orders, the share of liquor stores that bought it, the same share over the last 90 days, and first and last order dates (so replaced items show up) | `data/raw/liquor_sales_by_sku.csv` |
+| `sales_by_sku.sql` | Trailing 12 months, CA stores of one type (`liquor-sales`: liquor stores, `laundromat-sales`: laundromats), one row per SKU: cases, units, revenue, orders, the share of those stores that bought it, the same share over the last 90 days, and first and last order dates (so replaced items show up) | `data/raw/liquor_sales_by_sku.csv`, `laundromat_sales_by_sku.csv` |
 | `liquor_reach_by_category.sql` | Same stores and period: the share of liquor stores that bought anything in each Mercaso department, category and sub-category | `data/raw/liquor_reach_by_category.csv` |
 | `pricing.sql` | Today's case price per live item (the promo price when on promo, else the regular price without CRV) and Finale's average case cost with the case CRV taken out (`average_cost - regular_crv * package_size`), for the site's price and margin columns | `data/raw/pricing.csv` |
 | `liquor_stores.sql` | One row per CA liquor store that ordered in 12 months: name, number, organization, city, ZIP, first and last order dates, orders in 12 months, 90 days and the 90 days before, 12-month spend. No contact details | `data/raw/liquor_stores.csv` |

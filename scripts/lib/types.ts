@@ -124,7 +124,7 @@ export interface MatchRow {
   case_pack?: number;
   rank?: number;
   confidence?: number;
-  /** Share of active CA liquor stores that bought the SKU in 12 months and in the last 90 days. */
+  /** Share of the store type's active CA stores that bought the SKU in 12 months and in the last 90 days. */
   share_12m?: number;
   share_90d?: number;
   status: MatchStatus;

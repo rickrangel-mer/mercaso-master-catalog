@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import type { OutputNode, StoreTypeCatalog } from "./tree.ts";
-import { expandForHits, filterTree, indexCatalog, NO_FILTERS, visibleTree } from "./tree.ts";
+import { expandForHits, filterTree, indexCatalog, NO_FILTERS, storesNoun, visibleTree } from "./tree.ts";
 
 const gap = { status: "gap" as const, approved: 0, pending: 0, rejected: 0, skus: [] };
 
@@ -126,5 +126,12 @@ describe("expansion", () => {
       ["scd", 2, 0],
       ["home", 0, 1],
     ]);
+  });
+});
+
+describe("storesNoun", () => {
+  it("names the stores a store type counts", () => {
+    expect(storesNoun("Liquor store")).toBe("liquor stores");
+    expect(storesNoun("Laundromat")).toBe("laundromats");
   });
 });

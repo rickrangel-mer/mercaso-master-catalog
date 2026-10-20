@@ -188,3 +188,8 @@ export const KIND_LABEL: Record<ViewNode["kind"], string> = {
   size: "Size (branded leaf)",
   assortment_slot: "Assortment slot",
 };
+
+/** A store type's name as the stores it counts: "Liquor store" -> "liquor stores", "Laundromat" -> "laundromats". */
+export function storesNoun(name: string): string {
+  return `${name.toLowerCase()}s`;
+}

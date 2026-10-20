@@ -1,8 +1,8 @@
 // Builds the whole site as one self-contained HTML file that opens from disk (double-click, no
 // server): code, styles and data are inlined. Run `pnpm web:html` at the repo root.
 //
-//   dist/site/mercaso-liquor-catalog-<date>.html            with price and margin (if data/raw/pricing.csv exists)
-//   dist/site/mercaso-liquor-catalog-<date>-no-prices.html  without them, for audiences that should not see costs
+//   dist/site/mercaso-master-catalog-<date>.html            with price and margin (if data/raw/pricing.csv exists)
+//   dist/site/mercaso-master-catalog-<date>-no-prices.html  without them, for audiences that should not see costs
 //
 // dist/ is gitignored. The priced file contains prices and costs: share it privately.
 import { mkdirSync, readFileSync, writeFileSync, existsSync } from "node:fs";
@@ -75,7 +75,7 @@ const page = (withPrices) => {
 };
 
 mkdirSync(outDir, { recursive: true });
-const base = join(outDir, `mercaso-liquor-catalog-${snapshot}`);
+const base = join(outDir, `mercaso-master-catalog-${snapshot}`);
 const written = [];
 if (prices) {
   writeFileSync(`${base}.html`, page(true));

@@ -1,5 +1,6 @@
 # Departments in display order. Each key has a file data/taxonomy/departments/<key>.yaml.
-# All eight liquor-store departments from docs/exploration/liquor.md are encoded.
+# The eight liquor-store departments from docs/exploration/liquor.md, then laundry (laundromats,
+# docs/exploration/laundromat.md).
 departments:
   - scd
   - drinks
@@ -9,3 +10,4 @@ departments:
   - household
   - health-beauty
   - grocery
+  - laundry

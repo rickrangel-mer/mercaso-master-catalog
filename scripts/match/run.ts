@@ -1,14 +1,17 @@
 /**
- * Phase 4 matcher for the liquor store type. Reads data/raw/products.csv and
- * data/raw/liquor_sales_by_sku.csv (from `pnpm athena:export`) and writes proposed matches to
- * data/matches/liquor.csv as status `auto`, source `rule`.
+ * Phase 4 matcher for one store type (`pnpm match [store-type]`, default liquor). Reads
+ * data/raw/products.csv and data/raw/<store-type>_sales_by_sku.csv (from `pnpm athena:export`)
+ * and writes proposed matches to data/matches/<store-type>.csv as status `auto`, source `rule`.
  *
  * Rows a person already approved or rejected, and rows added by hand (source `manual`), are kept
  * as they are, and no auto row is added for a SKU already on that leaf, so rerunning after a
  * review is safe.
  *
+ * A leaf this store type shares with another store type (the same taxonomy node) starts from that
+ * type's approved SKUs: they are copied as approved, with a note naming where they came from.
+ *
  * Only ACTIVE items are matched. Per leaf it keeps the best 3 SKUs for a branded size leaf and
- * target max + 1 for an assortment slot, ranked by how many liquor stores bought them.
+ * target max + 1 for an assortment slot, ranked by how many stores of the type bought them.
  */
 import { readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
@@ -21,7 +24,8 @@ import { buildCatalogJson } from "../lib/output.ts";
 import { keepCasePacks, matchCatalog, type Product } from "./lib.ts";
 
 const ROOT = process.cwd();
-const MATCH_FILE = join(ROOT, "data/matches/liquor.csv");
+const STORE_TYPE = process.argv[2] ?? "liquor";
+const MATCH_FILE = join(ROOT, `data/matches/${STORE_TYPE}.csv`);
 
 const readCsv = (path: string, hint: string): Record<string, string>[] => {
   try {
@@ -33,13 +37,13 @@ const readCsv = (path: string, hint: string): Record<string, string>[] => {
 };
 
 const { storeTypes } = loadCatalog(ROOT);
-const liquor = storeTypes.find((s) => s.resolved.def.store_type === "liquor");
-if (!liquor) throw new Error("store type liquor not found");
-const tree = buildCatalogJson(liquor.resolved, summarizeMatches([], liquor.resolved));
+const storeType = storeTypes.find((s) => s.resolved.def.store_type === STORE_TYPE);
+if (!storeType) throw new Error(`store type ${STORE_TYPE} not found (data/store-types/${STORE_TYPE}.yaml)`);
+const tree = buildCatalogJson(storeType.resolved, summarizeMatches([], storeType.resolved));
 const targets = leafTargets(tree.departments);
 
 const sales = new Map(
-  readCsv(join(ROOT, "data/raw/liquor_sales_by_sku.csv"), "Run pnpm athena:export liquor-sales.").map((r) => [
+  readCsv(join(ROOT, `data/raw/${STORE_TYPE}_sales_by_sku.csv`), `Run pnpm athena:export ${STORE_TYPE}-sales.`).map((r) => [
     r.sku!,
     { share: Number(r.store_share) || 0, share90: Number(r.store_share_90d) || 0 },
   ]),
@@ -68,7 +72,23 @@ const existing: Record<string, string>[] = (() => {
     return [];
   }
 })();
-const decided = existing.filter((r) => r.status === "approved" || r.status === "rejected" || r.source === "manual");
+const ownDecided = existing.filter((r) => r.status === "approved" || r.status === "rejected" || r.source === "manual");
+// Leaves shared with another store type start from that type's approved SKUs.
+const ownLeaves = new Set(ownDecided.map((r) => r.node_id));
+const carried = new Set(targets.map((t) => t.id));
+const borrowed = storeTypes
+  .filter((s) => s !== storeType)
+  .flatMap((s) =>
+    s.matches
+      .filter((m) => m.status === "approved" && carried.has(m.node_id) && !ownLeaves.has(m.node_id))
+      .map((m): Record<string, string> => ({
+        ...Object.fromEntries(MATCH_COLUMNS.map((c) => [c, String((m as unknown as Record<string, unknown>)[c] ?? "")])),
+        note: `Approved for ${s.resolved.def.store_type}${m.note ? `: ${m.note}` : ""}`,
+      })),
+  )
+  .filter((r, i, all) => all.findIndex((x) => x.node_id === r.node_id && x.mercaso_sku === r.mercaso_sku) === i);
+const decided = [...ownDecided, ...borrowed];
+const OTHER_TYPE_MIN_SHARE = 0.03;
 const decidedKeys = new Set(decided.map((r) => `${r.node_id}|${r.mercaso_sku}`));
 
 const byLeaf = matchCatalog(targets, products);
@@ -85,10 +105,14 @@ let settled = 0;
 for (const t of targets) {
   const keep = t.kind === "size" ? 3 : (t.target?.max ?? 1) + 1;
   // A leaf that already has a hand-added or approved SKU needs no rule proposals beyond it.
-  const covered = decided.some((r) => r.node_id === t.id && r.status !== "rejected");
-  const open = covered ? [] : (byLeaf.get(t.id) ?? []).filter((c) => !decidedKeys.has(`${t.id}|${c.product.sku}`));
-  const list = (t.kind === "size" ? keepCasePacks(open) : open).slice(0, keep);
-  if (covered) settled++;
+  const covered = ownDecided.some((r) => r.node_id === t.id && r.status !== "rejected");
+  const fromOther = !covered && borrowed.some((r) => r.node_id === t.id);
+  const candidates = (byLeaf.get(t.id) ?? []).filter((c) => !decidedKeys.has(`${t.id}|${c.product.sku}`));
+  // A leaf settled by another store type's approved SKUs still gets the SKUs this type's stores
+  // buy (another case pack, say), when at least 3% of them bought it.
+  const open = covered ? [] : fromOther ? candidates.filter((c) => c.clean && c.product.store_share >= OTHER_TYPE_MIN_SHARE) : candidates;
+  const list = (t.kind === "size" && !fromOther ? keepCasePacks(open) : open).slice(0, keep);
+  if (covered || fromOther) settled++;
   else if (list.length === 0) empty++;
   list.forEach((c, i) => {
     proposed++;
@@ -111,5 +135,5 @@ for (const t of targets) {
 writeFileSync(MATCH_FILE, toCsv(rows));
 console.log(`${products.length} active Mercaso items; ${targets.length} carried leaves.`);
 console.log(
-  `wrote data/matches/liquor.csv: ${decided.length} reviewed or hand-added rows kept (${settled} leaves settled), ${proposed} proposed; ${empty} leaves with no candidate.`,
+  `wrote data/matches/${STORE_TYPE}.csv: ${ownDecided.length} reviewed or hand-added rows kept, ${borrowed.length} copied from other store types (${settled} leaves settled), ${proposed} proposed; ${empty} leaves with no candidate.`,
 );

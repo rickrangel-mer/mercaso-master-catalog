@@ -1,0 +1,324 @@
+# Laundry for laundromats. Source: docs/exploration/laundromat.md (drafted 2026-10-20 from the
+# trailing-12-month laundromat sales; Rick reviews).
+# Branded: brand line -> variant (scent) -> size, like soft drinks. Laundromat customers ask for
+# Tide, Gain, Suavitel, Downy or Ariel by name, and the top items reach 50–79% of laundromats.
+# Sizes are retail units; the case pack lives on the match row (rule 3). Bulk sizes are the ones
+# a laundromat uses itself for wash-and-fold. The liquor store type carries its own small laundry
+# shelf (household.laundry) and does not include this department.
+# Powder and bar sizes name their weight in ounces so the matcher can check them. Where one brand
+# spans categories, the line name carries the product type ("Tide Powder", "Gain Dryer Sheets") so
+# the matcher keeps detergent, softener and sheets apart.
+key: laundry
+name: Laundry
+kind: department
+size_classes:
+  single_load: Single load or single use, sold at the counter or from the vending machine
+  retail: Small retail bottle, bag or box (a few loads), sold at the counter
+  bulk: Wash-and-fold bulk, used by the laundromat itself
+size_defs:
+  # Liquids (detergent, softener, bleach, stain remover)
+  8oz: { name: 8oz bottle, size_class: single_load, container: bottle, volume_ml: 237 }
+  10oz: { name: 10oz bottle, size_class: single_load, container: bottle, volume_ml: 296 }
+  11oz: { name: 11oz bottle, size_class: single_load, container: bottle, volume_ml: 325 }
+  360ml: { name: 360ml / 12oz bottle, size_class: single_load, container: bottle, volume_ml: 360 }
+  13-5oz: { name: 13.5oz bottle, size_class: single_load, container: bottle, volume_ml: 399 }
+  400ml-pouch: { name: 400ml pouch, size_class: single_load, container: pouch, volume_ml: 400 }
+  450ml: { name: 450ml bottle, size_class: single_load, container: bottle, volume_ml: 450 }
+  16oz: { name: 16oz bottle, size_class: retail, container: bottle, volume_ml: 473 }
+  16-9oz: { name: 16.9oz / 500ml bottle, size_class: retail, container: bottle, volume_ml: 500 }
+  567ml: { name: 567ml / 19oz bottle, size_class: retail, container: bottle, volume_ml: 567 }
+  22oz: { name: 22oz bottle, size_class: retail, container: bottle, volume_ml: 651 }
+  24oz: { name: 24oz bottle, size_class: retail, container: bottle, volume_ml: 710 }
+  700ml: { name: 700ml bottle, size_class: retail, container: bottle, volume_ml: 700 }
+  25oz: { name: 25oz bottle, size_class: retail, container: bottle, volume_ml: 739 }
+  750ml: { name: 24.7–27oz bottle (730–800ml), size_class: retail, container: bottle }
+  850ml: { name: 850ml bottle, size_class: retail, container: bottle, volume_ml: 850 }
+  32oz: { name: 31–34oz bottle, size_class: retail, container: bottle }
+  1l: { name: 33oz / 1L bottle, size_class: retail, container: bottle, volume_ml: 1000 }
+  43oz: { name: 43oz bottle, size_class: retail, container: bottle, volume_ml: 1272 }
+  46oz: { name: 46oz bottle, size_class: retail, container: bottle, volume_ml: 1360 }
+  64oz: { name: 64oz bottle, size_class: bulk, container: bottle, volume_ml: 1893 }
+  2-6l: { name: 88–95oz bottle (2.6–2.8L), size_class: bulk, container: bottle }
+  96oz: { name: 96oz jug, size_class: bulk, container: jug, volume_ml: 2839 }
+  3l: { name: 3L bottle, size_class: bulk, container: bottle, volume_ml: 3000 }
+  121oz: { name: 121oz jug, size_class: bulk, container: jug, volume_ml: 3578 }
+  1gal: { name: 1 gallon jug, size_class: bulk, container: jug, volume_ml: 3785 }
+  8-5l: { name: 8.5L jug, size_class: bulk, container: jug, volume_ml: 8500 }
+  # Powders and bars
+  single-use: { name: Single-use packet (1–1.4oz), size_class: single_load }
+  218g: { name: 218g box (7.7oz), size_class: single_load }
+  250g: { name: 250g bag (8.8oz), size_class: single_load }
+  350g: { name: 350g bag (12.3oz), size_class: retail }
+  500g: { name: 500g bag (17.6oz), size_class: retail }
+  690g: { name: 690g bag (24.3oz), size_class: retail }
+  850g: { name: 850g bag (30oz), size_class: retail }
+  1kg: { name: 1kg bag (35.3oz), size_class: retail }
+  1-5kg: { name: 1.5kg bag (52.9oz), size_class: retail }
+  5kg: { name: 5kg bag (176oz), size_class: bulk }
+  8-5kg: { name: 8.5kg bag or bucket (300oz), size_class: bulk }
+  10kg: { name: 10kg bag (353oz), size_class: bulk }
+  7oz-bar: { name: 7oz bar (200g), size_class: single_load }
+  14oz-bar: { name: 14oz bar (400g), size_class: retail }
+  # Dryer sheets
+  15ct: { name: 15ct box, size_class: single_load, unit_count: 15 }
+  16ct: { name: 16ct tub, size_class: retail, unit_count: 16 }
+  18ct: { name: 18ct box, size_class: single_load, unit_count: 18 }
+  20ct: { name: 20ct box, size_class: single_load, unit_count: 20 }
+  34ct: { name: 34ct box, size_class: retail, unit_count: 34 }
+  36ct: { name: 36ct box, size_class: retail, unit_count: 36 }
+children:
+  # L.1 Liquid detergent
+  - key: detergent-liquid
+    name: Liquid detergent
+    kind: category
+    children:
+      - key: gain
+        name: Gain
+        kind: brand_line
+        children:
+          - { key: original, name: Original, kind: variant, sizes: [10oz, 25oz] }
+          - { key: ultra-oxi-waterfall, name: Ultra Oxi Waterfall, kind: variant, sizes: [10oz] }
+      - key: tide
+        name: Tide
+        kind: brand_line
+        note: Tide Original; the Simply line is separate below.
+        children:
+          - { key: original, name: Original, kind: variant, sizes: [8oz, 10oz, 25oz, 32oz] }
+          - { key: original-with-bleach, name: Original with Bleach, kind: variant, sizes: [25oz] }
+      - key: tide-simply
+        name: Tide Simply
+        kind: brand_line
+        children:
+          - { key: clean-fresh, name: Clean & Fresh, kind: variant, sizes: [10oz] }
+          - { key: oxi, name: Oxi, kind: variant, sizes: [10oz, 32oz] }
+          - { key: daybreak-fresh, name: Daybreak Fresh, kind: variant, sizes: [25oz, 32oz] }
+          - { key: refreshing-breeze, name: Refreshing Breeze, kind: variant, sizes: [8oz, 32oz] }
+      - key: foca
+        name: Foca
+        kind: brand_line
+        sizes: [16oz, 1l]
+        children:
+          - { key: original, name: Original, kind: variant }
+      - key: roma
+        name: Roma
+        kind: brand_line
+        sizes: [16oz, 1l]
+        children:
+          - { key: original, name: Original, kind: variant }
+      - key: ariel
+        name: Ariel
+        kind: brand_line
+        children:
+          - { key: revitacolor, name: Revitacolor, kind: variant, sizes: [400ml-pouch] }
+      - key: ace
+        name: Ace
+        kind: brand_line
+        sizes: [750ml]
+        children:
+          - { key: regular, name: Regular, kind: variant }
+      - key: zote
+        name: Zote
+        kind: brand_line
+        note: Liquid laundry soap.
+        sizes: [1l]
+        children:
+          - { key: pink, name: Pink, kind: variant }
+      - key: blanca-nieves
+        name: Blanca Nieves
+        kind: brand_line
+        sizes: [1l]
+        children:
+          - { key: original, name: Original, kind: variant }
+      - key: las-totally-awesome
+        name: LA's Totally Awesome
+        kind: brand_line
+        note: Wash-and-fold jug.
+        sizes: [64oz]
+        children:
+          - { key: oxygen, name: Oxygen Powered, kind: variant }
+      - key: tide-pods
+        name: Tide Pods
+        kind: brand_line
+        children:
+          - { key: spring-meadow, name: Spring Meadow, kind: variant, sizes: [16ct] }
+
+  # L.2 Powder detergent
+  - key: detergent-powder
+    name: Powder detergent
+    kind: category
+    note: The Mexican powders (Ariel, Roma, Foca) are the laundromat staple; 250g and 500g bags.
+    children:
+      - key: ariel
+        name: Ariel Powder
+        kind: brand_line
+        children:
+          - { key: original, name: Original, kind: variant, sizes: [250g, 500g, 850g, 1kg] }
+          - { key: oxi-azul, name: Oxi Azul, kind: variant, sizes: [500g] }
+          - { key: with-downy, name: with Downy, kind: variant, sizes: [1-5kg] }
+      - key: tide
+        name: Tide Powder
+        kind: brand_line
+        children:
+          - { key: original, name: Original, kind: variant, sizes: [single-use, 218g, 500g] }
+          - { key: with-downy, name: with Downy, kind: variant, sizes: [350g, 690g] }
+      - key: roma
+        name: Roma Powder
+        kind: brand_line
+        sizes: [250g, 500g, 1kg, 5kg, 10kg]
+        children:
+          - { key: original, name: Original, kind: variant }
+      - key: foca
+        name: Foca Powder
+        kind: brand_line
+        sizes: [250g, 500g, 1kg, 10kg]
+        children:
+          - { key: original, name: Original, kind: variant }
+      - key: blanca-nieves
+        name: Blanca Nieves Powder
+        kind: brand_line
+        sizes: [250g]
+        children:
+          - { key: original, name: Original, kind: variant }
+      - key: lirio
+        name: Lirio
+        kind: brand_line
+        sizes: [500g]
+        children:
+          - { key: original, name: Original, kind: variant }
+
+  # L.3 Fabric softener, liquid
+  - key: softener
+    name: Fabric softener
+    kind: category
+    children:
+      - key: suavitel
+        name: Suavitel
+        kind: brand_line
+        children:
+          - { key: fresca-primavera, name: Fresca Primavera, kind: variant, sizes: [450ml, 850ml, 1l, 46oz, 8-5l] }
+          - { key: aroma-de-sol, name: Aroma de Sol, kind: variant, sizes: [450ml, 850ml, 46oz] }
+          - { key: anochecer, name: Anochecer, kind: variant, sizes: [850ml] }
+          - { key: lavender, name: Lavender, kind: variant, sizes: [13-5oz, 46oz] }
+          - { key: waterfall-mist, name: Waterfall Mist, kind: variant, sizes: [13-5oz] }
+          - { key: field-flowers, name: Field Flowers, kind: variant, sizes: [13-5oz] }
+      - key: suavitel-complete
+        name: Suavitel Complete
+        kind: brand_line
+        sizes: [700ml]
+        children:
+          - { key: aroma-de-sol, name: Aroma de Sol, kind: variant }
+          - { key: fresca-primavera, name: Fresca Primavera, kind: variant }
+          - { key: acqua, name: Acqua, kind: variant }
+      - key: downy
+        name: Downy
+        kind: brand_line
+        note: The 730ml, 750ml and 800ml bottles are one size; Mercaso carries whichever is current.
+        children:
+          - key: aroma-floral
+            name: Aroma Floral
+            kind: variant
+            sizes: [360ml, 750ml, 2-6l]
+            note: >-
+              The 800ml bottles reached 31% of laundromats in 12 months but have not sold since July
+              (discontinued at Mercaso); kept as a sourcing gap.
+          - { key: april-fresh, name: April Fresh, kind: variant, sizes: [8oz, 10oz, 567ml] }
+          - { key: elegance, name: Elegance, kind: variant, sizes: [750ml] }
+          - { key: passion, name: Passion, kind: variant, sizes: [750ml] }
+          - { key: romance, name: Romance, kind: variant, sizes: [750ml, 2-6l] }
+          - { key: intense-floral, name: Intense Floral, kind: variant, sizes: [567ml, 750ml] }
+          - { key: amanecer, name: Amanecer, kind: variant, sizes: [360ml, 567ml, 750ml] }
+          - { key: cool-cotton, name: Cool Cotton, kind: variant, sizes: [10oz] }
+          - { key: suave-gentil, name: Suave & Gentil, kind: variant, sizes: [750ml] }
+          - { key: intense-exotico, name: Intense Exótico, kind: variant, sizes: [567ml, 750ml] }
+
+      - key: gain
+        name: Gain Fabric Softener
+        kind: brand_line
+        sizes: [10oz]
+        children:
+          - { key: original, name: Original, kind: variant }
+          - { key: super-fresh-blast, name: Super Fresh Blast, kind: variant }
+      - key: ensueno
+        name: Ensueño
+        kind: brand_line
+        sizes: [22oz]
+        children:
+          - { key: baby, name: Baby, kind: variant }
+          - { key: spring-fresh, name: Spring Fresh, kind: variant }
+          - { key: violet, name: Violet Bouquet, kind: variant }
+
+  # L.4 Dryer sheets
+  - key: dryer-sheets
+    name: Dryer sheets
+    kind: category
+    children:
+      - key: bounce
+        name: Bounce
+        kind: brand_line
+        children:
+          - { key: outdoor-fresh, name: Outdoor Fresh, kind: variant, sizes: [15ct, 34ct] }
+      - key: gain
+        name: Gain Dryer Sheets
+        kind: brand_line
+        children:
+          - { key: original, name: Original, kind: variant, sizes: [15ct] }
+          - { key: super-fresh-blast, name: Super Fresh Blast, kind: variant, sizes: [15ct] }
+      - key: suavitel
+        name: Suavitel Dryer Sheets
+        kind: brand_line
+        children:
+          - { key: fresca-primavera, name: Fresca Primavera, kind: variant, sizes: [20ct, 36ct] }
+          - { key: lavender, name: Lavender, kind: variant, sizes: [18ct] }
+          - { key: aroma-de-sol, name: Aroma de Sol, kind: variant, sizes: [18ct] }
+          - { key: waterfall-mist, name: Waterfall Mist, kind: variant, sizes: [18ct] }
+
+  # L.5 Bleach, stain removers and laundry soap
+  - key: bleach-stain
+    name: Bleach, stain removers & laundry soap
+    kind: category
+    children:
+      - key: clorox
+        name: Clorox Bleach
+        kind: brand_line
+        note: Disinfecting and Original are the same bleach; the 11oz bottle reaches 67% of laundromats.
+        sizes: [11oz, 24oz, 43oz, 121oz]
+        children:
+          - { key: regular, name: Regular, kind: variant }
+      - key: cloralen
+        name: Cloralen
+        kind: brand_line
+        children:
+          - { key: regular, name: Regular, kind: variant, sizes: [16-9oz, 32oz] }
+          - { key: color-safe, name: Color Safe stain remover, kind: variant, sizes: [32oz] }
+      - key: las-totally-awesome
+        name: LA's Totally Awesome
+        kind: brand_line
+        note: Bleach jugs.
+        children:
+          - { key: bleach, name: Bleach, kind: variant, sizes: [96oz, 1gal] }
+      - key: soilove
+        name: Soilove
+        kind: brand_line
+        note: Soil and stain remover; the 16oz bottle reaches 74% of laundromats.
+        children:
+          - { key: original, name: Original, kind: variant, sizes: [16oz, 1gal] }
+          - { key: spray, name: Spray, kind: variant, sizes: [22oz] }
+      - key: zote
+        name: Zote
+        kind: brand_line
+        note: Laundry bar soap.
+        sizes: [7oz-bar, 14oz-bar]
+        children:
+          - { key: pink, name: Pink, kind: variant }
+
+  # L.6 Laundry bags & accessories
+  - key: accessories
+    name: Laundry bags & accessories
+    kind: category
+    children:
+      - key: laundry-bag
+        name: Laundry bag
+        kind: assortment_slot
+        match_terms: ["laundry bag"]
+        target_count: { min: 1, max: 2 }
+        note: Zipper bag or printed tote, sold at the counter.

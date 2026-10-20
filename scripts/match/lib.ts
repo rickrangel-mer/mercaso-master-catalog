@@ -37,6 +37,9 @@ const FILLER = new Set([
   "jumbo", "bag", "peg", "tray", "big", "mini", "pre", "priced", "non", "nectar", "tomato", "cocktail", "original", "classic",
   "regular", "cola", "soft", "chewy", "hard", "stick", "filter", "filtered", "sweet", "sweets", "snack", "snacks", "seed", "sunflower",
   "milk", "chocolate", "maison", "ultimate", "wafer", "caramel", "peanut", "butter",
+  // Laundry product words (laundromats): the product type, not a scent.
+  "laundry", "detergent", "detergente", "polvo", "en", "powder", "liquid", "fabric", "softener", "dryer", "sheet",
+  "bleach", "disinfecting", "load", "soap", "soil", "stain", "remover", "scent", "he",
 ]);
 
 /** Is the title free of words beyond the brand and filler? Only asked of generic variants. */
