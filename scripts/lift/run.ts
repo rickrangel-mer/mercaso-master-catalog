@@ -214,16 +214,24 @@ const covered = activeAll.filter((s) => TYPE_CATALOG[s.type] !== undefined);
 const notCovered = new Map<string, number>();
 for (const s of activeAll) if (TYPE_CATALOG[s.type] === undefined) notCovered.set(typeName(s.type), (notCovered.get(typeName(s.type)) ?? 0) + 1);
 
+const PLAIN_SCENARIO: Record<Scenario, string> = {
+  catch_up: "Do as well as the best stores",
+  plus_5: "5 more stores out of every 100",
+  plus_10: "10 more stores out of every 100",
+};
 const headline = SCENARIOS.map((s) => {
   const rows = lifts[s];
   const [ml, mh] = rng(rows, "margin");
   const [rl, rh] = rng(rows, "revenue");
   const extra = rows.reduce((a, r) => a + r.extra, 0);
-  return `| ${SCENARIO_NAMES[s]} | **${short(exp(rows, "margin"))}** (${short(ml)}–${short(mh)}) | ${short(exp(rows, "revenue"))} (${short(rl)}–${short(rh)}) | ${Math.round(extra).toLocaleString("en-US")} | ${short(rows.reduce((a, r) => a + r.margin, 0))} |`;
+  return `| ${PLAIN_SCENARIO[s]} | **${short(exp(rows, "margin"))}** (${short(ml)} to ${short(mh)}) | ${short(exp(rows, "revenue"))} (${short(rl)} to ${short(rh)}) | ${Math.round(extra).toLocaleString("en-US")} |`;
 }).join("\n");
+const catchUp = lifts.catch_up;
+const mainProfit = exp(catchUp, "margin");
+const [mainLow, mainHigh] = rng(catchUp, "margin");
 
 const table = (title: string, key: (r: LiftRow) => string, order?: string[]) => {
-  const groups = sumBy(lifts.catch_up, key);
+  const groups = sumBy(catchUp, key);
   const keys = order ?? [...groups.keys()].sort((a, b) => exp(groups.get(b)!, "margin") - exp(groups.get(a)!, "margin"));
   const lines = keys
     .filter((k) => groups.has(k))
@@ -232,82 +240,102 @@ const table = (title: string, key: (r: LiftRow) => string, order?: string[]) => 
       const extra = rows.reduce((a, r) => a + r.extra, 0);
       return `| ${k} | ${short(exp(rows, "margin"))} | ${short(exp(rows, "revenue"))} | ${Math.round(extra).toLocaleString("en-US")} |`;
     });
-  return `| ${title} | Margin a year | Revenue a year | Extra store × items |\n|---|---|---|---|\n${lines.join("\n")}`;
+  return `| ${title} | Extra profit a year | Extra sales a year | New "store starts buying an item" |\n|---|---|---|---|\n${lines.join("\n")}`;
 };
 const storesByType = new Map<string, number>();
 for (const s of covered) storesByType.set(typeName(s.type), (storesByType.get(typeName(s.type)) ?? 0) + 1);
 const typeTable = (() => {
-  const groups = sumBy(lifts.catch_up, (r) => typeName(r.type));
+  const groups = sumBy(catchUp, (r) => typeName(r.type));
   const keys = [...groups.keys()].sort((a, b) => exp(groups.get(b)!, "margin") - exp(groups.get(a)!, "margin"));
-  return `| Store type | Active stores | Catalog | Margin a year | Revenue a year | Margin per store |\n|---|---|---|---|---|---|\n${keys
+  return `| Store type | Active stores | Extra profit a year | Extra sales a year | Extra profit per store |\n|---|---|---|---|---|\n${keys
     .map((k) => {
       const rows = groups.get(k)!;
       const n = storesByType.get(k) ?? 0;
       const m = exp(rows, "margin");
-      return `| ${k} | ${n.toLocaleString("en-US")} | ${rows[0]!.catalog} | ${short(m)} | ${short(exp(rows, "revenue"))} | ${money(n ? m / n : 0)} |`;
+      return `| ${k} | ${n.toLocaleString("en-US")} | ${short(m)} | ${short(exp(rows, "revenue"))} | ${money(n ? m / n : 0)} |`;
     })
     .join("\n")}`;
 })();
-const depts = [...inc.raw.keys()].sort();
+const depts = [...inc.raw.keys()].sort((a, b) => incrementalityFor(inc, a) - incrementalityFor(inc, b));
 const topItems = itemRows.slice(0, 15).map(({ r }) => {
   const it = itemOf(r);
   return `| ${typeName(r.type)} | ${it.item} | ${it.priority} | ${pct(r.buyers / r.stores)}% → ${pct((r.buyers + r.extra) / r.stores)}% | ${Math.round(r.extra)} | ${short(r.margin * factorOf(r))} |`;
 });
 const noPrice = [...model.catalogs.values()].flat().filter((it) => it.unitPrice === undefined).length;
+const cents = (d: string) => Math.round((1 - incrementalityFor(inc, d)) * 100);
+const taken = depts.filter((d) => cents(d) > 0);
+/** Short everyday names, for sentences. */
+const SHORT_DEPT: Record<string, string> = {
+  Laundry: "Laundry products",
+  "Water, energy, sports, juice, tea & coffee": "Water, energy drinks, juice and tea",
+  "Soft drinks": "Soda",
+};
+const plural: Record<string, string> = { Restaurant: "restaurants", "Non-store": "non-store accounts", Miscellaneous: "miscellaneous", Hotel: "hotels" };
 
-const summary = `# Penetration lift — active stores (${asOf})
+const summary = `# How much more we could sell to the stores we already have (${asOf})
 
-Yearly Mercaso sales gained if active stores (ordered in the last ${45} days) buy the catalog items their peers buy. Method and decisions: \`docs/exploration/penetration-lift.md\`. Expected = gross × realization × incrementality from the back-test; the low and high cases are explained under Back-test. Full-year run rate once stores convert; Mercaso sales only.
+## The short answer
 
-## Headline
+If our active stores bought the catalog items that the best stores like them already buy, Mercaso would make about **${short(mainProfit)} more profit a year** (somewhere between ${short(mainLow)} and ${short(mainHigh)}), on about **${short(exp(catchUp, "revenue"))} more sales a year**.
 
-| Scenario | Margin a year (range) | Revenue a year (range) | Extra store × items | Gross margin before the back-test |
-|---|---|---|---|---|
+"Profit" here means gross margin: sales minus what the products cost us.
+
+## What we looked at
+
+- **Which stores:** the ${covered.length.toLocaleString("en-US")} stores that ordered from us in the last 45 days. Stores that stopped ordering, and stores that never ordered, come in a second report.
+- **What they should carry:** our master catalog, the list of items a store of that kind should carry. Laundromats are checked against the laundromat catalog. Liquor stores, gas stations, convenience stores, markets, smoke shops, dollar stores and stores with no type are checked against the liquor catalog, the closest fit we have.
+- **Left out:** ${[...notCovered].map(([t, n]) => `${plural[t] ?? t.toLowerCase()} (${n})`).join(", ")}. The catalog isn't built for what they buy.
+- **A missing item:** a store that hasn't bought the item from us in the last 90 days.
+- **Fair comparisons:** each store is compared only with stores like it: same kind of store, and ordering about as often (1–5, 6–20, 21–50 or more than 50 orders a year). A gas station is never compared with a liquor store.
+
+## Three ways to look at it
+
+| Goal | Extra profit a year (low to high) | Extra sales a year (low to high) | New "store starts buying an item" |
+|---|---|---|---|
 ${headline}
 
-**Catch up to peers** brings each item, in each store type and order tier, to the penetration of that group's best-assorted quarter of stores. The flat scenarios add 5 or 10 points to items at least one store in the group buys.
+- **Do as well as the best stores** is the main number. For each item, we look at the best quarter of similar stores (the ones that carry the most of the catalog) and ask the others to reach their level. If 80% of the best liquor stores carry Coca-Cola 2L, we aim for 80% of all similar liquor stores.
+- **5 or 10 more stores out of every 100** is a simpler goal: for each item, 5 or 10 more stores out of every 100 start buying it. It only counts items that at least some similar stores already buy.
 
-${covered.length.toLocaleString("en-US")} active stores covered. Not covered (no catalog fits): ${[...notCovered].map(([t, n]) => `${t} ${n}`).join(", ")}.
-
-## By store type (catch up to peers)
+## Which stores
 
 ${typeTable}
 
-## By department (catch up to peers)
+## Which kinds of products
 
 ${table("Department", (r) => `${itemOf(r).department}${r.catalog === "laundromat" ? " (laundromats)" : ""}`)}
 
-## By priority (catch up to peers)
+## Must, should or nice
 
-${table("Priority", (r) => itemOf(r).priority, ["must", "should", "nice"])}
+${table("Catalog priority", (r) => itemOf(r).priority, ["must", "should", "nice"])}
 
-## Top items (catch up to peers, expected margin)
+## The 15 biggest items
 
-| Store type | Item | Priority | Penetration today → target | Extra stores | Margin a year |
+| Store type | Item | Priority | Stores buying it now → goal | Stores that would start | Extra profit a year |
 |---|---|---|---|---|---|
 ${topItems.join("\n")}
 
-The full list is \`items.csv\`; per store, \`stores.csv\`.
+Every item is in \`items.csv\`. Every store, with the 5 items worth the most to it, is in \`stores.csv\`, so reps can start with the biggest accounts.
 
-## Back-test
+## How we know the numbers are realistic
 
-**Realization ${realization.toFixed(2)}.** ${backtest.length.toLocaleString("en-US")} adopters: a covered store that first bought a catalog item 365–545 days ago after ordering for at least 90 days. In its first full year the median adopter bought ${realization.toFixed(2)}× the typical yearly volume the model uses (the middle half: 0.5× to 2×), so the expected lift uses the volumes as they are. Orders are lumpy (a quarter of adopters bought exactly the typical volume), so the range is set by assumptions instead of resampling: **low** keeps the median adopter and lets every department substitute at least as much as drinks (incrementality capped at ${LOW_INCREMENTALITY * 100}%); **high** uses the mean adopter, heavy buyers capped at twice the typical volume (${realizationHigh(backtest).toFixed(2)}×).
+**1. Do stores really buy that much when they add an item?** We looked at ${backtest.length.toLocaleString("en-US")} cases from the past where a store started buying an item 12–18 months ago, then followed what it bought over the next full year. The typical store bought **${realization.toFixed(2) === "1.00" ? "exactly the amount we assume" : `${realization.toFixed(2)} times the amount we assume`}**. Half of them landed between half and double that amount.
 
-**Incrementality ${(inc.overall * 100).toFixed(0)}% overall.** How much of a new item's volume is new to Mercaso rather than taken from the category's other items. Measured across active stores: within each catalog category (${MIN_CATEGORY_STORES}+ stores), how many more units a store buys per extra item it carries, holding its size equal, over the category's average units per item. Capped at 100%: above 1 means stores with broader assortments also sell more per item, which says more about the stores than about the items.
+**2. Does a new item just take sales from items the store already buys?** Sometimes, and we take that off the total. Out of every $1 of new sales:
 
-| Department | Measured ratio | Used |
-|---|---|---|
-${depts.map((d) => `| ${d} | ${inc.raw.get(d)!.toFixed(2)} | ${(incrementalityFor(inc, d) * 100).toFixed(0)}% |`).join("\n")}
+${taken.map((d) => `- **${SHORT_DEPT[d] ?? d}:** about ${cents(d)}¢ comes from similar items the store already buys from us${d === "Laundry" ? " (a laundromat customer buys one detergent either way)" : ""}.`).join("\n")}
 
-An adopter before/after check (category volume before and after a store adds an item) was tried first and dropped: adopting stores were already growing the category (+40% against +20% for the store overall), so it could not separate substitution from growth.
+For everything else we found no sign of this, so those new sales count in full.
 
-## Caveats
+**The low and high numbers.** The low number assumes every kind of product loses at least 30¢ of every new $1 to other items, like drinks do. The high number gives more weight to stores that bought more than usual (up to twice the usual amount).
 
-- Mercaso sales only: a store may already buy the item from another supplier.
-- Run rate: a full year once stores convert, not first-year revenue.
-- Markets, smoke shops and dollar stores are measured against the liquor catalog, which lacks their deeper grocery and tobacco range, so their lift is understated.
-- ${noPrice} catalog items have no price in the pricing export (mostly archived SKUs) and add nothing.
-- Items on supply hold (Arizona) add nothing.
+## Keep in mind
+
+- **Only sales through Mercaso count.** A store may already buy an item from someone else.
+- **This is a yearly amount once stores have started buying,** not what the first year brings in.
+- **Markets and smoke shops are probably worth more** than shown: the liquor catalog leaves out much of the grocery and tobacco they sell.
+- **Some items are left out:** ${noPrice} items with no current price (mostly products we no longer list), and items we can't reliably supply right now (Arizona).
+- How it was built: \`docs/exploration/penetration-lift.md\`.
 `;
 writeFileSync(join(OUT, "summary.md"), summary);
 console.log(summary);
