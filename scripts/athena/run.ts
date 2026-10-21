@@ -37,6 +37,7 @@ const EXPORTS: Record<string, { sql: string; out: string; storeType?: string; ca
   "lift-stores": { sql: "scripts/athena/sql/lift_stores.sql", out: "data/raw/lift_stores.csv" },
   "lift-store-skus": { sql: "scripts/athena/sql/lift_store_skus.sql", out: "data/raw/lift_store_skus.csv", catalog: "all" },
   "lift-adopters": { sql: "scripts/athena/sql/lift_adopters.sql", out: "data/raw/lift_adopters.csv", catalog: "all" },
+  "growth-stores": { sql: "scripts/athena/sql/growth_stores.sql", out: "data/raw/growth_stores.csv" },
 };
 
 /** Every SKU in the liquor match file that is not rejected, for {{CATALOG_SKUS}}. */
