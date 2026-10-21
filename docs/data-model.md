@@ -16,6 +16,7 @@ pnpm review export [store-type]  # docs/review/<store-type>-pending.csv (approve
 pnpm review import [store-type]  # apply the filled-in sheets to data/matches/<store-type>.csv
 pnpm stores      # store penetration: dist/stores/liquor.json, liquor-stores.csv, liquor-voids.csv (docs/exploration/store-penetration.md)
 pnpm member-discount  # member discounts: dist/member-discount/liquor.csv and liquor-summary.md (docs/exploration/member-discount.md)
+pnpm lift        # penetration lift for active stores: dist/lift/summary.md, items.csv, stores.csv (docs/exploration/penetration-lift.md)
 ```
 
 CI runs all four on every pull request and on pushes to `main`, then builds the tree viewer.

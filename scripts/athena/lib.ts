@@ -66,6 +66,35 @@ export function fillCatalogSkus(sql: string, skus: string[]): string {
   return sql.replaceAll("{{CATALOG_SKUS}}", list.map((s) => `'${s}'`).join(", "));
 }
 
+export interface SkuItem {
+  sku: string;
+  item: string;
+  /** The item's catalog category: its first two id segments, e.g. scd.cola. */
+  category: string;
+  casePack: number;
+}
+
+/**
+ * Fills {{SKU_ITEMS}} with a VALUES list of (sku, item, category, case pack), so a query can count
+ * units per catalog item. Every field is checked against a strict pattern first.
+ */
+export function fillSkuItems(sql: string, rows: SkuItem[]): string {
+  if (!sql.includes("{{SKU_ITEMS}}")) return sql;
+  const seen = new Set<string>();
+  const list = rows.filter((r) => {
+    const key = `${r.sku}|${r.item}`;
+    if (seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  });
+  if (list.length === 0) throw new Error("{{SKU_ITEMS}}: no approved matches");
+  const bad = list.filter(
+    (r) => !/^[A-Za-z0-9_-]+$/.test(r.sku) || !/^[a-z0-9.-]+$/.test(r.item) || !/^[a-z0-9.-]+$/.test(r.category) || !Number.isInteger(r.casePack) || r.casePack < 1,
+  );
+  if (bad.length > 0) throw new Error(`{{SKU_ITEMS}}: unexpected values for ${bad.slice(0, 5).map((r) => r.sku).join(", ")}`);
+  return sql.replaceAll("{{SKU_ITEMS}}", list.map((r) => `('${r.sku}', '${r.item}', '${r.category}', ${r.casePack})`).join(",\n  "));
+}
+
 /** Fills the {{STORE_TYPE}} placeholder with a store type name (letters, digits, spaces, / & -). */
 export function fillStoreType(sql: string, storeType: string | undefined): string {
   if (!sql.includes("{{STORE_TYPE}}")) return sql;

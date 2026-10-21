@@ -9,7 +9,7 @@
  * AWS_SESSION_TOKEN (temporary keys only; ignored next to an AKIA key), AWS_REGION, ATHENA_WORKGROUP, ATHENA_S3_STAGING_DIR. Credentials are read
  * from those variables directly, so a stray AWS_PROFILE cannot redirect them.
  */
-import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
+import { mkdirSync, readdirSync, readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import {
   AthenaClient,
@@ -19,10 +19,12 @@ import {
 } from "@aws-sdk/client-athena";
 import { GetCallerIdentityCommand, STSClient } from "@aws-sdk/client-sts";
 import { parse } from "csv-parse/sync";
-import { configFromEnv, credentialsFromEnv, explainAwsError, fillCatalogSkus, fillStoreType, pageToRows, prepareSql, toCsv, type AthenaConfig } from "./lib.ts";
+import { configFromEnv, credentialsFromEnv, explainAwsError, fillCatalogSkus, fillSkuItems, fillStoreType, pageToRows, prepareSql, toCsv, type AthenaConfig, type SkuItem } from "./lib.ts";
 
 const ROOT = process.cwd();
-const EXPORTS: Record<string, { sql: string; out: string; storeType?: string }> = {
+// `catalog: "all"` fills {{CATALOG_SKUS}} and {{SKU_ITEMS}} from every store type's approved matches;
+// otherwise {{CATALOG_SKUS}} holds the liquor match file's SKUs that are not rejected.
+const EXPORTS: Record<string, { sql: string; out: string; storeType?: string; catalog?: "all" }> = {
   products: { sql: "scripts/athena/sql/products.sql", out: "data/raw/products.csv" },
   "liquor-sales": { sql: "scripts/athena/sql/sales_by_sku.sql", out: "data/raw/liquor_sales_by_sku.csv", storeType: "Liquor store" },
   "laundromat-sales": { sql: "scripts/athena/sql/sales_by_sku.sql", out: "data/raw/laundromat_sales_by_sku.csv", storeType: "Laundromat" },
@@ -32,6 +34,9 @@ const EXPORTS: Record<string, { sql: string; out: string; storeType?: string }> 
   "liquor-store-skus": { sql: "scripts/athena/sql/liquor_store_skus.sql", out: "data/raw/liquor_store_skus.csv" },
   "member-stores": { sql: "scripts/athena/sql/member_stores.sql", out: "data/raw/member_stores.csv" },
   "member-store-skus": { sql: "scripts/athena/sql/member_store_skus.sql", out: "data/raw/member_store_skus.csv" },
+  "lift-stores": { sql: "scripts/athena/sql/lift_stores.sql", out: "data/raw/lift_stores.csv" },
+  "lift-store-skus": { sql: "scripts/athena/sql/lift_store_skus.sql", out: "data/raw/lift_store_skus.csv", catalog: "all" },
+  "lift-adopters": { sql: "scripts/athena/sql/lift_adopters.sql", out: "data/raw/lift_adopters.csv", catalog: "all" },
 };
 
 /** Every SKU in the liquor match file that is not rejected, for {{CATALOG_SKUS}}. */
@@ -39,6 +44,19 @@ const catalogSkus = (): string[] =>
   (parse(readFileSync(join(ROOT, "data/matches/liquor.csv"), "utf8"), { columns: true }) as Record<string, string>[])
     .filter((r) => r.status !== "rejected")
     .map((r) => r.mercaso_sku ?? "");
+
+/** Approved matches of every store type, for exports that cover all catalogs. */
+const allApproved = (): SkuItem[] =>
+  readdirSync(join(ROOT, "data/matches"))
+    .filter((f) => f.endsWith(".csv"))
+    .flatMap((f) => parse(readFileSync(join(ROOT, "data/matches", f), "utf8"), { columns: true }) as Record<string, string>[])
+    .filter((r) => r.status === "approved")
+    .map((r) => ({
+      sku: r.mercaso_sku ?? "",
+      item: r.node_id ?? "",
+      category: (r.node_id ?? "").split(".").slice(0, 2).join("."),
+      casePack: Math.max(1, Math.round(Number(r.case_pack) || 1)),
+    }));
 
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
@@ -109,8 +127,12 @@ async function main() {
       console.error(`Unknown export "${name}". Known: ${Object.keys(EXPORTS).join(", ")}.`);
       process.exit(1);
     }
-    const sql = fillStoreType(readFileSync(join(ROOT, job.sql), "utf8"), job.storeType);
-    const rows = await runQuery(athena, config, sql.includes("{{CATALOG_SKUS}}") ? fillCatalogSkus(sql, catalogSkus()) : sql, name);
+    let sql = fillStoreType(readFileSync(join(ROOT, job.sql), "utf8"), job.storeType);
+    if (job.catalog === "all") {
+      const approved = allApproved();
+      sql = fillSkuItems(fillCatalogSkus(sql, approved.map((a) => a.sku)), approved);
+    } else if (sql.includes("{{CATALOG_SKUS}}")) sql = fillCatalogSkus(sql, catalogSkus());
+    const rows = await runQuery(athena, config, sql, name);
     mkdirSync(join(ROOT, "data/raw"), { recursive: true });
     writeFileSync(join(ROOT, job.out), toCsv(rows));
     console.log(`  wrote ${job.out}: ${Math.max(0, rows.length - 1)} rows`);

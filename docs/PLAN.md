@@ -87,6 +87,11 @@ Goal: agree on the liquor-store taxonomy and where the branded/assortment line f
 - The second store type, built from what CA laundromats buy from Mercaso (no prior outline): a new branded `laundry` department (customer laundry and wash-and-fold bulk), plus vending drinks and snacks reused from the liquor tree. Store operating supplies are out of scope (Rick). Priorities from the share of laundromats buying each item: must 30%+, should 10–30%, nice 3–10%.
 - **Status: draft, encoded and matched (188 items: 26 must, 52 should, 110 nice), waiting for Rick's review.** `docs/exploration/laundromat.md`. Member discounts for laundromats come after the review.
 
+### Penetration lift (started 2026-10-21)
+
+- Yearly Mercaso sales gained if active stores buy the catalog items their peers buy, for every store type a catalog fits (liquor catalog for liquor, gas, convenience, market, smoke, dollar and untyped stores; laundromat catalog for laundromats). Scenarios: catch up to peers, +5 and +10 points; back-tested on past adopters. `docs/exploration/penetration-lift.md`, `pnpm lift`.
+- **Status: part 1 (active stores) built 2026-10-21.** Part 2: churned and prospect stores.
+
 ### Later (out of scope now)
 
 Editable UI with DB persistence; market store types (reuse taxonomy, add store-type files); API serving `dist/*.json` to the Mercaso app; per-store gap analysis (now Phase 5).

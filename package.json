@@ -21,7 +21,8 @@
     "gaps": "tsx scripts/match/gaps.ts",
     "review": "tsx scripts/match/review.ts",
     "stores": "tsx scripts/stores/run.ts",
-    "member-discount": "tsx scripts/member-discount/run.ts"
+    "member-discount": "tsx scripts/member-discount/run.ts",
+    "lift": "tsx scripts/lift/run.ts"
   },
   "devDependencies": {
     "@aws-sdk/client-athena": "^3.1143.0",

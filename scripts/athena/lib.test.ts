@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { configFromEnv, credentialsFromEnv, explainAwsError, fillCatalogSkus, fillStoreType, pageToRows, prepareSql, toCsv } from "./lib.ts";
+import { configFromEnv, credentialsFromEnv, explainAwsError, fillCatalogSkus, fillSkuItems, fillStoreType, pageToRows, prepareSql, toCsv } from "./lib.ts";
 
 describe("configFromEnv", () => {
   const keys = { AWS_ACCESS_KEY_ID: "k", AWS_SECRET_ACCESS_KEY: "s" };
@@ -76,5 +76,23 @@ describe("fillStoreType", () => {
   it("refuses a missing or unsafe store type", () => {
     expect(() => fillStoreType("'{{STORE_TYPE}}'", undefined)).toThrow(/names no store type/);
     expect(() => fillStoreType("'{{STORE_TYPE}}'", "x' OR '1'='1")).toThrow(/unexpected characters/);
+  });
+});
+
+describe("fillSkuItems", () => {
+  it("writes one VALUES tuple per SKU and item, once each", () => {
+    const rows = [
+      { sku: "A1", item: "scd.cola.x", category: "scd.cola", casePack: 24 },
+      { sku: "A1", item: "scd.cola.x", category: "scd.cola", casePack: 24 },
+      { sku: "B-2", item: "drinks.water.y", category: "drinks.water", casePack: 12 },
+    ];
+    expect(fillSkuItems("VALUES {{SKU_ITEMS}}", rows)).toBe("VALUES ('A1', 'scd.cola.x', 'scd.cola', 24),\n  ('B-2', 'drinks.water.y', 'drinks.water', 12)");
+    expect(fillSkuItems("SELECT 1", [])).toBe("SELECT 1");
+  });
+
+  it("refuses unsafe values and an empty list", () => {
+    expect(() => fillSkuItems("{{SKU_ITEMS}}", [])).toThrow(/no approved matches/);
+    expect(() => fillSkuItems("{{SKU_ITEMS}}", [{ sku: "A'1", item: "a.b", category: "a.b", casePack: 1 }])).toThrow(/unexpected values/);
+    expect(() => fillSkuItems("{{SKU_ITEMS}}", [{ sku: "A1", item: "a.b", category: "a.b", casePack: 0 }])).toThrow(/unexpected values/);
   });
 });

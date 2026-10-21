@@ -2,6 +2,8 @@
 
 Mainline: `main` (default). New work goes in PRs against `main`. **One open PR at a time** (Rick, 2026-09-30): finish or fold follow-up work into the open PR instead of opening a second one that edits the same files, and start the next branch from `main` only after it merges. Last updated 2026-10-20.
 
+**Penetration lift, part 1 (active stores): built 2026-10-21.** `docs/exploration/penetration-lift.md` (method, back-test, decisions); `pnpm athena:export pricing lift-stores lift-store-skus lift-adopters` then `pnpm lift` → `dist/lift/summary.md`, `items.csv`, `stores.csv` (gitignored). Part 2 targets churned and prospect stores.
+
 **Laundromat catalog: drafted, waiting for Rick's review** (2026-10-20). Read `docs/exploration/laundromat.md`: scope, how it is modeled, the priority rule, the must list, findings (top laundromat SKUs are archived but still selling) and four open questions. `data/store-types/laundromat.yaml`, `data/taxonomy/departments/laundry.yaml`, `data/matches/laundromat.csv`; the site has a store-type switcher. Member pricing for laundromats comes after the review.
 
 **Member-discount side project: wave 1 picked** (290 SKUs, v1 without the drinks departments; `data/member-discount/liquor-wave-1.csv`, re-check with `pnpm member-discount wave-1`). 3 SKUs break the floor after a Finale cost change and wait for Rick's call. No site work yet. Read `docs/exploration/member-discount.md` (rule, Rick's decisions of 2026-10-08, what was built and the first run).
