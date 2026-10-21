@@ -53,7 +53,7 @@ Two limits stay in the summary: the lift is in **Mercaso** sales (a store may al
 
 ## Status (2026-10-21)
 
-Built and run: `pnpm lift` (`scripts/lift/`, tests beside it). 3,458 active stores covered; not covered: restaurants 138, miscellaneous 94, non-store 22, hotels 6. The dollar results are in `dist/lift/summary.md` (gitignored), shared with Rick. Next: the second part, churned and prospect stores.
+Built and run: `pnpm lift` (`scripts/lift/`, tests beside it). 3,458 active stores covered; not covered: restaurants 138, miscellaneous 94, non-store 22, hotels 6. The dollar results are in `dist/lift/summary.md` (gitignored), shared with Rick. Part 2 (churned and prospect stores) is below.
 
 ## Outputs (gitignored, `dist/lift/`)
 
@@ -73,3 +73,23 @@ pnpm lift
 - `lift-stores`: every CA store that ordered in 12 months, with its type, orders and last order date.
 - `lift-store-skus`: store × catalog SKU over 12 months (both catalogs' approved SKUs).
 - `lift-adopters`: the back-test adopters above, with their units in the year after adopting.
+
+## Part 2: serving more of the market (2026-10-21)
+
+Question (Rick): what do we gain if we serve 25%, 30% and 35% of our market? (20% was asked first, but today is already above it.) Yearly amounts once the stores are ordering, not a date range.
+
+**Decisions (Rick, 2026-10-21):**
+
+| Question | Decision |
+|---|---|
+| Active stores | The stores that ordered in the last 45 days (3,718 on 2026-10-21) |
+| Market | Active + the sales prospect list (12,121 rows) + churned stores (1,557: ordered in the last 12 months, not in the last 45 days). 17,396 stores; today 21.4% |
+| Targets | 25%, 30%, 35% |
+| Win-backs | A churned store comes back with the business it had in its last year with us |
+| New stores | Not the first-year spend of stores won 1–2 years ago (we carried fewer products then). A new store spends like today's active stores of its kind, spread over the order-frequency tiers (1–5, 6–20, 21–50, 51+ orders a year) in today's proportions |
+
+**Method.** Stores to add = target × market − active, taken from prospects and churned stores in proportion to their numbers (11% win-backs). Prospects get a store type from their name (gas brands, liquor, laundromat, market, smoke shop, convenience); names that don't say are spread over the same mix. Spend: per store type and tier, the median (the "at least" figure) and the mean with the top 5% capped (the expected figure) of today's active stores; stores younger than a year are annualized (at least 90 days). Profit: each store type's gross margin on what its active stores buy from the catalogs, at today's prices and costs.
+
+**Watch-outs.** Churned stores spent much less before leaving than today's active stores of the same kinds, so new stores could land below the expected figure. The prospect list has repeats (about 1,440 rows) and chains that may buy centrally. New stores start slower than settled ones, and some will stop again.
+
+`pnpm athena:export growth-stores` (and `pricing`, `lift-stores`, `lift-store-skus` for margins), with the list saved as `data/raw/prospects.csv`, then `pnpm growth` → `dist/growth/summary.md` and `targets.csv` (gitignored).

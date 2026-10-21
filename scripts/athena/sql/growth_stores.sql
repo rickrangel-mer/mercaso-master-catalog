@@ -25,22 +25,26 @@ orders AS (
 per_store AS (
   SELECT store_id, min(created_at) AS first_at, max(created_at) AS last_at FROM orders GROUP BY store_id
 ),
-lines AS (
-  SELECT o.store_id, o.order_id, o.created_at, li.current_total_amount AS amount
+-- One row per order with its total, over the last 36 months only: the 24-month store window plus
+-- the year before a churned store's last order.
+order_totals AS (
+  SELECT o.store_id, o.order_id, o.created_at, sum(li.current_total_amount) AS amount
   FROM dwm.dwm_trade_line_item_detail_full li
   JOIN orders o ON o.order_id = li.order_id
   WHERE li.dt = (SELECT max(dt) FROM dwm.dwm_trade_line_item_detail_full)
     AND li.current_quantity > 0
+    AND o.created_at >= date_add('month', -36, current_timestamp)
+  GROUP BY o.store_id, o.order_id, o.created_at
 )
 SELECT p.store_id, coalesce(s.store_type, '') AS store_type,
   CAST(p.first_at AS date) AS first_order_date, CAST(p.last_at AS date) AS last_order_date,
-  round(sum(CASE WHEN l.created_at >= date_add('month', -12, current_timestamp) THEN l.amount ELSE 0 END), 2) AS spend_12m,
-  count(DISTINCT CASE WHEN l.created_at >= date_add('month', -12, current_timestamp) THEN l.order_id END) AS orders_12m,
-  round(sum(CASE WHEN l.created_at > date_add('day', -365, p.last_at) THEN l.amount ELSE 0 END), 2) AS spend_before,
-  count(DISTINCT CASE WHEN l.created_at > date_add('day', -365, p.last_at) THEN l.order_id END) AS orders_before,
+  round(sum(CASE WHEN t.created_at >= date_add('month', -12, current_timestamp) THEN t.amount ELSE 0 END), 2) AS spend_12m,
+  sum(CASE WHEN t.created_at >= date_add('month', -12, current_timestamp) THEN 1 ELSE 0 END) AS orders_12m,
+  round(sum(CASE WHEN t.created_at > date_add('day', -365, p.last_at) THEN t.amount ELSE 0 END), 2) AS spend_before,
+  sum(CASE WHEN t.created_at > date_add('day', -365, p.last_at) THEN 1 ELSE 0 END) AS orders_before,
   current_date AS as_of
 FROM per_store p
+JOIN order_totals t ON t.store_id = p.store_id
 LEFT JOIN stores s ON s.store_id = p.store_id
-JOIN lines l ON l.store_id = p.store_id
 WHERE p.last_at >= date_add('month', -24, current_timestamp)
 GROUP BY p.store_id, s.store_type, p.first_at, p.last_at;

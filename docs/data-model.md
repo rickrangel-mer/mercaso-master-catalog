@@ -17,6 +17,7 @@ pnpm review import [store-type]  # apply the filled-in sheets to data/matches/<s
 pnpm stores      # store penetration: dist/stores/liquor.json, liquor-stores.csv, liquor-voids.csv (docs/exploration/store-penetration.md)
 pnpm member-discount  # member discounts: dist/member-discount/liquor.csv and liquor-summary.md (docs/exploration/member-discount.md)
 pnpm lift        # penetration lift for active stores: dist/lift/summary.md, items.csv, stores.csv (docs/exploration/penetration-lift.md)
+pnpm growth      # gain from serving more of the market (25/30/35%): dist/growth/summary.md, targets.csv
 ```
 
 CI runs all four on every pull request and on pushes to `main`, then builds the tree viewer.

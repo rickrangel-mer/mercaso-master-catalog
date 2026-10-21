@@ -90,7 +90,7 @@ Goal: agree on the liquor-store taxonomy and where the branded/assortment line f
 ### Penetration lift (started 2026-10-21)
 
 - Yearly Mercaso sales gained if active stores buy the catalog items their peers buy, for every store type a catalog fits (liquor catalog for liquor, gas, convenience, market, smoke, dollar and untyped stores; laundromat catalog for laundromats). Scenarios: catch up to peers, +5 and +10 points; back-tested on past adopters. `docs/exploration/penetration-lift.md`, `pnpm lift`.
-- **Status: part 1 (active stores) built 2026-10-21.** Part 2: churned and prospect stores.
+- **Status: both parts built 2026-10-21.** Part 1: active stores (`pnpm lift`). Part 2: the gain from serving 25%, 30% and 35% of the market, with prospects and churned stores (`pnpm growth`).
 
 ### Later (out of scope now)
 
