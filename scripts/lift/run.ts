@@ -34,6 +34,7 @@ import {
   realizationOf,
   SCENARIOS,
   storeLift,
+  target,
   TIERS,
   typeName,
   type Catalog,
@@ -272,6 +273,46 @@ const SHORT_DEPT: Record<string, string> = {
 };
 const plural: Record<string, string> = { Restaurant: "restaurants", "Non-store": "non-store accounts", Miscellaneous: "miscellaneous", Hotel: "hotels" };
 
+// A worked example: the single group × item with the most expected profit.
+const worked = (() => {
+  let best: { g: (typeof model.groups)[number]; gi: (typeof model.groups)[number]["items"][number]; value: number } | undefined;
+  for (const g of model.groups) {
+    const items = model.catalogs.get(g.catalog)!;
+    for (const gi of g.items) {
+      const it = items[gi.item]!;
+      if (it.hold || it.unitPrice === undefined || it.unitCost === undefined) continue;
+      const extra = Math.max(0, target("catch_up", gi) - gi.penetration) * g.stores.length;
+      const value = extra * gi.typical * (it.unitPrice - it.unitCost) * realization * incrementalityFor(inc, it.department);
+      if (!best || value > best.value) best = { g, gi, value };
+    }
+  }
+  if (!best) return "";
+  const { g, gi } = best;
+  const it = model.catalogs.get(g.catalog)![gi.item]!;
+  const n = g.stores.length;
+  const tierText = g.tier >= 0 ? `order ${TIERS[g.tier]!.key} times a year` : "order any number of times a year (a small group, so all are pooled)";
+  const buyers = Math.round(gi.penetration * n);
+  const top = Math.max(1, Math.ceil(n * 0.25));
+  const extra = (target("catch_up", gi) - gi.penetration) * n;
+  const unitMargin = it.unitPrice! - it.unitCost!;
+  const storeSales = gi.typical * it.unitPrice!;
+  const storeProfit = gi.typical * unitMargin;
+  const incD = incrementalityFor(inc, it.department);
+  const d2 = (x: number) => `$${x.toFixed(2)}`;
+  return `### Worked example: ${it.item}, at ${typeName(g.type).toLowerCase()}s that ${tierText}
+
+1. **The group.** ${n.toLocaleString("en-US")} active ${typeName(g.type).toLowerCase()}s that ${tierText}.
+2. **Today.** ${buyers.toLocaleString("en-US")} of them bought it in the last 90 days: **${pct(gi.penetration)}%**.
+3. **The goal.** We rank the ${n.toLocaleString("en-US")} stores by how much of the catalog they carry and take the best quarter (${top.toLocaleString("en-US")} stores). **${pct(gi.top)}%** of them buy this item, so that is the goal.
+4. **Stores that would start.** (${pct(gi.top)}% − ${pct(gi.penetration)}%) × ${n.toLocaleString("en-US")} stores = **${extra.toFixed(0)} stores**.
+5. **What one store buys in a year.** The stores in this group that already buy it take a typical (middle) ${gi.typical.toLocaleString("en-US")} units a year. At ${d2(it.unitPrice!)} a unit that is ${money(storeSales)} in sales; we keep ${d2(unitMargin)} a unit, so ${money(storeProfit)} in profit.
+6. **Before the reality check.** ${extra.toFixed(0)} stores × ${money(storeProfit)} = **${money(extra * storeProfit)}** profit a year.
+7. **The reality check.** × ${realization.toFixed(2)} (new buyers really do buy about that much) × ${(incD * 100).toFixed(0)}% (the part that is truly new, not taken from other items the store already buys from us) = **${money(best.value)}** profit a year.
+
+The report does exactly this for every catalog item in every group of similar stores, then adds it all up.
+`;
+})();
+
 const summary = `# How much more we could sell to the stores we already have (${asOf})
 
 ## The short answer
@@ -317,6 +358,23 @@ ${topItems.join("\n")}
 
 Every item is in \`items.csv\`. Every store, with the 5 items worth the most to it, is in \`stores.csv\`, so reps can start with the biggest accounts.
 
+## How we did the math
+
+**Step 1: put similar stores together.** Stores are grouped by kind (liquor store, gas station…) and by how often they order (1–5, 6–20, 21–50 or more than 50 times a year). Each store is only compared with its own group. A group with fewer than 20 stores is merged with the rest of its kind.
+
+**Step 2: see who buys each item today.** For every catalog item and every group: how many of the group's stores bought it from us in the last 90 days. Different pack sizes of the same product count as the same item.
+
+**Step 3: set a goal from the best stores.** In each group we rank stores by how much of the catalog they carry (must items count 3, should 2, nice 1) and take the best quarter. The share of those best stores that buy the item is the goal for the whole group. Where the group already beats it, nothing is added.
+
+**Step 4: count the stores that would start buying.** (Goal − today) × number of stores in the group.
+
+**Step 5: put a value on each new buyer.** What a typical store in the group that already buys the item takes in a year (the middle store, so a few huge buyers don't inflate it), counted in units so different pack sizes add up, × today's price per unit. Profit uses today's cost per unit.
+
+**Step 6: reality check, then add up.** Multiply by what new buyers really bought in the past, and by the share of new sales that is truly new (see below). Items we can't supply right now (Arizona) count as zero. Add up every item in every group: that is the total at the top.
+
+**The "5 or 10 more stores out of 100" goals** skip Step 3: the goal is simply today's share plus 5 or 10 points, for items some stores in the group already buy.
+
+${worked}
 ## How we know the numbers are realistic
 
 **1. Do stores really buy that much when they add an item?** We looked at ${backtest.length.toLocaleString("en-US")} cases from the past where a store started buying an item 12–18 months ago, then followed what it bought over the next full year. The typical store bought **${realization.toFixed(2) === "1.00" ? "exactly the amount we assume" : `${realization.toFixed(2)} times the amount we assume`}**. Half of them landed between half and double that amount.
