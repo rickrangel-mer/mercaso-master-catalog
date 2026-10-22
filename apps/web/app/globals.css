@@ -1743,6 +1743,10 @@ select {
 .wallet-per-point {
   margin-left: auto;
 }
+.wallet-breadth {
+  margin: 4px 0 0;
+  font-size: 13px;
+}
 .wallet-slider {
   display: grid;
   grid-template-columns: minmax(260px, 2fr) 3fr;

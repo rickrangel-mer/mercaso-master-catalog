@@ -41,7 +41,13 @@ const walletWithoutMoney = (f) => ({
   no_money: true,
   margins: f.margins.map(() => 0),
   segments: f.segments.map((s) => ({ ...s, revenue: s.revenue.map(() => 0), profit: s.profit.map(() => 0) })),
-  stores: f.stores.map((s) => ({ ...s, spendNow: s.spendNow.map(() => 0), spendThen: s.spendThen.map(() => 0) })),
+  stores: f.stores.map((s) => ({
+    ...s,
+    spendNow: s.spendNow.map(() => 0),
+    spendThen: s.spendThen.map(() => 0),
+    catSpendNow: s.catSpendNow.map(() => 0),
+    catSpendThen: s.catSpendThen.map(() => 0),
+  })),
 });
 // The no-prices file must not carry prices, margins or spend in the store view either (the site
 // computes opportunity from prices, so without them it is zero).

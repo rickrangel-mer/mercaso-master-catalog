@@ -13,6 +13,10 @@ const store = (extra: Partial<WalletStore>): WalletStore => ({
   ordersThen: 0,
   spendNow: [0, 0, 0],
   spendThen: [0, 0, 0],
+  catSpendNow: [0, 0, 0],
+  catSpendThen: [0, 0, 0],
+  skusNow: [0, 0, 0],
+  skusThen: [0, 0, 0],
   itemsNow: [],
   itemsThen: [],
   ...extra,
@@ -36,8 +40,8 @@ const base: WalletBase = {
   segments: [{ key: "Liquor store|1", type: "Liquor store", tier: 1, catalog: "liquor", revenue: [100, 100, 50, 50], profit: [10, 10, 5, 5] }],
   stores: [
     // The best store carries everything.
-    store({ ordersNow: 10, spendNow: [800, 200, 100], itemsNow: [0, 5, 1, 5, 2, 5, 3, 5], lastThen: 10, ordersThen: 2, spendThen: [100, 0, 0], itemsThen: [0, 5] }),
-    store({ spendNow: [400, 0, 0], itemsNow: [0, 5, 2, 120] }), // chips bought too long ago
+    store({ ordersNow: 10, spendNow: [800, 200, 100], catSpendNow: [600, 50, 0], skusNow: [40, 20, 5], itemsNow: [0, 5, 1, 5, 2, 5, 3, 5], lastThen: 10, ordersThen: 2, spendThen: [100, 0, 0], itemsThen: [0, 5] }),
+    store({ spendNow: [400, 0, 0], catSpendNow: [200, 0, 0], skusNow: [10, 0, 0], itemsNow: [0, 5, 2, 120] }), // chips bought too long ago
     store({ spendNow: [500, 0, 0], itemsNow: [0, 5, 1, 5], lastThen: 100 }),
     store({ lastNow: 60, spendNow: [999, 0, 0], itemsNow: [0, 5] }), // not active
     store({ type: "Gas station", segment: 0, spendNow: [50, 0, 0], itemsNow: [0, 5] }),
@@ -123,6 +127,22 @@ describe("computeWallet", () => {
   it("applies the back-test factors when the reality check is on", () => {
     const res = computeWallet(base, settings({ reality: true }));
     expect(res.groups[0]!.shortRevenue).toBeCloseTo((100 / 3) * 0.7);
+  });
+
+  it("measures catalog coverage and breadth without the catalog", () => {
+    // Beverage: $800 of $1,700 on catalog SKUs; SKUs per store (40 + 10 + 0) / 3; best store 40.
+    expect(r.today.coverage[0]).toBeCloseTo(800 / 1700);
+    expect(r.today.coverage[1]).toBeCloseTo(50 / 200);
+    expect(r.today.skus[0]).toBeCloseTo(50 / 3);
+    expect(r.groups[0]!.skusToday).toBeCloseTo(50 / 3);
+    expect(r.groups[0]!.skusBest).toBe(40);
+  });
+
+  it("keeps what stores already buy and adds the new items on top", () => {
+    const year = 20 * (365 / 90);
+    expect(r.shortTerm.aovAdded[0]).toBeCloseTo((100 / 3) / year);
+    expect(r.shortTerm.aov[0]! - r.shortTerm.aovAdded[0]!).toBeCloseTo(r.today.aov[0]!);
+    expect(r.today.aovAdded).toEqual([0, 0, 0]);
   });
 
   it("counts only the chosen priorities", () => {

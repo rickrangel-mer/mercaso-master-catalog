@@ -165,7 +165,10 @@ export function WalletView({ base }: Props) {
             <div className="block-head wallet-chart-head">
               <div>
                 <h3>Average order value by department</h3>
-                <p className="muted">Dollars per order. Short and long term keep today&apos;s orders and add what the new items bring.</p>
+                <p className="muted">
+                  Dollars per order, from everything stores buy from us, catalog or not. Short and long term keep that and today&apos;s orders, and add what the
+                  new catalog items bring (the lighter part at the top of each color).
+                </p>
               </div>
               <button type="button" className="linklike" onClick={() => setShowTable((v) => !v)}>
                 {showTable ? "Show chart" : "Show table"}
@@ -202,6 +205,11 @@ export function WalletView({ base }: Props) {
                   </span>
                   {!noMoney && <span className="muted wallet-per-point">+1 point ≈ {short(gp.revenuePerPoint)} a year</span>}
                 </div>
+                <p className="muted wallet-breadth">
+                  Any SKU, catalog or not: a store buys {gp.skusThen.toFixed(0)} → {gp.skusToday.toFixed(0)} different SKUs in 90 days · best stores{" "}
+                  {gp.skusBest.toFixed(0)}
+                  {!noMoney && Number.isFinite(gp.coverage) && <> · the catalog covers {pct(gp.coverage)} of what stores spend here</>}
+                </p>
                 <TargetSlider
                   label="Short term (6 months)"
                   value={gp.shortTerm}
@@ -307,24 +315,28 @@ function StackedBars({ groups, snaps }: { groups: string[]; snaps: { key: string
             <g key={snap.key}>
               {snap.s.aov.map((v, g) => {
                 const y0 = y(acc);
+                const yBase = y(acc + v - (snap.s.aovAdded[g] ?? 0));
                 acc += v;
                 const y1 = y(acc);
-                const h = Math.max(0, y0 - y1 - 2);
-                if (h <= 0) return null;
                 const isTop = g === lastNonZero(snap.s.aov);
+                const yTop = y1 + (isTop ? 0 : 2);
+                if (y0 - yTop <= 0) return null;
+                const dim = hover && (hover.bar !== b || hover.g !== g) ? 0.55 : 1;
+                // What stores already buy in full color; the new items' part lighter on top.
                 return (
-                  <rect
-                    key={g}
-                    x={cx - barW / 2}
-                    y={y1 + (isTop ? 0 : 2)}
-                    width={barW}
-                    height={h}
-                    rx={isTop ? 4 : 0}
-                    fill={colorOf(g, groups)}
-                    opacity={hover && (hover.bar !== b || hover.g !== g) ? 0.55 : 1}
-                    onMouseEnter={() => setHover({ bar: b, g })}
-                    onMouseLeave={() => setHover(null)}
-                  />
+                  <g key={g} opacity={dim} onMouseEnter={() => setHover({ bar: b, g })} onMouseLeave={() => setHover(null)}>
+                    {yBase > yTop + 0.5 && (
+                      <rect x={cx - barW / 2} y={yTop} width={barW} height={yBase - yTop} rx={isTop ? 4 : 0} fill={colorOf(g, groups)} fillOpacity={0.4} />
+                    )}
+                    <rect
+                      x={cx - barW / 2}
+                      y={Math.max(yTop, yBase)}
+                      width={barW}
+                      height={Math.max(0, y0 - Math.max(yTop, yBase))}
+                      rx={isTop && yBase <= yTop + 0.5 ? 4 : 0}
+                      fill={colorOf(g, groups)}
+                    />
+                  </g>
                 );
               })}
               <text x={cx} y={y(total) - 8} textAnchor="middle" className="bar-total">
@@ -344,6 +356,7 @@ function StackedBars({ groups, snaps }: { groups: string[]; snaps: { key: string
         <div className="wallet-tip" role="status">
           <strong>{snaps[hover.bar]!.label}</strong> · {groups[hover.g]}: {money(snaps[hover.bar]!.s.aov[hover.g]!)} an order (
           {((snaps[hover.bar]!.s.aov[hover.g]! / Math.max(1, sum(snaps[hover.bar]!.s.aov))) * 100).toFixed(0)}% of the order)
+          {snaps[hover.bar]!.s.aovAdded[hover.g]! > 0 && <>, of which new items {money(snaps[hover.bar]!.s.aovAdded[hover.g]!)}</>}
         </div>
       )}
     </div>
@@ -379,6 +392,7 @@ function AovTable({ groups, snaps }: { groups: string[]; snaps: { key: string; l
               {snaps.map((s) => (
                 <td key={s.key} className="num">
                   {money(s.s.aov[i]!)}
+                  {s.s.aovAdded[i]! > 0 && <span className="muted"> (+{money(s.s.aovAdded[i]!)} new)</span>}
                 </td>
               ))}
             </tr>

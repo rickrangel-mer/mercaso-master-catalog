@@ -50,6 +50,12 @@ export interface WalletStore {
   /** Spend per group in the 90 days up to each anchor. */
   spendNow: number[];
   spendThen: number[];
+  /** Of that, spend on the master catalog's SKUs, per group. */
+  catSpendNow: number[];
+  catSpendThen: number[];
+  /** Distinct SKUs bought per group in each 90-day window, catalog or not. */
+  skusNow: number[];
+  skusThen: number[];
   /** Catalog items bought in the 180 days up to each anchor, flat: item index, days since bought, … */
   itemsNow: number[];
   itemsThen: number[];
@@ -107,8 +113,14 @@ export const MAX_GAP = 2;
 export interface Snapshot {
   stores: number;
   orders: number;
-  /** AOV per group ($ per order). */
+  /** AOV per group ($ per order): everything the stores buy from us, catalog or not. */
   aov: number[];
+  /** The part of `aov` that comes from new catalog items (projections only; 0 for actuals). */
+  aovAdded: number[];
+  /** Share of each group's spend on catalog SKUs (NaN without spend). */
+  coverage: number[];
+  /** Distinct SKUs bought per store per group in 90 days, catalog or not. */
+  skus: number[];
   /** Penetration per group (0–1); NaN where no store in view has items in the group. */
   penetration: number[];
   /** Yearly revenue and gross profit at this snapshot's pace. */
@@ -135,6 +147,12 @@ export interface GroupPlan {
   revenuePerPoint: number;
   /** Catalog items in the group that count (the chosen priorities), averaged over stores in view. */
   itemsPerStore: number;
+  /** Breadth without the catalog: distinct SKUs a store buys in 90 days, 12 months ago, today, best stores. */
+  skusThen: number;
+  skusToday: number;
+  skusBest: number;
+  /** Share of the group's spend today on catalog SKUs. */
+  coverage: number;
 }
 
 export interface WalletResult {
@@ -158,6 +176,8 @@ export function itemTarget(a: number, top: number, gap: number): number {
 function snapshot(base: WalletBase, set: WalletSettings, when: "now" | "then"): Snapshot & { carried: Map<number, Set<number>> } {
   const G = base.groups.length;
   const spend = new Array<number>(G).fill(0);
+  const catSpend = new Array<number>(G).fill(0);
+  const skus = new Array<number>(G).fill(0);
   const penSum = new Array<number>(G).fill(0);
   const penN = new Array<number>(G).fill(0);
   const carried = new Map<number, Set<number>>();
@@ -175,6 +195,8 @@ function snapshot(base: WalletBase, set: WalletSettings, when: "now" | "then"): 
       spend[g]! += x;
       profit += x * (base.margins[g] ?? 0);
     });
+    (when === "now" ? s.catSpendNow : s.catSpendThen).forEach((x, g) => (catSpend[g]! += x));
+    (when === "now" ? s.skusNow : s.skusThen).forEach((x, g) => (skus[g]! += x));
     const items = base.catalogs[s.catalog]!;
     const flat = when === "now" ? s.itemsNow : s.itemsThen;
     const bought = new Set<number>();
@@ -194,6 +216,9 @@ function snapshot(base: WalletBase, set: WalletSettings, when: "now" | "then"): 
     stores,
     orders,
     aov: spend.map((x) => (orders ? x / orders : 0)),
+    aovAdded: spend.map(() => 0),
+    coverage: spend.map((x, g) => (x > 0 ? catSpend[g]! / x : NaN)),
+    skus: skus.map((x) => (stores ? x / stores : 0)),
     penetration: penSum.map((x, g) => (penN[g] ? x / penN[g]! : NaN)),
     revenue: spend.reduce((a, b) => a + b, 0) * year,
     profit: profit * year,
@@ -226,6 +251,8 @@ interface SegmentState {
   /** Per item: adoption today and among the best stores. */
   a: number[];
   top: number[];
+  /** The best stores (store indexes). */
+  best: number[];
 }
 
 /** Per segment in view: today's adoption of each item and the best stores' adoption. */
@@ -256,7 +283,7 @@ function segmentStates(base: WalletBase, set: WalletSettings, carried: Map<numbe
       for (const k of list) for (const i of carried.get(k)!) c[i]!++;
       return c.map((x) => x / list.length);
     };
-    out.push({ segment, n: ks.length, a: count(ks), top: count(top) });
+    out.push({ segment, n: ks.length, a: count(ks), top: count(top), best: top });
   }
   return out;
 }
@@ -314,13 +341,24 @@ export function computeWallet(base: WalletBase, set: WalletSettings): WalletResu
   const states = segmentStates(base, set, nowSnap.carried);
   const year = 365 / 90;
 
+  /** The best stores' distinct SKUs per group, each segment weighted by its stores. */
+  const bestSkus = (g: number) => {
+    let sum = 0;
+    let n = 0;
+    for (const st of states) {
+      const avg = st.best.reduce((a, k) => a + base.stores[k]!.skusNow[g]!, 0) / st.best.length;
+      sum += avg * st.n;
+      n += st.n;
+    }
+    return n ? sum / n : 0;
+  };
   const groups: GroupPlan[] = [];
   const extra = { short: { rev: new Array<number>(G).fill(0), prof: 0 }, long: { rev: new Array<number>(G).fill(0), prof: 0 } };
   for (let g = 0; g < G; g++) {
     const at = (gap: number) => penetrationAt(base, states, g, gap, set.priorities);
     const today = at(0);
     if (Number.isNaN(today)) {
-      groups.push({ then: thenSnap.penetration[g]!, today, best: NaN, shortTerm: NaN, longTerm: NaN, shortGap: 0, longGap: 0, shortRevenue: 0, shortProfit: 0, longRevenue: 0, longProfit: 0, revenuePerPoint: 0, itemsPerStore: 0 });
+      groups.push({ then: thenSnap.penetration[g]!, today, best: NaN, shortTerm: NaN, longTerm: NaN, shortGap: 0, longGap: 0, shortRevenue: 0, shortProfit: 0, longRevenue: 0, longProfit: 0, revenuePerPoint: 0, itemsPerStore: 0, skusThen: thenSnap.skus[g]!, skusToday: nowSnap.skus[g]!, skusBest: bestSkus(g), coverage: nowSnap.coverage[g]! });
       continue;
     }
     const shortTarget = set.shortTerm[g] ?? at(DEFAULT_GAP.shortTerm);
@@ -355,6 +393,10 @@ export function computeWallet(base: WalletBase, set: WalletSettings): WalletResu
       longProfit: l.profit,
       revenuePerPoint: plusOne,
       itemsPerStore: n ? sizeSum / n : 0,
+      skusThen: thenSnap.skus[g]!,
+      skusToday: nowSnap.skus[g]!,
+      skusBest: bestSkus(g),
+      coverage: nowSnap.coverage[g]!,
     });
   }
 
@@ -364,6 +406,9 @@ export function computeWallet(base: WalletBase, set: WalletSettings): WalletResu
       stores: nowSnap.stores,
       orders: nowSnap.orders,
       aov: nowSnap.aov.map((x, g) => x + (ordersYear ? rev[g]! / ordersYear : 0)),
+      aovAdded: rev.map((r) => (ordersYear ? r / ordersYear : 0)),
+      coverage: nowSnap.coverage,
+      skus: nowSnap.skus,
       penetration: gaps.map((gap, g) => (Number.isNaN(nowSnap.penetration[g]!) ? NaN : penetrationAt(base, states, g, gap, set.priorities))),
       revenue: nowSnap.revenue + rev.reduce((a, b) => a + b, 0),
       profit: nowSnap.profit + prof,

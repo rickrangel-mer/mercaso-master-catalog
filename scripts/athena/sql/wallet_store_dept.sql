@@ -1,6 +1,8 @@
 -- Export: what each covered store spent per Mercaso department in the last 90 days ("now") and in
 -- the 90 days ending 365 days ago ("then"), for `pnpm wallet`. Save as
 -- data/raw/wallet_store_dept.csv (gitignored: spend stays out of git). Line totals after refunds.
+--   cat_spend  the part spent on the master catalog's approved SKUs (every store type's matches)
+--   skus / cat_skus  distinct SKUs bought, and how many of them are catalog SKUs
 WITH stores AS (
   SELECT si.store_id,
          max(COALESCE(NULLIF(trim(st.store_type), ''), NULLIF(trim(si.store_type), ''))) AS store_type
@@ -27,7 +29,10 @@ orders AS (
     AND (o.created_at >= date_add('day', -90, current_timestamp)
       OR (o.created_at >= date_add('day', -455, current_timestamp) AND o.created_at < date_add('day', -365, current_timestamp)))
 )
-SELECT o.store_id, o.win, coalesce(li.department, '') AS department, round(sum(li.current_total_amount), 2) AS spend
+SELECT o.store_id, o.win, coalesce(li.department, '') AS department, round(sum(li.current_total_amount), 2) AS spend,
+  round(sum(CASE WHEN li.sku IN ({{CATALOG_SKUS}}) THEN li.current_total_amount ELSE 0 END), 2) AS cat_spend,
+  count(DISTINCT li.sku) AS skus,
+  count(DISTINCT CASE WHEN li.sku IN ({{CATALOG_SKUS}}) THEN li.sku END) AS cat_skus
 FROM dwm.dwm_trade_line_item_detail_full li
 JOIN orders o ON o.order_id = li.order_id
 WHERE li.dt = (SELECT max(dt) FROM dwm.dwm_trade_line_item_detail_full)

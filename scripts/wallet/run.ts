@@ -165,12 +165,20 @@ for (const r of skuRows) {
     }
   }
 }
-const spend = new Map<string, { now: number[]; then: number[] }>();
+// Per store and group, for each window: all spend, spend on catalog SKUs, and distinct SKUs
+// (a SKU sits in one Mercaso department, so departments add up within a group).
+type DeptSums = { spend: number[]; cat: number[]; skus: number[] };
+const zeros = () => GROUPS.map(() => 0);
+const sums = (): DeptSums => ({ spend: zeros(), cat: zeros(), skus: zeros() });
+const spend = new Map<string, { now: DeptSums; then: DeptSums }>();
 for (const r of read("data/raw/wallet_store_dept.csv")) {
   let e = spend.get(r.store_id!);
-  if (!e) spend.set(r.store_id!, (e = { now: GROUPS.map(() => 0), then: GROUPS.map(() => 0) }));
+  if (!e) spend.set(r.store_id!, (e = { now: sums(), then: sums() }));
   const g = MERCASO_GROUP[r.department ?? ""] ?? OTHER;
-  (r.win === "now" ? e.now : e.then)[g]! += Number(r.spend) || 0;
+  const w = r.win === "now" ? e.now : e.then;
+  w.spend[g]! += Number(r.spend) || 0;
+  w.cat[g]! += Number(r.cat_spend) || 0;
+  w.skus[g]! += Number(r.skus) || 0;
 }
 const stores: WalletStore[] = [];
 for (const r of storeRows) {
@@ -197,8 +205,12 @@ for (const r of storeRows) {
     lastThen,
     ordersNow: Number(r.orders_90_now) || 0,
     ordersThen: Number(r.orders_90_then) || 0,
-    spendNow: (sp?.now ?? GROUPS.map(() => 0)).map(round2),
-    spendThen: (sp?.then ?? GROUPS.map(() => 0)).map(round2),
+    spendNow: (sp?.now.spend ?? zeros()).map(round2),
+    spendThen: (sp?.then.spend ?? zeros()).map(round2),
+    catSpendNow: (sp?.now.cat ?? zeros()).map(round2),
+    catSpendThen: (sp?.then.cat ?? zeros()).map(round2),
+    skusNow: sp?.now.skus ?? zeros(),
+    skusThen: sp?.then.skus ?? zeros(),
     itemsNow: [...(e?.now ?? [])].sort((a, b) => a[0] - b[0]).flat(),
     itemsThen: [...(e?.then ?? [])].sort((a, b) => a[0] - b[0]).flat(),
   });
@@ -250,5 +262,5 @@ for (const [name, s] of [["12 months ago", r.then], ["Today", r.today], ["Short 
 }
 for (const [i, g] of r.groups.entries()) {
   if (i === OTHER) continue;
-  console.log(`${GROUPS[i]!.padEnd(22)} then ${p(g.then)}  today ${p(g.today)}  best ${p(g.best)}  ST ${p(g.shortTerm)}  LT ${p(g.longTerm)}  +1pt ${k(g.revenuePerPoint)}  items ${g.itemsPerStore.toFixed(0)}`);
+  console.log(`${GROUPS[i]!.padEnd(22)} then ${p(g.then)}  today ${p(g.today)}  best ${p(g.best)}  ST ${p(g.shortTerm)}  LT ${p(g.longTerm)}  +1pt ${k(g.revenuePerPoint)}  items ${g.itemsPerStore.toFixed(0)}  SKUs then ${g.skusThen.toFixed(1)} today ${g.skusToday.toFixed(1)} best ${g.skusBest.toFixed(1)}  catalog share ${p(g.coverage)}`);
 }
