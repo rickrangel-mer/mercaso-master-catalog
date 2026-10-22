@@ -92,6 +92,10 @@ Goal: agree on the liquor-store taxonomy and where the branded/assortment line f
 - Yearly Mercaso sales gained if active stores buy the catalog items their peers buy, for every store type a catalog fits (liquor catalog for liquor, gas, convenience, market, smoke, dollar and untyped stores; laundromat catalog for laundromats). Scenarios: catch up to peers, +5 and +10 points; back-tested on past adopters. `docs/exploration/penetration-lift.md`, `pnpm lift`.
 - **Status: both parts built 2026-10-21.** Part 1: active stores (`pnpm lift`). Part 2: the gain from serving 25%, 30% and 35% of the market, with prospects and churned stores (`pnpm growth`).
 
+### Wallet view (2026-10-22)
+
+- A Wallet tab on the site from Rick's whiteboard: average order value by department and department penetration, 12 months ago vs today vs short term (6 months) vs long term (12 months), with a target slider per department and editable inputs (active days, item window, best-store share, segment filters, reality check). `docs/exploration/wallet.md`. Next: the market side of the board (zones, sub-zones, verticals, reps).
+
 ### Later (out of scope now)
 
 Editable UI with DB persistence; market store types (reuse taxonomy, add store-type files); API serving `dist/*.json` to the Mercaso app; per-store gap analysis (now Phase 5).

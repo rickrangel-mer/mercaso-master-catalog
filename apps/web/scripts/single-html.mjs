@@ -34,6 +34,15 @@ const index = read("index.json");
 const catalogs = Object.fromEntries(index.map((e) => [`data/${e.file}`, read(e.file)]));
 const prices = existsSync(join(data, "prices.json")) ? read("prices.json") : null;
 const stores = existsSync(join(data, "stores.json")) ? read("stores.json") : null;
+const wallet = existsSync(join(data, "wallet.json")) ? read("wallet.json") : null;
+// The no-prices file shows wallet penetration only: spend, revenue, profit and margins are zeroed.
+const walletWithoutMoney = (f) => ({
+  ...f,
+  no_money: true,
+  margins: f.margins.map(() => 0),
+  segments: f.segments.map((s) => ({ ...s, revenue: s.revenue.map(() => 0), profit: s.profit.map(() => 0) })),
+  stores: f.stores.map((s) => ({ ...s, spendNow: s.spendNow.map(() => 0), spendThen: s.spendThen.map(() => 0) })),
+});
 // The no-prices file must not carry prices, margins or spend in the store view either (the site
 // computes opportunity from prices, so without them it is zero).
 const storesWithoutMoney = (f) => ({
@@ -55,6 +64,7 @@ const page = (withPrices) => {
     snapshot,
     ...(withPrices && prices ? { "data/prices.json": prices } : {}),
     ...(stores ? { "data/stores.json": withPrices ? stores : storesWithoutMoney(stores) } : {}),
+    ...(wallet ? { "data/wallet.json": withPrices ? wallet : walletWithoutMoney(wallet) } : {}),
   };
   return `<!doctype html>
 <html lang="en">

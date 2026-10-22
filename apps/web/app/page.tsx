@@ -7,6 +7,8 @@ import { OrgChart } from "../components/OrgChart";
 import { Overview } from "../components/Overview";
 import { SkuTable } from "../components/SkuTable";
 import { StoresView } from "../components/StoresView";
+import { WalletView } from "../components/WalletView";
+import type { WalletBase } from "../lib/wallet";
 import type { BaseFile } from "../lib/score";
 import { Toolbar } from "../components/Toolbar";
 import { loadJson } from "../lib/load";
@@ -47,6 +49,8 @@ export default function Page() {
   const [snapshot, setSnapshot] = useState<string | undefined>(undefined);
   // Optional: the store view from `pnpm stores` (store data never goes in git).
   const [stores, setStores] = useState<BaseFile | null>(null);
+  // Optional: the wallet view from `pnpm wallet` (spend never goes in git).
+  const [wallet, setWallet] = useState<WalletBase | null>(null);
   const [filters, setFilters] = useState<Filters>(NO_FILTERS);
   const [expanded, setExpanded] = useState<Set<string>>(new Set([ROOT_ID]));
   const [selectedId, setSelectedId] = useState<string | null>(null);
@@ -76,6 +80,9 @@ export default function Page() {
     loadJson<BaseFile>("data/stores.json")
       .then((f) => setStores(f))
       .catch(() => setStores(null));
+    loadJson<WalletBase>("data/wallet.json")
+      .then((f) => setWallet(f))
+      .catch(() => setWallet(null));
     loadJson<PriceFile>("data/prices.json")
       .then((p) => setPrices(p))
       .catch(() => setPrices(null));
@@ -188,6 +195,11 @@ export default function Page() {
           ) : (
             <StoresView base={stores} onJumpItem={jumpTo} />
           )}
+        </div>
+      )}
+      {tab === "wallet" && (
+        <div className="page">
+          <WalletView base={wallet} />
         </div>
       )}
       {tab === "table" && <div className="page">{index ? <SkuTable rows={rows} pricesAsOf={prices?.as_of} onJump={jumpTo} storeName={index.catalog.name} /> : loading}</div>}

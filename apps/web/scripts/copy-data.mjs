@@ -71,6 +71,15 @@ if (existsSync(pricingCsv)) {
   console.log("No data/raw/pricing.csv; the site will build without prices.");
 }
 
+// Wallet view.
+const walletJson = join(dist, "wallet/wallet.json");
+if (existsSync(walletJson)) {
+  copyFileSync(walletJson, join(out, "wallet.json"));
+  console.log("Copied the wallet view to public/data/wallet.json.");
+} else {
+  console.log("No dist/wallet/wallet.json; the Wallet tab will say how to build it.");
+}
+
 // Store view.
 const storesJson = join(dist, "stores/liquor.json");
 if (existsSync(storesJson)) {
