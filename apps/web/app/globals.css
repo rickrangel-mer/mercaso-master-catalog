@@ -1247,7 +1247,8 @@ select {
   border-left: 1px solid var(--border);
 }
 
-.segmented button[aria-selected="true"] {
+.segmented button[aria-selected="true"],
+.segmented button[aria-pressed="true"] {
   background: var(--accent-soft);
   color: var(--text);
 }
@@ -1691,7 +1692,6 @@ select {
 }
 .wallet-chart svg {
   width: 100%;
-  max-width: 760px;
   height: auto;
   display: block;
 }
@@ -1718,9 +1718,84 @@ select {
   cursor: default;
 }
 .wallet-tip {
-  margin-top: 6px;
+  position: absolute;
+  z-index: 5;
+  pointer-events: none;
+  min-width: 240px;
+  max-width: 340px;
+  padding: 8px 10px;
+  font-size: 12.5px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  box-shadow: 0 4px 16px rgb(0 0 0 / 0.12);
+}
+.wallet-tip-head {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 4px;
+}
+.wallet-tip dl,
+.wallet-facts {
+  margin: 0;
+}
+.wallet-tip dl > div {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 1px 0;
+}
+.wallet-tip dt {
+  color: var(--muted);
+}
+.wallet-tip dd {
+  margin: 0;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+.wallet-facts {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 8px 16px;
+  padding: 6px 0 4px;
+}
+.wallet-facts dt {
+  font-size: 12px;
+  color: var(--muted);
+}
+.wallet-facts dd {
+  margin: 2px 0 0;
   font-size: 13px;
-  min-height: 1.4em;
+}
+.wallet-facts dd > strong {
+  font-size: 18px;
+  font-variant-numeric: tabular-nums;
+}
+.wallet-step {
+  font-variant-numeric: tabular-nums;
+}
+.wallet-gain {
+  flex-basis: 100%;
+}
+.wallet-bubble {
+  position: absolute;
+  bottom: calc(100% + 2px);
+  transform: translateX(-50%);
+  padding: 1px 6px;
+  font-size: 11px;
+  white-space: nowrap;
+  background: var(--text);
+  color: var(--surface);
+  border-radius: 4px;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.1s;
+}
+.wallet-track:hover .wallet-bubble,
+.wallet-track:focus-within .wallet-bubble,
+.wallet-track:active .wallet-bubble {
+  opacity: 1;
 }
 .wallet-depts {
   display: grid;
@@ -1742,10 +1817,6 @@ select {
 }
 .wallet-per-point {
   margin-left: auto;
-}
-.wallet-breadth {
-  margin: 4px 0 0;
-  font-size: 13px;
 }
 .wallet-slider {
   display: grid;

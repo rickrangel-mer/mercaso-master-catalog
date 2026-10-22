@@ -1,7 +1,7 @@
 "use client";
 
-import { useDeferredValue, useMemo, useState } from "react";
-import { computeWallet, DEFAULT_SETTINGS, MAX_GAP, type Snapshot, type WalletBase, type WalletPriority, type WalletSettings } from "../lib/wallet";
+import { useDeferredValue, useMemo, useRef, useState } from "react";
+import { computeWallet, DEFAULT_SETTINGS, MAX_GAP, type GroupPlan, type Snapshot, type WalletBase, type WalletPriority, type WalletSettings } from "../lib/wallet";
 
 interface Props {
   base: WalletBase | null;
@@ -18,6 +18,10 @@ const money = (x: number) => `$${Math.round(x).toLocaleString("en-US")}`;
 const short = (x: number) => (Math.abs(x) >= 1e6 ? `$${(x / 1e6).toFixed(1)}M` : Math.abs(x) >= 1e3 ? `$${Math.round(x / 1e3).toLocaleString("en-US")}K` : money(x));
 const pct = (x: number) => (Number.isNaN(x) ? "–" : `${(x * 100).toFixed(1)}%`);
 const sum = (xs: number[]) => xs.reduce((a, b) => a + b, 0);
+/** A count of items: whole numbers plain, otherwise one decimal. */
+const count = (x: number) => (Math.abs(x - Math.round(x)) < 0.05 ? Math.round(x).toLocaleString("en-US") : x.toFixed(1));
+/** How targets are set and read: catalog items per store, or penetration %. */
+type Unit = "items" | "pct";
 /** Department colors: the site's validated categorical slots, in group order; "Other" is neutral. */
 const colorOf = (g: number, groups: string[]) => (g === groups.length - 1 ? "var(--neutral-tint)" : `var(--cat-${g + 1})`);
 
@@ -30,6 +34,7 @@ export function WalletView({ base }: Props) {
     longTerm: Array.from({ length: G }, () => null),
   }));
   const [showTable, setShowTable] = useState(false);
+  const [unit, setUnit] = useState<Unit>("items");
   const deferred = useDeferredValue(settings);
   const result = useMemo(() => (base ? computeWallet(base, deferred) : null), [base, deferred]);
   const types = useMemo(() => (base ? [...new Set(base.stores.map((s) => s.type))].sort((a, b) => typeLabel(a).localeCompare(typeLabel(b))) : []), [base]);
@@ -60,6 +65,27 @@ export function WalletView({ base }: Props) {
     { key: "long", label: "Long term", sub: "12 months", s: result.longTerm },
   ];
   const groups = base.groups;
+  /** Penetration at each snapshot (bar), for the chart's hover card. */
+  const penAt = (bar: number, gp: GroupPlan) => [gp.then, gp.today, gp.shortTerm, gp.longTerm][bar]!;
+  const detail = (bar: number, g: number): [string, string][] => {
+    const gp = result.groups[g]!;
+    const snap = snaps[bar]!.s;
+    const pen = penAt(bar, gp);
+    const N = gp.itemsPerStore;
+    const added = bar >= 2 ? (pen - gp.today) * N : 0;
+    const rows: [string, string][] = [
+      ["Per order", `${money(snap.aov[g]!)} (${((snap.aov[g]! / Math.max(1, sum(snap.aov))) * 100).toFixed(0)}% of the order)`],
+    ];
+    if (snap.aovAdded[g]! > 0) rows.push(["From new items", money(snap.aovAdded[g]!)]);
+    if (!Number.isNaN(pen)) {
+      rows.push(["Catalog items a store buys", `${count(pen * N)} of ${N.toFixed(0)} (${pct(pen)})${added > 0.05 ? `, +${count(added)}` : ""}`]);
+      rows.push(["Best stores", `${count(gp.best * N)} catalog items`]);
+    }
+    const anySkus = bar === 0 ? gp.skusThen : gp.skusToday + Math.max(0, added);
+    rows.push(["Any SKU a store buys", `${count(anySkus)}${bar >= 2 && added > 0.05 ? ` (${count(gp.skusToday)} today + new items)` : ""}`]);
+    if (Number.isFinite(gp.coverage)) rows.push(["Catalog share of spend", `${pct(gp.coverage)} today`]);
+    return rows;
+  };
 
   return (
     <div className="wallet-view">
@@ -175,43 +201,84 @@ export function WalletView({ base }: Props) {
               </button>
             </div>
             <Legend groups={groups} />
-            {showTable ? <AovTable groups={groups} snaps={snaps} /> : <StackedBars groups={groups} snaps={snaps} />}
+            {showTable ? <AovTable groups={groups} snaps={snaps} /> : <StackedBars groups={groups} snaps={snaps} detail={detail} />}
           </section>
         </>
       )}
 
       <section className="card-block">
-        <div className="block-head">
-          <h3>Department penetration and targets</h3>
-          <p className="muted">
-            Drag the sliders to set where each department gets to in 6 and 12 months. The marks show 12 months ago, today and the best stores. Beyond the best
-            stores is a stretch: every extra point there comes from items few stores carry. A department that is already high gains less per point, because the
-            items left to add are less popular.
-          </p>
+        <div className="block-head wallet-chart-head">
+          <div>
+            <h3>How many items stores buy, and how many more</h3>
+            <p className="muted">
+              For each department: how many catalog items the average active store buys, against the best stores of its kind, and how many SKUs it buys in total,
+              catalog or not. Drag a slider to choose how many more catalog items the average store adds in 6 and 12 months; the dollars follow.
+            </p>
+          </div>
+          <div className="segmented" role="group" aria-label="Set targets in">
+            <button type="button" aria-pressed={unit === "items"} onClick={() => setUnit("items")}>
+              Items per store
+            </button>
+            <button type="button" aria-pressed={unit === "pct"} onClick={() => setUnit("pct")}>
+              Penetration %
+            </button>
+          </div>
         </div>
         <p className="wallet-marks muted" aria-hidden>
-          <span className="mark-key then" /> 12 months ago <span className="mark-key today" /> today <span className="mark-key best" /> best stores
+          On each slider: <span className="mark-key then" /> 12 months ago <span className="mark-key today" /> today <span className="mark-key best" /> best stores
           · double-click a slider to reset it
         </p>
         <div className="wallet-depts">
-          {result.groups.map((gp, g) =>
-            Number.isNaN(gp.today) ? null : (
+          {result.groups.map((gp, g) => {
+            if (Number.isNaN(gp.today)) return null;
+            const N = gp.itemsPerStore;
+            return (
               <div className="wallet-dept" key={groups[g]}>
                 <div className="wallet-dept-head">
                   <span className="swatch" style={{ background: colorOf(g, groups) }} aria-hidden />
                   <strong>{groups[g]}</strong>
-                  <span className="muted">
-                    {pct(gp.then)} → {pct(gp.today)} today · best stores {pct(gp.best)} · {gp.itemsPerStore.toFixed(0)} items in scope
-                  </span>
-                  {!noMoney && <span className="muted wallet-per-point">+1 point ≈ {short(gp.revenuePerPoint)} a year</span>}
+                  <span className="muted">{N.toFixed(0)} catalog items in scope</span>
+                  {!noMoney && (
+                    <span className="muted wallet-per-point">
+                      {unit === "items" ? `+1 item per store ≈ ${short(N ? gp.revenuePerPoint / (0.01 * N) : 0)}` : `+1 point ≈ ${short(gp.revenuePerPoint)}`} a year
+                    </span>
+                  )}
                 </div>
-                <p className="muted wallet-breadth">
-                  Any SKU, catalog or not: a store buys {gp.skusThen.toFixed(0)} → {gp.skusToday.toFixed(0)} different SKUs in 90 days · best stores{" "}
-                  {gp.skusBest.toFixed(0)}
-                  {!noMoney && Number.isFinite(gp.coverage) && <> · the catalog covers {pct(gp.coverage)} of what stores spend here</>}
-                </p>
+                <dl className="wallet-facts">
+                  <div>
+                    <dt>Catalog items a store buys</dt>
+                    <dd>
+                      <strong>{count(gp.today * N)}</strong>
+                      <span className="muted">
+                        {" "}
+                        of {N.toFixed(0)} today ({pct(gp.today)}) · {count(gp.then * N)} a year ago · best stores <strong>{count(gp.best * N)}</strong>
+                      </span>
+                    </dd>
+                  </div>
+                  <div>
+                    <dt>Any SKU a store buys, catalog or not</dt>
+                    <dd>
+                      <strong>{count(gp.skusToday)}</strong>
+                      <span className="muted">
+                        {" "}
+                        today · {count(gp.skusThen)} a year ago · best stores <strong>{count(gp.skusBest)}</strong>
+                      </span>
+                    </dd>
+                  </div>
+                  {!noMoney && Number.isFinite(gp.coverage) && (
+                    <div>
+                      <dt>Spend on catalog items</dt>
+                      <dd>
+                        <strong>{pct(gp.coverage)}</strong>
+                        <span className="muted"> of the department; the rest is SKUs outside the catalog</span>
+                      </dd>
+                    </div>
+                  )}
+                </dl>
                 <TargetSlider
                   label="Short term (6 months)"
+                  unit={unit}
+                  items={N}
                   value={gp.shortTerm}
                   then={gp.then}
                   today={gp.today}
@@ -223,6 +290,8 @@ export function WalletView({ base }: Props) {
                 />
                 <TargetSlider
                   label="Long term (12 months)"
+                  unit={unit}
+                  items={N}
                   value={gp.longTerm}
                   then={gp.then}
                   today={gp.today}
@@ -233,8 +302,8 @@ export function WalletView({ base }: Props) {
                   onChange={(v) => setTarget("longTerm", g, v)}
                 />
               </div>
-            ),
-          )}
+            );
+          })}
         </div>
         <p className="muted wallet-foot">
           Defaults close a third of the gap to the best stores in 6 months and two thirds in 12. A store adds the missing items most similar stores already carry
@@ -281,10 +350,19 @@ function Legend({ groups }: { groups: string[] }) {
 }
 
 /** Vertical stacked bars, one per snapshot; Beverage at the bottom. 2px surface gaps between segments. */
-function StackedBars({ groups, snaps }: { groups: string[]; snaps: { key: string; label: string; sub: string; s: Snapshot }[] }) {
-  const [hover, setHover] = useState<{ bar: number; g: number } | null>(null);
-  const W = 640;
-  const H = 300;
+function StackedBars({
+  groups,
+  snaps,
+  detail,
+}: {
+  groups: string[];
+  snaps: { key: string; label: string; sub: string; s: Snapshot }[];
+  detail: (bar: number, g: number) => [string, string][];
+}) {
+  const [hover, setHover] = useState<{ bar: number; g: number; x: number; y: number } | null>(null);
+  const box = useRef<HTMLDivElement>(null);
+  const W = 1000;
+  const H = 340;
   const top = 28;
   const bottom = 44;
   const plotH = H - top - bottom;
@@ -293,11 +371,16 @@ function StackedBars({ groups, snaps }: { groups: string[]; snaps: { key: string
   const nice = Math.ceil(max / step) * step;
   const left = 56;
   const slot = (W - left) / snaps.length;
-  const barW = Math.min(88, slot * 0.5);
+  const barW = Math.min(150, slot * 0.55);
   const y = (v: number) => top + plotH - (v / nice) * plotH;
   const ticks = Array.from({ length: Math.round(nice / step) + 1 }, (_, i) => i * step);
+  const track = (bar: number, g: number) => (e: React.MouseEvent) => {
+    const r = box.current?.getBoundingClientRect();
+    if (r) setHover({ bar, g, x: e.clientX - r.left, y: e.clientY - r.top });
+  };
+  const width = box.current?.clientWidth ?? 0;
   return (
-    <div className="wallet-chart">
+    <div className="wallet-chart" ref={box} onMouseLeave={() => setHover(null)}>
       <svg viewBox={`0 0 ${W} ${H}`} role="img" aria-label="Average order value by department, four snapshots">
         {ticks.map((t) => (
           <g key={t}>
@@ -324,7 +407,7 @@ function StackedBars({ groups, snaps }: { groups: string[]; snaps: { key: string
                 const dim = hover && (hover.bar !== b || hover.g !== g) ? 0.55 : 1;
                 // What stores already buy in full color; the new items' part lighter on top.
                 return (
-                  <g key={g} opacity={dim} onMouseEnter={() => setHover({ bar: b, g })} onMouseLeave={() => setHover(null)}>
+                  <g key={g} opacity={dim} onMouseMove={track(b, g)}>
                     {yBase > yTop + 0.5 && (
                       <rect x={cx - barW / 2} y={yTop} width={barW} height={yBase - yTop} rx={isTop ? 4 : 0} fill={colorOf(g, groups)} fillOpacity={0.4} />
                     )}
@@ -353,10 +436,28 @@ function StackedBars({ groups, snaps }: { groups: string[]; snaps: { key: string
         })}
       </svg>
       {hover && (
-        <div className="wallet-tip" role="status">
-          <strong>{snaps[hover.bar]!.label}</strong> · {groups[hover.g]}: {money(snaps[hover.bar]!.s.aov[hover.g]!)} an order (
-          {((snaps[hover.bar]!.s.aov[hover.g]! / Math.max(1, sum(snaps[hover.bar]!.s.aov))) * 100).toFixed(0)}% of the order)
-          {snaps[hover.bar]!.s.aovAdded[hover.g]! > 0 && <>, of which new items {money(snaps[hover.bar]!.s.aovAdded[hover.g]!)}</>}
+        <div
+          className="wallet-tip"
+          role="status"
+          style={{
+            left: hover.x,
+            top: hover.y,
+            transform: `translate(${hover.x > width / 2 ? "calc(-100% - 14px)" : "14px"}, -50%)`,
+          }}
+        >
+          <div className="wallet-tip-head">
+            <span className="swatch" style={{ background: colorOf(hover.g, groups) }} aria-hidden />
+            <strong>{groups[hover.g]}</strong>
+            <span className="muted">· {snaps[hover.bar]!.label}</span>
+          </div>
+          <dl>
+            {detail(hover.bar, hover.g).map(([k, v]) => (
+              <div key={k}>
+                <dt>{k}</dt>
+                <dd>{v}</dd>
+              </div>
+            ))}
+          </dl>
         </div>
       )}
     </div>
@@ -413,6 +514,9 @@ function AovTable({ groups, snaps }: { groups: string[]; snaps: { key: string; l
 
 function TargetSlider(props: {
   label: string;
+  unit: Unit;
+  /** Catalog items in scope per store, to read penetration as items. */
+  items: number;
   value: number;
   then: number;
   today: number;
@@ -422,24 +526,35 @@ function TargetSlider(props: {
   profit: number | null;
   onChange: (v: number | null) => void;
 }) {
-  const { label, value, then, today, best, stretch, gain, profit, onChange } = props;
+  const { label, unit, items: N, value, then, today, best, stretch, gain, profit, onChange } = props;
   const pos = (x: number) => `${Math.min(100, Math.max(0, x * 100))}%`;
+  const level = (x: number) => (unit === "items" ? `${count(x * N)} items` : pct(x));
+  const inc = value - today;
+  const step = unit === "items" ? `+${count(inc * N)} item${Math.abs(inc * N - 1) < 0.05 ? "" : "s"}` : `+${(inc * 100).toFixed(1)} pts`;
+  // In items, the slider moves a whole item per store at a time from today.
+  const snap = (v: number) => (unit === "items" && N > 0 ? today + Math.round((v - today) * N) / N : v);
   return (
     <div className={`wallet-slider${stretch ? " stretch" : ""}`}>
       <div className="wallet-slider-label">
         <span>{label}</span>
-        <strong>{pct(value)}</strong>
+        <strong className="wallet-step">{step}</strong>
+        <span className="muted">
+          → {unit === "items" ? `${count(value * N)} of ${N.toFixed(0)} (${pct(value)})` : `${pct(value)} (${count(value * N)} items)`}
+        </span>
         {stretch && <span className="stretch-tag">stretch</span>}
         {gain !== null && (
-          <span className="muted">
+          <span className="muted wallet-gain">
             +{short(gain)} revenue, +{short(profit ?? 0)} profit a year
           </span>
         )}
       </div>
       <div className="wallet-track">
-        <span className="mark then" style={{ left: pos(then) }} title={`12 months ago: ${pct(then)}`} />
-        <span className="mark today" style={{ left: pos(today) }} title={`Today: ${pct(today)}`} />
-        <span className="mark best" style={{ left: pos(best) }} title={`Best stores: ${pct(best)}`} />
+        <span className="mark then" style={{ left: pos(then) }} title={`12 months ago: ${level(then)}`} />
+        <span className="mark today" style={{ left: pos(today) }} title={`Today: ${level(today)}`} />
+        <span className="mark best" style={{ left: pos(best) }} title={`Best stores: ${level(best)}`} />
+        <span className="wallet-bubble" style={{ left: pos(value) }} aria-hidden>
+          {step}
+        </span>
         <input
           type="range"
           min={0}
@@ -447,8 +562,8 @@ function TargetSlider(props: {
           step={1}
           value={Math.round(value * 1000)}
           aria-label={`${label} target`}
-          aria-valuetext={pct(value)}
-          onChange={(e) => onChange(Math.max(today, Number(e.target.value) / 1000))}
+          aria-valuetext={`${step}, ${level(value)}`}
+          onChange={(e) => onChange(Math.max(today, snap(Number(e.target.value) / 1000)))}
           onDoubleClick={() => onChange(null)}
         />
       </div>

@@ -35,6 +35,8 @@ A **Wallet** tab on the site: average order value (AOV) by department, 12 months
 
 Defaults: short term closes a third of each gap, long term two thirds. Double-clicking a slider resets it.
 
+Sliders read in **items per store** by default (Rick, 2026-10-22): catalog items the average store buys = penetration × the department's catalog items in scope, and the slider moves one whole item per store at a time from today. A toggle switches to penetration %. The increment shows on the slider while it moves. Hovering a block of the chart shows the department at that snapshot: dollars per order, from new items, catalog items bought vs the best stores, SKUs bought catalog or not, and the catalog share of spend.
+
 ## Later
 
 - Widen the catalog where coverage is thin (candy, grocery, health & beauty): cross-check the best stores' top off-catalog SKUs against the catalog.
