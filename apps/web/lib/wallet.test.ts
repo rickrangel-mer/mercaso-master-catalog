@@ -145,6 +145,27 @@ describe("computeWallet", () => {
     expect(r.today.aovAdded).toEqual([0, 0, 0]);
   });
 
+  it("on the SKU basis, closes the gap to the best stores' SKU count, at what an added catalog item is worth", () => {
+    const res = computeWallet(base, settings({ basis: "skus" }));
+    const bev = res.groups[0]!;
+    // Catalog plan at 2/3 with every item: Water 2/3 → 1 adds 2/9 × 3 stores = 2/3 of a carrier,
+    // worth $100 and $10 profit each, so an added item is worth $100 a store a year.
+    // Beverage SKUs 40, 10, 0 (best store 40): 70 SKUs to add across 3 stores at gap 1.
+    expect(bev.skusToday).toBeCloseTo(50 / 3);
+    expect(bev.skusShort).toBeCloseTo(50 / 3 + 70 / 9);
+    expect(bev.shortRevenue).toBeCloseTo((70 / 3) * 100);
+    expect(bev.shortProfit).toBeCloseTo((70 / 3) * 10);
+    expect(bev.revenuePerSku).toBeCloseTo(300);
+    expect(bev.skusMax).toBeCloseTo(50 / 3 + 2 * (70 / 3));
+    expect(res.shortTerm.skus[0]).toBeCloseTo(bev.skusShort);
+    // Catalog penetration stays at today's on this basis.
+    expect(res.shortTerm.penetration[0]).toBeCloseTo(res.today.penetration[0]!);
+    // A target in SKUs: 30 a store is 30 − 50/3 more each, 40 in all.
+    const set = computeWallet(base, settings({ basis: "skus", longSkus: [30, null, null] }));
+    expect(set.groups[0]!.skusLong).toBeCloseTo(30);
+    expect(set.groups[0]!.longRevenue).toBeCloseTo(40 * 100);
+  });
+
   it("counts only the chosen priorities", () => {
     // Must only: beverage counts, candy (should) has no items, so no penetration.
     const res = computeWallet(base, settings({ priorities: ["must"] }));

@@ -37,6 +37,16 @@ Defaults: short term closes a third of each gap, long term two thirds. Double-cl
 
 Sliders read in **items per store** by default (Rick, 2026-10-22): catalog items the average store buys = penetration × the department's catalog items in scope, and the slider moves one whole item per store at a time from today. A toggle switches to penetration %. The increment shows on the slider while it moves. Hovering a block of the chart shows the department at that snapshot: dollars per order, from new items, catalog items bought vs the best stores, SKUs bought catalog or not, and the catalog share of spend.
 
+## Any SKU: targets not capped by the catalog (Rick, 2026-10-23)
+
+The catalog view caps the room: with must items, Beverage has 76 items and the best stores buy 36 of them, so a slider fills fast. Yet the best stores buy 173 different Beverage SKUs against 95 for the average store. The **Any SKU** setting (the default) sets targets in distinct SKUs a store buys, catalog or not:
+
+1. Each store closes the same share of its own gap to the best stores of its segment (their average SKU count in the department). Defaults: a third in 6 months, two thirds in 12; the slider goes up to twice the gap (a stretch past the best stores).
+2. **An extra SKU is worth what an added catalog item is worth on average:** the catalog plan at two thirds of the gap with every item counting (must, should and nice), divided by the items it adds. That is the typical yearly spend of stores already buying those items, with the back-test factors when the reality check is on, about $54 a store a year for Beverage. Comparing stores' spend with their SKU counts was tried and dropped: it mostly measures store size (it gave +$63–71M a year).
+3. Catalog penetration stays at today's on this setting; the SKUs bought in the short- and long-term bars are today's plus the new ones.
+
+Default view (all store types, reality check on), long term: +$21.7M revenue a year, AOV $1,109 → $1,312. For comparison, catalog items give +$4.2M (must) and +$8.9M (all items). Beverage: 95 → 151 SKUs a store, +$10.6M.
+
 ## Later
 
 - Widen the catalog where coverage is thin (candy, grocery, health & beauty): cross-check the best stores' top off-catalog SKUs against the catalog.
