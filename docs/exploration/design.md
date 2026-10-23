@@ -10,3 +10,5 @@ Restyled 2026-10-23 after an audit with the design-taste-frontend skill (app-scr
 - **Wallet:** what stores already buy is grey, what the new SKUs add is one blue block on top, with labels beside the last bar; settings that change rarely sit under "More settings"; the method is under "How the numbers are made".
 
 Checks: `node <skill>/scripts/inspect.mjs <page>#<tab> --app` (0 FAIL on every tab; the chart's thin coverage bars stay under the style's 1% colour budget, and the Stores tab warns only when the build has no store data) and `lint.mjs --app apps/web/app apps/web/components`.
+
+**Export PDF** (Rick, 2026-10-23): a button in the header prints the open tab with the print styles in `globals.css` (landscape, light, controls' current values shown, buttons and tooltips hidden, wide tables fitted) and suggests the file name "Mercaso <tab> <date>"; choose "Save as PDF" in the print dialog.

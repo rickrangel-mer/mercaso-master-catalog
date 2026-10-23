@@ -63,8 +63,22 @@ export function Header({ storeTypes, storeType, onStoreType, tab, onTab, snapsho
           </button>
         ))}
       </nav>
+      <button type="button" className="small-button export-pdf" onClick={() => exportPdf(TABS.find((t) => t.id === tab)?.label ?? "")}>
+        Export PDF
+      </button>
     </header>
   );
+}
+
+/**
+ * Exports the open tab as a PDF: the browser's print dialog ("Save as PDF") with the print styles in
+ * globals.css. The document title becomes the file's suggested name.
+ */
+function exportPdf(tabLabel: string) {
+  const title = document.title;
+  document.title = `Mercaso ${tabLabel} ${new Date().toISOString().slice(0, 10)}`;
+  window.addEventListener("afterprint", () => (document.title = title), { once: true });
+  window.print();
 }
 
 /** The product's mark: a catalog drawn as its family tree, one root and three branches. */
