@@ -5,3 +5,6 @@ data/raw/
 .env.*
 *.log
 .DS_Store
+
+# tasteskill working files
+.taste-skill/

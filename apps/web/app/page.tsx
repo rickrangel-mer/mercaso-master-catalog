@@ -180,7 +180,7 @@ export default function Page() {
     focusOn(ROOT_ID);
   }, [focusOn]);
 
-  const selected = selectedId && index ? (index.byId.get(selectedId) ?? null) : null;
+  const selected = index ? (index.byId.get(selectedId ?? ROOT_ID) ?? null) : null;
 
   const loading = error ? <p className="message">Could not load the catalog: {error}</p> : <p className="message">Loading…</p>;
 

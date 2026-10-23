@@ -1,6 +1,6 @@
 "use client";
 
-import type { CSSProperties, ReactNode } from "react";
+import type { ReactNode } from "react";
 import type { PriceFile } from "../lib/table";
 import { isLeaf, KIND_LABEL, type CatalogIndex, type ViewNode } from "../lib/tree";
 
@@ -142,13 +142,11 @@ function Legend() {
           priority
         </li>
         <li>
-          <span className="tag dept-tag" style={{ "--tint": "var(--cat-1)" } as CSSProperties}>
-            Department
-          </span>
-          tint on the avatar and tag
+          <span className="tag dept-tag">Department</span>
+          the department an item sits in
         </li>
         <li>
-          <span className="count">6|187</span> direct children | leaves below
+          <span className="count">6 groups</span> the groups directly below
         </li>
         <li>
           <span className="match match-matched">matched</span>

@@ -27,7 +27,10 @@ const { outputFiles } = await build({
   logLevel: "error",
 });
 const js = outputFiles[0].text;
-const css = readFileSync(join(web, "app/globals.css"), "utf8");
+// Geist, embedded so the single file shows the site's typeface offline.
+const geist = readFileSync(join(web, "node_modules/geist/dist/fonts/geist-sans/Geist-Variable.woff2")).toString("base64");
+const fontFace = `@font-face{font-family:"Geist";src:url(data:font/woff2;base64,${geist}) format("woff2");font-weight:100 900;font-display:swap}`;
+const css = fontFace + readFileSync(join(web, "app/globals.css"), "utf8");
 
 const read = (f) => JSON.parse(readFileSync(join(data, f), "utf8"));
 const index = read("index.json");

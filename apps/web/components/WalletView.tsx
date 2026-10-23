@@ -1,6 +1,6 @@
 "use client";
 
-import { useDeferredValue, useMemo, useRef, useState } from "react";
+import { useDeferredValue, useEffect, useMemo, useRef, useState } from "react";
 import { computeWallet, DEFAULT_SETTINGS, MAX_GAP, type Snapshot, type WalletBase, type WalletPriority, type WalletSettings } from "../lib/wallet";
 
 interface Props {
@@ -18,13 +18,15 @@ const money = (x: number) => `$${Math.round(x).toLocaleString("en-US")}`;
 const short = (x: number) => (Math.abs(x) >= 1e6 ? `$${(x / 1e6).toFixed(1)}M` : Math.abs(x) >= 1e3 ? `$${Math.round(x / 1e3).toLocaleString("en-US")}K` : money(x));
 const pct = (x: number) => (Number.isNaN(x) ? "–" : `${(x * 100).toFixed(1)}%`);
 const sum = (xs: number[]) => xs.reduce((a, b) => a + b, 0);
+const signedPct = (now: number, was: number) => (was ? `${now >= was ? "+" : ""}${(((now - was) / was) * 100).toFixed(1)}%` : "–");
 /** A count of items: whole numbers plain, otherwise one decimal. */
 const count = (x: number) => (Math.abs(x - Math.round(x)) < 0.05 ? Math.round(x).toLocaleString("en-US") : x.toFixed(1));
 /** How targets are set and read: any SKU per store (not capped by the catalog), catalog items per store, or penetration %. */
 type Unit = "skus" | "items" | "pct";
 const nulls = (n: number) => Array.from({ length: n }, (): number | null => null);
-/** Department colors: the site's validated categorical slots, in group order; "Other" is neutral. */
+/** Departments are grey steps in group order ("Other" lightest); the one data hue marks the new SKUs. */
 const colorOf = (g: number, groups: string[]) => (g === groups.length - 1 ? "var(--neutral-tint)" : `var(--cat-${g + 1})`);
+const NEW = "var(--data)";
 
 export function WalletView({ base }: Props) {
   const G = base?.groups.length ?? 0;
@@ -93,14 +95,45 @@ export function WalletView({ base }: Props) {
     if (Number.isFinite(gp.coverage)) rows.push(["Catalog share of spend", `${pct(gp.coverage)} today`]);
     return rows;
   };
+  /** The hover card of the new-SKU block: what each department adds to an order. */
+  const addedDetail = (bar: number): [string, string][] => {
+    const snap = snaps[bar]!.s;
+    return groups
+      .map((name, g): [string, number] => [name, snap.aovAdded[g]!])
+      .filter(([, v]) => v > 0.5)
+      .sort((a, b) => b[1] - a[1])
+      .map(([name, v]): [string, string] => [name, `+${money(v)} an order`]);
+  };
+  // The finding: the long-term order against today's, and the department that adds the most.
+  const aovToday = sum(result.today.aov);
+  const aovLong = sum(result.longTerm.aov);
+  const lead = result.groups
+    .map((gp, g) => ({ g, add: result.longTerm.aovAdded[g]!, skus: gp.skusLong - gp.skusToday }))
+    .sort((a, b) => b.add - a.add)[0];
 
   return (
     <div className="wallet-view">
-      <section className="intro">
-        <h2>Wallet: what each order holds today, and what it could hold</h2>
-        <p className="muted">
-          Average order value by department for active stores, 12 months ago and today, and where it goes in 6 and 12 months if stores buy as many more SKUs
-          (or catalog items) as you set below. Each store is compared with the best stores of its own kind that order as often.
+      <section className="screen-head">
+        <h1 className="screen-title">Wallet</h1>
+        {noMoney ? (
+          <p className="screen-finding">
+            The average active store buys {count(result.groups[0]!.skusToday)} different {groups[0]!.toLowerCase()} SKUs; the best stores of its kind buy{" "}
+            {count(result.groups[0]!.skusBest)}.
+          </p>
+        ) : (
+          <p className="screen-finding">
+            In 12 months an order grows from {money(aovToday)} to <strong>{money(aovLong)}</strong> (+{money(aovLong - aovToday)}) at these targets
+            {lead && lead.add > 0.5 ? (
+              <>
+                ; {groups[lead.g]!.toLowerCase()} adds the most, +{money(lead.add)} an order
+                {unit === "skus" && lead.skus > 0.5 ? ` from ${count(lead.skus)} more SKUs a store` : ""}
+              </>
+            ) : null}
+            .
+          </p>
+        )}
+        <p className="screen-source">
+          Active stores in the 90 days to {base.as_of}, against the 90 days to {base.then_as_of}
         </p>
       </section>
 
@@ -128,36 +161,6 @@ export function WalletView({ base }: Props) {
           </select>
         </label>
         <label className="field">
-          <span>Items that count</span>
-          <select
-            value={PRIORITY_SETS.findIndex((p) => p.value.join() === settings.priorities.join())}
-            onChange={(e) => {
-              set({ priorities: PRIORITY_SETS[Number(e.target.value)]!.value });
-              resetTargets();
-            }}
-          >
-            {PRIORITY_SETS.map((p, i) => (
-              <option key={p.label} value={i}>
-                {p.label}
-              </option>
-            ))}
-          </select>
-        </label>
-        <label className="field">
-          <span>Active store: ordered in</span>
-          <span className="with-unit">
-            <input type="number" min={7} max={180} value={settings.activeDays} onChange={(e) => set({ activeDays: clamp(Number(e.target.value), 7, 180) })} />
-            days
-          </span>
-        </label>
-        <label className="field">
-          <span>Item carried: bought in</span>
-          <span className="with-unit">
-            <input type="number" min={7} max={180} value={settings.itemDays} onChange={(e) => set({ itemDays: clamp(Number(e.target.value), 7, 180) })} />
-            days
-          </span>
-        </label>
-        <label className="field">
           <span>Best stores</span>
           <select value={settings.topShare} onChange={(e) => set({ topShare: Number(e.target.value) })}>
             {TOP_SHARES.map((t) => (
@@ -171,43 +174,106 @@ export function WalletView({ base }: Props) {
           <input type="checkbox" checked={settings.reality} onChange={(e) => set({ reality: e.target.checked })} />
           <span>Reality check</span>
         </label>
-        <button type="button" onClick={resetTargets}>
+        <details className="wallet-more">
+          <summary>More settings</summary>
+          <div className="wallet-more-body">
+            <label className="field">
+              <span>Catalog items that count</span>
+              <select
+                value={PRIORITY_SETS.findIndex((p) => p.value.join() === settings.priorities.join())}
+                onChange={(e) => {
+                  set({ priorities: PRIORITY_SETS[Number(e.target.value)]!.value });
+                  resetTargets();
+                }}
+              >
+                {PRIORITY_SETS.map((p, i) => (
+                  <option key={p.label} value={i}>
+                    {p.label}
+                  </option>
+                ))}
+              </select>
+            </label>
+            <label className="field">
+              <span>Active store: ordered in</span>
+              <span className="with-unit">
+                <input type="number" min={7} max={180} value={settings.activeDays} onChange={(e) => set({ activeDays: clamp(Number(e.target.value), 7, 180) })} />
+                days
+              </span>
+            </label>
+            <label className="field">
+              <span>Item carried: bought in</span>
+              <span className="with-unit">
+                <input type="number" min={7} max={180} value={settings.itemDays} onChange={(e) => set({ itemDays: clamp(Number(e.target.value), 7, 180) })} />
+                days
+              </span>
+            </label>
+          </div>
+        </details>
+        <button type="button" className="wallet-reset" onClick={resetTargets}>
           Reset targets
         </button>
       </div>
 
       {noMoney ? (
-        <p className="muted">Dollar figures are only in the priced file. Penetration and targets below still work.</p>
+        <p className="muted">Dollar figures are only in the priced file. SKU counts, penetration and targets below still work.</p>
       ) : (
         <>
-          <div className="tiles wallet-tiles">
-            <Hero label="Yearly revenue" today={result.today.revenue} st={result.shortTerm.revenue} lt={result.longTerm.revenue} />
-            <Hero label="Yearly gross profit" today={result.today.profit} st={result.shortTerm.profit} lt={result.longTerm.profit} />
-            <Hero label="Average order value" today={sum(result.today.aov)} st={sum(result.shortTerm.aov)} lt={sum(result.longTerm.aov)} exact />
-            <div className="tile">
-              <div className="tile-label">Active stores in view</div>
-              <div className="tile-value">{result.today.stores.toLocaleString("en-US")}</div>
-              <div className="tile-sub muted">
-                {result.then.stores.toLocaleString("en-US")} 12 months ago · {result.today.orders.toLocaleString("en-US")} orders in 90 days
-              </div>
+          <dl className="wallet-strip">
+            <div className="lead">
+              <dt>Order value in 12 months</dt>
+              <dd>
+                <span className="value">{money(aovLong)}</span>
+                <span className="sub">
+                  +{money(aovLong - aovToday)} ({signedPct(aovLong, aovToday)}) on today&apos;s {money(aovToday)} · 6 months {money(sum(result.shortTerm.aov))}
+                </span>
+              </dd>
             </div>
-          </div>
+            <div>
+              <dt>Yearly revenue in 12 months</dt>
+              <dd>
+                <span className="value">{short(result.longTerm.revenue)}</span>
+                <span className="sub">
+                  +{short(result.longTerm.revenue - result.today.revenue)} on today&apos;s {short(result.today.revenue)}
+                </span>
+              </dd>
+            </div>
+            <div>
+              <dt>Yearly gross profit in 12 months</dt>
+              <dd>
+                <span className="value">{short(result.longTerm.profit)}</span>
+                <span className="sub">
+                  +{short(result.longTerm.profit - result.today.profit)} on today&apos;s {short(result.today.profit)}
+                </span>
+              </dd>
+            </div>
+            <div>
+              <dt>Active stores</dt>
+              <dd>
+                <span className="value">{result.today.stores.toLocaleString("en-US")}</span>
+                <span className="sub">
+                  {result.then.stores.toLocaleString("en-US")} a year ago · {result.today.orders.toLocaleString("en-US")} orders in 90 days
+                </span>
+              </dd>
+            </div>
+          </dl>
 
           <section className="card-block">
             <div className="block-head wallet-chart-head">
               <div>
-                <h3>Average order value by department</h3>
+                <h2 className="section-heading">Order value by department</h2>
                 <p className="muted">
-                  Dollars per order, from everything stores buy from us, catalog or not. Short and long term keep that and today&apos;s orders, and add what the
-                  new SKUs bring (the lighter part at the top of each color).
+                  Dollars per order. Grey is what stores already buy from us, catalog or not; <span className="new-key">blue</span> is what the new SKUs add.
                 </p>
               </div>
-              <button type="button" className="linklike" onClick={() => setShowTable((v) => !v)}>
+              <button type="button" className="small-button" onClick={() => setShowTable((v) => !v)}>
                 {showTable ? "Show chart" : "Show table"}
               </button>
             </div>
-            <Legend groups={groups} />
-            {showTable ? <AovTable groups={groups} snaps={snaps} /> : <StackedBars groups={groups} snaps={snaps} detail={detail} />}
+            {showTable ? (
+              <AovTable groups={groups} snaps={snaps} />
+            ) : (
+              <StackedBars groups={groups} snaps={snaps} detail={detail} addedDetail={addedDetail} />
+            )}
           </section>
         </>
       )}
@@ -215,13 +281,11 @@ export function WalletView({ base }: Props) {
       <section className="card-block">
         <div className="block-head wallet-chart-head">
           <div>
-            <h3>How many items stores buy, and how many more</h3>
+            <h2 className="section-heading">Departments</h2>
             <p className="muted">
-              For each department: how many different SKUs the average active store buys from us (catalog or not) and how many of the catalog&apos;s items,
-              against the best stores of its kind. Drag a slider to choose how many more the average store buys in 6 and 12 months; the dollars follow.{" "}
               {unit === "skus"
-                ? "Any SKU is not capped by the catalog: the best stores show the room, and the slider goes past them."
-                : "Catalog items and penetration count only the catalog's items (Items that count, above)."}
+                ? "How many more different SKUs the average store buys in 6 and 12 months, catalog or not. The best stores of its kind show the room."
+                : "How many more of the catalog's items the average store buys in 6 and 12 months, against the best stores of its kind."}
             </p>
           </div>
           <div className="segmented" role="group" aria-label="Set targets in">
@@ -237,8 +301,8 @@ export function WalletView({ base }: Props) {
           </div>
         </div>
         <p className="wallet-marks muted" aria-hidden>
-          On each slider: <span className="mark-key then" /> 12 months ago <span className="mark-key today" /> today <span className="mark-key best" /> best stores
-          · double-click a slider to reset it
+          <span className="mark-key then" /> 12 months ago <span className="mark-key today" /> today <span className="mark-key best" /> best stores
+          <span className="mark-key target" /> new · double-click a slider to reset it
         </p>
         <div className="wallet-depts">
           {result.groups.map((gp, g) => {
@@ -358,7 +422,9 @@ export function WalletView({ base }: Props) {
             );
           })}
         </div>
-        <p className="muted wallet-foot">
+        <details className="wallet-method">
+          <summary>How the numbers are made</summary>
+          <p className="muted">
           Defaults close a third of the gap to the best stores in 6 months and two thirds in 12.{" "}
           {unit === "skus" ? (
             <>
@@ -375,7 +441,8 @@ export function WalletView({ base }: Props) {
               every item at 100%.
             </>
           )}
-        </p>
+          </p>
+        </details>
       </section>
     </div>
   );
@@ -383,60 +450,55 @@ export function WalletView({ base }: Props) {
 
 const clamp = (x: number, lo: number, hi: number) => (Number.isFinite(x) ? Math.min(hi, Math.max(lo, Math.round(x))) : lo);
 
-function Hero({ label, today, st, lt, exact }: { label: string; today: number; st: number; lt: number; exact?: boolean }) {
-  const f = exact ? money : short;
-  return (
-    <div className="tile">
-      <div className="tile-label">{label}</div>
-      <div className="tile-value">{f(lt)}</div>
-      <div className="tile-sub">
-        <span className="muted">Long term, </span>
-        <strong>+{f(lt - today)}</strong>
-        <span className="muted">
-          {" "}
-          ({today ? `+${(((lt - today) / today) * 100).toFixed(1)}%` : "–"}) · today {f(today)} · short term {f(st)}
-        </span>
-      </div>
-    </div>
-  );
+/** Spread label centres at least `gap` apart inside [lo, hi], keeping their order. */
+function spread(ys: number[], gap: number, lo: number, hi: number): number[] {
+  const out = [...ys];
+  for (let i = 1; i < out.length; i++) out[i] = Math.max(out[i]!, out[i - 1]! + gap);
+  const over = out.length ? out[out.length - 1]! - hi : 0;
+  if (over > 0) for (let i = 0; i < out.length; i++) out[i] = out[i]! - over;
+  for (let i = out.length - 2; i >= 0; i--) out[i] = Math.min(out[i]!, out[i + 1]! - gap);
+  return out.map((y) => Math.max(lo, y));
 }
 
-function Legend({ groups }: { groups: string[] }) {
-  return (
-    <ul className="wallet-legend" aria-label="Departments">
-      {groups.map((g, i) => (
-        <li key={g}>
-          <span className="swatch" style={{ background: colorOf(i, groups) }} aria-hidden />
-          {g}
-        </li>
-      ))}
-    </ul>
-  );
-}
-
-/** Vertical stacked bars, one per snapshot; Beverage at the bottom. 2px surface gaps between segments. */
+/**
+ * Vertical stacked bars, one per snapshot: departments in grey steps (Beverage at the bottom), what
+ * the new SKUs add as one block in the data hue on top. 2px surface seams; labels at the right.
+ */
 function StackedBars({
   groups,
   snaps,
   detail,
+  addedDetail,
 }: {
   groups: string[];
   snaps: { key: string; label: string; sub: string; s: Snapshot }[];
   detail: (bar: number, g: number) => [string, string][];
+  addedDetail: (bar: number) => [string, string][];
 }) {
+  // g = -1 is the new-SKU block.
   const [hover, setHover] = useState<{ bar: number; g: number; x: number; y: number } | null>(null);
   const box = useRef<HTMLDivElement>(null);
-  const W = 1000;
-  const H = 340;
-  const top = 28;
+  // Drawn at its real width so the text stays at its set size on a phone.
+  const [W, setW] = useState(1000);
+  useEffect(() => {
+    const el = box.current;
+    if (!el) return;
+    const ro = new ResizeObserver(([e]) => setW(Math.max(320, Math.round(e!.contentRect.width))));
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, []);
+  const narrow = W < 640;
+  const H = narrow ? 260 : 300;
+  const top = 24;
   const bottom = 44;
   const plotH = H - top - bottom;
+  const left = narrow ? 44 : 56;
+  const labelW = narrow ? 100 : 170;
   const max = Math.max(...snaps.map((x) => sum(x.s.aov)), 1);
   const step = niceStep(max / 4);
   const nice = Math.ceil(max / step) * step;
-  const left = 56;
-  const slot = (W - left) / snaps.length;
-  const barW = Math.min(150, slot * 0.55);
+  const slot = (W - left - labelW) / snaps.length;
+  const barW = Math.min(120, slot * (narrow ? 0.62 : 0.5));
   const y = (v: number) => top + plotH - (v / nice) * plotH;
   const ticks = Array.from({ length: Math.round(nice / step) + 1 }, (_, i) => i * step);
   const track = (bar: number, g: number) => (e: React.MouseEvent) => {
@@ -444,12 +506,35 @@ function StackedBars({
     if (r) setHover({ bar, g, x: e.clientX - r.left, y: e.clientY - r.top });
   };
   const width = box.current?.clientWidth ?? 0;
+  // Each bar's parts, bottom up: what stores already buy per department, then all the new SKUs.
+  const parts = (s: Snapshot) => [
+    ...s.aov.map((v, g) => ({ g, v: Math.max(0, v - (s.aovAdded[g] ?? 0)) })),
+    { g: -1, v: sum(s.aovAdded) },
+  ];
+  const last = snaps.length - 1;
+  const lastParts = parts(snaps[last]!.s);
+  const lastX = left + slot * last + slot / 2 + barW / 2;
+  let acc = 0;
+  const anchors = lastParts
+    .map((p) => {
+      const y0 = y(acc);
+      acc += p.v;
+      return { ...p, mid: (y0 + y(acc)) / 2 };
+    })
+    .filter((p) => p.v > 0.5);
+  const placed = spread(
+    anchors.map((a) => a.mid).reverse(),
+    14,
+    top,
+    top + plotH,
+  ).reverse();
+  const tip = hover ? (hover.g < 0 ? addedDetail(hover.bar) : detail(hover.bar, hover.g)) : [];
   return (
     <div className="wallet-chart" ref={box} onMouseLeave={() => setHover(null)}>
-      <svg viewBox={`0 0 ${W} ${H}`} role="img" aria-label="Average order value by department, four snapshots">
+      <svg viewBox={`0 0 ${W} ${H}`} role="img" aria-label="Average order value by department, four snapshots; the new SKUs on top">
         {ticks.map((t) => (
           <g key={t}>
-            <line x1={left} x2={W} y1={y(t)} y2={y(t)} className="grid" />
+            <line x1={left} x2={W - labelW + 8} y1={y(t)} y2={y(t)} className="grid" />
             <text x={left - 6} y={y(t) + 4} textAnchor="end" className="axis">
               {money(t)}
             </text>
@@ -457,44 +542,54 @@ function StackedBars({
         ))}
         {snaps.map((snap, b) => {
           const cx = left + slot * b + slot / 2;
-          let acc = 0;
+          const ps = parts(snap.s);
+          const topIdx = ps.reduce((k, p, i) => (p.v > 0 ? i : k), -1);
+          let a = 0;
           const total = sum(snap.s.aov);
           return (
             <g key={snap.key}>
-              {snap.s.aov.map((v, g) => {
-                const y0 = y(acc);
-                const yBase = y(acc + v - (snap.s.aovAdded[g] ?? 0));
-                acc += v;
-                const y1 = y(acc);
-                const isTop = g === lastNonZero(snap.s.aov);
-                const yTop = y1 + (isTop ? 0 : 2);
+              {ps.map((p, i) => {
+                const y0 = y(a);
+                a += p.v;
+                const isTop = i === topIdx;
+                const yTop = y(a) + (isTop ? 0 : 2);
                 if (y0 - yTop <= 0) return null;
-                const dim = hover && (hover.bar !== b || hover.g !== g) ? 0.55 : 1;
-                // What stores already buy in full color; the new items' part lighter on top.
+                const dim = hover && (hover.bar !== b || hover.g !== p.g) ? 0.55 : 1;
                 return (
-                  <g key={g} opacity={dim} onMouseMove={track(b, g)}>
-                    {yBase > yTop + 0.5 && (
-                      <rect x={cx - barW / 2} y={yTop} width={barW} height={yBase - yTop} rx={isTop ? 4 : 0} fill={colorOf(g, groups)} fillOpacity={0.4} />
-                    )}
-                    <rect
-                      x={cx - barW / 2}
-                      y={Math.max(yTop, yBase)}
-                      width={barW}
-                      height={Math.max(0, y0 - Math.max(yTop, yBase))}
-                      rx={isTop && yBase <= yTop + 0.5 ? 4 : 0}
-                      fill={colorOf(g, groups)}
-                    />
-                  </g>
+                  <rect
+                    key={p.g}
+                    x={cx - barW / 2}
+                    y={yTop}
+                    width={barW}
+                    height={y0 - yTop}
+                    rx={isTop ? 3 : 0}
+                    fill={p.g < 0 ? NEW : colorOf(p.g, groups)}
+                    opacity={dim}
+                    onMouseMove={track(b, p.g)}
+                  />
                 );
               })}
               <text x={cx} y={y(total) - 8} textAnchor="middle" className="bar-total">
                 {money(total)}
               </text>
               <text x={cx} y={H - bottom + 18} textAnchor="middle" className="bar-name">
-                {snap.label}
+                {narrow ? ["−1 yr", "Now", "+6 mo", "+12 mo"][b] : snap.label}
               </text>
-              <text x={cx} y={H - bottom + 34} textAnchor="middle" className="axis">
-                {snap.sub}
+              {!narrow && (
+                <text x={cx} y={H - bottom + 34} textAnchor="middle" className="axis">
+                  {snap.sub}
+                </text>
+              )}
+            </g>
+          );
+        })}
+        {anchors.map((p, i) => {
+          const ly = placed[i]!;
+          return (
+            <g key={p.g} className={p.g < 0 ? "bar-label new" : "bar-label"}>
+              <path d={`M${lastX + 4},${p.mid} L${lastX + 14},${p.mid} L${lastX + 22},${ly}`} className="leader" />
+              <text x={lastX + 26} y={ly + 4}>
+                {p.g < 0 ? "New SKUs" : narrow ? groups[p.g]!.split(" ")[0] : groups[p.g]}
               </text>
             </g>
           );
@@ -511,12 +606,12 @@ function StackedBars({
           }}
         >
           <div className="wallet-tip-head">
-            <span className="swatch" style={{ background: colorOf(hover.g, groups) }} aria-hidden />
-            <strong>{groups[hover.g]}</strong>
+            <span className="swatch" style={{ background: hover.g < 0 ? NEW : colorOf(hover.g, groups) }} aria-hidden />
+            <strong>{hover.g < 0 ? "New SKUs" : groups[hover.g]}</strong>
             <span className="muted">· {snaps[hover.bar]!.label}</span>
           </div>
           <dl>
-            {detail(hover.bar, hover.g).map(([k, v]) => (
+            {tip.map(([k, v]) => (
               <div key={k}>
                 <dt>{k}</dt>
                 <dd>{v}</dd>

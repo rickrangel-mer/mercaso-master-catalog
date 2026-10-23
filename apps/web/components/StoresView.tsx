@@ -44,9 +44,14 @@ export function StoresView({ base, onJumpItem }: Props) {
   if (!base || !file || !summary) {
     return (
       <div className="stores-view">
-        <p className="muted">
-          Store data is not in this build. Run <code>pnpm athena:export liquor-stores liquor-store-skus</code> and <code>pnpm stores</code>, then build the site again.
-        </p>
+        <section className="screen-head">
+          <h1 className="screen-title">Stores</h1>
+          <p className="screen-finding">How much of the catalog each store buys from Mercaso, store by store.</p>
+        </section>
+        <div className="empty-frame">
+          <strong>No store data in this build.</strong> Run <code>pnpm athena:export liquor-stores liquor-store-skus</code> and <code>pnpm stores</code>, then
+          build the site again.
+        </div>
       </div>
     );
   }
@@ -56,13 +61,16 @@ export function StoresView({ base, onJumpItem }: Props) {
 
   return (
     <div className="stores-view">
-      <div className="block-head">
-        <h2>How much of the catalog each store buys from Mercaso</h2>
-        <p className="muted">
-          {fmt(summary.stores)} California liquor stores that ordered in the last 12 months, as of {file.as_of}. A store is active if it ordered in the last {file.active_days} days. An item counts as
-          carried if the store bought it from us in the last {file.window_days} days; anything else is a gap. Stores are compared with stores that order as often as they do.
+      <section className="screen-head">
+        <h1 className="screen-title">Stores</h1>
+        <p className="screen-finding">
+          {fmt(summary.active)} of {fmt(summary.stores)} stores are active; the median active store buys {pct(summary.medianMustActive)} of the {file.totals.must} must items.
         </p>
-      </div>
+        <p className="screen-source">
+          California stores that ordered in the 12 months to {file.as_of}. Active: ordered in the last {file.active_days} days. Carried: bought from us in the last{" "}
+          {file.window_days} days. Each store is compared with stores that order as often.
+        </p>
+      </section>
 
       <div className="window-control" role="group" aria-label="Carried window">
         <span className="window-label">Count an item as carried if bought in the last</span>

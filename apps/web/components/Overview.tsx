@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState, type CSSProperties } from "react";
+import { useMemo, useState } from "react";
 import { approvedSkuCount, coverageByDepartment, mustGaps, type SkuRow } from "../lib/table";
 import { PRIORITY_LEVELS, storesNoun, type CatalogIndex, type Priority } from "../lib/tree";
 import type { Tab } from "./Header";
@@ -33,39 +33,41 @@ export function Overview({ index, rows, onTab, onJump }: Props) {
 
   return (
     <div className="overview">
-      <section className="intro">
-        <h2>What a {catalog.name.toLowerCase()} should carry, and the Mercaso SKUs that fill it</h2>
-        <p className="muted">
-          {catalog.description} Priorities and penetration come from 12 months of Mercaso sales to California {storesNoun(catalog.name)}.
+      <section className="screen-head">
+        <h1 className="screen-title">{catalog.name} catalog</h1>
+        <p className="screen-finding">
+          Mercaso has an approved SKU for {must.covered} of {must.items} must items and {pct(covered, items)}% of all {fmt(items)} catalog items
+          {noSku > 0 ? `; ${fmt(noSku)} items have none yet` : ""}.
+        </p>
+        <p className="screen-source">
+          {catalog.description} Priorities and penetration from 12 months of Mercaso sales to California {storesNoun(catalog.name)}.
         </p>
       </section>
 
       <section className="tiles" aria-label="Headline numbers">
-        <Tile label="Catalog items" value={fmt(items)}>
-          <span className="p-must">{s.by_priority.must} must</span> · <span className="p-should">{s.by_priority.should} should</span> ·{" "}
-          <span className="p-nice">{s.by_priority.nice} nice</span>
+        <Tile label="Must items covered" value={`${must.covered} of ${must.items}`} lead>
+          {pct(must.covered, must.items)}% of must items have an approved SKU
         </Tile>
         <Tile label="Items with a Mercaso SKU" value={`${pct(covered, items)}%`}>
           {fmt(covered)} of {fmt(items)} items
         </Tile>
-        <Tile label="Must-carry covered" value={`${must.covered} of ${must.items}`}>
-          {pct(must.covered, must.items)}% of must items
-        </Tile>
         <Tile label="Approved Mercaso SKUs" value={fmt(approved)}>
           {fmt(noSku)} items have no SKU yet
+        </Tile>
+        <Tile label="Catalog items" value={fmt(items)}>
+          {s.by_priority.must} must · {s.by_priority.should} should · {s.by_priority.nice} nice
         </Tile>
       </section>
 
       <section className="card-block">
         <div className="block-head">
-          <h3>Coverage by department</h3>
+          <h2 className="section-heading">Coverage by department</h2>
           <p className="muted">Share of each department&apos;s catalog items with an approved Mercaso SKU. Hover a bar for the priority split.</p>
         </div>
         <BarList
           rows={coverage.map((c) => ({
             key: c.label,
             label: c.label,
-            tint: `var(--cat-${c.departmentIndex})`,
             value: pct(c.covered, c.items),
             caption: `${c.covered} of ${c.items}`,
             detail: PRIORITY_LEVELS.map((p) => ({ p, ...c.byPriority[p] })),
@@ -76,7 +78,7 @@ export function Overview({ index, rows, onTab, onJump }: Props) {
       <div className="two-col">
         <section className="card-block">
           <div className="block-head">
-            <h3>Coverage by priority</h3>
+            <h2 className="section-heading">Coverage by priority</h2>
             <p className="muted">Must-carry items come first; most gaps are nice-to-have sizes Mercaso doesn&apos;t stock.</p>
           </div>
           <BarList
@@ -92,7 +94,7 @@ export function Overview({ index, rows, onTab, onJump }: Props) {
 
         <section className="card-block">
           <div className="block-head">
-            <h3>Must-carry items still open</h3>
+            <h2 className="section-heading">Must items still open</h2>
             <p className="muted">{gaps.length === 0 ? "Every must item has an approved SKU." : "Must items without an approved Mercaso SKU."}</p>
           </div>
           <ul className="gap-list">
@@ -110,7 +112,7 @@ export function Overview({ index, rows, onTab, onJump }: Props) {
       </div>
 
       <section className="card-block how">
-        <h3>How to use this site</h3>
+        <h2 className="section-heading">Reading this catalog</h2>
         <ul>
           <li>
             <button type="button" className="linklike" onClick={() => onTab("chart")}>
@@ -133,9 +135,9 @@ export function Overview({ index, rows, onTab, onJump }: Props) {
   );
 }
 
-function Tile({ label, value, children }: { label: string; value: string; children: React.ReactNode }) {
+function Tile({ label, value, lead, children }: { label: string; value: string; lead?: boolean; children: React.ReactNode }) {
   return (
-    <div className="tile">
+    <div className={lead ? "tile lead" : "tile"}>
       <div className="tile-label">{label}</div>
       <div className="tile-value">{value}</div>
       <div className="tile-sub muted">{children}</div>
@@ -170,7 +172,6 @@ function BarList({ rows }: { rows: BarRow[] }) {
           }}
         >
           <span className={`bar-label ${r.labelClass ?? ""}`}>
-            {r.tint && <span className="swatch" style={{ "--tint": r.tint } as CSSProperties} aria-hidden="true" />}
             {r.label}
           </span>
           <span className="bar-track" role="img" aria-label={`${r.label}: ${r.value}% (${r.caption})`}>

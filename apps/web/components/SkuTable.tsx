@@ -1,6 +1,6 @@
 "use client";
 
-import { Fragment, useMemo, useState, type CSSProperties } from "react";
+import { Fragment, useMemo, useState } from "react";
 import {
   filterRows,
   groupRows,
@@ -93,14 +93,17 @@ export function SkuTable({ rows, pricesAsOf, onJump, storeName }: Props) {
 
   return (
     <div className="sku-table-view">
-      <div className="block-head">
-        <h2>Every Mercaso SKU in the catalog</h2>
-        <p className="muted">
-          One row per Mercaso SKU matched to a catalog item. Groups start closed: open one to see its SKUs, or search to open them all.
-          Penetration is the share of California {storesNoun(storeName)} that bought the SKU.
-          {hasPrices && <> Price is today&apos;s case price without CRV (promo price when on promo); margin uses average cost without CRV, as of {pricesAsOf}.</>}
+      <section className="screen-head">
+        <h1 className="screen-title">Mercaso SKUs</h1>
+        <p className="screen-finding">
+          {fmt(total.skus)} SKUs fill {fmt(total.items)} catalog items
+          {total.gaps > 0 ? `; ${fmt(total.gaps)} items have no SKU` : ""}.
         </p>
-      </div>
+        <p className="screen-source">
+          Penetration: share of California {storesNoun(storeName)} that bought the SKU from Mercaso.
+          {hasPrices && <> Case price without CRV (promo price when on promo); margin on average cost without CRV, as of {pricesAsOf}.</>}
+        </p>
+      </section>
 
       <div className="controls" role="group" aria-label="Table controls">
         <label className="field search">
@@ -158,11 +161,6 @@ export function SkuTable({ rows, pricesAsOf, onJump, storeName }: Props) {
         </div>
       </div>
 
-      <p className="table-summary muted">
-        <strong>{fmt(total.skus)}</strong> SKUs across <strong>{fmt(total.items)}</strong> catalog items
-        {total.gaps > 0 && <> · {fmt(total.gaps)} items with no SKU</>}
-      </p>
-
       <div className="table-wrap">
         <table className="sku-table">
           <thead>
@@ -201,32 +199,44 @@ export function SkuTable({ rows, pricesAsOf, onJump, storeName }: Props) {
               return (
                 <Fragment key={g.key}>
                   {groupBy !== "none" && (
-                    <tr className="group-row">
-                      <th colSpan={columns.length} scope="rowgroup">
-                        <button type="button" className="group-toggle" aria-expanded={shown} onClick={() => toggleGroup(g.key)}>
+                    // Subtotals sit in the columns they summarise: the best SKU's penetration under
+                    // Penetration, the average margin under Margin, the gaps under Status.
+                    <tr className="group-row" onClick={() => toggleGroup(g.key)}>
+                      <th colSpan={4} scope="rowgroup">
+                        <button
+                          type="button"
+                          className="group-toggle"
+                          aria-expanded={shown}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            toggleGroup(g.key);
+                          }}
+                        >
                           <span className="caret" aria-hidden="true">
                             {shown ? "▾" : "▸"}
                           </span>
-                          {g.departmentIndex !== undefined && (
-                            <span className="swatch" style={{ "--tint": `var(--cat-${g.departmentIndex})` } as CSSProperties} aria-hidden="true" />
-                          )}
-                          <span className={`group-label ${groupBy === "priority" ? `p-${g.key}` : ""}`}>{g.label}</span>
+                          <span className={`group-label ${groupBy === "priority" ? "cap" : ""}`}>{g.label}</span>
                           <span className="group-stats">
-                            <span>{fmt(g.stats.skus)} SKUs</span>
-                            <span>{fmt(g.stats.items)} items</span>
+                            {fmt(g.stats.skus)} SKUs · {fmt(g.stats.items)} items
                             {groupBy !== "priority" && (
-                              <span>
-                                <span className="p-must">{g.stats.must}</span> / <span className="p-should">{g.stats.should}</span> /{" "}
-                                <span className="p-nice">{g.stats.nice}</span>
-                                <span className="visually-hidden"> must / should / nice</span>
-                              </span>
+                              <>
+                                {" "}
+                                · {g.stats.must} must · {g.stats.should} should · {g.stats.nice} nice
+                              </>
                             )}
-                            {g.stats.gaps > 0 && <span>{g.stats.gaps} with no SKU</span>}
-                            {g.stats.skus > 0 && <span>top {pct(g.stats.topShare)}</span>}
-                            {g.stats.avgMargin !== undefined && <span>avg margin {margin(g.stats.avgMargin)}</span>}
                           </span>
                         </button>
                       </th>
+                      <td className="num">{g.stats.skus > 0 ? `top ${pct(g.stats.topShare)}` : "–"}</td>
+                      <td />
+                      <td />
+                      {hasPrices && (
+                        <>
+                          <td />
+                          <td className="num">{g.stats.avgMargin !== undefined ? margin(g.stats.avgMargin) : "–"}</td>
+                        </>
+                      )}
+                      <td className="muted">{g.stats.gaps > 0 ? `${g.stats.gaps} with no SKU` : ""}</td>
                     </tr>
                   )}
                   {shown && g.rows.map((r) => <Row key={r.key} r={r} showCategory={groupBy !== "category"} hasPrices={hasPrices} onJump={onJump} />)}
@@ -238,8 +248,7 @@ export function SkuTable({ rows, pricesAsOf, onJump, storeName }: Props) {
       </div>
       {groupBy !== "none" && (
         <p className="muted small">
-          Group subtotals show SKUs, catalog items, the items split as <span className="p-must">must</span> /{" "}
-          <span className="p-should">should</span> / <span className="p-nice">nice</span>, the best-selling SKU&apos;s penetration{hasPrices && ", and the average margin"}.
+          A group row shows its SKUs and catalog items by priority, the best-selling SKU&apos;s penetration{hasPrices && " and the average margin"} in their columns.
         </p>
       )}
     </div>

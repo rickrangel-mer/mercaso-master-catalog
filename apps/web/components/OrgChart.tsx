@@ -180,13 +180,6 @@ function RailButton({ label, onClick, icon }: { label: string; onClick: () => vo
   );
 }
 
-function initials(name: string): string {
-  const words = name.replace(/[^\p{L}\p{N}\s]/gu, " ").split(/\s+/).filter(Boolean);
-  if (words.length === 0) return "·";
-  if (words.length === 1) return words[0]!.slice(0, 2).toUpperCase();
-  return (words[0]![0]! + words[1]![0]!).toUpperCase();
-}
-
 function metaLine(view: ViewNode, index: CatalogIndex): string {
   const d = view.data;
   const a = d?.attrs;
@@ -269,9 +262,6 @@ const Card = memo(function Card({
       }}
     >
       <div className="card-head">
-        <span className="avatar" aria-hidden="true">
-          {view.kind === "store_type" ? "⌂" : initials(view.name)}
-        </span>
         <div className="card-title">
           <div className="card-name" title={view.name}>
             {link ? "↗ " : ""}
@@ -283,6 +273,17 @@ const Card = memo(function Card({
       <div className="card-meta" title={metaLine(view, index)}>
         {metaLine(view, index)}
       </div>
+      {!leaf && !link && roll && roll.leaves > 0 && (
+        // Coverage in the data hue: the share of the items below with an approved Mercaso SKU.
+        <span
+          className="cover-track"
+          role="img"
+          aria-label={`${Math.round(((roll.leaves - roll.gap) / roll.leaves) * 100)}% of items have an approved SKU`}
+          title={`${roll.leaves - roll.gap} of ${roll.leaves} items have an approved SKU`}
+        >
+          <span className="cover-fill" style={{ width: `${((roll.leaves - roll.gap) / roll.leaves) * 100}%` }} />
+        </span>
+      )}
       <div className="card-foot">
         {dept && view.kind !== "department" && (
           <span className="tag dept-tag" title={dept.name}>
@@ -304,7 +305,7 @@ const Card = memo(function Card({
           !link &&
           roll && (
             <span className="count" title={`${view.children.length} direct · ${roll.leaves} leaves below`}>
-              {view.children.length}|{roll.leaves}
+              {view.children.length} {view.children.length === 1 ? "group" : "groups"}
             </span>
           )
         )}

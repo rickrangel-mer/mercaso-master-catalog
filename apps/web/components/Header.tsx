@@ -1,5 +1,7 @@
 "use client";
 
+import { useEffect, useRef } from "react";
+
 export type Tab = "overview" | "chart" | "table" | "stores" | "wallet";
 
 export const TABS: { id: Tab; label: string }[] = [
@@ -21,10 +23,18 @@ interface Props {
 }
 
 export function Header({ storeTypes, storeType, onStoreType, tab, onTab, snapshot }: Props) {
+  // On a phone the tabs scroll inside their own row; keep the open one in view.
+  const tabs = useRef<HTMLElement>(null);
+  useEffect(() => {
+    tabs.current?.querySelector<HTMLElement>('[aria-selected="true"]')?.scrollIntoView({ block: "nearest", inline: "nearest" });
+  }, [tab]);
   return (
     <header className="site-header">
       <div className="brand">
-        <h1 className="title">Master Catalog</h1>
+        <span className="product-name">
+          <Mark />
+          Mercaso Master Catalog
+        </span>
         <label className="field">
           <span className="visually-hidden">Store type</span>
           <select value={storeType} onChange={(e) => onStoreType(e.target.value)} disabled={storeTypes.length < 2}>
@@ -35,9 +45,9 @@ export function Header({ storeTypes, storeType, onStoreType, tab, onTab, snapsho
             ))}
           </select>
         </label>
-        {snapshot && <span className="snapshot muted">Snapshot {snapshot}</span>}
+        {snapshot && <span className="snapshot muted">Catalog prices as of {snapshot}</span>}
       </div>
-      <nav className="tabs" role="tablist" aria-label="Sections">
+      <nav className="tabs" role="tablist" aria-label="Sections" ref={tabs}>
         {TABS.map((t) => (
           <button
             key={t.id}
@@ -52,5 +62,18 @@ export function Header({ storeTypes, storeType, onStoreType, tab, onTab, snapsho
         ))}
       </nav>
     </header>
+  );
+}
+
+/** The product's mark: a catalog drawn as its family tree, one root and three branches. */
+function Mark() {
+  return (
+    <svg className="mark" width="20" height="20" viewBox="0 0 20 20" aria-hidden="true">
+      <rect x="7" y="1.5" width="6" height="5" rx="1.2" />
+      <rect x="1" y="13.5" width="5" height="5" rx="1.2" />
+      <rect x="7.5" y="13.5" width="5" height="5" rx="1.2" />
+      <rect x="14" y="13.5" width="5" height="5" rx="1.2" />
+      <path d="M10 6.5v7M3.5 13.5v-3h13v3" fill="none" />
+    </svg>
   );
 }

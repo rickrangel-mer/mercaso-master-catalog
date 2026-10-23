@@ -19,6 +19,7 @@ export function Toolbar({ filters, onFilters, onExpandAll, onCollapseAll }: Prop
 
   return (
     <div className="controls chart-controls" role="group" aria-label="Chart controls">
+      <h1 className="toolbar-title">Catalog chart</h1>
       <label className="field search">
         <span className="visually-hidden">Search</span>
         <input
