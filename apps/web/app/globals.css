@@ -2278,3 +2278,32 @@ select {
     height: auto;
   }
 }
+
+/* Acquisition tab */
+.acq-wrap {
+  overflow-x: auto;
+}
+.acq-table th[scope="row"] {
+  white-space: nowrap;
+  font-weight: 500;
+}
+.acq-table td.num {
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.acq-market {
+  font-size: 11.5px;
+  font-weight: 400;
+}
+.acq-table tr.is-selected th[scope="row"] {
+  box-shadow: inset 3px 0 0 var(--text); /* taste-skill-ignore: marks the selected row */
+}
+.acq-table tr.total-row th,
+.acq-table tr.total-row td {
+  font-weight: 600;
+  border-top: 1px solid var(--control);
+}
+.wallet-chart .bar-value-label {
+  fill: var(--muted);
+  font-size: 11px;
+}

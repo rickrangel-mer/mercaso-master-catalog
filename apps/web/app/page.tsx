@@ -7,8 +7,10 @@ import { OrgChart } from "../components/OrgChart";
 import { Overview } from "../components/Overview";
 import { SkuTable } from "../components/SkuTable";
 import { StoresView } from "../components/StoresView";
+import { AcquisitionView } from "../components/AcquisitionView";
 import { MarketView } from "../components/MarketView";
 import { WalletView } from "../components/WalletView";
+import type { AcquisitionBase } from "../lib/acquisition";
 import type { MarketBase } from "../lib/market";
 import type { WalletBase } from "../lib/wallet";
 import type { BaseFile } from "../lib/score";
@@ -55,6 +57,8 @@ export default function Page() {
   const [wallet, setWallet] = useState<WalletBase | null>(null);
   // Optional: the market view from `pnpm market` (sales never go in git).
   const [market, setMarket] = useState<MarketBase | null>(null);
+  // Optional: month-over-month acquisition by rep from `pnpm acquisition` (store counts only).
+  const [acquisition, setAcquisition] = useState<AcquisitionBase | null>(null);
   const [filters, setFilters] = useState<Filters>(NO_FILTERS);
   const [expanded, setExpanded] = useState<Set<string>>(new Set([ROOT_ID]));
   const [selectedId, setSelectedId] = useState<string | null>(null);
@@ -84,6 +88,9 @@ export default function Page() {
     loadJson<BaseFile>("data/stores.json")
       .then((f) => setStores(f))
       .catch(() => setStores(null));
+    loadJson<AcquisitionBase>("data/acquisition.json")
+      .then((f) => setAcquisition(f))
+      .catch(() => setAcquisition(null));
     loadJson<MarketBase>("data/market.json")
       .then((f) => setMarket(f))
       .catch(() => setMarket(null));
@@ -202,6 +209,11 @@ export default function Page() {
           ) : (
             <StoresView base={stores} onJumpItem={jumpTo} />
           )}
+        </div>
+      )}
+      {tab === "acquisition" && (
+        <div className="page">
+          <AcquisitionView base={acquisition} />
         </div>
       )}
       {tab === "market" && (

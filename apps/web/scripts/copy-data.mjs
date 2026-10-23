@@ -80,6 +80,15 @@ if (existsSync(walletJson)) {
   console.log("No dist/wallet/wallet.json; the Wallet tab will say how to build it.");
 }
 
+// Acquisition view.
+const acquisitionJson = join(dist, "acquisition/acquisition.json");
+if (existsSync(acquisitionJson)) {
+  copyFileSync(acquisitionJson, join(out, "acquisition.json"));
+  console.log("Copied the acquisition view to public/data/acquisition.json.");
+} else {
+  console.log("No dist/acquisition/acquisition.json; the Acquisition tab will say how to build it.");
+}
+
 // Market view.
 const marketJson = join(dist, "market/market.json");
 if (existsSync(marketJson)) {

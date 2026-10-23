@@ -39,6 +39,8 @@ const prices = existsSync(join(data, "prices.json")) ? read("prices.json") : nul
 const stores = existsSync(join(data, "stores.json")) ? read("stores.json") : null;
 const wallet = existsSync(join(data, "wallet.json")) ? read("wallet.json") : null;
 const market = existsSync(join(data, "market.json")) ? read("market.json") : null;
+// Store counts only, so the same in both files.
+const acquisition = existsSync(join(data, "acquisition.json")) ? read("acquisition.json") : null;
 // The no-prices file keeps store counts and penetration; sales, profit and spend per store go.
 const marketWithoutMoney = (f) => ({
   ...f,
@@ -83,6 +85,7 @@ const page = (withPrices) => {
     ...(stores ? { "data/stores.json": withPrices ? stores : storesWithoutMoney(stores) } : {}),
     ...(wallet ? { "data/wallet.json": withPrices ? wallet : walletWithoutMoney(wallet) } : {}),
     ...(market ? { "data/market.json": withPrices ? market : marketWithoutMoney(market) } : {}),
+    ...(acquisition ? { "data/acquisition.json": acquisition } : {}),
   };
   return `<!doctype html>
 <html lang="en">
