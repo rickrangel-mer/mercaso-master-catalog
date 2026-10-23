@@ -1,6 +1,7 @@
 -- Export: every CA store that ordered from Mercaso in the last 24 months, any store type, with
 -- what it spends and where it is, for `pnpm market` (docs/exploration/market.md). Save as
--- data/raw/market_stores.csv (gitignored). No names or contact details.
+-- data/raw/market_stores.csv (gitignored). The store name only types stores that have no type
+-- (`pnpm market` reads it, never writes it out); no contact details.
 --   postal_code                  the store's ZIP (its zone, sub-area and rep come from it)
 --   spend_12m / orders_12m       the last 12 months (active stores)
 --   spend_before / orders_before the 365 days up to the store's last order (what a churned store
@@ -9,7 +10,8 @@
 WITH stores AS (
   SELECT si.store_id,
          max(COALESCE(NULLIF(trim(st.store_type), ''), NULLIF(trim(si.store_type), ''))) AS store_type,
-         max(substr(trim(si.postal_code), 1, 5)) AS postal_code
+         max(substr(trim(si.postal_code), 1, 5)) AS postal_code,
+         max(trim(si.store_name)) AS store_name
   FROM dim.dim_store_mercaso_store_info_full si
   LEFT JOIN ods.ods_gsheet_manually_collected_ums_store_type_full st
     ON st.store_id = si.store_id
@@ -38,7 +40,7 @@ order_totals AS (
     AND o.created_at >= date_add('month', -36, current_timestamp)
   GROUP BY o.store_id, o.order_id, o.created_at
 )
-SELECT p.store_id, coalesce(s.store_type, '') AS store_type, coalesce(s.postal_code, '') AS postal_code,
+SELECT p.store_id, coalesce(s.store_type, '') AS store_type, coalesce(s.postal_code, '') AS postal_code, coalesce(s.store_name, '') AS store_name,
   CAST(p.first_at AS date) AS first_order_date, CAST(p.last_at AS date) AS last_order_date,
   round(sum(CASE WHEN t.created_at >= date_add('month', -12, current_timestamp) THEN t.amount ELSE 0 END), 2) AS spend_12m,
   sum(CASE WHEN t.created_at >= date_add('month', -12, current_timestamp) THEN 1 ELSE 0 END) AS orders_12m,
@@ -49,4 +51,4 @@ FROM per_store p
 JOIN order_totals t ON t.store_id = p.store_id
 LEFT JOIN stores s ON s.store_id = p.store_id
 WHERE p.last_at >= date_add('month', -24, current_timestamp)
-GROUP BY p.store_id, s.store_type, s.postal_code, p.first_at, p.last_at;
+GROUP BY p.store_id, s.store_type, s.postal_code, s.store_name, p.first_at, p.last_at;

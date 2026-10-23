@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { areaOfZip, indexer, repsByZip } from "./lib.ts";
+import { areaOfZip, indexer, repsByZip, typeWeights } from "./lib.ts";
 
 describe("areaOfZip", () => {
   const regions = new Map([
@@ -42,5 +42,21 @@ describe("indexer", () => {
     expect(at("b")).toBe(1);
     expect(at("b")).toBe(1);
     expect(list).toEqual(["a", "b"]);
+  });
+});
+
+describe("typeWeights", () => {
+  const fromName = (n: string) => (/liquor/i.test(n) ? "Liquor store" : "");
+  const mix = new Map([
+    ["Liquor store", 3],
+    ["Gas station", 1],
+  ]);
+  it("keeps a real type, types an untyped store by its name, and spreads the rest", () => {
+    expect(typeWeights("Gas station", "Joe's Liquor", fromName, mix)).toEqual([["Gas station", 1]]);
+    expect(typeWeights("", "Joe's Liquor", fromName, mix)).toEqual([["Liquor store", 1]]);
+    expect(typeWeights("Unknown", "Joe's Place", fromName, mix)).toEqual([
+      ["Liquor store", 0.75],
+      ["Gas station", 0.25],
+    ]);
   });
 });

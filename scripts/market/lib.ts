@@ -67,3 +67,19 @@ export function indexer(list: string[]): (name: string) => number {
     return i;
   };
 }
+
+/** Store types that say nothing: such a store is typed by its name, or spread. */
+export const UNTYPED = new Set(["", "Unknown", "No type set"]);
+
+/**
+ * The store types a store counts under, with weights summing to 1: its own type; for an untyped
+ * store, the type its name says (`fromName`); otherwise spread over `mix` (counts per type) in
+ * proportion — the same fallback as for prospects.
+ */
+export function typeWeights(type: string, name: string, fromName: (name: string) => string, mix: Map<string, number>): [string, number][] {
+  if (!UNTYPED.has(type.trim())) return [[type.trim(), 1]];
+  const guessed = fromName(name);
+  if (guessed) return [[guessed, 1]];
+  const total = [...mix.values()].reduce((a, b) => a + b, 0);
+  return total ? [...mix].map(([t, n]): [string, number] => [t, n / total]) : [["", 1]];
+}

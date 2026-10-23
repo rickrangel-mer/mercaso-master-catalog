@@ -14,7 +14,7 @@ Started 2026-10-23 (Rick). A separate tab: for each rep, the stores acquired eac
 | Penetration | Stores active at the month's end (ordered in the 45 days before) ÷ the rep's market |
 | Market | Today's prospect list + every store that ordered in the last 24 months. It is fixed, so penetration moves only with active stores. (The Market tab leaves out stores whose last order is over a year old, so its market is slightly smaller.) |
 
-Prospects whose name doesn't say the store type are spread over the types of the others, as on the Market tab, so the store-type filter works for them too.
+Prospects whose name doesn't say the store type are spread over the types of the others, as on the Market tab, and customers with no type get the same fallback (their name, else the typed customers' mix), so the store-type filter has no holes.
 
 ## First run (2026-10-23)
 

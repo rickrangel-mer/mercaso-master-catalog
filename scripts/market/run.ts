@@ -11,7 +11,7 @@ import { join } from "node:path";
 import { parse } from "csv-parse/sync";
 import { parse as parseYaml } from "yaml";
 import { churnedYear, marginRate, prospectType, statusOf, typeProfiles, type GrowthStore } from "../growth/lib.ts";
-import { areaOfZip, indexer, repsByZip, type MarketCell } from "./lib.ts";
+import { areaOfZip, indexer, repsByZip, typeWeights, UNTYPED, type MarketCell } from "./lib.ts";
 
 const ROOT = process.cwd();
 const UNASSIGNED = "Unassigned";
@@ -26,8 +26,16 @@ const read = (file: string, hint: string): Record<string, string>[] => {
 
 const storeRows = read("data/raw/market_stores.csv", "Run pnpm athena:export market-stores market-zips.");
 const asOf = storeRows[0]?.as_of ?? new Date().toISOString().slice(0, 10);
+// A store with no type (blank or Unknown) takes the type its name says, else is spread over the
+// typed stores' types in their proportions: the same fallback as for prospects, so no store is untyped.
+const customerMix = new Map<string, number>();
+for (const r of storeRows) {
+  const t = (r.store_type ?? "").trim();
+  if (!UNTYPED.has(t)) customerMix.set(t, (customerMix.get(t) ?? 0) + 1);
+}
 const stores = storeRows.map((r) => ({
   zip: r.postal_code ?? "",
+  weights: typeWeights(r.store_type ?? "", r.store_name ?? "", prospectType, customerMix),
   s: {
     id: r.store_id!,
     type: r.store_type ?? "",
@@ -70,8 +78,10 @@ const repAt = indexer(reps);
 const repOfZip = repsByZip(prospects.filter((p) => p.zone !== UNASSIGNED).map((p) => ({ zip: p.zip_code ?? "", rep: p.salesperson ?? "" })));
 
 // Margin per store type, from what today's active stores buy in the catalogs (as in pnpm growth).
-const active = stores.filter(({ s }) => statusOf(s, asOf) === "active");
-const activeType = new Map(active.map(({ s }) => [s.id, s.type]));
+// Stores with one type (their own or their name's) set the margins and the new-store profiles.
+const single = stores.filter(({ weights }) => weights.length === 1).map(({ s, weights }) => ({ ...s, type: weights[0]![0] }));
+const active = single.filter((s) => statusOf(s, asOf) === "active");
+const activeType = new Map(active.map((s) => [s.id, s.type]));
 const price = existsSync(join(ROOT, "data/raw/pricing.csv"))
   ? new Map(read("data/raw/pricing.csv", "").map((r) => [r.sku_number!, { price: Number(r.price) || 0, ...(r.average_cost === "" ? {} : { cost: Number(r.average_cost) }) }]))
   : new Map<string, { price: number; cost?: number }>();
@@ -93,7 +103,7 @@ const marginOverall = marginRate(allRows) ?? 0.13;
 const marginOf = (t: string) => marginRate(marginRows.get(t) ?? []) ?? marginOverall;
 
 // A new store spends like today's active stores of its type, in today's mix of ordering bands.
-const profiles = typeProfiles(stores.map(({ s }) => s), asOf);
+const profiles = typeProfiles(single, asOf);
 const fallback = [...profiles.values()].reduce((a, p) => (p.stores > a.stores ? p : a));
 const profileOf = (t: string) => profiles.get(t) ?? fallback;
 // Churned stores come back with the business they had; giants are capped at the 95th percentile.
@@ -118,21 +128,23 @@ const cellOf = (zip: string, type: string, rep: string) => {
 const repFor = (zip: string) => repOfZip.get(zip.trim().slice(0, 5)) ?? UNASSIGNED;
 const days = (from: string, to: string) => Math.round((Date.parse(to) - Date.parse(from)) / 86_400_000);
 
-for (const { zip, s } of stores) {
+for (const { zip, s, weights } of stores) {
   const status = statusOf(s, asOf);
   if (status === "lapsed") continue; // last ordered over a year ago: outside the market, as in pnpm growth
-  const c = cellOf(zip, s.type, repFor(zip));
-  const m = marginOf(s.type);
-  if (status === "active") {
-    c.active++;
-    c.activeRevenue += s.spend_12m;
-    c.activeProfit += s.spend_12m * m;
-    if (days(s.first_order_date, asOf) <= 365) c.newPace++;
-  } else {
-    const v = Math.min(churnedYear(s), churnCap);
-    c.churned++;
-    c.churnedRevenue += v;
-    c.churnedProfit += v * m;
+  for (const [type, w] of weights) {
+    const c = cellOf(zip, type, repFor(zip));
+    const m = marginOf(type);
+    if (status === "active") {
+      c.active += w;
+      c.activeRevenue += s.spend_12m * w;
+      c.activeProfit += s.spend_12m * w * m;
+      if (days(s.first_order_date, asOf) <= 365) c.newPace += w;
+    } else {
+      const v = Math.min(churnedYear(s), churnCap) * w;
+      c.churned += w;
+      c.churnedRevenue += v;
+      c.churnedProfit += v * m;
+    }
   }
 }
 
@@ -176,11 +188,11 @@ const base = {
     c.area,
     typeRemap.get(c.type)!,
     repRemap.get(c.rep)!,
-    c.active,
+    r2(c.active),
     Math.round(c.activeRevenue),
     Math.round(c.activeProfit),
-    c.newPace,
-    c.churned,
+    r2(c.newPace),
+    r2(c.churned),
     Math.round(c.churnedRevenue),
     Math.round(c.churnedProfit),
     r2(c.prospects),
@@ -201,4 +213,7 @@ for (const [i, z] of zones.entries()) {
   const m = market(keep);
   console.log(`${z.padEnd(24)} market ${n0(m).padStart(6)}  active ${n0(sum((c) => c.active, keep)).padStart(5)}  penetration ${pct(m ? sum((c) => c.active, keep) / m : 0)}  new last 12 mo ${n0(sum((c) => c.newPace, keep))}`);
 }
+const untyped = storeRows.filter((r) => UNTYPED.has((r.store_type ?? "").trim()));
+const byName = untyped.filter((r) => prospectType(r.store_name ?? "")).length;
+console.log(`Untyped customers: ${n0(untyped.length)}; ${n0(byName)} typed by their name, ${n0(untyped.length - byName)} spread over the typed stores' mix.`);
 console.log(`Areas: ${areas.length}; reps: ${repOrder.join(", ")}; types: ${base.types.map((t) => t.name).join(", ")}`);

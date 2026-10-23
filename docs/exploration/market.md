@@ -26,6 +26,7 @@ Started 2026-10-23 (Rick): the market side of the whiteboard. Same idea as the W
 
 - A store or prospect takes the map region of its ZIP; a ZIP with no segmented store takes the nearest mapped ZIP's region in the same 3-digit area; San Diego (919–921) and Kern (932–933) have no mapped region and are named by area. 4,843 prospects (from the CRM) have no ZIP, city or rep and are Unassigned.
 - Prospects whose name doesn't say the store type are spread over the types of the others, in their proportions.
+- **No untyped stores** (Rick, 2026-10-23). A customer's type comes from the manually collected store-type sheet, else Mercaso's store record. A customer with neither (blank or "Unknown", 622 stores) gets the same fallback as prospects: the type its name says (321 stores), else spread over the typed customers' types in their proportions (301). Checked against the 5,622 customers whose type is known: the name says a type for 74% of them and is right 88% of the time (90%+ for liquor stores, gas stations, smoke shops and laundromats; 69% for convenience stores; restaurants and non-stores rarely say it in their name). `npx tsx scripts/market/check-name-types.ts` reruns the check.
 
 ## First run (2026-10-23, default targets)
 

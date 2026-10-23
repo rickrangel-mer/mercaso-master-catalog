@@ -9,7 +9,7 @@ import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { parse } from "csv-parse/sync";
 import { prospectType } from "../growth/lib.ts";
-import { indexer, repsByZip } from "../market/lib.ts";
+import { indexer, repsByZip, typeWeights, UNTYPED } from "../market/lib.ts";
 import { activeAt, monthEnd, monthIndex, monthStarts } from "./lib.ts";
 
 const ROOT = process.cwd();
@@ -60,15 +60,24 @@ const cellOf = (rep: string, type: string) => {
   return c;
 };
 
-// Customers: acquired in the month of their first order, prospects until then.
+// Customers: acquired in the month of their first order, prospects until then. A store with no type
+// takes the type its name says, else is spread over the typed stores' types (as prospects are).
+const customerMix = new Map<string, number>();
 for (const s of stores) {
-  const c = cellOf(repOfZip.get((s.postal_code ?? "").slice(0, 5)) ?? UNASSIGNED, s.store_type ?? "");
-  c.market++;
+  const t = (s.store_type ?? "").trim();
+  if (!UNTYPED.has(t)) customerMix.set(t, (customerMix.get(t) ?? 0) + 1);
+}
+for (const s of stores) {
   const first = monthIndex(s.first_order_date ?? "", starts);
-  if (first >= 0 && first < MONTHS) c.acquired[first]!++;
-  for (let m = 0; m < MONTHS; m++) {
-    if (first >= m) c.prospectsStart[m]!++;
-    if (activeAt(days.get(s.store_id!) ?? [], ends[m]!)) c.activeEnd[m]!++;
+  const active = ends.map((e) => activeAt(days.get(s.store_id!) ?? [], e));
+  for (const [type, w] of typeWeights(s.store_type ?? "", s.store_name ?? "", prospectType, customerMix)) {
+    const c = cellOf(repOfZip.get((s.postal_code ?? "").slice(0, 5)) ?? UNASSIGNED, type);
+    c.market += w;
+    if (first >= 0 && first < MONTHS) c.acquired[first]! += w;
+    for (let m = 0; m < MONTHS; m++) {
+      if (first >= m) c.prospectsStart[m]! += w;
+      if (active[m]) c.activeEnd[m]! += w;
+    }
   }
 }
 // Today's prospect list: prospects in every month. A name that doesn't say the type is spread over
@@ -102,9 +111,9 @@ const base = {
     rep: repOrder.indexOf(reps[c.rep]!),
     type: typeOrder.indexOf(c.type),
     market: r2(c.market),
-    acquired: c.acquired,
+    acquired: c.acquired.map(r2),
     prospectsStart: c.prospectsStart.map(r2),
-    activeEnd: c.activeEnd,
+    activeEnd: c.activeEnd.map(r2),
   })),
 };
 mkdirSync(join(ROOT, "dist/acquisition"), { recursive: true });
@@ -118,5 +127,5 @@ for (const [i, r] of repOrder.entries()) {
   const acq = starts.map((_, m) => mine.reduce((a, c) => a + c.acquired[m]!, 0));
   const market = mine.reduce((a, c) => a + c.market, 0);
   const pen = (m: number) => `${((mine.reduce((a, c) => a + c.activeEnd[m]!, 0) / market) * 100).toFixed(1)}%`;
-  console.log(`${r.padEnd(24)}${acq.map((x) => String(x).padStart(6)).join("")}  ${n0(acq.reduce((a, b) => a + b, 0)).padStart(5)}  ${pen(0)} → ${pen(MONTHS - 1)}`);
+  console.log(`${r.padEnd(24)}${acq.map((x) => n0(x).padStart(6)).join("")}  ${n0(acq.reduce((a, b) => a + b, 0)).padStart(5)}  ${pen(0)} → ${pen(MONTHS - 1)}`);
 }
