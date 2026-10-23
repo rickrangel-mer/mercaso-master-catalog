@@ -38,6 +38,14 @@ const catalogs = Object.fromEntries(index.map((e) => [`data/${e.file}`, read(e.f
 const prices = existsSync(join(data, "prices.json")) ? read("prices.json") : null;
 const stores = existsSync(join(data, "stores.json")) ? read("stores.json") : null;
 const wallet = existsSync(join(data, "wallet.json")) ? read("wallet.json") : null;
+const market = existsSync(join(data, "market.json")) ? read("market.json") : null;
+// The no-prices file keeps store counts and penetration; sales, profit and spend per store go.
+const marketWithoutMoney = (f) => ({
+  ...f,
+  no_money: true,
+  types: f.types.map((t) => ({ ...t, newStore: 0, newStoreLow: 0, margin: 0 })),
+  cells: f.cells.map((c) => c.map((v, i) => ([5, 6, 9, 10].includes(i) ? 0 : v))),
+});
 // The no-prices file shows wallet penetration only: spend, revenue, profit and margins are zeroed.
 const walletWithoutMoney = (f) => ({
   ...f,
@@ -74,6 +82,7 @@ const page = (withPrices) => {
     ...(withPrices && prices ? { "data/prices.json": prices } : {}),
     ...(stores ? { "data/stores.json": withPrices ? stores : storesWithoutMoney(stores) } : {}),
     ...(wallet ? { "data/wallet.json": withPrices ? wallet : walletWithoutMoney(wallet) } : {}),
+    ...(market ? { "data/market.json": withPrices ? market : marketWithoutMoney(market) } : {}),
   };
   return `<!doctype html>
 <html lang="en">

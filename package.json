@@ -24,7 +24,8 @@
     "member-discount": "tsx scripts/member-discount/run.ts",
     "lift": "tsx scripts/lift/run.ts",
     "growth": "tsx scripts/growth/run.ts",
-    "wallet": "tsx scripts/wallet/run.ts"
+    "wallet": "tsx scripts/wallet/run.ts",
+    "market": "tsx scripts/market/run.ts"
   },
   "devDependencies": {
     "@aws-sdk/client-athena": "^3.1143.0",

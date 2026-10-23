@@ -7,7 +7,9 @@ import { OrgChart } from "../components/OrgChart";
 import { Overview } from "../components/Overview";
 import { SkuTable } from "../components/SkuTable";
 import { StoresView } from "../components/StoresView";
+import { MarketView } from "../components/MarketView";
 import { WalletView } from "../components/WalletView";
+import type { MarketBase } from "../lib/market";
 import type { WalletBase } from "../lib/wallet";
 import type { BaseFile } from "../lib/score";
 import { Toolbar } from "../components/Toolbar";
@@ -51,6 +53,8 @@ export default function Page() {
   const [stores, setStores] = useState<BaseFile | null>(null);
   // Optional: the wallet view from `pnpm wallet` (spend never goes in git).
   const [wallet, setWallet] = useState<WalletBase | null>(null);
+  // Optional: the market view from `pnpm market` (sales never go in git).
+  const [market, setMarket] = useState<MarketBase | null>(null);
   const [filters, setFilters] = useState<Filters>(NO_FILTERS);
   const [expanded, setExpanded] = useState<Set<string>>(new Set([ROOT_ID]));
   const [selectedId, setSelectedId] = useState<string | null>(null);
@@ -80,6 +84,9 @@ export default function Page() {
     loadJson<BaseFile>("data/stores.json")
       .then((f) => setStores(f))
       .catch(() => setStores(null));
+    loadJson<MarketBase>("data/market.json")
+      .then((f) => setMarket(f))
+      .catch(() => setMarket(null));
     loadJson<WalletBase>("data/wallet.json")
       .then((f) => setWallet(f))
       .catch(() => setWallet(null));
@@ -195,6 +202,11 @@ export default function Page() {
           ) : (
             <StoresView base={stores} onJumpItem={jumpTo} />
           )}
+        </div>
+      )}
+      {tab === "market" && (
+        <div className="page">
+          <MarketView base={market} />
         </div>
       )}
       {tab === "wallet" && (

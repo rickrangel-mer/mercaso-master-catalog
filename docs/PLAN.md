@@ -94,7 +94,7 @@ Goal: agree on the liquor-store taxonomy and where the branded/assortment line f
 
 ### Wallet view (2026-10-22)
 
-- A Wallet tab on the site from Rick's whiteboard: average order value by department and department penetration, 12 months ago vs today vs short term (6 months) vs long term (12 months), with a target slider per department and editable inputs (active days, item window, best-store share, segment filters, reality check). `docs/exploration/wallet.md`. Next: the market side of the board (zones, sub-zones, verticals, reps).
+- A Wallet tab on the site from Rick's whiteboard: average order value by department and department penetration, 12 months ago vs today vs short term (6 months) vs long term (12 months), with a target slider per department and editable inputs (active days, item window, best-store share, segment filters, reality check). `docs/exploration/wallet.md`. Then the market side: a Market tab with market penetration by zone, sub-area, store type and rep, sliders for new stores and win-backs, and the yearly dollars (`docs/exploration/market.md`).
 
 ### Later (out of scope now)
 

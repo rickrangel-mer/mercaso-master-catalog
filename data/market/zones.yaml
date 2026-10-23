@@ -1,0 +1,28 @@
+# The market report's 8 main zones, each a group of Mercaso's map regions (the sub-areas), from
+# the store segmentation table. Edit freely: a region listed under no zone counts as Unassigned.
+# ZIPs with no segmented store take the region of the nearest mapped ZIP in the same 3-digit area;
+# the ZIP3 areas below have no mapped region at all and are placed by their own name.
+zones:
+  - name: Central & West LA
+    regions: [Central LA, Westside, Northeast LA]
+  - name: South LA & Harbor
+    regions: [South LA, South Bay & Harbor, Long Beach]
+  - name: Southeast LA & Gateway
+    regions: [Southeast LA & Gateway Cities]
+  - name: San Gabriel Valley
+    regions: [San Gabriel Valley - West, San Gabriel Valley - East & Pomona Valley]
+  - name: Valleys & North
+    regions: [San Fernando Valley, Santa Clarita & Conejo Valley, Antelope Valley, Ventura County & Santa Barbara, Kern County]
+  - name: Orange County
+    regions: [Orange County]
+  - name: Inland Empire
+    regions: [Inland Empire - San Bernardino, Inland Empire - Riverside, High Desert]
+  - name: San Diego
+    regions: [San Diego County]
+# Sub-areas for ZIP3 areas the segmentation table does not cover.
+zip3_regions:
+  "919": San Diego County
+  "920": San Diego County
+  "921": San Diego County
+  "932": Kern County
+  "933": Kern County

@@ -42,10 +42,10 @@ Sliders read in **items per store** by default (Rick, 2026-10-22): catalog items
 The catalog view caps the room: with must items, Beverage has 76 items and the best stores buy 36 of them, so a slider fills fast. Yet the best stores buy 173 different Beverage SKUs against 95 for the average store. The **Any SKU** setting (the default) sets targets in distinct SKUs a store buys, catalog or not:
 
 1. Each store closes the same share of its own gap to the best stores of its segment (their average SKU count in the department). Defaults: a third in 6 months, two thirds in 12; the slider goes up to twice the gap (a stretch past the best stores).
-2. **An extra SKU is worth what an added catalog item is worth on average:** the catalog plan at two thirds of the gap with every item counting (must, should and nice), divided by the items it adds. That is the typical yearly spend of stores already buying those items, with the back-test factors when the reality check is on, about $54 a store a year for Beverage. Comparing stores' spend with their SKU counts was tried and dropped: it mostly measures store size (it gave +$63–71M a year).
+2. **An extra SKU is worth what an added catalog item is worth on average:** the catalog plan at two thirds of the gap with every item counting (must, should and nice), divided by the items it adds. That is the typical yearly spend of stores already buying those items, with the back-test factors when the reality check is on. Comparing stores' spend with their SKU counts was tried and dropped: it mostly measures store size (it gave about three times the dollars).
 3. Catalog penetration stays at today's on this setting; the SKUs bought in the short- and long-term bars are today's plus the new ones.
 
-Default view (all store types, reality check on), long term: +$21.7M revenue a year, AOV $1,109 → $1,312. For comparison, catalog items give +$4.2M (must) and +$8.9M (all items). Beverage: 95 → 151 SKUs a store, +$10.6M.
+Default view (all store types, reality check on), long term: average order value up 18%, about 2.5 times the gain from all catalog items and 5 times must items alone. Beverage: 95 → 151 SKUs a store, half of the gain. Dollar figures are on the site only (house rule: no revenue in git).
 
 ## Later
 

@@ -57,7 +57,7 @@ Unchanged: Zyn, the CA flavored-tobacco drops, sandwich bags in department 5, Re
 - `pnpm athena:export pricing` writes `data/raw/pricing.csv`: price = promo price when on promo, else the regular price without CRV; cost = Finale's `average_cost` (from `ods.ods_finale_report_of_product_full`, which includes CRV) minus the case CRV. Margin = (price − cost) ÷ price.
 - Prices and costs never go in git. The web build (`apps/web/scripts/copy-data.mjs`) writes `public/data/prices.json` (gitignored) for the catalog's SKUs only; without the export the site builds without the price columns.
 - **The built site in `apps/web/out/` does contain prices and costs.** Host it only somewhere private.
-- About 6 catalog SKUs show a negative margin; they look like cost-data problems in Finale (e.g. DW13542-24 costed at $70.06 against a $47.99 price).
+- About 6 catalog SKUs show a negative margin; they look like cost-data problems in Finale (e.g. DW13542-24, costed well above its price).
 - Chips carry 2.5–3.25oz bags beside XVL (rule 4, Rick 2026-09-29).
 
 ## Next steps
