@@ -2406,3 +2406,16 @@ select {
   justify-content: flex-end;
   gap: 8px;
 }
+
+/* Download CSV sits at the right of a filter row, before Reset targets. */
+.csv-button {
+  margin-left: auto;
+}
+.csv-button + .wallet-reset {
+  margin-left: 0;
+}
+@media print {
+  .csv-button {
+    display: none !important;
+  }
+}

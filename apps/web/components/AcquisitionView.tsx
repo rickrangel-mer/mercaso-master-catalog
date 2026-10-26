@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
+import { acquisitionRows, downloadCsv } from "../lib/exportTables";
 import { series, totalOf, valueAt, type AcquisitionBase, type Measure, type RepSeries } from "../lib/acquisition";
 
 interface Props {
@@ -92,6 +93,18 @@ export function AcquisitionView({ base }: Props) {
             ))}
           </select>
         </label>
+        <button
+          type="button"
+          className="wallet-reset csv-button"
+          onClick={() =>
+            downloadCsv(
+              `mercaso-acquisition-${type < 0 ? "all-types" : base.types[type]!.toLowerCase().replace(/[^a-z0-9]+/g, "-")}-${new Date().toISOString().slice(0, 10)}.csv`,
+              acquisitionRows(base, reps, total),
+            )
+          }
+        >
+          Download CSV
+        </button>
       </div>
 
       <section className="card-block">
