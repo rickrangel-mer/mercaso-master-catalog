@@ -126,3 +126,9 @@ dist/                             # built JSON, gitignored
 - Phase 1–2: `pnpm validate` passes in CI; `pnpm build` emits `dist/liquor.json` with SCD fully populated and priorities resolved.
 - Phase 3: `pnpm dev` renders the liquor tree; SCD → Cola → Coca-Cola shows Classic/Zero/Diet → sizes; Household → Cleaning → Dish soap shows an assortment slot with its target and coverage.
 - Phase 4: `pnpm athena:export` writes `products.csv`; `pnpm match` fills `matches/liquor.csv` with ≥90% of SCD branded leaves matched and assortment leaves populated; `pnpm gaps` lists unmatched must-carry items; the UI reflects the statuses.
+
+## Backlog
+
+- **New vs came-back stores on the Acquisition tab** (Rick, 2026-10-26, on hold): split acquired stores into new (first order) and came back (ordered after a gap of 90+ days with no orders), each with its own pool (never-ordered prospects; lapsed customers). Checked on Douglas Hernandez: over 13 months, 312 new and 235 came back at 90 days (748 at 45 days, mostly slow-ordering stores; 63 at 180). Order days back to March 2025 are already exported.
+- **Store list from a Google Places scrape**: tested on the branch `claude/places-store-matching` (`docs/exploration/places.md` there).
+
