@@ -1,9 +1,9 @@
 // The tables behind the Wallet, Market and Acquisition tabs, as CSV rows. The tabs' Download CSV
 // buttons export what is on screen; `pnpm datapack` writes the same tables at the default settings,
 // so a number on screen can be found in a file.
-import { valueAt, type AcquisitionBase, type RepSeries } from "./acquisition";
-import { DIMS, type MarketBase, type MarketResult } from "./market";
-import type { WalletBase, WalletResult } from "./wallet";
+import { valueAt, type AcquisitionBase, type RepSeries } from "./acquisition.ts";
+import { DIMS, type MarketBase, type MarketResult } from "./market.ts";
+import type { WalletBase, WalletResult } from "./wallet.ts";
 
 /** Round for a CSV cell: whole numbers plain, otherwise `digits` decimals (NaN → empty). */
 export const cell = (x: number, digits = 2) => (Number.isFinite(x) ? (Number.isInteger(x) ? String(x) : x.toFixed(digits)) : "");
@@ -143,15 +143,4 @@ export function acquisitionRows(base: AcquisitionBase, reps: RepSeries[], total:
     ]),
   );
   return [header, ...rows];
-}
-
-/** Saves rows as a CSV file in the browser. */
-export function downloadCsv(name: string, rows: string[][]) {
-  const blob = new Blob([toCsv(rows)], { type: "text/csv" });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement("a");
-  a.href = url;
-  a.download = name;
-  a.click();
-  URL.revokeObjectURL(url);
 }

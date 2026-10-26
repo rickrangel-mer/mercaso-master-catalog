@@ -1,7 +1,8 @@
 "use client";
 
 import { useDeferredValue, useEffect, useMemo, useRef, useState } from "react";
-import { downloadCsv, walletRows } from "../lib/exportTables";
+import { walletRows } from "../lib/exportTables";
+import { downloadCsv } from "./downloadCsv";
 import { computeWallet, DEFAULT_SETTINGS, MAX_GAP, type Snapshot, type WalletBase, type WalletPriority, type WalletSettings } from "../lib/wallet";
 
 interface Props {

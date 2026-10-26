@@ -1,7 +1,8 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
-import { acquisitionRows, downloadCsv } from "../lib/exportTables";
+import { acquisitionRows } from "../lib/exportTables";
+import { downloadCsv } from "./downloadCsv";
 import { series, totalOf, valueAt, type AcquisitionBase, type Measure, type RepSeries } from "../lib/acquisition";
 
 interface Props {

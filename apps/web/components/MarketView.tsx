@@ -1,7 +1,8 @@
 "use client";
 
 import { useDeferredValue, useMemo, useState } from "react";
-import { downloadCsv, marketRows } from "../lib/exportTables";
+import { marketRows } from "../lib/exportTables";
+import { downloadCsv } from "./downloadCsv";
 import { computeMarket, defaults, DIMS, groupNames, type Dim, type GroupResult, type MarketBase, type MarketSettings } from "../lib/market";
 
 interface Props {
