@@ -56,6 +56,9 @@ export interface WalletStore {
   /** Distinct SKUs bought per group in each 90-day window, catalog or not. */
   skusNow: number[];
   skusThen: number[];
+  /** Order lines (an order × a SKU) per group in each window, for SKUs per order. */
+  linesNow?: number[];
+  linesThen?: number[];
   /** Catalog items bought in the 180 days up to each anchor, flat: item index, days since bought, … */
   itemsNow: number[];
   itemsThen: number[];
@@ -129,6 +132,9 @@ export interface Snapshot {
   coverage: number[];
   /** Distinct SKUs bought per store per group in 90 days, catalog or not (projections add the new ones). */
   skus: number[];
+  /** SKU lines per order, per group; projections add the new SKUs' lines (`linesAdded`). */
+  lines: number[];
+  linesAdded: number[];
   /** Penetration per group (0–1); NaN where no store in view has items in the group. */
   penetration: number[];
   /** Yearly revenue and gross profit at this snapshot's pace. */
@@ -195,6 +201,7 @@ function snapshot(base: WalletBase, set: WalletSettings, when: "now" | "then"): 
   const spend = new Array<number>(G).fill(0);
   const catSpend = new Array<number>(G).fill(0);
   const skus = new Array<number>(G).fill(0);
+  const lines = new Array<number>(G).fill(0);
   const penSum = new Array<number>(G).fill(0);
   const penN = new Array<number>(G).fill(0);
   const carried = new Map<number, Set<number>>();
@@ -214,6 +221,7 @@ function snapshot(base: WalletBase, set: WalletSettings, when: "now" | "then"): 
     });
     (when === "now" ? s.catSpendNow : s.catSpendThen).forEach((x, g) => (catSpend[g]! += x));
     (when === "now" ? s.skusNow : s.skusThen).forEach((x, g) => (skus[g]! += x));
+    (when === "now" ? s.linesNow : s.linesThen)?.forEach((x, g) => (lines[g]! += x));
     const items = base.catalogs[s.catalog]!;
     const flat = when === "now" ? s.itemsNow : s.itemsThen;
     const bought = new Set<number>();
@@ -236,6 +244,8 @@ function snapshot(base: WalletBase, set: WalletSettings, when: "now" | "then"): 
     aovAdded: spend.map(() => 0),
     coverage: spend.map((x, g) => (x > 0 ? catSpend[g]! / x : NaN)),
     skus: skus.map((x) => (stores ? x / stores : 0)),
+    lines: lines.map((x) => (orders ? x / orders : 0)),
+    linesAdded: lines.map(() => 0),
     penetration: penSum.map((x, g) => (penN[g] ? x / penN[g]! : NaN)),
     revenue: spend.reduce((a, b) => a + b, 0) * year,
     profit: profit * year,
@@ -467,6 +477,10 @@ export function computeWallet(base: WalletBase, set: WalletSettings): WalletResu
 
   const project = (rev: number[], prof: number, gaps: number[], term: "short" | "long"): Snapshot => {
     const ordersYear = nowSnap.orders * year;
+    const linesFor = (g: number, r: number) => {
+      const perLine = nowSnap.lines[g]! > 0 ? nowSnap.aov[g]! / nowSnap.lines[g]! : 0;
+      return perLine > 0 && ordersYear ? r / ordersYear / perLine : 0;
+    };
     const pen = gaps.map((gap, g) => (Number.isNaN(nowSnap.penetration[g]!) ? NaN : penetrationAt(base, states, g, bySkus ? 0 : gap, set.priorities)));
     // SKUs bought: today's plus the new ones (catalog items added, or the SKU target).
     const skus = groups.map((gp, g) =>
@@ -477,6 +491,9 @@ export function computeWallet(base: WalletBase, set: WalletSettings): WalletResu
       orders: nowSnap.orders,
       aov: nowSnap.aov.map((x, g) => x + (ordersYear ? rev[g]! / ordersYear : 0)),
       aovAdded: rev.map((r) => (ordersYear ? r / ordersYear : 0)),
+      // The new SKUs' dollars as lines, at the group's dollars per line today.
+      lines: nowSnap.lines.map((l, g) => l + linesFor(g, rev[g]!)),
+      linesAdded: rev.map((r, g) => linesFor(g, r)),
       coverage: nowSnap.coverage,
       skus,
       penetration: pen,
