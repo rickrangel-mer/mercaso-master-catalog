@@ -1,6 +1,8 @@
 "use client";
 
 import { useDeferredValue, useMemo, useState } from "react";
+import { marketRows } from "../lib/exportTables";
+import { downloadCsv } from "./downloadCsv";
 import { computeMarket, defaults, DIMS, groupNames, type Dim, type GroupResult, type MarketBase, type MarketSettings } from "../lib/market";
 
 interface Props {
@@ -109,6 +111,13 @@ export function MarketView({ base }: Props) {
             </select>
           </label>
         )}
+        <button
+          type="button"
+          className="wallet-reset csv-button"
+          onClick={() => downloadCsv(`mercaso-market-by-${set.driver}-${new Date().toISOString().slice(0, 10)}.csv`, marketRows(base, result))}
+        >
+          Download CSV
+        </button>
         <button type="button" className="wallet-reset" onClick={reset}>
           Reset targets
         </button>

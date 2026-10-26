@@ -1,6 +1,8 @@
 "use client";
 
 import { useDeferredValue, useEffect, useMemo, useRef, useState } from "react";
+import { walletRows } from "../lib/exportTables";
+import { downloadCsv } from "./downloadCsv";
 import { computeWallet, DEFAULT_SETTINGS, MAX_GAP, type Snapshot, type WalletBase, type WalletPriority, type WalletSettings } from "../lib/wallet";
 
 interface Props {
@@ -219,6 +221,9 @@ export function WalletView({ base }: Props) {
             </label>
           </div>
         </details>
+        <button type="button" className="wallet-reset csv-button" onClick={() => downloadCsv(`mercaso-wallet-${new Date().toISOString().slice(0, 10)}.csv`, walletRows(base, result))}>
+          Download CSV
+        </button>
         <button type="button" className="wallet-reset" onClick={resetTargets}>
           Reset targets
         </button>
