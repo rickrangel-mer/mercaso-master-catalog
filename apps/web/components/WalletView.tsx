@@ -18,6 +18,8 @@ const money = (x: number) => `$${Math.round(x).toLocaleString("en-US")}`;
 const short = (x: number) => (Math.abs(x) >= 1e6 ? `$${(x / 1e6).toFixed(1)}M` : Math.abs(x) >= 1e3 ? `$${Math.round(x / 1e3).toLocaleString("en-US")}K` : money(x));
 const pct = (x: number) => (Number.isNaN(x) ? "–" : `${(x * 100).toFixed(1)}%`);
 const sum = (xs: number[]) => xs.reduce((a, b) => a + b, 0);
+/** SKU lines per order: one decimal, two under one. */
+const lineFmt = (x: number) => (Math.abs(x) < 1 ? x.toFixed(2) : x.toFixed(1));
 const signedPct = (now: number, was: number) => (was ? `${now >= was ? "+" : ""}${(((now - was) / was) * 100).toFixed(1)}%` : "–");
 /** A count of items: whole numbers plain, otherwise one decimal. */
 const count = (x: number) => (Math.abs(x - Math.round(x)) < 0.05 ? Math.round(x).toLocaleString("en-US") : x.toFixed(1));
@@ -40,6 +42,8 @@ export function WalletView({ base }: Props) {
     longSkus: nulls(G),
   }));
   const [showTable, setShowTable] = useState(false);
+  // The order chart in dollars or in SKU lines.
+  const [orderUnit, setOrderUnit] = useState<"dollars" | "skus">("dollars");
   const [unit, setUnitState] = useState<Unit>("skus");
   const deferred = useDeferredValue(settings);
   const result = useMemo(() => (base ? computeWallet(base, deferred) : null), [base, deferred]);
@@ -75,6 +79,8 @@ export function WalletView({ base }: Props) {
     { key: "long", label: "Long term", sub: "12 months", s: result.longTerm },
   ];
   const groups = base.groups;
+  const chartSnaps = orderUnit === "skus" ? snaps.map((x) => ({ ...x, s: { ...x.s, aov: x.s.lines, aovAdded: x.s.linesAdded } })) : snaps;
+  const chartFmt = orderUnit === "skus" ? lineFmt : money;
   const detail = (bar: number, g: number): [string, string][] => {
     const gp = result.groups[g]!;
     const snap = snaps[bar]!.s;
@@ -86,6 +92,8 @@ export function WalletView({ base }: Props) {
       ["Per order", `${money(snap.aov[g]!)} (${((snap.aov[g]! / Math.max(1, sum(snap.aov))) * 100).toFixed(0)}% of the order)`],
     ];
     if (snap.aovAdded[g]! > 0) rows.push(["From new items", money(snap.aovAdded[g]!)]);
+    if (snap.lines[g]! > 0)
+      rows.push(["SKUs per order", `${lineFmt(snap.lines[g]!)}${snap.linesAdded[g]! > 0.005 ? ` (+${lineFmt(snap.linesAdded[g]!)} new)` : ""}`]);
     if (!Number.isNaN(pen)) {
       rows.push(["Catalog items a store buys", `${count(pen * N)} of ${N.toFixed(0)} (${pct(pen)})${added > 0.05 ? `, +${count(added)}` : ""}`]);
       rows.push(["Best stores, catalog", `${count(gp.best * N)} items`]);
@@ -99,10 +107,12 @@ export function WalletView({ base }: Props) {
   const addedDetail = (bar: number): [string, string][] => {
     const snap = snaps[bar]!.s;
     return groups
-      .map((name, g): [string, number] => [name, snap.aovAdded[g]!])
+      .map((name, g): [string, number, number] => [name, snap.aovAdded[g]!, snap.linesAdded[g]!])
       .filter(([, v]) => v > 0.5)
       .sort((a, b) => b[1] - a[1])
-      .map(([name, v]): [string, string] => [name, `+${money(v)} an order`]);
+      .map(([name, v, l]): [string, string] =>
+        orderUnit === "skus" ? [name, `+${lineFmt(l)} SKUs an order (+${money(v)})`] : [name, `+${money(v)} an order (+${lineFmt(l)} SKUs)`],
+      );
   };
   // The finding: the long-term order against today's, and the department that adds the most.
   const aovToday = sum(result.today.aov);
@@ -260,19 +270,32 @@ export function WalletView({ base }: Props) {
           <section className="card-block">
             <div className="block-head wallet-chart-head">
               <div>
-                <h2 className="section-heading">Order value by department</h2>
+                <h2 className="section-heading">{orderUnit === "skus" ? "SKUs per order by department" : "Order value by department"}</h2>
                 <p className="muted">
-                  Dollars per order. Grey is what stores already buy from us, catalog or not; <span className="new-key">blue</span> is what the new SKUs add.
+                  {orderUnit === "skus"
+                    ? "SKU lines per order (each SKU on an order counts once). The new SKUs' dollars are turned into lines at each department's dollars per line today. "
+                    : "Dollars per order. "}
+                  Grey is what stores already buy from us, catalog or not; <span className="new-key">blue</span> is what the new SKUs add.
                 </p>
               </div>
-              <button type="button" className="small-button" onClick={() => setShowTable((v) => !v)}>
-                {showTable ? "Show chart" : "Show table"}
-              </button>
+              <div className="wallet-chart-tools">
+                <div className="segmented" role="group" aria-label="Show the order in">
+                  <button type="button" aria-pressed={orderUnit === "dollars"} onClick={() => setOrderUnit("dollars")}>
+                    $ per order
+                  </button>
+                  <button type="button" aria-pressed={orderUnit === "skus"} onClick={() => setOrderUnit("skus")}>
+                    SKUs per order
+                  </button>
+                </div>
+                <button type="button" className="small-button" onClick={() => setShowTable((v) => !v)}>
+                  {showTable ? "Show chart" : "Show table"}
+                </button>
+              </div>
             </div>
             {showTable ? (
-              <AovTable groups={groups} snaps={snaps} />
+              <AovTable groups={groups} snaps={chartSnaps} fmt={chartFmt} />
             ) : (
-              <StackedBars groups={groups} snaps={snaps} detail={detail} addedDetail={addedDetail} />
+              <StackedBars groups={groups} snaps={chartSnaps} detail={detail} addedDetail={addedDetail} fmt={chartFmt} />
             )}
           </section>
         </>
@@ -469,11 +492,13 @@ function StackedBars({
   snaps,
   detail,
   addedDetail,
+  fmt,
 }: {
   groups: string[];
   snaps: { key: string; label: string; sub: string; s: Snapshot }[];
   detail: (bar: number, g: number) => [string, string][];
   addedDetail: (bar: number) => [string, string][];
+  fmt: (x: number) => string;
 }) {
   // g = -1 is the new-SKU block.
   const [hover, setHover] = useState<{ bar: number; g: number; x: number; y: number } | null>(null);
@@ -536,7 +561,7 @@ function StackedBars({
           <g key={t}>
             <line x1={left} x2={W - labelW + 8} y1={y(t)} y2={y(t)} className="grid" />
             <text x={left - 6} y={y(t) + 4} textAnchor="end" className="axis">
-              {money(t)}
+              {fmt === money ? money(t) : String(t)}
             </text>
           </g>
         ))}
@@ -570,7 +595,7 @@ function StackedBars({
                 );
               })}
               <text x={cx} y={y(total) - 8} textAnchor="middle" className="bar-total">
-                {money(total)}
+                {fmt(total)}
               </text>
               <text x={cx} y={H - bottom + 18} textAnchor="middle" className="bar-name">
                 {narrow ? ["−1 yr", "Now", "+6 mo", "+12 mo"][b] : snap.label}
@@ -632,10 +657,10 @@ function niceStep(x: number): number {
   return 10 * p;
 }
 
-function AovTable({ groups, snaps }: { groups: string[]; snaps: { key: string; label: string; s: Snapshot }[] }) {
+function AovTable({ groups, snaps, fmt }: { groups: string[]; snaps: { key: string; label: string; s: Snapshot }[]; fmt: (x: number) => string }) {
   return (
     <div className="table-wrap">
-      <table className="data-table">
+      <table className="sku-table">
         <thead>
           <tr>
             <th scope="col">Department</th>
@@ -652,17 +677,17 @@ function AovTable({ groups, snaps }: { groups: string[]; snaps: { key: string; l
               <th scope="row">{g}</th>
               {snaps.map((s) => (
                 <td key={s.key} className="num">
-                  {money(s.s.aov[i]!)}
-                  {s.s.aovAdded[i]! > 0 && <span className="muted"> (+{money(s.s.aovAdded[i]!)} new)</span>}
+                  {fmt(s.s.aov[i]!)}
+                  {s.s.aovAdded[i]! > 0.005 && <span className="muted"> (+{fmt(s.s.aovAdded[i]!)} new)</span>}
                 </td>
               ))}
             </tr>
           ))}
           <tr>
-            <th scope="row">Average order value</th>
+            <th scope="row">Per order</th>
             {snaps.map((s) => (
               <td key={s.key} className="num">
-                <strong>{money(sum(s.s.aov))}</strong>
+                <strong>{fmt(sum(s.s.aov))}</strong>
               </td>
             ))}
           </tr>

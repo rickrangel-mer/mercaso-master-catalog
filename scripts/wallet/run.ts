@@ -167,9 +167,9 @@ for (const r of skuRows) {
 }
 // Per store and group, for each window: all spend, spend on catalog SKUs, and distinct SKUs
 // (a SKU sits in one Mercaso department, so departments add up within a group).
-type DeptSums = { spend: number[]; cat: number[]; skus: number[] };
+type DeptSums = { spend: number[]; cat: number[]; skus: number[]; lines: number[] };
 const zeros = () => GROUPS.map(() => 0);
-const sums = (): DeptSums => ({ spend: zeros(), cat: zeros(), skus: zeros() });
+const sums = (): DeptSums => ({ spend: zeros(), cat: zeros(), skus: zeros(), lines: zeros() });
 const spend = new Map<string, { now: DeptSums; then: DeptSums }>();
 for (const r of read("data/raw/wallet_store_dept.csv")) {
   let e = spend.get(r.store_id!);
@@ -179,6 +179,7 @@ for (const r of read("data/raw/wallet_store_dept.csv")) {
   w.spend[g]! += Number(r.spend) || 0;
   w.cat[g]! += Number(r.cat_spend) || 0;
   w.skus[g]! += Number(r.skus) || 0;
+  w.lines[g]! += Number(r.lines) || 0;
 }
 const stores: WalletStore[] = [];
 for (const r of storeRows) {
@@ -211,6 +212,8 @@ for (const r of storeRows) {
     catSpendThen: (sp?.then.cat ?? zeros()).map(round2),
     skusNow: sp?.now.skus ?? zeros(),
     skusThen: sp?.then.skus ?? zeros(),
+    linesNow: sp?.now.lines ?? zeros(),
+    linesThen: sp?.then.lines ?? zeros(),
     itemsNow: [...(e?.now ?? [])].sort((a, b) => a[0] - b[0]).flat(),
     itemsThen: [...(e?.then ?? [])].sort((a, b) => a[0] - b[0]).flat(),
   });

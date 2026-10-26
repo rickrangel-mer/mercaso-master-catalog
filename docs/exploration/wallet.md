@@ -47,6 +47,10 @@ The catalog view caps the room: with must items, Beverage has 76 items and the b
 
 Default view (all store types, reality check on), long term: average order value up 18%, about 2.5 times the gain from all catalog items and 5 times must items alone. Beverage: 95 → 151 SKUs a store, half of the gain. Dollar figures are on the site only (house rule: no revenue in git).
 
+## SKUs per order (Rick, 2026-10-26)
+
+The order chart switches between **$ per order** and **SKUs per order**: SKU lines per order (each SKU on an order counts once; `lines` in `wallet_store_dept.sql`), by department. In the short and long term, the new SKUs' extra dollars are turned into lines at each department's dollars per line today, so both views tell the same story. First run (all store types, default targets): 27.1 lines an order a year ago, 35.5 today, 42.5 in 12 months, Beverage +2.9 and Candy & snacks +2.3 of the 7 added.
+
 ## Later
 
 - Widen the catalog where coverage is thin (candy, grocery, health & beauty): cross-check the best stores' top off-catalog SKUs against the catalog.

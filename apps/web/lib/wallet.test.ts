@@ -17,6 +17,8 @@ const store = (extra: Partial<WalletStore>): WalletStore => ({
   catSpendThen: [0, 0, 0],
   skusNow: [0, 0, 0],
   skusThen: [0, 0, 0],
+  linesNow: [0, 0, 0],
+  linesThen: [0, 0, 0],
   itemsNow: [],
   itemsThen: [],
   ...extra,
@@ -40,7 +42,7 @@ const base: WalletBase = {
   segments: [{ key: "Liquor store|1", type: "Liquor store", tier: 1, catalog: "liquor", revenue: [100, 100, 50, 50], profit: [10, 10, 5, 5] }],
   stores: [
     // The best store carries everything.
-    store({ ordersNow: 10, spendNow: [800, 200, 100], catSpendNow: [600, 50, 0], skusNow: [40, 20, 5], itemsNow: [0, 5, 1, 5, 2, 5, 3, 5], lastThen: 10, ordersThen: 2, spendThen: [100, 0, 0], itemsThen: [0, 5] }),
+    store({ ordersNow: 10, spendNow: [800, 200, 100], catSpendNow: [600, 50, 0], skusNow: [40, 20, 5], linesNow: [80, 20, 10], itemsNow: [0, 5, 1, 5, 2, 5, 3, 5], lastThen: 10, ordersThen: 2, spendThen: [100, 0, 0], itemsThen: [0, 5] }),
     store({ spendNow: [400, 0, 0], catSpendNow: [200, 0, 0], skusNow: [10, 0, 0], itemsNow: [0, 5, 2, 120] }), // chips bought too long ago
     store({ spendNow: [500, 0, 0], itemsNow: [0, 5, 1, 5], lastThen: 100 }),
     store({ lastNow: 60, spendNow: [999, 0, 0], itemsNow: [0, 5] }), // not active
@@ -164,6 +166,14 @@ describe("computeWallet", () => {
     const set = computeWallet(base, settings({ basis: "skus", longSkus: [30, null, null] }));
     expect(set.groups[0]!.skusLong).toBeCloseTo(30);
     expect(set.groups[0]!.longRevenue).toBeCloseTo(40 * 100);
+  });
+
+  it("reads the order as SKU lines, and the new SKUs' dollars as lines at today's dollars per line", () => {
+    // Beverage: 80 lines over 20 orders = 4 a order; $85 an order ÷ 4 lines = $21.25 a line.
+    expect(r.today.lines[0]).toBe(4);
+    expect(r.shortTerm.linesAdded[0]).toBeCloseTo(r.shortTerm.aovAdded[0]! / (85 / 4));
+    expect(r.shortTerm.lines[0]! - r.shortTerm.linesAdded[0]!).toBeCloseTo(4);
+    expect(r.today.linesAdded).toEqual([0, 0, 0]);
   });
 
   it("counts only the chosen priorities", () => {

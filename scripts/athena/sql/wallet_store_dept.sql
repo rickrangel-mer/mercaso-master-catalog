@@ -3,6 +3,7 @@
 -- data/raw/wallet_store_dept.csv (gitignored: spend stays out of git). Line totals after refunds.
 --   cat_spend  the part spent on the master catalog's approved SKUs (every store type's matches)
 --   skus / cat_skus  distinct SKUs bought, and how many of them are catalog SKUs
+--   lines  order lines (an order × a SKU), for SKUs per order
 WITH stores AS (
   SELECT si.store_id,
          max(COALESCE(NULLIF(trim(st.store_type), ''), NULLIF(trim(si.store_type), ''))) AS store_type
@@ -32,7 +33,8 @@ orders AS (
 SELECT o.store_id, o.win, coalesce(li.department, '') AS department, round(sum(li.current_total_amount), 2) AS spend,
   round(sum(CASE WHEN li.sku IN ({{CATALOG_SKUS}}) THEN li.current_total_amount ELSE 0 END), 2) AS cat_spend,
   count(DISTINCT li.sku) AS skus,
-  count(DISTINCT CASE WHEN li.sku IN ({{CATALOG_SKUS}}) THEN li.sku END) AS cat_skus
+  count(DISTINCT CASE WHEN li.sku IN ({{CATALOG_SKUS}}) THEN li.sku END) AS cat_skus,
+  count(DISTINCT concat(li.order_id, '|', li.sku)) AS lines
 FROM dwm.dwm_trade_line_item_detail_full li
 JOIN orders o ON o.order_id = li.order_id
 WHERE li.dt = (SELECT max(dt) FROM dwm.dwm_trade_line_item_detail_full)
