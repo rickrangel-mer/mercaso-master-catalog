@@ -75,7 +75,8 @@ export function MarketView({ base }: Props) {
           .
         </p>
         <p className="screen-source">
-          Market: active stores (ordered in the last 45 days), stores that stopped ordering in the last 12 months, and the prospect list. As of {base.as_of}.
+          Market: active stores (ordered in the last 45 days), stores that stopped ordering in the last 12 months, and the prospect list
+          {set.withPlaces ? `, plus ${n0(base.places_prospects ?? 0)} places from the Google Places scrape that are new to us` : ""}. As of {base.as_of}.
         </p>
       </section>
 
@@ -90,6 +91,15 @@ export function MarketView({ base }: Props) {
             ))}
           </div>
         </div>
+        {(base.places_prospects ?? 0) > 0 && (
+          <label className="field">
+            <span>Prospects</span>
+            <select value={set.withPlaces ? "places" : "list"} onChange={(e) => update({ withPlaces: e.target.value === "places" })}>
+              <option value="list">Sales prospect list</option>
+              <option value="places">List + Google Places scrape (+{n0(base.places_prospects ?? 0)})</option>
+            </select>
+          </label>
+        )}
         {!noMoney && (
           <label className="field">
             <span>A new store spends</span>

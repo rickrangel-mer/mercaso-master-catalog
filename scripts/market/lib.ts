@@ -52,6 +52,8 @@ export interface MarketCell {
   churnedRevenue: number;
   churnedProfit: number;
   prospects: number;
+  /** Places from the Google Places scrape that are neither a customer (24 months) nor on the prospect list. */
+  placesProspects: number;
 }
 
 /** Index of a name in a list, appending it when new. */

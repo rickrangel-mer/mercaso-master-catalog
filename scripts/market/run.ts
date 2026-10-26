@@ -1,7 +1,8 @@
 /**
  * The market report's base file (docs/exploration/market.md). Reads data/raw/market_stores.csv and
  * data/raw/market_zips.csv (`pnpm athena:export market-stores market-zips`), data/raw/prospects.csv
- * (the sales prospect list), data/market/zones.yaml and, for gross margin per store type,
+ * (the sales prospect list), data/market/zones.yaml, optionally dist/places/unified.csv (`pnpm places`:
+ * places from a Google Places scrape that are new to us), and, for gross margin per store type,
  * pricing.csv and lift_store_skus.csv. Writes dist/market/market.json (gitignored): one cell per
  * zone × sub-area × store type × rep with its active, churned and prospect stores and their
  * yearly sales, which the site's Market tab turns into targets and dollars.
@@ -120,7 +121,7 @@ const cellOf = (zip: string, type: string, rep: string) => {
   const key = `${area}|${t}|${r}`;
   let c = cells.get(key);
   if (!c) {
-    c = { zone, area, type: t, rep: r, active: 0, activeRevenue: 0, activeProfit: 0, newPace: 0, churned: 0, churnedRevenue: 0, churnedProfit: 0, prospects: 0 };
+    c = { zone, area, type: t, rep: r, active: 0, activeRevenue: 0, activeProfit: 0, newPace: 0, churned: 0, churnedRevenue: 0, churnedProfit: 0, prospects: 0, placesProspects: 0 };
     cells.set(key, c);
   }
   return c;
@@ -160,6 +161,28 @@ for (const { p, t } of typed) {
   else for (const [mt, n] of mix) cellOf(p.zip_code ?? "", mt, rep).prospects += n / mixTotal;
 }
 
+// Places from the scrape that are new to us (not a customer in 24 months, not on the list): a second
+// source of prospects the Market tab can add, placed by ZIP and typed by their Google category.
+const CATEGORY_TYPE: Record<string, string> = {
+  grocery: "Market / grocery",
+  market: "Market / grocery",
+  gas: "Gas station",
+  truck_stop: "Gas station",
+  c_store: "Convenience store",
+  liquor: "Liquor store",
+  laundromat: "Laundromat",
+  discount: "Discount dollar",
+  restaurant: "Restaurant",
+};
+let placesAdded = 0;
+if (existsSync(join(ROOT, "dist/places/unified.csv"))) {
+  for (const r of parse(readFileSync(join(ROOT, "dist/places/unified.csv"), "utf8"), { columns: true }) as Record<string, string>[]) {
+    if (r.source !== "places" || r.mercaso_store_id || r.on_prospect_list === "yes") continue;
+    cellOf(r.zip ?? "", CATEGORY_TYPE[r.places_category ?? ""] ?? "Miscellaneous", repFor(r.zip ?? "")).placesProspects++;
+    placesAdded++;
+  }
+}
+
 // Unassigned last in each list.
 const rep0 = reps.filter((r) => r !== UNASSIGNED).sort();
 const repOrder = [...rep0, ...(reps.includes(UNASSIGNED) ? [UNASSIGNED] : [])];
@@ -182,7 +205,9 @@ const base = {
     return { name: t || "No type set", newStore: Math.round(p.newStore.expected), newStoreLow: Math.round(p.newStore.low), margin: r2(marginOf(t) * 100) / 100 };
   }),
   reps: repOrder,
-  // [zone, area, type, rep, active, activeRevenue, activeProfit, newPace, churned, churnedRevenue, churnedProfit, prospects]
+  /** Places new to us from the Google Places scrape, in all (0 when the scrape wasn't matched). */
+  places_prospects: placesAdded,
+  // [zone, area, type, rep, active, activeRevenue, activeProfit, newPace, churned, churnedRevenue, churnedProfit, prospects, placesProspects]
   cells: [...cells.values()].map((c) => [
     c.zone,
     c.area,
@@ -196,6 +221,7 @@ const base = {
     Math.round(c.churnedRevenue),
     Math.round(c.churnedProfit),
     r2(c.prospects),
+    c.placesProspects,
   ]),
 };
 
@@ -207,7 +233,7 @@ const sum = (f: (c: MarketCell) => number, keep: (c: MarketCell) => boolean = ()
 const n0 = (x: number) => Math.round(x).toLocaleString("en-US");
 const pct = (x: number) => `${(x * 100).toFixed(1)}%`;
 const market = (keep: (c: MarketCell) => boolean) => sum((c) => c.active + c.churned + c.prospects, keep);
-console.log(`Market base: ${n0(sum((c) => c.active))} active, ${n0(sum((c) => c.churned))} churned, ${n0(sum((c) => c.prospects))} prospects; ${cells.size} cells; as of ${asOf}.`);
+console.log(`Market base: ${n0(sum((c) => c.active))} active, ${n0(sum((c) => c.churned))} churned, ${n0(sum((c) => c.prospects))} prospects, ${n0(placesAdded)} more from the Places scrape; ${cells.size} cells; as of ${asOf}.`);
 for (const [i, z] of zones.entries()) {
   const keep = (c: MarketCell) => c.zone === i;
   const m = market(keep);

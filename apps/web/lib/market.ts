@@ -19,8 +19,8 @@ export interface MarketType {
   margin: number;
 }
 
-/** [zone, area, type, rep, active, activeRevenue, activeProfit, newPace, churned, churnedRevenue, churnedProfit, prospects] */
-export type MarketCellRow = [number, number, number, number, number, number, number, number, number, number, number, number];
+/** [zone, area, type, rep, active, activeRevenue, activeProfit, newPace, churned, churnedRevenue, churnedProfit, prospects, placesProspects?] */
+export type MarketCellRow = [number, number, number, number, number, number, number, number, number, number, number, number, number?];
 
 export interface MarketBase {
   schema_version: 1;
@@ -31,12 +31,16 @@ export interface MarketBase {
   types: MarketType[];
   reps: string[];
   cells: MarketCellRow[];
+  /** Places new to us from a Google Places scrape (each cell's 13th value); absent or 0 without one. */
+  places_prospects?: number;
   /** Set in the no-prices build: revenue and profit are zeroed. */
   no_money?: boolean;
 }
 
 export interface MarketSettings {
   driver: Dim;
+  /** Count the Google Places scrape's new places as prospects too. */
+  withPlaces?: boolean;
   spend: "average" | "typical";
   /** Per group of the driving dimension, in stores; null = the default. */
   newShort: (number | null)[];
@@ -111,9 +115,10 @@ const clampTo = (x: number, max: number) => Math.max(0, Math.min(max, x));
 export function computeMarket(base: MarketBase, set: MarketSettings): MarketResult {
   // The driving dimension's groups: their totals and targets.
   const drive = groupNames(base, set.driver).map(empty);
+  const prospectsOf = (c: MarketCellRow) => c[11] + (set.withPlaces ? (c[12] ?? 0) : 0);
   for (const c of base.cells) {
     const g = drive[keyOf(c, set.driver)]!;
-    g.prospects += c[11];
+    g.prospects += prospectsOf(c);
     g.churned += c[8];
     g.newPace += c[7];
   }
@@ -133,7 +138,8 @@ export function computeMarket(base: MarketBase, set: MarketSettings): MarketResu
   groups.area.forEach((g, i) => (g.zone = base.areaZone[i]));
   const total = empty("All stores");
   for (const c of base.cells) {
-    const [, , type, , active, activeRevenue, activeProfit, newPace, churned, churnedRevenue, churnedProfit, prospects] = c;
+    const [, , type, , active, activeRevenue, activeProfit, newPace, churned, churnedRevenue, churnedProfit] = c;
+    const prospects = prospectsOf(c);
     const di = keyOf(c, set.driver);
     const dg = drive[di]!;
     const t = targets[di]!;

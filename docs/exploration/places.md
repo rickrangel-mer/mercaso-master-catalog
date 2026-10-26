@@ -28,6 +28,24 @@ All three stay in the gitignored `data/raw/`; store names and addresses never re
 
 `pnpm places` writes `dist/places/unified.csv` (gitignored; names and addresses) and `dist/places/summary.md`. One row per store: its place id, name, address, ZIP and category; its Mercaso store id, name, type, status (active, stopped in 12 months, lapsed 12–24 months, never ordered) and first and last order; how it was matched and with what confidence; whether it is on the prospect list; where it came from (places, Mercaso, prospect list); its rep (by ZIP) and zone.
 
+## On the Market tab (this branch)
+
+A **Prospects** switch: "Sales prospect list" (as on the main branch) or "List + Google Places scrape", which adds the 9,227 new places as prospects, placed by ZIP (zone, sub-area, rep) and typed by their Google category (grocery and market → Market / grocery, gas and truck stop → Gas station, c_store → Convenience store, discount → Discount dollar). `pnpm places` then `pnpm market` builds it.
+
+| Zone | Market, list | Market, list + Places | Penetration today, list → list + Places |
+|---|---|---|---|
+| Central & West LA | 1,325 | 3,252 | 39.2% → 16.0% |
+| South LA & Harbor | 1,828 | 3,725 | 34.7% → 17.0% |
+| Southeast LA & Gateway | 977 | 2,207 | 36.9% → 16.4% |
+| San Gabriel Valley | 1,300 | 2,591 | 36.9% → 18.5% |
+| Valleys & North | 2,212 | 4,015 | 29.1% → 16.0% |
+| Orange County | 1,601 | 2,158 | 33.1% → 24.6% |
+| Inland Empire | 1,408 | 1,930 | 36.5% → 26.6% |
+| San Diego | 1,765 | 1,765 | 2.6% → 2.6% |
+| **All** | **17,404** | **26,631** | **21.5% → 14.1%** |
+
+The LA zones' penetration more than halves because the scrape found about twice as many stores there as the list had; Orange County, the Inland Empire and San Diego move little only because the scrape barely covers them. Until it does, compare zones within one source, not across them.
+
 ## Before it can replace the prospect list
 
 - Rescrape Orange County, the Inland Empire and San Diego, and add smoke shops.

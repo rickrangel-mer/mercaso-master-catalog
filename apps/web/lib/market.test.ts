@@ -69,6 +69,14 @@ describe("computeMarket", () => {
     expect(r.groups.zone[0]!.backLong).toBe(4);
   });
 
+  it("adds the Places scrape's new places as prospects when asked", () => {
+    const withPlaces: MarketBase = { ...base, places_prospects: 20, cells: base.cells.map((c, i) => [...c.slice(0, 12), i === 0 ? 20 : 0] as unknown as MarketBase["cells"][number]) };
+    expect(computeMarket(withPlaces, settings()).total.market).toBe(104);
+    const r = computeMarket(withPlaces, settings({ withPlaces: true }));
+    expect(r.total.market).toBe(124);
+    expect(r.groups.zone[0]!.today).toBeCloseTo(10 / 74);
+  });
+
   it("lets another dimension drive", () => {
     const r = computeMarket(base, settings({ driver: "type", newShort: [0, 0], newLong: [0, 5] }));
     expect(r.groups.zone[0]!.newLong).toBeCloseTo(5);
