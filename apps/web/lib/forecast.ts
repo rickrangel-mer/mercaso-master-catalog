@@ -11,6 +11,10 @@
 // per order and lines per order. Every driver is forecast from its own last 12 months: a straight
 // trend fitted to them, either held at its last value or continued, and either shaped like the same
 // calendar month last year (seasonal) or not (linear); then × (1 + the adjustment).
+//
+// The current month counts as its actuals so far plus the forecast for its remaining days. The
+// forecast runs to December of next year, so the fiscal years (January to December) can be summed:
+// this year = the history months in it + the current month + the rest; next year = all forecast.
 
 export interface ForecastCell {
   rep: number;
@@ -27,13 +31,20 @@ export interface ForecastCell {
   saved: number[];
   churned: number[];
   wonBack: number[];
+  /** The current month so far (see ForecastBase.current). */
+  current?: Record<CurrentField, number>;
 }
+
+export const CURRENT_FIELDS = ["orders", "revenue", "units", "lines", "new", "saved", "churned", "wonBack"] as const;
+export type CurrentField = (typeof CURRENT_FIELDS)[number];
 
 export interface ForecastBase {
   schema_version: 1;
   as_of: string;
   /** First day of each history month, oldest first (12 complete months). */
   months: string[];
+  /** The month after the history, so far: its first day, the days counted and its length. */
+  current?: { month: string; elapsed_days: number; days_in_month: number };
   reps: string[];
   types: string[];
   cells: ForecastCell[];
@@ -79,6 +90,26 @@ export interface MonthPoint {
   aov: number;
   unitsPerOrder: number;
   linesPerOrder: number;
+  /** The current month only: its actuals so far (the rest of the point is actual + forecast). */
+  actual?: Record<CurrentField, number>;
+}
+
+export interface Span {
+  revenue: number;
+  units: number;
+  lines: number;
+  orders: number;
+  /** Customers at the span's last month end. */
+  customers: number;
+  new: number;
+}
+
+/** A fiscal year (January to December): what has happened, the forecast for the rest, and the total. */
+export interface FiscalYear {
+  year: number;
+  actual: Span;
+  rest: Span;
+  total: Span;
 }
 
 export interface ForecastResult {
@@ -86,7 +117,9 @@ export interface ForecastResult {
   /** Each driver's monthly values: history then forecast. */
   drivers: Record<Driver, number[]>;
   /** The last 12 months' and the next 12's totals, and the same for 6 months. */
-  hero: Record<"past6" | "past12" | "next6" | "next12", { revenue: number; units: number; lines: number; orders: number; customers: number; new: number }>;
+  hero: Record<"past6" | "past12" | "next6" | "next12", Span>;
+  /** This fiscal year and next (calendar years). */
+  fiscal: FiscalYear[];
 }
 
 const sum = (xs: number[]) => xs.reduce((a, b) => a + b, 0);
@@ -121,12 +154,21 @@ export function project(history: number[], n: number, shape: ForecastSettings["s
   });
 }
 
-/** History and forecast for the stores in view. */
-export function computeForecast(base: ForecastBase, set: ForecastSettings, horizon = 12): ForecastResult {
+const ym = (m: string) => m.split("-").map(Number) as [number, number];
+
+/** Months from the one after the history to December of the following year. */
+export function fiscalHorizon(lastHistoryMonth: string): number {
+  const [y, m] = ym(lastHistoryMonth);
+  const firstY = m === 12 ? y + 1 : y;
+  return (firstY + 1) * 12 + 12 - (y * 12 + m);
+}
+
+/** History and forecast for the stores in view (by default to December of next year). */
+export function computeForecast(base: ForecastBase, set: ForecastSettings, horizon = fiscalHorizon(base.months[base.months.length - 1]!)): ForecastResult {
   const H = base.months.length;
   const keep = (c: ForecastCell) => (!set.types.length || set.types.includes(c.type)) && (!set.reps.length || set.reps.includes(c.rep));
   const cells = base.cells.filter(keep);
-  const tot = (f: keyof Omit<ForecastCell, "rep" | "type">) => base.months.map((_, m) => sum(cells.map((c) => c[f][m]!)));
+  const tot = (f: keyof Omit<ForecastCell, "rep" | "type" | "current">) => base.months.map((_, m) => sum(cells.map((c) => c[f][m]!)));
   const T = {
     orders: tot("orders"),
     revenue: tot("revenue"),
@@ -175,38 +217,54 @@ export function computeForecast(base: ForecastBase, set: ForecastSettings, horiz
   // Simulate the stocks forward from the last month's end.
   let customers = T.customersEnd[H - 1]!;
   let churnedPool = T.churnedStart[H - 1]! + T.churned[H - 1]! - T.wonBack[H - 1]!;
-  const [y, mo] = base.months[H - 1]!.split("-").map(Number) as [number, number];
+  const [y, mo] = ym(base.months[H - 1]!);
+  const monthAt = (k: number) => {
+    const i = y * 12 + (mo - 1) + k + 1;
+    return `${Math.floor(i / 12)}-${String((i % 12) + 1).padStart(2, "0")}-01`;
+  };
+  // The current month so far, if the base has it: the forecast fills only its remaining days.
+  const cur = base.current && base.current.month === monthAt(0) ? base.current : undefined;
+  const actual = cur
+    ? (Object.fromEntries(CURRENT_FIELDS.map((f) => [f, sum(cells.map((c) => c.current?.[f] ?? 0))])) as Record<CurrentField, number>)
+    : undefined;
+  const zero = Object.fromEntries(CURRENT_FIELDS.map((f) => [f, 0])) as Record<CurrentField, number>;
   for (let k = 0; k < horizon; k++) {
-    const atRisk = customers * next.atRisk[k]!;
-    const saved = atRisk * next.saveRate[k]!;
-    const churned = atRisk - saved;
-    const wonBack = Math.min(churnedPool, next.wonBack[k]!);
+    const a = k === 0 && actual ? actual : zero;
+    const rest = k === 0 && cur ? 1 - cur.elapsed_days / cur.days_in_month : 1;
+    const atRisk = customers * next.atRisk[k]! * rest;
+    const saved = a.saved + atRisk * next.saveRate[k]!;
+    const churned = a.churned + atRisk * (1 - next.saveRate[k]!);
+    const wonBack = Math.min(churnedPool, a.wonBack + next.wonBack[k]! * rest);
     const winBackRate = div(wonBack, churnedPool);
-    const fresh = next.new[k]!;
+    const fresh = a.new + next.new[k]! * rest;
     customers = customers + fresh + wonBack - churned;
     churnedPool = churnedPool + churned - wonBack;
-    const orders = customers * next.ordersPerCustomer[k]!;
-    const i = y * 12 + (mo - 1) + k + 1;
+    const forecastOrders = customers * next.ordersPerCustomer[k]! * rest;
+    const orders = a.orders + forecastOrders;
+    const revenue = a.revenue + forecastOrders * next.aov[k]!;
+    const units = a.units + forecastOrders * next.unitsPerOrder[k]!;
+    const lines = a.lines + forecastOrders * next.linesPerOrder[k]!;
     points.push({
-      month: `${Math.floor(i / 12)}-${String((i % 12) + 1).padStart(2, "0")}-01`,
+      month: monthAt(k),
       forecast: true,
       new: fresh,
       saved,
       churned,
       wonBack,
-      saveRate: next.saveRate[k]!,
+      saveRate: div(saved, saved + churned),
       winBackRate,
       customers,
       orders,
-      revenue: orders * next.aov[k]!,
-      units: orders * next.unitsPerOrder[k]!,
-      lines: orders * next.linesPerOrder[k]!,
-      aov: next.aov[k]!,
-      unitsPerOrder: next.unitsPerOrder[k]!,
-      linesPerOrder: next.linesPerOrder[k]!,
+      revenue,
+      units,
+      lines,
+      aov: div(revenue, orders),
+      unitsPerOrder: div(units, orders),
+      linesPerOrder: div(lines, orders),
+      ...(a === actual ? { actual } : {}),
     });
   }
-  const span = (list: MonthPoint[]) => ({
+  const span = (list: MonthPoint[]): Span => ({
     revenue: sum(list.map((p) => p.revenue)),
     units: sum(list.map((p) => p.units)),
     lines: sum(list.map((p) => p.lines)),
@@ -216,9 +274,31 @@ export function computeForecast(base: ForecastBase, set: ForecastSettings, horiz
   });
   const hist = points.slice(0, H);
   const fut = points.slice(H);
+  // Fiscal years: the year of the first forecast month and the next, January to December.
+  const fy0 = ym(monthAt(0))[0];
+  const fiscal = [fy0, fy0 + 1].map((year): FiscalYear => {
+    const inYear = points.filter((p) => ym(p.month)[0] === year);
+    const done = inYear.filter((p) => !p.forecast);
+    const part = inYear.find((p) => p.actual)?.actual;
+    const actualSpan = span(done);
+    if (part) {
+      for (const f of ["revenue", "units", "lines", "orders", "new"] as const) actualSpan[f] += part[f];
+    }
+    const total = span(inYear);
+    const rest: Span = {
+      revenue: total.revenue - actualSpan.revenue,
+      units: total.units - actualSpan.units,
+      lines: total.lines - actualSpan.lines,
+      orders: total.orders - actualSpan.orders,
+      customers: total.customers,
+      new: total.new - actualSpan.new,
+    };
+    return { year, actual: actualSpan, rest, total };
+  });
   return {
     points,
     drivers: Object.fromEntries(DRIVERS.map((d) => [d, [...past[d], ...next[d]]])) as Record<Driver, number[]>,
     hero: { past6: span(hist.slice(-6)), past12: span(hist.slice(-12)), next6: span(fut.slice(0, 6)), next12: span(fut.slice(0, 12)) },
+    fiscal,
   };
 }

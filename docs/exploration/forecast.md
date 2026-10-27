@@ -1,4 +1,4 @@
-# Forecast tab — the last 12 months and the next 12
+# Forecast tab — the last 12 months, the next 12 and the fiscal years
 
 Started 2026-10-27 (Rick): another way to look at what the other tabs measure, as monthly series with a 12-month forecast inside the same charts, and the assumptions behind it on sliders.
 
@@ -27,11 +27,18 @@ Customers at a month's end = at its start + new + won back − churned; the hist
 
 The totals on the right (sales, SKU lines, units, customers, new customers) give the next 6 and 12 months against the last 6 and 12 (customers: in 6 and 12 months against today).
 
+## The current month and fiscal years (Rick, 2026-10-27)
+
+- **The current month is actual plus the rest.** The export runs during the day, so the month in progress counts its actuals to yesterday (orders, sales, units, lines, new, saved, churned, won back) and the forecast only for its remaining days (the month's forecast × remaining days ÷ days in the month). On 2026-10-27 that is October to day 26 and 5 days forecast. Its bars are solid up to the actuals.
+- **Fiscal years end in December** (FY26 = January to December 2026). The forecast runs to December of next year (15 months from October 2026). The *Fiscal years* view charts January of this year to December of next and gives, on the right, FY26 (actual so far + the rest to come) and FY27 against FY26; customers at December 2026 and December 2027. The *Next 12 months* view is as before, with the current month counted the same way.
+
 **Read with care.** Twelve months can't separate a season from a one-off step: AOV and lines per order jumped in March 2026, so with last year's pattern the forecast dips through the winter and jumps again in March. The straight-line view reads those without the step.
 
 ## First run (2026-10-27, all stores, last year's pattern from today's level)
 
-History October 2025 to September 2026: 1,657 new customers, customers 3,627 → 4,207, save rate about 50%. The next 12 months: customers about 5,030 by September 2027, about 2,110 new; SKU lines and units up about 28–30% on the last 12, mostly from today's order size (AOV, units and lines per order rose through the year) held for a full year. Dollar figures are on the site only.
+History October 2025 to September 2026: 1,657 new customers, customers 3,627 → 4,207, save rate about 50%. The next 12 months (October counted as actuals to the 26th plus 5 days): customers about 5,000 by September 2027, about 2,060 new; SKU lines and units up about 26–28% on the last 12, mostly from today's order size (AOV, units and lines per order rose through the year) held for a full year. Dollar figures are on the site only.
+
+Fiscal years: FY26 about 3.81M SKU lines (3.06M so far), 1,813 new customers (1,445 so far) and about 4,360 customers at December 2026; FY27 about 4.73M SKU lines (+24%), 2,110 new and about 5,080 customers at December 2027.
 
 ## Building it
 

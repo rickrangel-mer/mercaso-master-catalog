@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { computeForecast, DEFAULT_FORECAST, fitLine, project, type ForecastBase, type ForecastCell } from "./forecast.ts";
+import { computeForecast, DEFAULT_FORECAST, fiscalHorizon, fitLine, project, type ForecastBase, type ForecastCell } from "./forecast.ts";
 
 describe("fitLine and project", () => {
   it("fits a straight line", () => {
@@ -79,7 +79,45 @@ describe("computeForecast", () => {
   it("sums the hero spans", () => {
     const r = computeForecast(base, DEFAULT_FORECAST);
     expect(r.hero.past6.revenue).toBe(3 * 400_000); // only 3 history months here
-    expect(r.hero.next12.orders).toBeCloseTo(r.points.slice(3).reduce((a, p) => a + p.orders, 0));
+    expect(r.hero.next12.orders).toBeCloseTo(r.points.slice(3, 15).reduce((a, p) => a + p.orders, 0));
     expect(r.hero.next6.customers).toBeCloseTo(r.points[8]!.customers);
+  });
+
+  it("forecasts to December of next year", () => {
+    expect(fiscalHorizon("2026-09-01")).toBe(15);
+    expect(fiscalHorizon("2025-12-01")).toBe(24);
+    const r = computeForecast(base, DEFAULT_FORECAST);
+    expect(r.points.at(-1)!.month).toBe("2027-12-01");
+  });
+
+  it("counts the current month as its actuals so far plus the forecast for the remaining days", () => {
+    const current = { orders: 300, revenue: 330_000, units: 9000, lines: 7000, new: 6, saved: 5, churned: 7, wonBack: 3 };
+    const withCurrent: ForecastBase = {
+      ...base,
+      current: { month: "2026-10-01", elapsed_days: 20, days_in_month: 31 },
+      cells: base.cells.map((c, i) => ({ ...c, current: i ? { ...current, orders: 0, revenue: 0, units: 0, lines: 0 } : current })),
+    };
+    const plain = computeForecast(base, DEFAULT_FORECAST, 1).points[3]!;
+    const f = computeForecast(withCurrent, DEFAULT_FORECAST, 1).points[3]!;
+    const rest = 11 / 31;
+    expect(f.actual?.orders).toBe(300);
+    expect(f.new).toBeCloseTo(12 + plain.new * rest);
+    expect(f.churned).toBeCloseTo(14 + plain.churned * rest);
+    expect(f.customers).toBeCloseTo(200 + f.new + f.wonBack - f.churned);
+    expect(f.orders).toBeCloseTo(300 + f.customers * 2 * rest);
+    expect(f.revenue).toBeCloseTo(330_000 + f.customers * 2 * rest * 1000);
+    expect(f.aov).toBeCloseTo(f.revenue / f.orders);
+  });
+
+  it("sums the fiscal years: actual so far plus the rest", () => {
+    const r = computeForecast(base, DEFAULT_FORECAST);
+    const [fy26, fy27] = r.fiscal;
+    expect(fy26!.year).toBe(2026);
+    expect(fy26!.actual.revenue).toBe(3 * 400_000); // Jul-Sep in the history
+    expect(fy26!.total.revenue).toBeCloseTo(r.points.filter((p) => p.month.startsWith("2026")).reduce((a, p) => a + p.revenue, 0));
+    expect(fy26!.actual.revenue + fy26!.rest.revenue).toBeCloseTo(fy26!.total.revenue);
+    expect(fy26!.total.customers).toBeCloseTo(r.points.find((p) => p.month === "2026-12-01")!.customers);
+    expect(fy27!.actual.revenue).toBe(0);
+    expect(fy27!.total.customers).toBeCloseTo(r.points.at(-1)!.customers);
   });
 });

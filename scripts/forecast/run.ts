@@ -4,7 +4,8 @@
  * market-store-days forecast-store-months`) and prospects.csv (reps by ZIP). Writes
  * dist/forecast/forecast.json (gitignored): per rep × store type and each of the last 12 complete
  * months, the orders, sales, units and lines, and the customer flows (new, saved, churned, won back)
- * with the customers and churned stores they move between.
+ * with the customers and churned stores they move between; and the same for the current month so far
+ * (to the day before the as-of date), which the site counts as actual plus the rest forecast.
  */
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
@@ -41,6 +42,13 @@ const starts = monthStarts(prevMonth, MONTHS);
 const ends = starts.map((s) => monthEnd(s, "9999-12-31"));
 const dayBefore = (d: string) => new Date(Date.parse(d) - 86_400_000).toISOString().slice(0, 10);
 const monthOf = (d: string) => starts.indexOf(`${d.slice(0, 7)}-01`);
+// The current month so far: through the day before the as-of date (the export runs during the day).
+const current = `${asOf.slice(0, 7)}-01`;
+const through = dayBefore(asOf);
+const elapsedDays = Number(through.slice(8, 10));
+const daysInMonth = Number(monthEnd(current, "9999-12-31").slice(8, 10));
+const CURRENT_FIELDS = ["orders", "revenue", "units", "lines", "new", "saved", "churned", "wonBack"] as const;
+type CurrentField = (typeof CURRENT_FIELDS)[number];
 
 const days = new Map<string, string[]>();
 for (const r of read("data/raw/market_store_days.csv", hint)) {
@@ -68,13 +76,22 @@ const reps: string[] = [];
 const repAt = indexer(reps);
 const types: string[] = [];
 const typeAt = indexer(types);
-const cells = new Map<string, { rep: number; type: number } & Record<Field, number[]>>();
+const cells = new Map<string, { rep: number; type: number; current: Record<CurrentField, number> } & Record<Field, number[]>>();
 const cellOf = (rep: string, type: string) => {
   const r = repAt(rep);
   const t = typeAt(type);
   const key = `${r}|${t}`;
   let c = cells.get(key);
-  if (!c) cells.set(key, (c = { rep: r, type: t, ...(Object.fromEntries(FIELDS.map((f) => [f, Array(MONTHS).fill(0)])) as Record<Field, number[]>) }));
+  if (!c)
+    cells.set(
+      key,
+      (c = {
+        rep: r,
+        type: t,
+        current: Object.fromEntries(CURRENT_FIELDS.map((f) => [f, 0])) as Record<CurrentField, number>,
+        ...(Object.fromEntries(FIELDS.map((f) => [f, Array(MONTHS).fill(0)])) as Record<Field, number[]>),
+      }),
+    );
   return c;
 };
 
@@ -85,10 +102,15 @@ for (const s of stores) {
   if (d.length === 0) continue;
   const events = storeEvents(first, d, asOf);
   const own = new Map<Field, number[]>(FIELDS.map((f) => [f, Array(MONTHS).fill(0)]));
+  const now = Object.fromEntries(CURRENT_FIELDS.map((f) => [f, 0])) as Record<CurrentField, number>;
   for (const e of events) {
+    const f: Field & CurrentField = e.kind === "new" ? "new" : e.kind === "saved" ? "saved" : e.kind === "churned" ? "churned" : "wonBack";
+    if (e.date.slice(0, 7) === current.slice(0, 7)) {
+      if (e.date <= through) now[f]++;
+      continue;
+    }
     const m = monthOf(e.date);
     if (m < 0) continue;
-    const f: Field = e.kind === "new" ? "new" : e.kind === "saved" ? "saved" : e.kind === "churned" ? "churned" : "wonBack";
     own.get(f)![m]!++;
   }
   for (let m = 0; m < MONTHS; m++) {
@@ -98,6 +120,13 @@ for (const s of stores) {
     if (isChurned(d, before)) own.get("churnedStart")![m] = 1;
   }
   for (const r of months.get(s.store_id!) ?? []) {
+    if ((r.month ?? "").slice(0, 7) === current.slice(0, 7)) {
+      now.orders += Number(r.orders) || 0;
+      now.revenue += Number(r.revenue) || 0;
+      now.units += Number(r.units) || 0;
+      now.lines += Number(r.lines) || 0;
+      continue;
+    }
     const m = monthOf(r.month ?? "");
     if (m < 0) continue;
     own.get("orders")![m]! += Number(r.orders) || 0;
@@ -110,6 +139,7 @@ for (const s of stores) {
   for (const [type, w] of typeWeights(s.store_type ?? "", s.store_name ?? "", prospectType, mix)) {
     const c = cellOf(rep, type);
     for (const f of FIELDS) for (let m = 0; m < MONTHS; m++) c[f][m]! += own.get(f)![m]! * w;
+    for (const f of CURRENT_FIELDS) c.current[f] += now[f] * w;
   }
 }
 
@@ -121,12 +151,15 @@ const base = {
   schema_version: 1,
   as_of: asOf,
   months: starts,
+  /** The current month so far: its first day, the days counted (through the day before as_of) and its length. */
+  current: { month: current, elapsed_days: elapsedDays, days_in_month: daysInMonth },
   reps: repOrder,
   types: typeOrder.map((i) => types[i]!),
   cells: [...cells.values()].map((c) => ({
     rep: repOrder.indexOf(reps[c.rep]!),
     type: typeOrder.indexOf(c.type),
     ...Object.fromEntries(FIELDS.map((f) => [f, c[f].map(f === "revenue" ? Math.round : r2)])),
+    current: Object.fromEntries(CURRENT_FIELDS.map((f) => [f, f === "revenue" ? Math.round(c.current[f]) : r2(c.current[f])])),
   })),
 };
 mkdirSync(join(ROOT, "dist/forecast"), { recursive: true });
