@@ -41,6 +41,9 @@ const wallet = existsSync(join(data, "wallet.json")) ? read("wallet.json") : nul
 const market = existsSync(join(data, "market.json")) ? read("market.json") : null;
 // Store counts only, so the same in both files.
 const acquisition = existsSync(join(data, "acquisition.json")) ? read("acquisition.json") : null;
+const forecast = existsSync(join(data, "forecast.json")) ? read("forecast.json") : null;
+// The no-prices file keeps customers, orders, units and lines; sales go.
+const forecastWithoutMoney = (f) => ({ ...f, no_money: true, cells: f.cells.map((c) => ({ ...c, revenue: c.revenue.map(() => 0) })) });
 // The no-prices file keeps store counts and penetration; sales, profit and spend per store go.
 const marketWithoutMoney = (f) => ({
   ...f,
@@ -86,6 +89,7 @@ const page = (withPrices) => {
     ...(wallet ? { "data/wallet.json": withPrices ? wallet : walletWithoutMoney(wallet) } : {}),
     ...(market ? { "data/market.json": withPrices ? market : marketWithoutMoney(market) } : {}),
     ...(acquisition ? { "data/acquisition.json": acquisition } : {}),
+    ...(forecast ? { "data/forecast.json": withPrices ? forecast : forecastWithoutMoney(forecast) } : {}),
   };
   return `<!doctype html>
 <html lang="en">

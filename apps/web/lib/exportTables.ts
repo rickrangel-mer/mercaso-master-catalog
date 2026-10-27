@@ -4,6 +4,7 @@
 import { valueAt, type AcquisitionBase, type RepSeries } from "./acquisition.ts";
 import { DIMS, type MarketBase, type MarketResult } from "./market.ts";
 import type { WalletBase, WalletResult } from "./wallet.ts";
+import type { ForecastBase, ForecastResult } from "./forecast.ts";
 
 /** Round for a CSV cell: whole numbers plain, otherwise `digits` decimals (NaN → empty). */
 export const cell = (x: number, digits = 2) => (Number.isFinite(x) ? (Number.isInteger(x) ? String(x) : x.toFixed(digits)) : "");
@@ -144,3 +145,48 @@ export function acquisitionRows(base: AcquisitionBase, reps: RepSeries[], total:
   );
   return [header, ...rows];
 }
+
+/** One row per month, history then forecast: customer flows, orders, sales, units, SKU lines and per-order figures. */
+export function forecastRows(base: ForecastBase, r: ForecastResult): string[][] {
+  const money = !base.no_money;
+  const header = [
+    "month",
+    "forecast",
+    "new_customers",
+    "saved",
+    "churned",
+    "won_back",
+    "save_rate",
+    "win_back_rate",
+    "customers_month_end",
+    "orders",
+    ...(money ? ["revenue"] : []),
+    "units",
+    "sku_lines",
+    ...(money ? ["aov"] : []),
+    "units_per_order",
+    "sku_lines_per_order",
+  ];
+  return [
+    header,
+    ...r.points.map((p) => [
+      p.month.slice(0, 7),
+      p.forecast ? "yes" : "",
+      cell(p.new),
+      cell(p.saved),
+      cell(p.churned),
+      cell(p.wonBack),
+      cell(p.saveRate, 4),
+      cell(p.winBackRate, 4),
+      cell(p.customers),
+      cell(p.orders),
+      ...(money ? [cell(p.revenue, 0)] : []),
+      cell(p.units, 0),
+      cell(p.lines, 0),
+      ...(money ? [cell(p.aov)] : []),
+      cell(p.unitsPerOrder),
+      cell(p.linesPerOrder),
+    ]),
+  ];
+}
+

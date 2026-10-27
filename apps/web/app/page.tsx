@@ -8,9 +8,11 @@ import { Overview } from "../components/Overview";
 import { SkuTable } from "../components/SkuTable";
 import { StoresView } from "../components/StoresView";
 import { AcquisitionView } from "../components/AcquisitionView";
+import { ForecastView } from "../components/ForecastView";
 import { MarketView } from "../components/MarketView";
 import { WalletView } from "../components/WalletView";
 import type { AcquisitionBase } from "../lib/acquisition";
+import type { ForecastBase } from "../lib/forecast";
 import type { MarketBase } from "../lib/market";
 import type { WalletBase } from "../lib/wallet";
 import type { BaseFile } from "../lib/score";
@@ -59,6 +61,8 @@ export default function Page() {
   const [market, setMarket] = useState<MarketBase | null>(null);
   // Optional: month-over-month acquisition by rep from `pnpm acquisition` (store counts only).
   const [acquisition, setAcquisition] = useState<AcquisitionBase | null>(null);
+  // Optional: monthly customers and orders from `pnpm forecast` (sales never go in git).
+  const [forecast, setForecast] = useState<ForecastBase | null>(null);
   const [filters, setFilters] = useState<Filters>(NO_FILTERS);
   const [expanded, setExpanded] = useState<Set<string>>(new Set([ROOT_ID]));
   const [selectedId, setSelectedId] = useState<string | null>(null);
@@ -88,6 +92,9 @@ export default function Page() {
     loadJson<BaseFile>("data/stores.json")
       .then((f) => setStores(f))
       .catch(() => setStores(null));
+    loadJson<ForecastBase>("data/forecast.json")
+      .then((f) => setForecast(f))
+      .catch(() => setForecast(null));
     loadJson<AcquisitionBase>("data/acquisition.json")
       .then((f) => setAcquisition(f))
       .catch(() => setAcquisition(null));
@@ -209,6 +216,11 @@ export default function Page() {
           ) : (
             <StoresView base={stores} onJumpItem={jumpTo} />
           )}
+        </div>
+      )}
+      {tab === "forecast" && (
+        <div className="page">
+          <ForecastView base={forecast} />
         </div>
       )}
       {tab === "acquisition" && (
