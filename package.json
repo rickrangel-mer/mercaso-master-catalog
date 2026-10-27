@@ -28,7 +28,8 @@
     "market": "tsx scripts/market/run.ts",
     "acquisition": "tsx scripts/acquisition/run.ts",
     "places": "tsx scripts/places/run.ts",
-    "datapack": "tsx scripts/datapack/run.ts"
+    "datapack": "tsx scripts/datapack/run.ts",
+    "forecast": "tsx scripts/forecast/run.ts"
   },
   "devDependencies": {
     "@aws-sdk/client-athena": "^3.1143.0",

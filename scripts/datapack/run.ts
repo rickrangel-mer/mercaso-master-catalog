@@ -10,7 +10,8 @@ import { execFileSync } from "node:child_process";
 import { copyFileSync, existsSync, mkdirSync, readFileSync, rmSync, statSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { series } from "../../apps/web/lib/acquisition.ts";
-import { acquisitionRows, marketRows, toCsv, walletRows } from "../../apps/web/lib/exportTables.ts";
+import { acquisitionRows, forecastRows, marketRows, toCsv, walletRows } from "../../apps/web/lib/exportTables.ts";
+import { computeForecast, DEFAULT_FORECAST } from "../../apps/web/lib/forecast.ts";
 import { computeMarket, groupNames } from "../../apps/web/lib/market.ts";
 import { computeWallet, DEFAULT_SETTINGS } from "../../apps/web/lib/wallet.ts";
 
@@ -42,6 +43,9 @@ writeFileSync(join(OUT, "screens/market_by_group.csv"), toCsv(marketRows(market,
 const acquisition = json("dist/acquisition/acquisition.json");
 const acq = series(acquisition, []);
 writeFileSync(join(OUT, "screens/acquisition_by_rep_month.csv"), toCsv(acquisitionRows(acquisition, acq.reps, acq.total)));
+const forecastPath = join(ROOT, "dist/forecast/forecast.json");
+const forecast = existsSync(forecastPath) ? JSON.parse(readFileSync(forecastPath, "utf8")) : null;
+if (forecast) writeFileSync(join(OUT, "screens/forecast_by_month.csv"), toCsv(forecastRows(forecast, computeForecast(forecast, DEFAULT_FORECAST))));
 
 // 2. The raw exports, the SQL and the zone file.
 const RAW = [
@@ -52,6 +56,7 @@ const RAW = [
   ["market_stores.csv", "market-stores", "Market and Acquisition: every CA store that ordered in 24 months, with type, ZIP, name, first/last order and spend"],
   ["market_zips.csv", "market-zips", "Market: Mercaso map region per ZIP"],
   ["market_store_days.csv", "market-store-days", "Acquisition: the days each store ordered since 2025-03-01"],
+  ["forecast_store_months.csv", "forecast-store-months", "Forecast: per store and month, orders, sales, units and order lines"],
   ["prospects.csv", "", "The sales prospect list (as shared by Rick)"],
 ] as const;
 const SQL: Record<string, string> = {
@@ -62,6 +67,7 @@ const SQL: Record<string, string> = {
   "market-stores": "market_stores.sql",
   "market-zips": "market_zips.sql",
   "market-store-days": "market_store_days.sql",
+  "forecast-store-months": "forecast_store_months.sql",
 };
 const included: string[] = [];
 for (const [file, exp] of RAW) {
@@ -91,6 +97,7 @@ These are what the tabs show when the site opens (and what each tab's **Download
 | \`wallet_by_department.csv\` | department, plus a total | All store types; targets in any SKU; short term closes a third of each store's gap to the best stores of its kind (top 25%), long term two thirds; reality check on |
 | \`market_by_group.csv\` | zone, sub-area, store type and rep, plus the total | Targets by zone at last year's pace of new stores, no win-backs; a new store spends like the average store of its type |
 | \`acquisition_by_rep_month.csv\` | rep and month, plus all reps | All store types |
+| \`forecast_by_month.csv\` | month: the last 12 and the next 12 | All store types and reps; months follow last year's pattern from today's level; no adjustments |
 
 Store counts can have decimals: a store with no type, and a prospect whose name doesn't say its type, are spread over the store types in proportion (so totals stay whole, per-type counts don't).
 

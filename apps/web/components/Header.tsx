@@ -2,7 +2,7 @@
 
 import { useEffect, useRef } from "react";
 
-export type Tab = "overview" | "chart" | "table" | "stores" | "wallet" | "market" | "acquisition";
+export type Tab = "overview" | "chart" | "table" | "stores" | "wallet" | "market" | "acquisition" | "forecast";
 
 export const TABS: { id: Tab; label: string }[] = [
   { id: "overview", label: "Overview" },
@@ -12,6 +12,7 @@ export const TABS: { id: Tab; label: string }[] = [
   { id: "wallet", label: "Wallet" },
   { id: "market", label: "Market" },
   { id: "acquisition", label: "Acquisition" },
+  { id: "forecast", label: "Forecast" },
 ];
 
 interface Props {

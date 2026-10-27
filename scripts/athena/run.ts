@@ -41,6 +41,7 @@ const EXPORTS: Record<string, { sql: string; out: string; storeType?: string; ca
   "market-stores": { sql: "scripts/athena/sql/market_stores.sql", out: "data/raw/market_stores.csv" },
   "market-store-days": { sql: "scripts/athena/sql/market_store_days.sql", out: "data/raw/market_store_days.csv" },
   "store-places": { sql: "scripts/athena/sql/store_places.sql", out: "data/raw/store_places.csv" },
+  "forecast-store-months": { sql: "scripts/athena/sql/forecast_store_months.sql", out: "data/raw/forecast_store_months.csv" },
   "market-zips": { sql: "scripts/athena/sql/market_zips.sql", out: "data/raw/market_zips.csv" },
   "wallet-stores": { sql: "scripts/athena/sql/wallet_stores.sql", out: "data/raw/wallet_stores.csv" },
   "wallet-store-dept": { sql: "scripts/athena/sql/wallet_store_dept.sql", out: "data/raw/wallet_store_dept.csv", catalog: "all" },
