@@ -1,6 +1,6 @@
 "use client";
 
-import { useDeferredValue, useEffect, useMemo, useRef, useState } from "react";
+import { useDeferredValue, useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { forecastRows } from "../lib/exportTables";
 import { computeForecast, DEFAULT_FORECAST, type Driver, type ForecastBase, type ForecastSettings, type MonthPoint } from "../lib/forecast";
 import { downloadCsv } from "./downloadCsv";
@@ -23,8 +23,8 @@ const change = (now: number, was: number) => (was ? `${now >= was ? "+" : "−"}
 const ASSUMPTIONS: { id: Driver; label: string; unit: (x: number) => string; money?: boolean }[] = [
   { id: "new", label: "New customers a month", unit: n0 },
   { id: "wonBack", label: "Won back a month", unit: n0 },
-  { id: "atRisk", label: "Customers going 45 days without ordering, a month", unit: pct },
-  { id: "saveRate", label: "Save rate (of those at risk)", unit: pct },
+  { id: "atRisk", label: "At risk a month (45 days, no order)", unit: pct },
+  { id: "saveRate", label: "Save rate", unit: pct },
   { id: "ordersPerCustomer", label: "Orders per customer a month", unit: (x) => x.toFixed(2) },
   { id: "aov", label: "Average order value", unit: money, money: true },
   { id: "unitsPerOrder", label: "Units per order", unit: n1 },
@@ -60,6 +60,40 @@ export function ForecastView({ base }: Props) {
   const series = (f: (p: MonthPoint) => number) => points.map(f);
   // Each assumption's forecast average without its own adjustment, for the slider's readout.
   const avgNext = (d: Driver) => drivers[d].slice(H).reduce((a, b) => a + b, 0) / (drivers[d].length - H);
+  /** The slider for one assumption, shown above the chart it drives. */
+  const slider = (id: Driver) => {
+    const a = ASSUMPTIONS.find((x) => x.id === id)!;
+    const adj = settings.adjust[id] ?? 0;
+    const now = avgNext(id);
+    const without = adj === -1 ? 0 : now / (1 + adj);
+    return (
+      <div className="forecast-assumption">
+        <div className="forecast-assumption-label">
+          <span>{a.label}</span>
+          <span className="muted" title="Next 12 months' average: as forecast → with the adjustment">
+            {a.unit(without)} → <strong>{a.unit(now)}</strong>
+          </span>
+        </div>
+        <div className="forecast-assumption-control">
+          <input
+            type="range"
+            min={-50}
+            max={50}
+            step={1}
+            value={Math.round(adj * 100)}
+            aria-label={`${a.label}: adjustment`}
+            aria-valuetext={`${adj >= 0 ? "+" : ""}${Math.round(adj * 100)}%`}
+            onChange={(e) => setAdjust(id, Number(e.target.value) / 100)}
+            onDoubleClick={() => setAdjust(id, 0)}
+          />
+          <strong className="forecast-adj">
+            {adj > 0 ? "+" : ""}
+            {Math.round(adj * 100)}%
+          </strong>
+        </div>
+      </div>
+    );
+  };
 
   return (
     <div className="wallet-view forecast-view">
@@ -145,61 +179,20 @@ export function ForecastView({ base }: Props) {
         <div className="forecast-main">
           <section className="card-block">
             <div className="block-head">
-              <h2 className="section-heading">Assumptions</h2>
-              <p className="muted">
-                Each starts from its own last 12 months. Move a slider to say how much higher or lower it will be: 140 new customers a month at +5% is 147. Double-click to reset.
-              </p>
-            </div>
-            <div className="forecast-assumptions">
-              {ASSUMPTIONS.filter((a) => !(a.money && noMoney)).map((a) => {
-                const adj = settings.adjust[a.id] ?? 0;
-                const now = avgNext(a.id);
-                const without = adj === -1 ? 0 : now / (1 + adj);
-                return (
-                  <div className="forecast-assumption" key={a.id}>
-                    <div className="forecast-assumption-label">
-                      <span>{a.label}</span>
-                      <span className="muted">
-                        {a.unit(without)} → <strong>{a.unit(now)}</strong>
-                      </span>
-                    </div>
-                    <div className="forecast-assumption-control">
-                      <input
-                        type="range"
-                        min={-50}
-                        max={50}
-                        step={1}
-                        value={Math.round(adj * 100)}
-                        aria-label={`${a.label}: adjustment`}
-                        aria-valuetext={`${adj >= 0 ? "+" : ""}${Math.round(adj * 100)}%`}
-                        onChange={(e) => setAdjust(a.id, Number(e.target.value) / 100)}
-                        onDoubleClick={() => setAdjust(a.id, 0)}
-                      />
-                      <strong className="forecast-adj">
-                        {adj > 0 ? "+" : ""}
-                        {Math.round(adj * 100)}%
-                      </strong>
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-          </section>
-
-          <section className="card-block">
-            <div className="block-head">
               <h2 className="section-heading">Customers</h2>
               <p className="muted">
-                Bars and lines in <span className="new-key">blue</span> are the last 12 months; the lighter part after the dashed line is the forecast.
+                Bars and lines in <span className="new-key">blue</span> are the last 12 months; the lighter part after the dashed line is the forecast. The slider above
+                a chart moves its assumption up or down; its numbers are the next 12 months' average before and after (140 new customers a month at +5% is 147; double-click to
+                reset). The charts without one follow from the others.
               </p>
             </div>
             <div className="forecast-charts">
-              <MonthChart title="New customers" points={points} H={H} values={series((p) => p.new)} fmt={n0} kind="bars" />
+              <MonthChart title="New customers" control={slider("new")} points={points} H={H} values={series((p) => p.new)} fmt={n0} kind="bars" />
+              <MonthChart title="Churned (reached 90 days without an order)" control={slider("atRisk")} points={points} H={H} values={series((p) => p.churned)} fmt={n0} kind="bars" />
+              <MonthChart title="Save rate (saved ÷ saved + churned)" control={slider("saveRate")} points={points} H={H} values={series((p) => p.saveRate)} fmt={pct} kind="line" percent />
+              <MonthChart title="Won back (ordered again after 90+ days)" control={slider("wonBack")} points={points} H={H} values={series((p) => p.wonBack)} fmt={n0} kind="bars" />
               <MonthChart title="Customers (ordered in the last 90 days), month end" points={points} H={H} values={series((p) => p.customers)} fmt={n0} kind="line" />
-              <MonthChart title="Churned (reached 90 days without an order)" points={points} H={H} values={series((p) => p.churned)} fmt={n0} kind="bars" />
               <MonthChart title="Saved (ordered again after 45-89 days)" points={points} H={H} values={series((p) => p.saved)} fmt={n0} kind="bars" />
-              <MonthChart title="Save rate (saved ÷ saved + churned)" points={points} H={H} values={series((p) => p.saveRate)} fmt={pct} kind="line" percent />
-              <MonthChart title="Won back (ordered again after 90+ days)" points={points} H={H} values={series((p) => p.wonBack)} fmt={n0} kind="bars" />
             </div>
           </section>
 
@@ -208,11 +201,11 @@ export function ForecastView({ base }: Props) {
               <h2 className="section-heading">Orders</h2>
             </div>
             <div className="forecast-charts">
+              {!noMoney && <MonthChart title="Average order value" control={slider("aov")} points={points} H={H} values={series((p) => p.aov)} fmt={money} kind="line" />}
+              <MonthChart title="Orders" control={slider("ordersPerCustomer")} points={points} H={H} values={series((p) => p.orders)} fmt={n0} kind="bars" />
+              <MonthChart title="Units per order" control={slider("unitsPerOrder")} points={points} H={H} values={series((p) => p.unitsPerOrder)} fmt={n1} kind="line" />
+              <MonthChart title="SKU lines per order" control={slider("linesPerOrder")} points={points} H={H} values={series((p) => p.linesPerOrder)} fmt={n1} kind="line" />
               {!noMoney && <MonthChart title="Sales" points={points} H={H} values={series((p) => p.revenue)} fmt={short} kind="bars" />}
-              {!noMoney && <MonthChart title="Average order value" points={points} H={H} values={series((p) => p.aov)} fmt={money} kind="line" />}
-              <MonthChart title="Units per order" points={points} H={H} values={series((p) => p.unitsPerOrder)} fmt={n1} kind="line" />
-              <MonthChart title="SKU lines per order" points={points} H={H} values={series((p) => p.linesPerOrder)} fmt={n1} kind="line" />
-              <MonthChart title="Orders" points={points} H={H} values={series((p) => p.orders)} fmt={n0} kind="bars" />
               <MonthChart title="SKU lines" points={points} H={H} values={series((p) => p.lines)} fmt={big} kind="bars" />
             </div>
           </section>
@@ -275,6 +268,7 @@ function HeroCard({ label, next6, next12, past6, past12, fmt, stock }: { label: 
 /** Monthly history in the data hue and the forecast lighter, split by a dashed line; bars or a line. */
 function MonthChart({
   title,
+  control,
   points,
   H,
   values,
@@ -283,6 +277,8 @@ function MonthChart({
   percent,
 }: {
   title: string;
+  /** The slider for the assumption this chart shows, if it has one. */
+  control?: ReactNode;
   points: MonthPoint[];
   H: number;
   values: number[];
@@ -332,6 +328,7 @@ function MonthChart({
           </span>
         )}
       </div>
+      {control}
       <svg viewBox={`0 0 ${W} ${Hh}`} role="img" aria-label={`${title}: the last 12 months and the next 12`}>
         {ticks.map((t) => (
           <g key={t}>
