@@ -2482,15 +2482,14 @@ select {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
-.forecast-assumptions {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(min(100%, 340px), 1fr));
-  gap: 10px 24px;
-}
 .forecast-assumption {
   display: grid;
   gap: 2px;
   font-size: 13px;
+  margin: 2px 0 6px;
+  padding: 6px 10px;
+  border-radius: 6px;
+  background: var(--bg);
 }
 .forecast-assumption-label {
   display: flex;

@@ -21,7 +21,7 @@ Customers at a month's end = at its start + new + won back − churned; the hist
 
 1. **Drivers**, each from its own last 12 months: new customers a month, won back a month, the share of customers going 45 days without an order, the save rate, orders per customer, AOV, units per order and SKU lines per order.
 2. **Shape and level.** A straight line is fitted to each driver's 12 months. *Today's level* holds the line's last value; *the trend continued* extends it. *Last year's pattern* gives each forecast month the same place against the line as that calendar month had last year (so months rise and fall as they did); *a straight line* drops the pattern.
-3. **Adjustments**: each slider multiplies its driver by 1 ± up to 50% (140 new customers a month at +5% is 147).
+3. **Adjustments**: each slider multiplies its driver by 1 ± up to 50% (140 new customers a month at +5% is 147). Each slider sits above the chart it drives (Rick, 2026-10-27): new customers, churned (the at-risk share), save rate, won back, AOV, orders (orders per customer), units and SKU lines per order; customers, saved, sales and SKU lines follow from them.
 4. **Customers** are simulated month by month: at risk = customers × the at-risk share; saved = at risk × save rate; churned = the rest; won back from its own forecast (a rate on the growing pool of churned stores overstated it, since stores that churned long ago rarely come back); customers' = customers + new + won back − churned.
 5. Orders = customers × orders per customer; sales, units and SKU lines = orders × AOV, units and lines per order.
 
