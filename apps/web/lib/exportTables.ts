@@ -171,7 +171,7 @@ export function forecastRows(base: ForecastBase, r: ForecastResult): string[][] 
     header,
     ...r.points.map((p) => [
       p.month.slice(0, 7),
-      p.forecast ? "yes" : "",
+      p.actual ? "partial" : p.forecast ? "yes" : "",
       cell(p.new),
       cell(p.saved),
       cell(p.churned),

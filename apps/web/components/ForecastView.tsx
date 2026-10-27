@@ -2,7 +2,17 @@
 
 import { useDeferredValue, useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { forecastRows } from "../lib/exportTables";
-import { computeForecast, DEFAULT_FORECAST, type Driver, type ForecastBase, type ForecastSettings, type MonthPoint } from "../lib/forecast";
+import {
+  computeForecast,
+  DEFAULT_FORECAST,
+  type CurrentField,
+  type Driver,
+  type FiscalYear,
+  type ForecastBase,
+  type ForecastSettings,
+  type MonthPoint,
+  type Span,
+} from "../lib/forecast";
 import { downloadCsv } from "./downloadCsv";
 
 interface Props {
@@ -33,6 +43,8 @@ const ASSUMPTIONS: { id: Driver; label: string; unit: (x: number) => string; mon
 
 export function ForecastView({ base }: Props) {
   const [settings, setSettings] = useState<ForecastSettings>(DEFAULT_FORECAST);
+  /** "next12": the last 12 months and the next 12; "fiscal": this fiscal year and next (January to December). */
+  const [view, setView] = useState<"next12" | "fiscal">("next12");
   const deferred = useDeferredValue(settings);
   const result = useMemo(() => (base ? computeForecast(base, deferred) : null), [base, deferred]);
 
@@ -54,12 +66,22 @@ export function ForecastView({ base }: Props) {
   const set = (patch: Partial<ForecastSettings>) => setSettings((s) => ({ ...s, ...patch }));
   const setAdjust = (d: Driver, v: number) => setSettings((s) => ({ ...s, adjust: { ...s.adjust, [d]: v } }));
   const H = base.months.length;
-  const { points, hero, drivers } = result;
-  const first = points[H]!.month;
-  const last = points[points.length - 1]!.month;
+  const { points: all, hero, drivers, fiscal } = result;
+  const [fy0, fy1] = fiscal as [FiscalYear, FiscalYear];
+  // The months on the charts: the last 12 and the next 12, or January of this fiscal year to December of next.
+  const from = view === "fiscal" ? Math.max(0, all.findIndex((p) => p.month === `${fy0.year}-01-01`)) : 0;
+  const to = view === "fiscal" ? all.length : H + 12;
+  const points = all.slice(from, to);
+  const split = H - from;
+  const first = all[H]!.month;
+  const last12 = all[H + 11]!.month;
   const series = (f: (p: MonthPoint) => number) => points.map(f);
+  const part = (f: CurrentField) => points.map((p) => p.actual?.[f]);
+  const cur = base.current;
+  const fy = (y: number) => `FY${String(y).slice(2)}`;
+  const today = hero.past12.customers;
   // Each assumption's forecast average without its own adjustment, for the slider's readout.
-  const avgNext = (d: Driver) => drivers[d].slice(H).reduce((a, b) => a + b, 0) / (drivers[d].length - H);
+  const avgNext = (d: Driver) => drivers[d].slice(H, H + 12).reduce((a, b) => a + b, 0) / 12;
   /** The slider for one assumption, shown above the chart it drives. */
   const slider = (id: Driver) => {
     const a = ASSUMPTIONS.find((x) => x.id === id)!;
@@ -100,25 +122,51 @@ export function ForecastView({ base }: Props) {
       <section className="screen-head">
         <h1 className="screen-title">Forecast</h1>
         <p className="screen-finding">
-          {noMoney ? (
+          {view === "fiscal" ? (
+            noMoney ? (
+              <>
+                {fy(fy0.year)}: {big(fy0.total.lines)} SKU lines ({big(fy0.actual.lines)} so far); {fy(fy1.year)}: {big(fy1.total.lines)} ({change(fy1.total.lines, fy0.total.lines)}),
+                with {n0(fy1.total.customers)} customers by Dec {String(fy1.year).slice(2)} (today {n0(today)}).
+              </>
+            ) : (
+              <>
+                {fy(fy0.year)}: <strong>{short(fy0.total.revenue)}</strong> in sales ({short(fy0.actual.revenue)} so far + {short(fy0.rest.revenue)} to come); {fy(fy1.year)}:{" "}
+                <strong>{short(fy1.total.revenue)}</strong> ({change(fy1.total.revenue, fy0.total.revenue)}), with {n0(fy1.total.customers)} customers by Dec{" "}
+                {String(fy1.year).slice(2)} (today {n0(today)}).
+              </>
+            )
+          ) : noMoney ? (
             <>
               The next 12 months: {big(hero.next12.lines)} SKU lines ({change(hero.next12.lines, hero.past12.lines)} on the last 12) and {n0(hero.next12.customers)} customers by{" "}
-              {monthLabel(last)} (today {n0(hero.past12.customers)}).
+              {monthLabel(last12)} (today {n0(today)}).
             </>
           ) : (
             <>
               The next 12 months: <strong>{short(hero.next12.revenue)}</strong> in sales ({change(hero.next12.revenue, hero.past12.revenue)} on the last 12) and{" "}
-              {n0(hero.next12.customers)} customers by {monthLabel(last)} (today {n0(hero.past12.customers)}).
+              {n0(hero.next12.customers)} customers by {monthLabel(last12)} (today {n0(today)}).
             </>
           )}
         </p>
         <p className="screen-source">
-          History: the 12 months to {monthLabel(base.months[H - 1]!)}, every CA store. Forecast: {monthLabel(first)} to {monthLabel(last)}. A customer ordered in the last 90 days;
+          History: the 12 months to {monthLabel(base.months[H - 1]!)}, every CA store.
+          {cur ? ` ${monthLabel(cur.month)}: actuals to day ${cur.elapsed_days}, the remaining ${cur.days_in_month - cur.elapsed_days} days forecast.` : ""} Forecast:{" "}
+          {monthLabel(first)} to {monthLabel(view === "fiscal" ? all[all.length - 1]!.month : last12)}. Fiscal years run January to December. A customer ordered in the last 90 days;
           saved = ordered again after 45 to 89 days; churned = reached 90 days; won back = ordered again after 90+ days.
         </p>
       </section>
 
       <div className="wallet-controls" role="group" aria-label="Inputs">
+        <div className="field">
+          <span>View</span>
+          <div className="segmented" role="group" aria-label="View">
+            <button type="button" aria-pressed={view === "next12"} onClick={() => setView("next12")}>
+              Next 12 months
+            </button>
+            <button type="button" aria-pressed={view === "fiscal"} onClick={() => setView("fiscal")}>
+              Fiscal years
+            </button>
+          </div>
+        </div>
         <label className="field">
           <span>Store type</span>
           <select value={settings.types[0] ?? -1} onChange={(e) => set({ types: Number(e.target.value) < 0 ? [] : [Number(e.target.value)] })}>
@@ -181,18 +229,19 @@ export function ForecastView({ base }: Props) {
             <div className="block-head">
               <h2 className="section-heading">Customers</h2>
               <p className="muted">
-                Bars and lines in <span className="new-key">blue</span> are the last 12 months; the lighter part after the dashed line is the forecast. The slider above
+                Bars and lines in <span className="new-key">blue</span> are actuals; the lighter part after the dashed line is the forecast
+                {cur ? ` (${monthLabel(cur.month)}'s bar is solid up to its actuals so far)` : ""}. The slider above
                 a chart moves its assumption up or down; its numbers are the next 12 months' average before and after (140 new customers a month at +5% is 147; double-click to
                 reset). The charts without one follow from the others.
               </p>
             </div>
             <div className="forecast-charts">
-              <MonthChart title="New customers" control={slider("new")} points={points} H={H} values={series((p) => p.new)} fmt={n0} kind="bars" />
-              <MonthChart title="Churned (reached 90 days without an order)" control={slider("atRisk")} points={points} H={H} values={series((p) => p.churned)} fmt={n0} kind="bars" />
-              <MonthChart title="Save rate (saved ÷ saved + churned)" control={slider("saveRate")} points={points} H={H} values={series((p) => p.saveRate)} fmt={pct} kind="line" percent />
-              <MonthChart title="Won back (ordered again after 90+ days)" control={slider("wonBack")} points={points} H={H} values={series((p) => p.wonBack)} fmt={n0} kind="bars" />
-              <MonthChart title="Customers (ordered in the last 90 days), month end" points={points} H={H} values={series((p) => p.customers)} fmt={n0} kind="line" />
-              <MonthChart title="Saved (ordered again after 45-89 days)" points={points} H={H} values={series((p) => p.saved)} fmt={n0} kind="bars" />
+              <MonthChart title="New customers" actuals={part("new")} control={slider("new")} points={points} H={split} values={series((p) => p.new)} fmt={n0} kind="bars" />
+              <MonthChart title="Churned (reached 90 days without an order)" actuals={part("churned")} control={slider("atRisk")} points={points} H={split} values={series((p) => p.churned)} fmt={n0} kind="bars" />
+              <MonthChart title="Save rate (saved ÷ saved + churned)" control={slider("saveRate")} points={points} H={split} values={series((p) => p.saveRate)} fmt={pct} kind="line" percent />
+              <MonthChart title="Won back (ordered again after 90+ days)" actuals={part("wonBack")} control={slider("wonBack")} points={points} H={split} values={series((p) => p.wonBack)} fmt={n0} kind="bars" />
+              <MonthChart title="Customers (ordered in the last 90 days), month end" points={points} H={split} values={series((p) => p.customers)} fmt={n0} kind="line" />
+              <MonthChart title="Saved (ordered again after 45-89 days)" actuals={part("saved")} points={points} H={split} values={series((p) => p.saved)} fmt={n0} kind="bars" />
             </div>
           </section>
 
@@ -201,12 +250,12 @@ export function ForecastView({ base }: Props) {
               <h2 className="section-heading">Orders</h2>
             </div>
             <div className="forecast-charts">
-              {!noMoney && <MonthChart title="Average order value" control={slider("aov")} points={points} H={H} values={series((p) => p.aov)} fmt={money} kind="line" />}
-              <MonthChart title="Orders" control={slider("ordersPerCustomer")} points={points} H={H} values={series((p) => p.orders)} fmt={n0} kind="bars" />
-              <MonthChart title="Units per order" control={slider("unitsPerOrder")} points={points} H={H} values={series((p) => p.unitsPerOrder)} fmt={n1} kind="line" />
-              <MonthChart title="SKU lines per order" control={slider("linesPerOrder")} points={points} H={H} values={series((p) => p.linesPerOrder)} fmt={n1} kind="line" />
-              {!noMoney && <MonthChart title="Sales" points={points} H={H} values={series((p) => p.revenue)} fmt={short} kind="bars" />}
-              <MonthChart title="SKU lines" points={points} H={H} values={series((p) => p.lines)} fmt={big} kind="bars" />
+              {!noMoney && <MonthChart title="Average order value" control={slider("aov")} points={points} H={split} values={series((p) => p.aov)} fmt={money} kind="line" />}
+              <MonthChart title="Orders" actuals={part("orders")} control={slider("ordersPerCustomer")} points={points} H={split} values={series((p) => p.orders)} fmt={n0} kind="bars" />
+              <MonthChart title="Units per order" control={slider("unitsPerOrder")} points={points} H={split} values={series((p) => p.unitsPerOrder)} fmt={n1} kind="line" />
+              <MonthChart title="SKU lines per order" control={slider("linesPerOrder")} points={points} H={split} values={series((p) => p.linesPerOrder)} fmt={n1} kind="line" />
+              {!noMoney && <MonthChart title="Sales" actuals={part("revenue")} points={points} H={split} values={series((p) => p.revenue)} fmt={short} kind="bars" />}
+              <MonthChart title="SKU lines" actuals={part("lines")} points={points} H={split} values={series((p) => p.lines)} fmt={big} kind="bars" />
             </div>
           </section>
 
@@ -223,19 +272,23 @@ export function ForecastView({ base }: Props) {
         </div>
 
         <aside className="forecast-hero" aria-label="Forecast totals">
-          {!noMoney && <HeroCard label="Sales" next6={hero.next6.revenue} next12={hero.next12.revenue} past6={hero.past6.revenue} past12={hero.past12.revenue} fmt={short} />}
-          <HeroCard label="SKU lines" next6={hero.next6.lines} next12={hero.next12.lines} past6={hero.past6.lines} past12={hero.past12.lines} fmt={big} />
-          <HeroCard label="Units" next6={hero.next6.units} next12={hero.next12.units} past6={hero.past6.units} past12={hero.past12.units} fmt={big} />
-          <HeroCard
-            label="Customers"
-            next6={hero.next6.customers}
-            next12={hero.next12.customers}
-            past6={hero.past12.customers}
-            past12={hero.past12.customers}
-            fmt={n0}
-            stock
-          />
-          <HeroCard label="New customers" next6={hero.next6.new} next12={hero.next12.new} past6={hero.past6.new} past12={hero.past12.new} fmt={n0} />
+          {view === "fiscal" ? (
+            <>
+              {!noMoney && <FiscalCard label="Sales" years={[fy0, fy1]} get={(s) => s.revenue} fmt={short} />}
+              <FiscalCard label="SKU lines" years={[fy0, fy1]} get={(s) => s.lines} fmt={big} />
+              <FiscalCard label="Units" years={[fy0, fy1]} get={(s) => s.units} fmt={big} />
+              <FiscalCard label="Customers" years={[fy0, fy1]} get={(s) => s.customers} fmt={n0} today={today} />
+              <FiscalCard label="New customers" years={[fy0, fy1]} get={(s) => s.new} fmt={n0} />
+            </>
+          ) : (
+            <>
+              {!noMoney && <HeroCard label="Sales" next6={hero.next6.revenue} next12={hero.next12.revenue} past6={hero.past6.revenue} past12={hero.past12.revenue} fmt={short} />}
+              <HeroCard label="SKU lines" next6={hero.next6.lines} next12={hero.next12.lines} past6={hero.past6.lines} past12={hero.past12.lines} fmt={big} />
+              <HeroCard label="Units" next6={hero.next6.units} next12={hero.next12.units} past6={hero.past6.units} past12={hero.past12.units} fmt={big} />
+              <HeroCard label="Customers" next6={hero.next6.customers} next12={hero.next12.customers} past6={today} past12={today} fmt={n0} stock />
+              <HeroCard label="New customers" next6={hero.next6.new} next12={hero.next12.new} past6={hero.past6.new} past12={hero.past12.new} fmt={n0} />
+            </>
+          )}
         </aside>
       </div>
     </div>
@@ -265,6 +318,30 @@ function HeroCard({ label, next6, next12, past6, past12, fmt, stock }: { label: 
   );
 }
 
+/** This fiscal year (so far + the rest) and next, for a total; for a stock (today given), the December counts. */
+function FiscalCard({ label, years, get, fmt, today }: { label: string; years: [FiscalYear, FiscalYear]; get: (s: Span) => number; fmt: (x: number) => string; today?: number }) {
+  const [a, b] = years;
+  const yy = (y: number) => String(y).slice(2);
+  const stock = today !== undefined;
+  return (
+    <div className="hero-card">
+      <div className="hero-label">{label}</div>
+      <div className="hero-row">
+        <span className="hero-span">{stock ? `Dec ${yy(b.year)}` : `FY${yy(b.year)}`}</span>
+        <span className="hero-value">{fmt(get(b.total))}</span>
+        <span className="hero-change">
+          {change(get(b.total), get(a.total))} on {stock ? `Dec ${yy(a.year)}` : `FY${yy(a.year)}`}
+        </span>
+      </div>
+      <div className="hero-row small">
+        <span className="hero-span">{stock ? `Dec ${yy(a.year)}` : `FY${yy(a.year)}`}</span>
+        <span className="hero-value">{fmt(get(a.total))}</span>
+        <span className="hero-change">{stock ? `${change(get(a.total), today)} on today` : `${fmt(get(a.actual))} so far + ${fmt(get(a.rest))} to come`}</span>
+      </div>
+    </div>
+  );
+}
+
 /** Monthly history in the data hue and the forecast lighter, split by a dashed line; bars or a line. */
 function MonthChart({
   title,
@@ -275,6 +352,7 @@ function MonthChart({
   fmt,
   kind,
   percent,
+  actuals,
 }: {
   title: string;
   /** The slider for the assumption this chart shows, if it has one. */
@@ -285,6 +363,8 @@ function MonthChart({
   fmt: (x: number) => string;
   kind: "bars" | "line";
   percent?: boolean;
+  /** For bars: each month's actuals so far where a forecast month has some (the current month). */
+  actuals?: (number | undefined)[];
 }) {
   const box = useRef<HTMLDivElement>(null);
   const [W, setW] = useState(520);
@@ -324,12 +404,13 @@ function MonthChart({
         {hover !== null && (
           <span className="month-chart-read">
             {monthLabel(points[hover]!.month)}
-            {points[hover]!.forecast ? " (forecast)" : ""}: <strong>{fmt(values[hover]!)}</strong>
+            {points[hover]!.actual ? " (actual so far + forecast)" : points[hover]!.forecast ? " (forecast)" : ""}: <strong>{fmt(values[hover]!)}</strong>
+            {actuals?.[hover] !== undefined && <span className="muted"> ({fmt(actuals[hover]!)} actual)</span>}
           </span>
         )}
       </div>
       {control}
-      <svg viewBox={`0 0 ${W} ${Hh}`} role="img" aria-label={`${title}: the last 12 months and the next 12`}>
+      <svg viewBox={`0 0 ${W} ${Hh}`} role="img" aria-label={`${title}: ${monthLabel(points[0]!.month)} to ${monthLabel(points[n - 1]!.month)}, forecast from ${monthLabel(points[H]!.month)}`}>
         {ticks.map((t) => (
           <g key={t}>
             <line x1={left} x2={W} y1={y(t)} y2={y(t)} className="grid" />
@@ -344,16 +425,26 @@ function MonthChart({
         </text>
         {kind === "bars"
           ? values.map((v, i) => (
-              <rect
-                key={i}
-                x={x(i) - Math.min(14, slot * 0.32)}
-                y={y(v)}
-                width={Math.min(28, slot * 0.64)}
-                height={Math.max(0, y(floor) - y(v))}
-                rx={2}
-                className={i >= H ? "bar future" : "bar"}
-                opacity={hover !== null && hover !== i ? 0.55 : 1}
-              />
+              <g key={i} opacity={hover !== null && hover !== i ? 0.55 : 1}>
+                <rect
+                  x={x(i) - Math.min(14, slot * 0.32)}
+                  y={y(v)}
+                  width={Math.min(28, slot * 0.64)}
+                  height={Math.max(0, y(floor) - y(v))}
+                  rx={2}
+                  className={i >= H ? "bar future" : "bar"}
+                />
+                {i >= H && actuals?.[i] !== undefined && (
+                  <rect
+                    x={x(i) - Math.min(14, slot * 0.32)}
+                    y={y(actuals[i]!)}
+                    width={Math.min(28, slot * 0.64)}
+                    height={Math.max(0, y(floor) - y(actuals[i]!))}
+                    rx={2}
+                    className="bar"
+                  />
+                )}
+              </g>
             ))
           : (
             <>
