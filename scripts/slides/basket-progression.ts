@@ -24,9 +24,14 @@ import pptxgenModule from "pptxgenjs";
 const pptxgen = pptxgenModule as unknown as typeof pptxgenModule.default;
 
 const ROOT = process.cwd();
-// --scale=best draws each room-to-grow bar to its own top-quartile store instead of a 0-100% track.
-const SCALE_TO_BEST = process.argv.includes("--scale=best");
-const OUT = join(ROOT, `dist/slides/basket-progression${SCALE_TO_BEST ? "-best" : ""}.pptx`);
+// Each room-to-grow bar runs to its own top-quartile store; --scale=full draws a 0-100% track instead.
+const SCALE_TO_BEST = !process.argv.includes("--scale=full");
+// --units=skus counts distinct SKUs per order beside the dollars instead of cases.
+const SKUS = process.argv.includes("--units=skus");
+const UNIT = SKUS
+  ? { column: "skus_per_order", short: "SKUs", long: "SKUs", one: "SKU", header: "$ per order · SKUs" }
+  : { column: "cases_per_order", short: "cs", long: "cases", one: "case", header: "$ per order · cases (cs)" };
+const OUT = join(ROOT, `dist/slides/basket-progression${SKUS ? "-skus" : ""}${SCALE_TO_BEST ? "" : "-full"}.pptx`);
 
 // The plan's AOV path.
 const PLAN = [
@@ -67,20 +72,20 @@ const csv = (name: string) =>
 const mixRows = csv("basket_mix.csv");
 const zero = () => Object.fromEntries(DEPARTMENTS.map((d) => [d, 0])) as Record<Dept, number>;
 const perOrder = zero();
-const casesPerOrder = zero();
+const unitsPerOrder = zero();
 const eachesPerOrder = zero();
 for (const r of mixRows) {
   const name = r.department ?? "";
   const d = (DEPARTMENTS as readonly string[]).includes(name) ? (name as Dept) : "Other";
   perOrder[d] += Number(r.per_order);
-  casesPerOrder[d] += Number(r.cases_per_order);
+  unitsPerOrder[d] += Number(r[UNIT.column]);
   eachesPerOrder[d] += Number(r.units_per_order);
 }
 const measuredAov = DEPARTMENTS.reduce((s, d) => s + perOrder[d], 0);
 const scale = PLAN[0].aov / measuredAov;
-// Cases per dollar, by department, at today's prices. Units on the slide are cases (how Mercaso sells);
-// eaches go in the notes only, since assortment items such as bags and cups count by the each.
-const casesPerDollar = Object.fromEntries(DEPARTMENTS.map((d) => [d, casesPerOrder[d] / perOrder[d]])) as Record<Dept, number>;
+// Cases (or SKUs) per dollar, by department, at today's prices. Cases are the default unit (how Mercaso
+// sells); eaches go in the notes only, since assortment items such as bags and cups count by the each.
+const unitsPerDollar = Object.fromEntries(DEPARTMENTS.map((d) => [d, unitsPerOrder[d] / perOrder[d]])) as Record<Dept, number>;
 
 const head = Object.fromEntries(csv("basket_headroom.csv").map((r) => [r.department, r])) as Record<Dept, Record<string, string>>;
 const headroom = Object.fromEntries(
@@ -123,11 +128,11 @@ const share = (d: Dept) => {
 const crossToday = crossDepts.reduce((s, d) => s + shown.today[d], 0);
 const crossOct = crossDepts.reduce((s, d) => s + shown.oct[d], 0);
 
-// Cases per order: each step's department dollars at today's dollars per case.
+// Cases (or SKUs) per order: each step's department dollars at today's dollars per case (or SKU).
 type PlanKey = (typeof PLAN)[number]["key"];
-const cases = (p: PlanKey, d: Dept) => baskets[p][d] * casesPerDollar[d];
-const totalCases = (p: PlanKey) => DEPARTMENTS.reduce((s, d) => s + cases(p, d), 0);
-const fmtCases = (n: number) => n.toFixed(1);
+const units = (p: PlanKey, d: Dept) => baskets[p][d] * unitsPerDollar[d];
+const totalUnits = (p: PlanKey) => DEPARTMENTS.reduce((s, d) => s + units(p, d), 0);
+const fmtUnits = (n: number) => n.toFixed(1);
 
 // Trend over the year, for the notes.
 const trend = csv("basket_trend.csv");
@@ -149,12 +154,12 @@ console.table(
     oct: shown.oct[d],
     change: shown.oct[d] - shown.today[d],
     headroom: headroom[d].toFixed(1),
-    casesToday: fmtCases(cases("today", d)),
-    casesApr: fmtCases(cases("apr", d)),
-    casesOct: fmtCases(cases("oct", d)),
+    unitsToday: fmtUnits(units("today", d)),
+    unitsApr: fmtUnits(units("apr", d)),
+    unitsOct: fmtUnits(units("oct", d)),
   })),
 );
-console.log(`Cases per order: ${PLAN.map((p) => fmtCases(totalCases(p.key))).join(" / ")}`);
+console.log(`${UNIT.long} per order: ${PLAN.map((p) => fmtUnits(totalUnits(p.key))).join(" / ")}`);
 console.log(`Trend ${first} to ${last}: AOV ${aovChange.toFixed(0)}, Beverage ${bevChange.toFixed(0)}`);
 
 // ---------- slide ----------
@@ -262,7 +267,7 @@ PLAN.forEach((p, i) => {
     slide.addText(
       [
         { text: money(v), options: { fontFace: FONT.bold, fontSize: 14, color: fg } },
-        { text: `  ${fmtCases(cases(p.key, d))} cs`, options: { fontFace: FONT.book, fontSize: 10, color: sub } },
+        { text: `  ${fmtUnits(units(p.key, d))} ${UNIT.short}`, options: { fontFace: FONT.book, fontSize: SKUS ? 9 : 10, color: sub } },
       ],
       { x, y: ROW_Y0 + r * ROW_H, w: CARD_W, h: ROW_H, margin: 0, align: "center", valign: "middle", isTextBox: true,
         objectName: `${p.sub} ${d}` },
@@ -273,7 +278,7 @@ PLAN.forEach((p, i) => {
 slide.addText(
   [
     { text: "DEPARTMENT", options: { fontFace: FONT.bold, charSpacing: 1, breakLine: true } },
-    { text: "$ per order · cases (cs)", options: { fontFace: FONT.book } },
+    { text: UNIT.header, options: { fontFace: FONT.book } },
   ],
   { x: X0, y: ROW_Y0 - 0.5, w: LABEL_W, h: 0.42, margin: 0, valign: "bottom", fontSize: 10, color: COLOR.muted, isTextBox: true,
     objectName: "Department header" },
@@ -397,7 +402,8 @@ slide.addText(
 );
 
 slide.addText(
-  `Today: all orders May–Oct 2026, scaled to $${PLAN[0].aov.toLocaleString("en-US", { minimumFractionDigits: 2 })}; cases at today's $ per case. ` +
+  `Today: all orders May–Oct 2026, scaled to $${PLAN[0].aov.toLocaleString("en-US", { minimumFractionDigits: 2 })}; ` +
+    `${SKUS ? "SKUs = distinct SKUs per order, at today's $ per SKU" : "cases at today's $ per case"}. ` +
     `Top quartile: 75th-percentile store (6+ orders) by share of orders that include the department. ` +
     `Plan closes 25% of that gap by Apr '27 and 50% by Oct '27, at today's ticket outside Beverage; Tobacco flat; Beverage fills the rest of the dollars.`,
   {
@@ -419,15 +425,16 @@ slide.addNotes(
       `Our top-quartile stores already buy these far more often. If every store bought like them, at today's ticket sizes, the order would be ${money(totalHeadroom)} bigger.`,
     `The plan needs half of that by October: cross-department spend goes from ${money(crossToday)} to ${money(crossOct)} per order, ` +
       `with Candy & Snacks the biggest piece and Grocery and Cleaning next. That is what the catalog, store-level gaps, M Rewards and Concierge recommendations are pointed at.`,
-    `In cases, the order goes from about ${Math.round(totalCases("today"))} to ${Math.round(totalCases("apr"))} to ${Math.round(totalCases("oct"))} cases. ` +
-      `Beverage is ${fmtCases(cases("today", "Beverage"))} of today's cases; the rest of the store adds ` +
-      `${fmtCases(crossDepts.reduce((s, d) => s + cases("oct", d) - cases("today", d), 0))} cases per order by October. ` +
+    `In ${UNIT.long}, the order goes from about ${Math.round(totalUnits("today"))} to ${Math.round(totalUnits("apr"))} to ${Math.round(totalUnits("oct"))} ${UNIT.long}. ` +
+      `Beverage is ${fmtUnits(units("today", "Beverage"))} of today's ${UNIT.long}; the rest of the store adds ` +
+      `${fmtUnits(crossDepts.reduce((s, d) => s + units("oct", d) - units("today", d), 0))} ${UNIT.long} per order by October. ` +
       `In eaches, today's order is about ${Math.round(DEPARTMENTS.reduce((s, d) => s + eachesPerOrder[d], 0) * scale)} units ` +
       `(Beverage about ${Math.round(eachesPerOrder.Beverage * scale)}, Candy & Snacks about ${Math.round(eachesPerOrder["Candy & Snacks"] * scale)}).`,
     `Method: department mix from all orders May–Oct 2026, scaled to ${money(PLAN[0].aov)}. Headroom per department = ` +
       `(top-quartile store's order share − average order share) × average department ticket, for stores with 6+ orders. ` +
       `25% of that gap closed by Apr '27, 50% by Oct '27; Tobacco flat; Beverage fills the remainder of the plan. ` +
-      `Cases per order = department dollars ÷ today's dollars per case in that department, so the case counts assume prices and pack sizes hold.`,
+      `${SKUS ? "SKUs" : "Cases"} per order = department dollars ÷ today's dollars per ${UNIT.one} in that department, ` +
+      `so the ${UNIT.one} counts assume ${SKUS ? "spend per SKU holds; more SKUs per order is the breadth the catalog and recommendations push" : "prices and pack sizes hold"}.`,
   ].join("\n\n"),
 );
 
