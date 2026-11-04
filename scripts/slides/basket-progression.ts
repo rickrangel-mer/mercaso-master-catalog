@@ -111,13 +111,13 @@ const shown = Object.fromEntries(PLAN.map((p) => [p.key, rounded(baskets[p.key],
 
 const crossDepts = DEPARTMENTS.filter((d) => d !== "Beverage" && d !== "Tobacco");
 
-// Top-quartile benchmark per order, for the room-to-grow bars. Outside Beverage it is today's spend
-// plus the order-share headroom. Beverage is already in almost every order, so its benchmark is the
-// 75th-percentile store's beverage spend per order.
-const bestDepts = ["Beverage", ...crossDepts] as Dept[];
-const best = Object.fromEntries(
-  bestDepts.map((d) => [d, d === "Beverage" ? Number(head.Beverage.per_order_p75) * scale : perOrder[d] * scale + headroom[d]]),
-) as Record<Dept, number>;
+// Share of orders that include each department, for the room-to-grow bars: today (order-weighted
+// average), the 12-month plan (the same share of the gap the dollars close) and the top-quartile store.
+const share = (d: Dept) => {
+  const today = Number(head[d].share_avg);
+  const top = Math.max(today, Number(head[d].share_p75));
+  return { today, plan: today + GAP_CLOSED.oct * (top - today), top };
+};
 const crossToday = crossDepts.reduce((s, d) => s + shown.today[d], 0);
 const crossOct = crossDepts.reduce((s, d) => s + shown.oct[d], 0);
 
@@ -173,6 +173,7 @@ const COLOR = {
   today_bar: "2F6FDF",
   plan_bar: "F07E1A",
   head_bar: "D92D3F",
+  track: "ECE8F2",
 };
 const money = (n: number) => `$${Math.round(n).toLocaleString("en-US")}`;
 const pct = (n: number) => `${Math.round(n * 100)}%`;
@@ -309,14 +310,14 @@ slide.addText("Room to grow", {
   x: PX + 0.25, y: TOP + 0.15, w: PW - 0.5, h: 0.4, margin: 0, fontFace: FONT.black, fontSize: 18, color: COLOR.purple,
   isTextBox: true, objectName: "Panel title",
 });
-slide.addText("$ per order, today to the top-quartile store", {
+slide.addText("% of orders that include the department", {
   x: PX + 0.25, y: TOP + 0.53, w: PW - 0.5, h: 0.24, margin: 0, valign: "top", fontFace: FONT.book, fontSize: 11, color: COLOR.muted,
   isTextBox: true, objectName: "Panel subtitle",
 });
 
-// One bar per department, each scaled to its own top-quartile benchmark, like a progress bar:
-// blue = today, orange = what the 12-month plan adds, red = headroom left beyond the plan.
-// Built from shapes so each department's name sits above a full-width bar.
+// One bar per department on a 0-100% track of orders: blue = today, orange = what the 12-month
+// plan adds, red = what is left up to the top-quartile store. Built from shapes so each
+// department's name sits above a full-width bar.
 const BX = PX + 0.25;
 const BW = PW - 0.5;
 const SEGMENTS = [
@@ -343,22 +344,29 @@ const BAR_ROW = 0.425;
 const BAR_H = 0.19;
 chartDepts.forEach((d, r) => {
   const y = BAR_Y0 + r * BAR_ROW;
-  const top = Math.max(Math.round(best[d]), shown.oct[d]);
-  const parts = [shown.today[d], shown.oct[d] - shown.today[d], top - shown.oct[d]];
+  const s = share(d);
+  // Whole percentage points, so the labels add up.
+  const pts = [Math.round(s.today * 100), Math.round(s.plan * 100), Math.round(s.top * 100)] as const;
+  const parts = [pts[0], pts[1] - pts[0], pts[2] - pts[1]];
   slide.addText(d === "Other" ? "All other" : d, {
     x: BX, y, w: BW * 0.62, h: 0.17, margin: 0, valign: "middle", fontFace: FONT.bold, fontSize: 10, color: COLOR.ink,
     isTextBox: true, objectName: `Bar label ${d}`,
   });
-  slide.addText(`top quartile ${money(top)}`, {
+  slide.addText(`top quartile ${pts[2]}%`, {
     x: BX + BW * 0.5, y, w: BW * 0.5, h: 0.17, margin: 0, align: "right", valign: "middle", fontFace: FONT.book, fontSize: 9,
     color: COLOR.muted, isTextBox: true, objectName: `Bar benchmark ${d}`,
   });
+  slide.addShape(pres.ShapeType.rect, {
+    x: BX, y: y + 0.2, w: BW, h: BAR_H, fill: { color: COLOR.track }, line: { type: "none" }, objectName: `Bar ${d} track`,
+  });
   let x = BX;
   parts.forEach((v, k) => {
-    const w = (v / top) * BW;
+    const w = (v / 100) * BW;
     if (w <= 0) return;
     const seg = SEGMENTS[k]!;
-    slide.addText(k === 0 ? money(v) : `+${money(v)}`, {
+    // Label a segment only when the label fits inside it.
+    const label = w < (k === 0 ? 0.4 : 0.19) ? "" : k === 0 ? `${v}%` : `+${v}`;
+    slide.addText(label, {
       x, y: y + 0.2, w, h: BAR_H, margin: 0, align: "center", valign: "middle", fontFace: FONT.bold, fontSize: 9,
       color: COLOR.white, fill: { color: seg.color }, objectName: `Bar ${d} ${seg.name}`,
     });
@@ -388,8 +396,8 @@ slide.addText(
 
 slide.addText(
   `Today: all orders May–Oct 2026, scaled to $${PLAN[0].aov.toLocaleString("en-US", { minimumFractionDigits: 2 })}; cases at today's $ per case. ` +
-    `Top quartile: 75th-percentile store (6+ orders) on how often its orders include the department, at today's ticket; Beverage, already in ` +
-    `${pct(Number(head.Beverage.share_avg))} of orders, on $ per order. Plan closes 25% of the gap outside Beverage by Apr '27 and 50% by Oct '27; Tobacco flat; Beverage fills the rest.`,
+    `Top quartile: 75th-percentile store (6+ orders) by share of orders that include the department. ` +
+    `Plan closes 25% of that gap by Apr '27 and 50% by Oct '27, at today's ticket outside Beverage; Tobacco flat; Beverage fills the rest of the dollars.`,
   {
     x: X0, y: 6.86, w: 12.65 - X0, h: 0.55, margin: 0, valign: "top", fontFace: FONT.book, fontSize: 10, color: COLOR.muted,
     isTextBox: true, objectName: "Footnote",
@@ -402,7 +410,9 @@ slide.addNotes(
     `Our average order today is ${money(PLAN[0].aov)}. The plan takes it to ${money(PLAN[1].aov)} by April and ${money(PLAN[2].aov)} by next October, about 15% higher.`,
     `Over the last year the basket grew about ${money(aovChange)}, and Beverage was ${money(bevChange)} of that. ` +
       `Beverage is ${pct(shown.today.Beverage / Math.round(PLAN[0].aov))} of the order today, so it will keep doing a lot of the work: ` +
-      `about +${money(bevOct)} in this plan, far less than it added this year.`,
+      `about +${money(bevOct)} in this plan, far less than it added this year. But Beverage is already in ` +
+      `${pct(share("Beverage").today)} of orders, against ${pct(share("Beverage").top)} at our top-quartile stores, so it can no longer grow by ` +
+      `showing up in more orders. It is no longer the main lever; what is left there is bigger beverage tickets.`,
     `The real room is in the rest of the store. Only about a third of orders include Grocery, and only a fifth to a quarter include Cleaning, Household, or Health & Beauty. ` +
       `Our top-quartile stores already buy these far more often. If every store bought like them, at today's ticket sizes, the order would be ${money(totalHeadroom)} bigger.`,
     `The plan needs half of that by October: cross-department spend goes from ${money(crossToday)} to ${money(crossOct)} per order, ` +
