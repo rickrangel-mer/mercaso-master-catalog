@@ -20,12 +20,14 @@
     "match": "tsx scripts/match/run.ts",
     "gaps": "tsx scripts/match/gaps.ts",
     "review": "tsx scripts/match/review.ts",
-    "stores": "tsx scripts/stores/run.ts"
+    "stores": "tsx scripts/stores/run.ts",
+    "slides:basket": "tsx scripts/slides/basket-progression.ts"
   },
   "devDependencies": {
     "@aws-sdk/client-athena": "^3.1143.0",
     "@aws-sdk/client-sts": "^3.1143.0",
     "@types/node": "^22.20.4",
+    "pptxgenjs": "^4.0.1",
     "tsx": "^4.23.15",
     "typescript": "^7.0.2",
     "vitest": "^5.0.2"
