@@ -24,7 +24,9 @@ import pptxgenModule from "pptxgenjs";
 const pptxgen = pptxgenModule as unknown as typeof pptxgenModule.default;
 
 const ROOT = process.cwd();
-const OUT = join(ROOT, "dist/slides/basket-progression.pptx");
+// --scale=best draws each room-to-grow bar to its own top-quartile store instead of a 0-100% track.
+const SCALE_TO_BEST = process.argv.includes("--scale=best");
+const OUT = join(ROOT, `dist/slides/basket-progression${SCALE_TO_BEST ? "-best" : ""}.pptx`);
 
 // The plan's AOV path.
 const PLAN = [
@@ -310,7 +312,7 @@ slide.addText("Room to grow", {
   x: PX + 0.25, y: TOP + 0.15, w: PW - 0.5, h: 0.4, margin: 0, fontFace: FONT.black, fontSize: 18, color: COLOR.purple,
   isTextBox: true, objectName: "Panel title",
 });
-slide.addText("% of orders that include the department", {
+slide.addText(SCALE_TO_BEST ? "% of orders, each bar to its top-quartile store" : "% of orders that include the department", {
   x: PX + 0.25, y: TOP + 0.53, w: PW - 0.5, h: 0.24, margin: 0, valign: "top", fontFace: FONT.book, fontSize: 11, color: COLOR.muted,
   isTextBox: true, objectName: "Panel subtitle",
 });
@@ -361,7 +363,7 @@ chartDepts.forEach((d, r) => {
   });
   let x = BX;
   parts.forEach((v, k) => {
-    const w = (v / 100) * BW;
+    const w = (v / (SCALE_TO_BEST ? pts[2] : 100)) * BW;
     if (w <= 0) return;
     const seg = SEGMENTS[k]!;
     // Label a segment only when the label fits inside it.
