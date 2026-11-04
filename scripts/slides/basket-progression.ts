@@ -110,6 +110,14 @@ function rounded(b: Basket, total: number): Basket {
 const shown = Object.fromEntries(PLAN.map((p) => [p.key, rounded(baskets[p.key], p.aov)])) as Record<(typeof PLAN)[number]["key"], Basket>;
 
 const crossDepts = DEPARTMENTS.filter((d) => d !== "Beverage" && d !== "Tobacco");
+
+// Top-quartile benchmark per order, for the room-to-grow bars. Outside Beverage it is today's spend
+// plus the order-share headroom. Beverage is already in almost every order, so its benchmark is the
+// 75th-percentile store's beverage spend per order.
+const bestDepts = ["Beverage", ...crossDepts] as Dept[];
+const best = Object.fromEntries(
+  bestDepts.map((d) => [d, d === "Beverage" ? Number(head.Beverage.per_order_p75) * scale : perOrder[d] * scale + headroom[d]]),
+) as Record<Dept, number>;
 const crossToday = crossDepts.reduce((s, d) => s + shown.today[d], 0);
 const crossOct = crossDepts.reduce((s, d) => s + shown.oct[d], 0);
 
@@ -162,6 +170,9 @@ const COLOR = {
   panel: "FBF8FD",
   barBase: "CFC9DD",
   white: "FFFFFF",
+  today_bar: "2F6FDF",
+  plan_bar: "F07E1A",
+  head_bar: "D92D3F",
 };
 const money = (n: number) => `$${Math.round(n).toLocaleString("en-US")}`;
 const pct = (n: number) => `${Math.round(n * 100)}%`;
@@ -195,17 +206,17 @@ slide.addText(
 );
 
 // --- basket table: department labels, three period cards, change column ---
-const TOP = 1.85;
-const BOTTOM = 6.8;
-const HEADER_H = 1.15;
+const TOP = 1.95;
+const BOTTOM = 6.75;
+const HEADER_H = 1.3;
 const ROW_Y0 = TOP + HEADER_H + 0.12;
 const ROW_H = (BOTTOM - 0.1 - ROW_Y0) / DEPARTMENTS.length;
 const LABEL_W = 2.2;
-const CARD_W = 1.55;
-const GAP = 0.12;
+const CARD_W = 1.45;
+const GAP = 0.1;
 const cardX = (i: number) => X0 + LABEL_W + i * (CARD_W + GAP);
 const DELTA_X = cardX(3);
-const DELTA_W = 0.95;
+const DELTA_W = 0.85;
 const TABLE_RIGHT = DELTA_X + DELTA_W;
 
 // Row rules behind everything, so the cards sit on top.
@@ -238,8 +249,7 @@ PLAN.forEach((p, i) => {
     color: fg, isTextBox: true, objectName: `${p.sub} AOV`,
   });
   const growth = p.aov - PLAN[0].aov;
-  const caseCount = `${Math.round(totalCases(p.key))} cases`;
-  slide.addText(i === 0 ? caseCount : `+${Math.round((growth / PLAN[0].aov) * 100)}% · ${caseCount}`, {
+  slide.addText(i === 0 ? "avg. order" : `+${money(growth)} · +${Math.round((growth / PLAN[0].aov) * 100)}%`, {
     x, y: TOP + 0.98, w: CARD_W, h: 0.24, margin: 0, align: "center", valign: "middle", fontFace: FONT.bold, fontSize: 11,
     color: dark ? COLOR.white : i === 1 ? COLOR.magenta : COLOR.muted, isTextBox: true, objectName: `${p.sub} growth`,
   });
@@ -249,11 +259,10 @@ PLAN.forEach((p, i) => {
     slide.addText(
       [
         { text: money(v), options: { fontFace: FONT.bold, fontSize: 14, color: fg } },
-        { text: `  ${pct(v / Math.round(p.aov))}`, options: { fontFace: FONT.book, fontSize: 10, color: sub, breakLine: true } },
-        { text: `${fmtCases(cases(p.key, d))} cases`, options: { fontFace: FONT.book, fontSize: 10, color: sub } },
+        { text: `  ${fmtCases(cases(p.key, d))} cs`, options: { fontFace: FONT.book, fontSize: 10, color: sub } },
       ],
-      { x, y: ROW_Y0 + r * ROW_H, w: CARD_W, h: ROW_H, margin: 0, align: "center", valign: "middle", lineSpacingMultiple: 0.9,
-        isTextBox: true, objectName: `${p.sub} ${d}` },
+      { x, y: ROW_Y0 + r * ROW_H, w: CARD_W, h: ROW_H, margin: 0, align: "center", valign: "middle", isTextBox: true,
+        objectName: `${p.sub} ${d}` },
     );
   });
 });
@@ -261,7 +270,7 @@ PLAN.forEach((p, i) => {
 slide.addText(
   [
     { text: "DEPARTMENT", options: { fontFace: FONT.bold, charSpacing: 1, breakLine: true } },
-    { text: "$ per order · mix · cases", options: { fontFace: FONT.book } },
+    { text: "$ per order · cases (cs)", options: { fontFace: FONT.book } },
   ],
   { x: X0, y: ROW_Y0 - 0.5, w: LABEL_W, h: 0.42, margin: 0, valign: "bottom", fontSize: 10, color: COLOR.muted, isTextBox: true,
     objectName: "Department header" },
@@ -282,20 +291,14 @@ DEPARTMENTS.forEach((d, r) => {
     color: COLOR.ink, isTextBox: true, objectName: `Label ${d}`,
   });
   const change = shown.oct[d] - shown.today[d];
-  const caseChange = cases("oct", d) - cases("today", d);
-  const changeColor = change === 0 ? COLOR.muted : cross ? COLOR.magenta : COLOR.ink;
-  slide.addText(
-    [
-      { text: change === 0 ? "flat" : `+${money(change)}`, options: { fontFace: FONT.black, fontSize: 14, color: changeColor, breakLine: true } },
-      { text: change === 0 ? " " : `+${fmtCases(caseChange)} cases`, options: { fontFace: FONT.book, fontSize: 10, color: COLOR.muted } },
-    ],
-    { x: DELTA_X, y, w: DELTA_W, h: ROW_H, margin: 0, align: "right", valign: "middle", lineSpacingMultiple: 0.9, isTextBox: true,
-      objectName: `Change ${d}` },
-  );
+  slide.addText(change === 0 ? "flat" : `+${money(change)}`, {
+    x: DELTA_X, y, w: DELTA_W, h: ROW_H, margin: 0, align: "right", valign: "middle", fontFace: FONT.black, fontSize: 14,
+    color: change === 0 ? COLOR.muted : cross ? COLOR.magenta : COLOR.ink, isTextBox: true, objectName: `Change ${d}`,
+  });
 });
 
 // --- room to grow panel ---
-const PX = TABLE_RIGHT + 0.4;
+const PX = TABLE_RIGHT + 0.35;
 const PW = 12.65 - PX;
 slide.addShape(pres.ShapeType.roundRect, {
   x: PX, y: TOP, w: PW, h: BOTTOM - TOP, rectRadius: 0.12, fill: { color: COLOR.panel }, line: { color: "EFE9F5", width: 0.75 },
@@ -303,62 +306,92 @@ slide.addShape(pres.ShapeType.roundRect, {
   objectName: "Room to grow panel",
 });
 slide.addText("Room to grow", {
-  x: PX + 0.25, y: TOP + 0.18, w: PW - 0.5, h: 0.4, margin: 0, fontFace: FONT.black, fontSize: 18, color: COLOR.purple,
+  x: PX + 0.25, y: TOP + 0.15, w: PW - 0.5, h: 0.4, margin: 0, fontFace: FONT.black, fontSize: 18, color: COLOR.purple,
   isTextBox: true, objectName: "Panel title",
 });
-slide.addText("% of orders with the department", {
-  x: PX + 0.25, y: TOP + 0.58, w: PW - 0.5, h: 0.26, margin: 0, fontFace: FONT.book, fontSize: 11, color: COLOR.muted,
+slide.addText("$ per order, today to the top-quartile store", {
+  x: PX + 0.25, y: TOP + 0.53, w: PW - 0.5, h: 0.24, margin: 0, valign: "top", fontFace: FONT.book, fontSize: 11, color: COLOR.muted,
   isTextBox: true, objectName: "Panel subtitle",
 });
 
-const chartDepts = [...crossDepts].sort((a, b) => headroom[b] - headroom[a]);
-const shortLabel: Record<string, string> = { "Cleaning & Laundry": "Cleaning", "Household & Kitchen": "Household", "Health & Beauty": "Health & Beauty", Other: "All other" };
-const chartLabels = chartDepts.map((d) => shortLabel[d] ?? d);
-// Bar charts draw the first category at the bottom; reverse so the biggest gap sits on top.
-slide.addChart(
-  pres.ChartType.bar,
-  [
-    { name: "Typical order", labels: [...chartLabels].reverse(), values: chartDepts.map((d) => Number(head[d].share_avg)).reverse() },
-    { name: "Top-quartile stores", labels: [...chartLabels].reverse(), values: chartDepts.map((d) => Number(head[d].share_p75)).reverse() },
-  ],
-  {
-    x: PX + 0.1, y: TOP + 0.88, w: PW - 0.25, h: 2.75, barDir: "bar", barGrouping: "clustered", barGapWidthPct: 45,
-    chartColors: [COLOR.barBase, COLOR.magenta],
-    showLegend: true, legendPos: "t", legendFontFace: FONT.book, legendFontSize: 10, legendColor: COLOR.ink,
-    showValue: true, dataLabelPosition: "outEnd", dataLabelFormatCode: "0%", dataLabelFontFace: FONT.bold, dataLabelFontSize: 9,
-    dataLabelColor: COLOR.ink,
-    catAxisLabelFontFace: FONT.book, catAxisLabelFontSize: 10, catAxisLabelColor: COLOR.ink, catAxisLineShow: false,
-    valAxisHidden: true, valAxisMinVal: 0, valAxisMaxVal: 1.15, valGridLine: { style: "none" }, catGridLine: { style: "none" },
-    objectName: "Room to grow chart",
-  },
-);
+// One bar per department, each scaled to its own top-quartile benchmark, like a progress bar:
+// blue = today, orange = what the 12-month plan adds, red = headroom left beyond the plan.
+// Built from shapes so each department's name sits above a full-width bar.
+const BX = PX + 0.25;
+const BW = PW - 0.5;
+const SEGMENTS = [
+  { name: "Today", color: COLOR.today_bar },
+  { name: "12-mo plan", color: COLOR.plan_bar },
+  { name: "Headroom", color: COLOR.head_bar },
+];
+let lx = BX;
+SEGMENTS.forEach((s) => {
+  slide.addShape(pres.ShapeType.rect, {
+    x: lx, y: TOP + 0.88, w: 0.12, h: 0.12, fill: { color: s.color }, line: { type: "none" }, objectName: `Legend ${s.name} key`,
+  });
+  const w = s.name.length * 0.075 + 0.1;
+  slide.addText(s.name, {
+    x: lx + 0.17, y: TOP + 0.84, w, h: 0.2, margin: 0, valign: "middle", fontFace: FONT.book, fontSize: 10, color: COLOR.ink,
+    isTextBox: true, objectName: `Legend ${s.name}`,
+  });
+  lx += 0.17 + w + 0.15;
+});
 
-const calloutY = TOP + 3.72;
+const chartDepts: Dept[] = ["Beverage", ...[...crossDepts].sort((a, b) => headroom[b] - headroom[a])];
+const BAR_Y0 = TOP + 1.13;
+const BAR_ROW = 0.425;
+const BAR_H = 0.19;
+chartDepts.forEach((d, r) => {
+  const y = BAR_Y0 + r * BAR_ROW;
+  const top = Math.max(Math.round(best[d]), shown.oct[d]);
+  const parts = [shown.today[d], shown.oct[d] - shown.today[d], top - shown.oct[d]];
+  slide.addText(d === "Other" ? "All other" : d, {
+    x: BX, y, w: BW * 0.62, h: 0.17, margin: 0, valign: "middle", fontFace: FONT.bold, fontSize: 10, color: COLOR.ink,
+    isTextBox: true, objectName: `Bar label ${d}`,
+  });
+  slide.addText(`top quartile ${money(top)}`, {
+    x: BX + BW * 0.5, y, w: BW * 0.5, h: 0.17, margin: 0, align: "right", valign: "middle", fontFace: FONT.book, fontSize: 9,
+    color: COLOR.muted, isTextBox: true, objectName: `Bar benchmark ${d}`,
+  });
+  let x = BX;
+  parts.forEach((v, k) => {
+    const w = (v / top) * BW;
+    if (w <= 0) return;
+    const seg = SEGMENTS[k]!;
+    slide.addText(k === 0 ? money(v) : `+${money(v)}`, {
+      x, y: y + 0.2, w, h: BAR_H, margin: 0, align: "center", valign: "middle", fontFace: FONT.bold, fontSize: 9,
+      color: COLOR.white, fill: { color: seg.color }, objectName: `Bar ${d} ${seg.name}`,
+    });
+    x += w;
+  });
+});
+
+const calloutY = BAR_Y0 + chartDepts.length * BAR_ROW + 0.08;
 slide.addShape(pres.ShapeType.roundRect, {
-  x: PX + 0.2, y: calloutY, w: PW - 0.4, h: BOTTOM - calloutY - 0.2, rectRadius: 0.08, fill: { color: COLOR.white },
+  x: PX + 0.2, y: calloutY, w: PW - 0.4, h: BOTTOM - calloutY - 0.14, rectRadius: 0.08, fill: { color: COLOR.white },
   line: { type: "none" }, objectName: "Headroom callout",
 });
 slide.addText(money(totalHeadroom), {
-  x: PX + 0.35, y: calloutY + 0.08, w: 1.3, h: 0.7, margin: 0, valign: "middle", fontFace: FONT.black, fontSize: 28,
+  x: PX + 0.35, y: calloutY + 0.02, w: 0.95, h: 0.56, margin: 0, valign: "middle", fontFace: FONT.black, fontSize: 24,
   color: COLOR.magenta, isTextBox: true, objectName: "Headroom value",
 });
 slide.addText(
   [
-    { text: "more per order", options: { fontFace: FONT.bold, breakLine: true } },
-    { text: "if every store bought like the top quartile. The plan needs half.", options: { fontFace: FONT.book } },
+    { text: "more per order outside Beverage", options: { fontFace: FONT.bold, breakLine: true } },
+    { text: "at top quartile. The plan needs half.", options: { fontFace: FONT.book } },
   ],
   {
-    x: PX + 1.6, y: calloutY + 0.06, w: PW - 1.95, h: 0.74, margin: 0, valign: "middle", fontSize: 10.5, color: COLOR.ink,
+    x: PX + 1.3, y: calloutY + 0.02, w: PW - 1.5, h: 0.56, margin: 0, valign: "middle", fontSize: 10, color: COLOR.ink,
     isTextBox: true, objectName: "Headroom text",
   },
 );
 
 slide.addText(
-  `Today: all orders May–Oct 2026, mix scaled to $${PLAN[0].aov.toLocaleString("en-US", { minimumFractionDigits: 2 })}. Top quartile: 75th-percentile store, stores with 6+ orders. ` +
-    `Plan closes 25% of that gap by Apr '27 and 50% by Oct '27 at today's ticket; Tobacco flat; Beverage fills the rest. ` +
-    `Cases at today's $ per case in each department.`,
+  `Today: all orders May–Oct 2026, scaled to $${PLAN[0].aov.toLocaleString("en-US", { minimumFractionDigits: 2 })}; cases at today's $ per case. ` +
+    `Top quartile: 75th-percentile store (6+ orders) on how often its orders include the department, at today's ticket; Beverage, already in ` +
+    `${pct(Number(head.Beverage.share_avg))} of orders, on $ per order. Plan closes 25% of the gap outside Beverage by Apr '27 and 50% by Oct '27; Tobacco flat; Beverage fills the rest.`,
   {
-    x: X0, y: 6.93, w: 12.65 - X0, h: 0.4, margin: 0, valign: "top", fontFace: FONT.book, fontSize: 10, color: COLOR.muted,
+    x: X0, y: 6.86, w: 12.65 - X0, h: 0.55, margin: 0, valign: "top", fontFace: FONT.book, fontSize: 10, color: COLOR.muted,
     isTextBox: true, objectName: "Footnote",
   },
 );

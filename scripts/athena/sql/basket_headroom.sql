@@ -6,6 +6,8 @@
 -- with at least one line from the department (0 when it never bought there). share_avg weights
 -- stores by orders; share_p50 and share_p75 are store percentiles. ticket is what an order spends
 -- in the department when it buys there. Headroom per order = (share_p75 - share_avg) * ticket.
+-- per_order_p75 is the 75th-percentile store's department spend per order; the slide uses it for
+-- Beverage, which is already in almost every order, so its room is in the ticket, not the frequency.
 WITH orders AS (
   SELECT order_id, store_id
   FROM dwm.dwm_trade_order_detail_full
@@ -47,7 +49,8 @@ SELECT
   round(approx_percentile(CAST(orders_with AS double) / orders, 0.5), 4) AS share_p50,
   round(approx_percentile(CAST(orders_with AS double) / orders, 0.75), 4) AS share_p75,
   round(sum(amount) / nullif(sum(orders_with), 0), 2) AS ticket,
-  round(sum(amount) / sum(orders), 2) AS per_order
+  round(sum(amount) / sum(orders), 2) AS per_order,
+  round(approx_percentile(amount / orders, 0.75), 2) AS per_order_p75
 FROM store_department
 GROUP BY department
 ORDER BY per_order DESC;
