@@ -32,6 +32,7 @@ const EXPORTS: Record<string, { sql: string; out: string }> = {
   "basket-mix": { sql: "scripts/athena/sql/basket_mix.sql", out: "data/raw/basket_mix.csv" },
   "basket-headroom": { sql: "scripts/athena/sql/basket_headroom.sql", out: "data/raw/basket_headroom.csv" },
   "basket-trend": { sql: "scripts/athena/sql/basket_trend.sql", out: "data/raw/basket_trend.csv" },
+  "basket-store-skus": { sql: "scripts/athena/sql/basket_store_skus.sql", out: "data/raw/basket_store_skus.csv" },
 };
 
 /** Every SKU in the liquor match file that is not rejected, for {{CATALOG_SKUS}}. */

@@ -38,6 +38,7 @@ All in `scripts/athena/sql/`:
 | `basket_mix.sql` | Last six full months, all stores: per department, revenue per order (rows add up to AOV), the share of orders that include it, the ticket when they do, and cases and eaches per order | `data/raw/basket_mix.csv` |
 | `basket_headroom.sql` | Same window, stores with 6+ orders, small departments folded into Other: store reach, order share (order-weighted average, store median and 75th percentile) and ticket per department | `data/raw/basket_headroom.csv` |
 | `basket_trend.sql` | Last 13 full months, all stores: revenue per order and order share by month and department | `data/raw/basket_trend.csv` |
+| `basket_store_skus.sql` | Last 12 full months: distinct SKUs a store buys in a year by department, averaged over all ordering stores and over stores with 12+ orders | `data/raw/basket_store_skus.csv` |
 | `optional_checks.sql` | Attribute names and item statuses, for tuning the matcher | Not needed for the exports |
 
 `data/raw/` is gitignored, so exports never reach the repo.
@@ -50,8 +51,9 @@ With the credentials in the environment:
 pnpm athena:check                  # who am I, and can Athena read the item table
 pnpm athena:export                 # all exports into data/raw/
 pnpm athena:export liquor-sales    # or any of: products, liquor-sales, liquor-reach, pricing, liquor-stores, liquor-store-skus,
-                                   #   basket-mix, basket-headroom, basket-trend
-pnpm slides:basket                 # board slide on basket growth, from the three basket exports, into dist/slides/
+                                   #   basket-mix, basket-headroom, basket-trend, basket-store-skus
+pnpm slides:basket                 # board slide on basket growth, from the basket exports, into dist/slides/
+                                   #   --units=skus: SKUs per store per year instead of cases; --scale=full: 0-100% bars
 pnpm crosscheck                    # Phase 2.5 comparison, from the two liquor exports
 ```
 

@@ -26,11 +26,12 @@ const pptxgen = pptxgenModule as unknown as typeof pptxgenModule.default;
 const ROOT = process.cwd();
 // Each room-to-grow bar runs to its own top-quartile store; --scale=full draws a 0-100% track instead.
 const SCALE_TO_BEST = !process.argv.includes("--scale=full");
-// --units=skus counts distinct SKUs per order beside the dollars instead of cases.
+// --units=skus shows the distinct SKUs a regular store buys in a year beside the dollars, instead of
+// cases per order (basket_store_skus.csv: stores with 12+ orders in the last twelve months).
 const SKUS = process.argv.includes("--units=skus");
 const UNIT = SKUS
-  ? { column: "skus_per_order", short: "SKUs", long: "SKUs", one: "SKU", header: "$ per order · SKUs" }
-  : { column: "cases_per_order", short: "cs", long: "cases", one: "case", header: "$ per order · cases (cs)" };
+  ? { short: "SKUs", long: "SKUs", header: "$ per order · SKUs per store / yr" }
+  : { short: "cs", long: "cases", header: "$ per order · cases (cs)" };
 const OUT = join(ROOT, `dist/slides/basket-progression${SKUS ? "-skus" : ""}${SCALE_TO_BEST ? "" : "-full"}.pptx`);
 
 // The plan's AOV path.
@@ -72,20 +73,28 @@ const csv = (name: string) =>
 const mixRows = csv("basket_mix.csv");
 const zero = () => Object.fromEntries(DEPARTMENTS.map((d) => [d, 0])) as Record<Dept, number>;
 const perOrder = zero();
-const unitsPerOrder = zero();
+const casesPerOrder = zero();
 const eachesPerOrder = zero();
+const deptOf = (name: string | undefined): Dept =>
+  (DEPARTMENTS as readonly string[]).includes(name ?? "") ? (name as Dept) : "Other";
 for (const r of mixRows) {
-  const name = r.department ?? "";
-  const d = (DEPARTMENTS as readonly string[]).includes(name) ? (name as Dept) : "Other";
+  const d = deptOf(r.department);
   perOrder[d] += Number(r.per_order);
-  unitsPerOrder[d] += Number(r[UNIT.column]);
+  casesPerOrder[d] += Number(r.cases_per_order);
   eachesPerOrder[d] += Number(r.units_per_order);
 }
 const measuredAov = DEPARTMENTS.reduce((s, d) => s + perOrder[d], 0);
 const scale = PLAN[0].aov / measuredAov;
-// Cases (or SKUs) per dollar, by department, at today's prices. Cases are the default unit (how Mercaso
-// sells); eaches go in the notes only, since assortment items such as bags and cups count by the each.
-const unitsPerDollar = Object.fromEntries(DEPARTMENTS.map((d) => [d, unitsPerOrder[d] / perOrder[d]])) as Record<Dept, number>;
+
+// Today's units beside the dollars. Cases are the default (how Mercaso sells), scaled with the dollars;
+// eaches go in the notes only, since assortment items such as bags and cups count by the each.
+// With --units=skus, distinct SKUs a regular store buys in a year.
+const unitsToday = zero();
+if (SKUS) {
+  for (const r of csv("basket_store_skus.csv")) unitsToday[deptOf(r.department)] += Number(r.avg_skus_regular);
+} else {
+  for (const d of DEPARTMENTS) unitsToday[d] = casesPerOrder[d] * scale;
+}
 
 const head = Object.fromEntries(csv("basket_headroom.csv").map((r) => [r.department, r])) as Record<Dept, Record<string, string>>;
 const headroom = Object.fromEntries(
@@ -128,11 +137,12 @@ const share = (d: Dept) => {
 const crossToday = crossDepts.reduce((s, d) => s + shown.today[d], 0);
 const crossOct = crossDepts.reduce((s, d) => s + shown.oct[d], 0);
 
-// Cases (or SKUs) per order: each step's department dollars at today's dollars per case (or SKU).
+// Units at each step grow with the department's dollars: cases at today's dollars per case, or SKUs
+// per store at today's spend per SKU.
 type PlanKey = (typeof PLAN)[number]["key"];
-const units = (p: PlanKey, d: Dept) => baskets[p][d] * unitsPerDollar[d];
+const units = (p: PlanKey, d: Dept) => unitsToday[d] * (baskets[p][d] / baskets.today[d]);
 const totalUnits = (p: PlanKey) => DEPARTMENTS.reduce((s, d) => s + units(p, d), 0);
-const fmtUnits = (n: number) => n.toFixed(1);
+const fmtUnits = (n: number) => (SKUS ? Math.round(n).toLocaleString("en-US") : n.toFixed(1));
 
 // Trend over the year, for the notes.
 const trend = csv("basket_trend.csv");
@@ -159,7 +169,7 @@ console.table(
     unitsOct: fmtUnits(units("oct", d)),
   })),
 );
-console.log(`${UNIT.long} per order: ${PLAN.map((p) => fmtUnits(totalUnits(p.key))).join(" / ")}`);
+console.log(`${UNIT.long} ${SKUS ? "per store per year" : "per order"}: ${PLAN.map((p) => fmtUnits(totalUnits(p.key))).join(" / ")}`);
 console.log(`Trend ${first} to ${last}: AOV ${aovChange.toFixed(0)}, Beverage ${bevChange.toFixed(0)}`);
 
 // ---------- slide ----------
@@ -257,7 +267,13 @@ PLAN.forEach((p, i) => {
     color: fg, isTextBox: true, objectName: `${p.sub} AOV`,
   });
   const growth = p.aov - PLAN[0].aov;
-  slide.addText(i === 0 ? "avg. order" : `+${money(growth)} · +${Math.round((growth / PLAN[0].aov) * 100)}%`, {
+  // With SKUs, the card also carries the store's yearly SKU total, the number the slide is about.
+  const pctGrowth = `+${Math.round((growth / PLAN[0].aov) * 100)}%`;
+  const skuTotal = `${fmtUnits(totalUnits(p.key))} SKUs`;
+  const growthLine = SKUS
+    ? i === 0 ? `${skuTotal} / yr` : `${pctGrowth} · ${skuTotal}`
+    : i === 0 ? "avg. order" : `+${money(growth)} · ${pctGrowth}`;
+  slide.addText(growthLine, {
     x, y: TOP + 0.98, w: CARD_W, h: 0.24, margin: 0, align: "center", valign: "middle", fontFace: FONT.bold, fontSize: 11,
     color: dark ? COLOR.white : i === 1 ? COLOR.magenta : COLOR.muted, isTextBox: true, objectName: `${p.sub} growth`,
   });
@@ -267,7 +283,7 @@ PLAN.forEach((p, i) => {
     slide.addText(
       [
         { text: money(v), options: { fontFace: FONT.bold, fontSize: 14, color: fg } },
-        { text: `  ${fmtUnits(units(p.key, d))} ${UNIT.short}`, options: { fontFace: FONT.book, fontSize: SKUS ? 9 : 10, color: sub } },
+        { text: `  ${fmtUnits(units(p.key, d))} ${UNIT.short}`, options: { fontFace: FONT.book, fontSize: 10, color: sub } },
       ],
       { x, y: ROW_Y0 + r * ROW_H, w: CARD_W, h: ROW_H, margin: 0, align: "center", valign: "middle", isTextBox: true,
         objectName: `${p.sub} ${d}` },
@@ -403,7 +419,7 @@ slide.addText(
 
 slide.addText(
   `Today: all orders May–Oct 2026, scaled to $${PLAN[0].aov.toLocaleString("en-US", { minimumFractionDigits: 2 })}; ` +
-    `${SKUS ? "SKUs = distinct SKUs per order, at today's $ per SKU" : "cases at today's $ per case"}. ` +
+    `${SKUS ? "SKUs = distinct SKUs a store buys in a year (Nov '25–Oct '26, stores with 12+ orders), grown with each department's $" : "cases at today's $ per case"}. ` +
     `Top quartile: 75th-percentile store (6+ orders) by share of orders that include the department. ` +
     `Plan closes 25% of that gap by Apr '27 and 50% by Oct '27, at today's ticket outside Beverage; Tobacco flat; Beverage fills the rest of the dollars.`,
   {
@@ -425,16 +441,22 @@ slide.addNotes(
       `Our top-quartile stores already buy these far more often. If every store bought like them, at today's ticket sizes, the order would be ${money(totalHeadroom)} bigger.`,
     `The plan needs half of that by October: cross-department spend goes from ${money(crossToday)} to ${money(crossOct)} per order, ` +
       `with Candy & Snacks the biggest piece and Grocery and Cleaning next. That is what the catalog, store-level gaps, M Rewards and Concierge recommendations are pointed at.`,
-    `In ${UNIT.long}, the order goes from about ${Math.round(totalUnits("today"))} to ${Math.round(totalUnits("apr"))} to ${Math.round(totalUnits("oct"))} ${UNIT.long}. ` +
-      `Beverage is ${fmtUnits(units("today", "Beverage"))} of today's ${UNIT.long}; the rest of the store adds ` +
-      `${fmtUnits(crossDepts.reduce((s, d) => s + units("oct", d) - units("today", d), 0))} ${UNIT.long} per order by October. ` +
+    (SKUS
+      ? `A regular store buys about ${fmtUnits(totalUnits("today"))} different SKUs from us a year; the plan takes that to about ` +
+        `${fmtUnits(totalUnits("apr"))} by April and ${fmtUnits(totalUnits("oct"))} by October. Beverage is ${fmtUnits(units("today", "Beverage"))} ` +
+        `of today's SKUs; the rest of the store adds ${fmtUnits(crossDepts.reduce((s, d) => s + units("oct", d) - units("today", d), 0))} SKUs a year by October. `
+      : `In cases, the order goes from about ${Math.round(totalUnits("today"))} to ${Math.round(totalUnits("apr"))} to ${Math.round(totalUnits("oct"))} cases. ` +
+        `Beverage is ${fmtUnits(units("today", "Beverage"))} of today's cases; the rest of the store adds ` +
+        `${fmtUnits(crossDepts.reduce((s, d) => s + units("oct", d) - units("today", d), 0))} cases per order by October. `) +
       `In eaches, today's order is about ${Math.round(DEPARTMENTS.reduce((s, d) => s + eachesPerOrder[d], 0) * scale)} units ` +
       `(Beverage about ${Math.round(eachesPerOrder.Beverage * scale)}, Candy & Snacks about ${Math.round(eachesPerOrder["Candy & Snacks"] * scale)}).`,
     `Method: department mix from all orders May–Oct 2026, scaled to ${money(PLAN[0].aov)}. Headroom per department = ` +
       `(top-quartile store's order share − average order share) × average department ticket, for stores with 6+ orders. ` +
       `25% of that gap closed by Apr '27, 50% by Oct '27; Tobacco flat; Beverage fills the remainder of the plan. ` +
-      `${SKUS ? "SKUs" : "Cases"} per order = department dollars ÷ today's dollars per ${UNIT.one} in that department, ` +
-      `so the ${UNIT.one} counts assume ${SKUS ? "spend per SKU holds; more SKUs per order is the breadth the catalog and recommendations push" : "prices and pack sizes hold"}.`,
+      (SKUS
+        ? `SKUs per store per year = distinct SKUs bought in the last twelve months by stores with 12+ orders, grown in line with ` +
+          `each department's dollars, so they assume spend per SKU holds; the extra breadth is what the catalog and recommendations push.`
+        : `Cases per order = department dollars ÷ today's dollars per case in that department, so the case counts assume prices and pack sizes hold.`),
   ].join("\n\n"),
 );
 
