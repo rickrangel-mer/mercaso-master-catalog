@@ -24,15 +24,15 @@ import pptxgenModule from "pptxgenjs";
 const pptxgen = pptxgenModule as unknown as typeof pptxgenModule.default;
 
 const ROOT = process.cwd();
-// Each room-to-grow bar runs to its own top-quartile store; --scale=full draws a 0-100% track instead.
-const SCALE_TO_BEST = !process.argv.includes("--scale=full");
-// --units=skus shows the distinct SKUs a regular store buys in a year beside the dollars, instead of
-// cases per order (basket_store_skus.csv: stores with 12+ orders in the last twelve months).
-const SKUS = process.argv.includes("--units=skus");
+// Room-to-grow bars run on a 0-100% track of orders; --scale=best runs each to its own top-quartile store.
+const SCALE_TO_BEST = process.argv.includes("--scale=best");
+// Beside the dollars: the distinct SKUs a regular store buys in a year (basket_store_skus.csv, stores
+// with 12+ orders in the last twelve months); --units=cases shows cases per order instead.
+const SKUS = !process.argv.includes("--units=cases");
 const UNIT = SKUS
   ? { short: "SKUs", long: "SKUs", header: "$ per order · SKUs per store / yr" }
   : { short: "cs", long: "cases", header: "$ per order · cases (cs)" };
-const OUT = join(ROOT, `dist/slides/basket-progression${SKUS ? "-skus" : ""}${SCALE_TO_BEST ? "" : "-full"}.pptx`);
+const OUT = join(ROOT, `dist/slides/basket-progression${SKUS ? "" : "-cases"}${SCALE_TO_BEST ? "-best" : ""}.pptx`);
 
 // The plan's AOV path.
 const PLAN = [
@@ -315,10 +315,20 @@ DEPARTMENTS.forEach((d, r) => {
     color: COLOR.ink, isTextBox: true, objectName: `Label ${d}`,
   });
   const change = shown.oct[d] - shown.today[d];
-  slide.addText(change === 0 ? "flat" : `+${money(change)}`, {
-    x: DELTA_X, y, w: DELTA_W, h: ROW_H, margin: 0, align: "right", valign: "middle", fontFace: FONT.black, fontSize: 14,
-    color: change === 0 ? COLOR.muted : cross ? COLOR.magenta : COLOR.ink, isTextBox: true, objectName: `Change ${d}`,
-  });
+  // From the rounded figures shown in the cards, so the change matches them.
+  const shownUnits = (p: PlanKey) => (SKUS ? Math.round(units(p, d)) : Math.round(units(p, d) * 10) / 10);
+  const unitChange = shownUnits("oct") - shownUnits("today");
+  slide.addText(
+    [
+      {
+        text: change === 0 ? "flat" : `+${money(change)}`,
+        options: { fontFace: FONT.black, fontSize: 14, color: change === 0 ? COLOR.muted : cross ? COLOR.magenta : COLOR.ink, breakLine: true },
+      },
+      { text: change === 0 ? " " : `+${fmtUnits(unitChange)} ${UNIT.short}`, options: { fontFace: FONT.book, fontSize: 9, color: COLOR.muted } },
+    ],
+    { x: DELTA_X, y, w: DELTA_W, h: ROW_H, margin: 0, align: "right", valign: "middle", lineSpacingMultiple: 0.82, isTextBox: true,
+      objectName: `Change ${d}` },
+  );
 });
 
 // --- room to grow panel ---

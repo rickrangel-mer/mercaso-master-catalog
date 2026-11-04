@@ -53,7 +53,7 @@ pnpm athena:export                 # all exports into data/raw/
 pnpm athena:export liquor-sales    # or any of: products, liquor-sales, liquor-reach, pricing, liquor-stores, liquor-store-skus,
                                    #   basket-mix, basket-headroom, basket-trend, basket-store-skus
 pnpm slides:basket                 # board slide on basket growth, from the basket exports, into dist/slides/
-                                   #   --units=skus: SKUs per store per year instead of cases; --scale=full: 0-100% bars
+                                   #   --units=cases: cases per order instead of SKUs per store per year; --scale=best: bars to the top quartile
 pnpm crosscheck                    # Phase 2.5 comparison, from the two liquor exports
 ```
 
