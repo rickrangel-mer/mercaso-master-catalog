@@ -63,14 +63,22 @@ const csv = (name: string) =>
 // ---------- numbers ----------
 
 const mixRows = csv("basket_mix.csv");
-const perOrder = Object.fromEntries(DEPARTMENTS.map((d) => [d, 0])) as Record<Dept, number>;
+const zero = () => Object.fromEntries(DEPARTMENTS.map((d) => [d, 0])) as Record<Dept, number>;
+const perOrder = zero();
+const casesPerOrder = zero();
+const eachesPerOrder = zero();
 for (const r of mixRows) {
   const name = r.department ?? "";
   const d = (DEPARTMENTS as readonly string[]).includes(name) ? (name as Dept) : "Other";
   perOrder[d] += Number(r.per_order);
+  casesPerOrder[d] += Number(r.cases_per_order);
+  eachesPerOrder[d] += Number(r.units_per_order);
 }
 const measuredAov = DEPARTMENTS.reduce((s, d) => s + perOrder[d], 0);
 const scale = PLAN[0].aov / measuredAov;
+// Cases per dollar, by department, at today's prices. Units on the slide are cases (how Mercaso sells);
+// eaches go in the notes only, since assortment items such as bags and cups count by the each.
+const casesPerDollar = Object.fromEntries(DEPARTMENTS.map((d) => [d, casesPerOrder[d] / perOrder[d]])) as Record<Dept, number>;
 
 const head = Object.fromEntries(csv("basket_headroom.csv").map((r) => [r.department, r])) as Record<Dept, Record<string, string>>;
 const headroom = Object.fromEntries(
@@ -105,6 +113,12 @@ const crossDepts = DEPARTMENTS.filter((d) => d !== "Beverage" && d !== "Tobacco"
 const crossToday = crossDepts.reduce((s, d) => s + shown.today[d], 0);
 const crossOct = crossDepts.reduce((s, d) => s + shown.oct[d], 0);
 
+// Cases per order: each step's department dollars at today's dollars per case.
+type PlanKey = (typeof PLAN)[number]["key"];
+const cases = (p: PlanKey, d: Dept) => baskets[p][d] * casesPerDollar[d];
+const totalCases = (p: PlanKey) => DEPARTMENTS.reduce((s, d) => s + cases(p, d), 0);
+const fmtCases = (n: number) => n.toFixed(1);
+
 // Trend over the year, for the notes.
 const trend = csv("basket_trend.csv");
 const months = [...new Set(trend.map((r) => r.month ?? ""))].sort();
@@ -125,8 +139,12 @@ console.table(
     oct: shown.oct[d],
     change: shown.oct[d] - shown.today[d],
     headroom: headroom[d].toFixed(1),
+    casesToday: fmtCases(cases("today", d)),
+    casesApr: fmtCases(cases("apr", d)),
+    casesOct: fmtCases(cases("oct", d)),
   })),
 );
+console.log(`Cases per order: ${PLAN.map((p) => fmtCases(totalCases(p.key))).join(" / ")}`);
 console.log(`Trend ${first} to ${last}: AOV ${aovChange.toFixed(0)}, Beverage ${bevChange.toFixed(0)}`);
 
 // ---------- slide ----------
@@ -177,9 +195,9 @@ slide.addText(
 );
 
 // --- basket table: department labels, three period cards, change column ---
-const TOP = 1.95;
-const BOTTOM = 6.75;
-const HEADER_H = 1.3;
+const TOP = 1.85;
+const BOTTOM = 6.8;
+const HEADER_H = 1.15;
 const ROW_Y0 = TOP + HEADER_H + 0.12;
 const ROW_H = (BOTTOM - 0.1 - ROW_Y0) / DEPARTMENTS.length;
 const LABEL_W = 2.2;
@@ -220,7 +238,8 @@ PLAN.forEach((p, i) => {
     color: fg, isTextBox: true, objectName: `${p.sub} AOV`,
   });
   const growth = p.aov - PLAN[0].aov;
-  slide.addText(i === 0 ? "avg. order" : `+${money(growth)} · +${Math.round((growth / PLAN[0].aov) * 100)}%`, {
+  const caseCount = `${Math.round(totalCases(p.key))} cases`;
+  slide.addText(i === 0 ? caseCount : `+${Math.round((growth / PLAN[0].aov) * 100)}% · ${caseCount}`, {
     x, y: TOP + 0.98, w: CARD_W, h: 0.24, margin: 0, align: "center", valign: "middle", fontFace: FONT.bold, fontSize: 11,
     color: dark ? COLOR.white : i === 1 ? COLOR.magenta : COLOR.muted, isTextBox: true, objectName: `${p.sub} growth`,
   });
@@ -230,10 +249,11 @@ PLAN.forEach((p, i) => {
     slide.addText(
       [
         { text: money(v), options: { fontFace: FONT.bold, fontSize: 14, color: fg } },
-        { text: `  ${pct(v / Math.round(p.aov))}`, options: { fontFace: FONT.book, fontSize: 10, color: sub } },
+        { text: `  ${pct(v / Math.round(p.aov))}`, options: { fontFace: FONT.book, fontSize: 10, color: sub, breakLine: true } },
+        { text: `${fmtCases(cases(p.key, d))} cases`, options: { fontFace: FONT.book, fontSize: 10, color: sub } },
       ],
-      { x, y: ROW_Y0 + r * ROW_H, w: CARD_W, h: ROW_H, margin: 0, align: "center", valign: "middle", isTextBox: true,
-        objectName: `${p.sub} ${d}` },
+      { x, y: ROW_Y0 + r * ROW_H, w: CARD_W, h: ROW_H, margin: 0, align: "center", valign: "middle", lineSpacingMultiple: 0.9,
+        isTextBox: true, objectName: `${p.sub} ${d}` },
     );
   });
 });
@@ -241,7 +261,7 @@ PLAN.forEach((p, i) => {
 slide.addText(
   [
     { text: "DEPARTMENT", options: { fontFace: FONT.bold, charSpacing: 1, breakLine: true } },
-    { text: "$ per order · mix", options: { fontFace: FONT.book } },
+    { text: "$ per order · mix · cases", options: { fontFace: FONT.book } },
   ],
   { x: X0, y: ROW_Y0 - 0.5, w: LABEL_W, h: 0.42, margin: 0, valign: "bottom", fontSize: 10, color: COLOR.muted, isTextBox: true,
     objectName: "Department header" },
@@ -262,10 +282,16 @@ DEPARTMENTS.forEach((d, r) => {
     color: COLOR.ink, isTextBox: true, objectName: `Label ${d}`,
   });
   const change = shown.oct[d] - shown.today[d];
-  slide.addText(change === 0 ? "flat" : `+${money(change)}`, {
-    x: DELTA_X, y, w: DELTA_W, h: ROW_H, margin: 0, align: "right", valign: "middle", fontFace: FONT.black, fontSize: 14,
-    color: change === 0 ? COLOR.muted : cross ? COLOR.magenta : COLOR.ink, isTextBox: true, objectName: `Change ${d}`,
-  });
+  const caseChange = cases("oct", d) - cases("today", d);
+  const changeColor = change === 0 ? COLOR.muted : cross ? COLOR.magenta : COLOR.ink;
+  slide.addText(
+    [
+      { text: change === 0 ? "flat" : `+${money(change)}`, options: { fontFace: FONT.black, fontSize: 14, color: changeColor, breakLine: true } },
+      { text: change === 0 ? " " : `+${fmtCases(caseChange)} cases`, options: { fontFace: FONT.book, fontSize: 10, color: COLOR.muted } },
+    ],
+    { x: DELTA_X, y, w: DELTA_W, h: ROW_H, margin: 0, align: "right", valign: "middle", lineSpacingMultiple: 0.9, isTextBox: true,
+      objectName: `Change ${d}` },
+  );
 });
 
 // --- room to grow panel ---
@@ -329,9 +355,10 @@ slide.addText(
 
 slide.addText(
   `Today: all orders May–Oct 2026, mix scaled to $${PLAN[0].aov.toLocaleString("en-US", { minimumFractionDigits: 2 })}. Top quartile: 75th-percentile store, stores with 6+ orders. ` +
-    `Plan closes 25% of that gap by Apr '27 and 50% by Oct '27 at today's ticket; Tobacco flat; Beverage fills the rest.`,
+    `Plan closes 25% of that gap by Apr '27 and 50% by Oct '27 at today's ticket; Tobacco flat; Beverage fills the rest. ` +
+    `Cases at today's $ per case in each department.`,
   {
-    x: X0, y: 6.88, w: 12.65 - X0, h: 0.4, margin: 0, valign: "top", fontFace: FONT.book, fontSize: 10, color: COLOR.muted,
+    x: X0, y: 6.93, w: 12.65 - X0, h: 0.4, margin: 0, valign: "top", fontFace: FONT.book, fontSize: 10, color: COLOR.muted,
     isTextBox: true, objectName: "Footnote",
   },
 );
@@ -347,9 +374,15 @@ slide.addNotes(
       `Our top-quartile stores already buy these far more often. If every store bought like them, at today's ticket sizes, the order would be ${money(totalHeadroom)} bigger.`,
     `The plan needs half of that by October: cross-department spend goes from ${money(crossToday)} to ${money(crossOct)} per order, ` +
       `with Candy & Snacks the biggest piece and Grocery and Cleaning next. That is what the catalog, store-level gaps, M Rewards and Concierge recommendations are pointed at.`,
+    `In cases, the order goes from about ${Math.round(totalCases("today"))} to ${Math.round(totalCases("apr"))} to ${Math.round(totalCases("oct"))} cases. ` +
+      `Beverage is ${fmtCases(cases("today", "Beverage"))} of today's cases; the rest of the store adds ` +
+      `${fmtCases(crossDepts.reduce((s, d) => s + cases("oct", d) - cases("today", d), 0))} cases per order by October. ` +
+      `In eaches, today's order is about ${Math.round(DEPARTMENTS.reduce((s, d) => s + eachesPerOrder[d], 0) * scale)} units ` +
+      `(Beverage about ${Math.round(eachesPerOrder.Beverage * scale)}, Candy & Snacks about ${Math.round(eachesPerOrder["Candy & Snacks"] * scale)}).`,
     `Method: department mix from all orders May–Oct 2026, scaled to ${money(PLAN[0].aov)}. Headroom per department = ` +
       `(top-quartile store's order share − average order share) × average department ticket, for stores with 6+ orders. ` +
-      `25% of that gap closed by Apr '27, 50% by Oct '27; Tobacco flat; Beverage fills the remainder of the plan.`,
+      `25% of that gap closed by Apr '27, 50% by Oct '27; Tobacco flat; Beverage fills the remainder of the plan. ` +
+      `Cases per order = department dollars ÷ today's dollars per case in that department, so the case counts assume prices and pack sizes hold.`,
   ].join("\n\n"),
 );
 

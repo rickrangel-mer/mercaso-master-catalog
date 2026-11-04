@@ -3,7 +3,8 @@
 --
 -- per_order is department revenue over every order in the window, so the rows add up to the
 -- average order value. order_share is the share of orders with at least one line from the
--- department; ticket is what those orders spend in it.
+-- department; ticket is what those orders spend in it. Line quantities are cases, so
+-- cases_per_order counts cases and units_per_order counts eaches (cases times package_size).
 WITH orders AS (
   SELECT order_id
   FROM dwm.dwm_trade_order_detail_full
@@ -13,7 +14,8 @@ WITH orders AS (
     AND created_at < date_trunc('month', current_timestamp)
 ),
 lines AS (
-  SELECT li.order_id, coalesce(li.department, '(blank)') AS department, sum(li.current_total_amount) AS amount
+  SELECT li.order_id, coalesce(li.department, '(blank)') AS department, sum(li.current_total_amount) AS amount,
+         sum(li.current_quantity) AS cases, sum(li.current_quantity * coalesce(li.package_size, 1)) AS units
   FROM dwm.dwm_trade_line_item_detail_full li
   JOIN orders o ON o.order_id = li.order_id
   WHERE li.dt = (SELECT max(dt) FROM dwm.dwm_trade_line_item_detail_full)
@@ -28,7 +30,10 @@ SELECT
   max(t.orders) AS orders,
   round(sum(l.amount) / max(t.orders), 2) AS per_order,
   round(CAST(count(*) AS double) / max(t.orders), 4) AS order_share,
-  round(sum(l.amount) / count(*), 2) AS ticket
+  round(sum(l.amount) / count(*), 2) AS ticket,
+  round(CAST(sum(l.cases) AS double) / max(t.orders), 3) AS cases_per_order,
+  round(CAST(sum(l.units) AS double) / max(t.orders), 2) AS units_per_order,
+  round(sum(l.amount) / nullif(sum(l.cases), 0), 2) AS price_per_case
 FROM lines l
 CROSS JOIN total t
 GROUP BY l.department

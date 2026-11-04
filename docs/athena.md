@@ -35,7 +35,7 @@ All in `scripts/athena/sql/`:
 | `pricing.sql` | Today's case price per live item (the promo price when on promo, else the regular price without CRV) and Finale's average case cost with the case CRV taken out (`average_cost - regular_crv * package_size`), for the site's price and margin columns | `data/raw/pricing.csv` |
 | `liquor_stores.sql` | One row per CA liquor store that ordered in 12 months: name, number, organization, city, ZIP, first and last order dates, orders in 12 months, 90 days and the 90 days before, 12-month spend. No contact details | `data/raw/liquor_stores.csv` |
 | `liquor_store_skus.sql` | Store × SKU for the catalog's SKUs over 12 months: orders, cases, last order date. The runner fills `{{CATALOG_SKUS}}` from the match file | `data/raw/liquor_store_skus.csv` |
-| `basket_mix.sql` | Last six full months, all stores: per department, revenue per order (rows add up to AOV), the share of orders that include it, and the ticket when they do | `data/raw/basket_mix.csv` |
+| `basket_mix.sql` | Last six full months, all stores: per department, revenue per order (rows add up to AOV), the share of orders that include it, the ticket when they do, and cases and eaches per order | `data/raw/basket_mix.csv` |
 | `basket_headroom.sql` | Same window, stores with 6+ orders, small departments folded into Other: store reach, order share (order-weighted average, store median and 75th percentile) and ticket per department | `data/raw/basket_headroom.csv` |
 | `basket_trend.sql` | Last 13 full months, all stores: revenue per order and order share by month and department | `data/raw/basket_trend.csv` |
 | `optional_checks.sql` | Attribute names and item statuses, for tuning the matcher | Not needed for the exports |
