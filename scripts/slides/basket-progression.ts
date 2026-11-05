@@ -6,7 +6,8 @@
  *   2. Where and How to Grow: where the room is (how often orders include each department, today,
  *      the 12-month plan and the top-quartile store) and, beside it, how to grow (Mercaso Concierge).
  *   3. Gaps in the Market: one stretch of Long Beach street by street, and customers against the market.
- *   4. Building the Commerce Core: the headcount we make room for and the commerce roles we hire.
+ *   4. Building the Commerce Core: the headcount we make room for (Xi'an) and the roles we hire with it,
+ *      Commerce by 2H 2027 and Concierge / Fintech by 1H 2028.
  *
  *   pnpm athena:export basket-mix basket-headroom basket-store-skus
  *   pnpm slides:basket            writes dist/slides/basket-progression.pptx
@@ -956,171 +957,119 @@ function drawGapMap(slide: Slide, g: GapMap, x0: number, y0: number, maxW: numbe
 
 // ---------- slide 4: building the commerce core ----------
 
-// The headcount plan (Rick, 2026-11-05): make room in Xi'an (-8 headcount, -$50K, the team that stays
-// becomes one state-focused Prod / Eng / Ops role), and reinvest in two groups of roles.
-const TEAM = {
-  room: [
-    { big: "−8", small: "Xi'an headcount" },
-    { big: "−$50K", small: "headcount cost" },
-    { big: "1 role", small: "State-focused Prod / Eng / Ops, all in one" },
-  ],
-  groups: [
-    {
-      name: "Commerce",
-      total: "+4",
-      by: "by 2H 2027",
-      roles: [
-        { role: "Finance / Controller", count: "+1" },
-        { role: "Operations / Transportation", count: "+1" },
-        { role: "HR", count: "+1" },
-        { role: "Purchasing / Planning", count: "+1" },
-      ],
-    },
-    {
-      name: "Concierge / Fintech",
-      total: "+4",
-      by: "by 1H 2028",
-      roles: [
-        { role: "Product", count: "1–2" },
-        { role: "Business Operations", count: "1–2" },
-      ],
-    },
-  ],
-  timeline: [
-    { when: "Today", what: "Xi'an −8, −$50K" },
-    { when: "Mar '27", what: "Commerce hiring starts" },
-    { when: "2H '27", what: "Commerce +4" },
-    { when: "1H '28", what: "Concierge / Fintech +4" },
-  ],
-} as const;
+// The headcount plan (Rick, 2026-11-05): make room in Xi'an (-8 offshore headcount, -$50K; the work
+// comes back in-house as one Prod / Eng / Ops role), then reinvest in Commerce (+4 by 2H 2027) and
+// Concierge / Fintech (+4 by 1H 2028). Three columns, left to right in time, like slide 1's cards.
+const TEAM = [
+  {
+    when: "NOW",
+    name: "Make room",
+    big: "−$50K",
+    caption: "headcount cost",
+    rows: [
+      { value: "−8", label: "Xi'an headcount (offshore)" },
+      { value: "1", label: "in-house role: Prod / Eng / Ops in one" },
+    ],
+    foot: "Funds the hires that follow",
+  },
+  {
+    when: "BY 2H 2027",
+    name: "Commerce",
+    big: "+4",
+    caption: "core roles",
+    rows: [
+      { value: "+1", label: "Finance / Controller" },
+      { value: "+1", label: "Operations / Transportation" },
+      { value: "+1", label: "HR" },
+      { value: "+1", label: "Purchasing / Planning" },
+    ],
+    foot: "Hiring starts March 2027",
+  },
+  {
+    when: "BY 1H 2028",
+    name: "Concierge / Fintech",
+    big: "+4",
+    caption: "roles",
+    rows: [
+      { value: "+2", label: "Product" },
+      { value: "+2", label: "Business Operations" },
+    ],
+    foot: "Builds on the Commerce core",
+  },
+] as const;
 
 {
   const slide = addFrame("Building the Commerce Core", [
-    { text: "Commerce needs a stronger core as we scale. ", options: { fontFace: FONT.book } },
-    { text: "We fund it by reshaping headcount, not adding to it.", options: { fontFace: FONT.bold } },
+    { text: "The next 18 months of hires are funded by reshaping headcount, ", options: { fontFace: FONT.book } },
+    { text: "not by adding to it.", options: { fontFace: FONT.bold } },
   ]);
 
   const TOP = 1.95;
-  const PANEL_B = 5.95;
-  const LW = 3.75; // "make room" panel
-  const ARROW = 0.55;
-  const RX0 = X0 + LW + ARROW;
-  const RW = X1 - RX0;
+  const BOTTOM = 7.0;
+  const GAP = 0.5; // room for the arrow between columns
+  const CW = (X1 - X0 - GAP * (TEAM.length - 1)) / TEAM.length;
+  const fills = [COLOR.today, COLOR.apr, COLOR.magenta];
 
-  const panel = (x: number, w: number, title: string, subtitle: string, name: string) => {
+  TEAM.forEach((c, i) => {
+    const x = X0 + i * (CW + GAP);
+    const dark = i === TEAM.length - 1;
+    const ink = dark ? COLOR.white : COLOR.ink;
+    const sub = dark ? "FFD6EC" : COLOR.muted;
+    const accent = dark ? COLOR.white : i === 0 ? COLOR.purple : COLOR.magenta;
     slide.addShape(pres.ShapeType.roundRect, {
-      x, y: TOP, w, h: PANEL_B - TOP, rectRadius: 0.12, fill: { color: COLOR.panel }, line: { color: "EFE9F5", width: 0.75 },
-      shadow: { type: "outer", color: "5C2E91", opacity: 0.08, blur: 8, offset: 2, angle: 90 },
-      objectName: `${name} panel`,
+      x, y: TOP, w: CW, h: BOTTOM - TOP, rectRadius: 0.14, fill: { color: fills[i]! }, line: { type: "none" }, objectName: `${c.name} column`,
     });
-    slide.addText(title, {
-      x: x + 0.3, y: TOP + 0.18, w: w - 0.6, h: 0.4, margin: 0, fontFace: FONT.black, fontSize: 20, color: COLOR.purple,
-      isTextBox: true, objectName: `${name} title`,
+    const px = x + 0.32;
+    const pw = CW - 0.64;
+    slide.addText(
+      [
+        { text: c.when, options: { fontFace: FONT.bold, fontSize: 10, charSpacing: 1, color: dark ? COLOR.white : COLOR.magenta, breakLine: true } },
+        { text: c.name, options: { fontFace: FONT.black, fontSize: 18, color: ink } },
+      ],
+      { x: px, y: TOP + 0.25, w: pw, h: 0.62, margin: 0, valign: "top", isTextBox: true, objectName: `${c.name} heading` },
+    );
+    slide.addText(
+      [
+        { text: c.big, options: { fontFace: FONT.black, fontSize: 44, color: accent, breakLine: true } },
+        { text: c.caption, options: { fontFace: FONT.bold, fontSize: 11, color: sub } },
+      ],
+      { x: px, y: TOP + 0.95, w: pw, h: 1.0, margin: 0, valign: "top", isTextBox: true, objectName: `${c.name} total` },
+    );
+    const ry0 = TOP + 2.1;
+    const rowH = 0.5;
+    c.rows.forEach((r, k) => {
+      const ry = ry0 + k * rowH;
+      slide.addShape(pres.ShapeType.line, {
+        x: px, y: ry, w: pw, h: 0, line: { color: dark ? "F37BBE" : "DDD3EA", width: 0.75 }, objectName: `${c.name} rule ${k + 1}`,
+      });
+      slide.addText(r.value, {
+        x: px, y: ry, w: 0.55, h: rowH, margin: 0, valign: "middle", fontFace: FONT.black, fontSize: 15, color: accent, isTextBox: true,
+        objectName: `${c.name} ${r.label} value`,
+      });
+      slide.addText(r.label, {
+        x: px + 0.6, y: ry, w: pw - 0.6, h: rowH, margin: 0, valign: "middle", fontFace: FONT.bold, fontSize: 11.5, color: ink, isTextBox: true,
+        objectName: `${c.name} ${r.label}`,
+      });
     });
-    slide.addText(subtitle, {
-      x: x + 0.3, y: TOP + 0.58, w: w - 0.6, h: 0.26, margin: 0, valign: "top", fontFace: FONT.book, fontSize: 12, color: COLOR.muted,
-      isTextBox: true, objectName: `${name} subtitle`,
+    slide.addText(c.foot, {
+      x: px, y: BOTTOM - 0.55, w: pw, h: 0.3, margin: 0, valign: "middle", fontFace: FONT.book, fontSize: 10.5, color: sub, isTextBox: true,
+      objectName: `${c.name} foot`,
     });
-  };
-
-  // Left: make room, as a chain: Xi'an headcount -> cost -> the role that stays.
-  panel(X0, LW, "Make room", "Starting with the Xi'an team", "Make room");
-  const stepH = 0.78;
-  const stepGap = 0.24;
-  TEAM.room.forEach((r, i) => {
-    const y = TOP + 1.02 + i * (stepH + stepGap);
-    slide.addShape(pres.ShapeType.roundRect, {
-      x: X0 + 0.3, y, w: LW - 0.6, h: stepH, rectRadius: 0.08, fill: { color: COLOR.white }, line: { color: "E6DDF0", width: 0.75 },
-      objectName: `Room step ${i + 1}`,
-    });
-    slide.addText(r.big, {
-      x: X0 + 0.45, y, w: 1.45, h: stepH, margin: 0, valign: "middle", fontFace: FONT.black, fontSize: 22,
-      color: i === 1 ? COLOR.magenta : COLOR.purple, isTextBox: true, wrap: false, objectName: `Room step ${i + 1} value`,
-    });
-    slide.addText(r.small, {
-      x: X0 + 1.95, y, w: LW - 2.35, h: stepH, margin: 0, valign: "middle", fontFace: FONT.bold, fontSize: 11, color: COLOR.ink,
-      isTextBox: true, objectName: `Room step ${i + 1} label`,
-    });
-    if (i < TEAM.room.length - 1) {
-      slide.addShape(pres.ShapeType.downArrow, {
-        x: X0 + LW / 2 - 0.1, y: y + stepH + 0.03, w: 0.2, h: stepGap - 0.06, fill: { color: "C7B8E3" }, line: { type: "none" },
-        objectName: `Room step ${i + 1} arrow`,
+    if (i < TEAM.length - 1) {
+      slide.addShape(pres.ShapeType.chevron, {
+        x: x + CW + GAP / 2 - 0.12, y: TOP + (BOTTOM - TOP) / 2 - 0.2, w: 0.24, h: 0.4, fill: { color: COLOR.magenta }, line: { type: "none" },
+        objectName: `Arrow ${i + 1}`,
       });
     }
   });
 
-  // The arrow between the panels: what we cut funds what we hire.
-  slide.addShape(pres.ShapeType.rightArrow, {
-    x: X0 + LW + 0.1, y: TOP + (PANEL_B - TOP) / 2 - 0.22, w: ARROW - 0.2, h: 0.44, fill: { color: COLOR.magenta }, line: { type: "none" },
-    objectName: "Reinvest arrow",
-  });
-
-  // Right: reinvest, in two groups of role cards.
-  panel(RX0, RW, "Reinvest", "The roles we hire, and when", "Reinvest");
-  const CG = 0.16;
-  let gy = TOP + 0.98;
-  TEAM.groups.forEach((g, gi) => {
-    slide.addText(
-      [
-        { text: g.name, options: { fontFace: FONT.black, fontSize: 13, color: COLOR.ink } },
-        { text: `   ${g.total} total `, options: { fontFace: FONT.black, fontSize: 13, color: COLOR.magenta } },
-        { text: g.by, options: { fontFace: FONT.book, fontSize: 11, color: COLOR.muted } },
-      ],
-      { x: RX0 + 0.3, y: gy, w: RW - 0.6, h: 0.26, margin: 0, valign: "middle", isTextBox: true, objectName: `${g.name} label` },
-    );
-    const cy = gy + 0.34;
-    const ch = 0.88;
-    // Cards share the row: four in the commerce row, two (half the row each) in the concierge row.
-    const w = (RW - 0.6 - CG * (g.roles.length - 1)) / g.roles.length;
-    g.roles.forEach((r, i) => {
-      const cx = RX0 + 0.3 + i * (w + CG);
-      slide.addShape(pres.ShapeType.roundRect, {
-        x: cx, y: cy, w, h: ch, rectRadius: 0.08, fill: { color: COLOR.white }, line: { color: "E6DDF0", width: 0.75 },
-        objectName: `${g.name} ${r.role} card`,
-      });
-      slide.addText(
-        [
-          { text: r.count, options: { fontFace: FONT.black, fontSize: 18, color: gi === 0 ? COLOR.purple : COLOR.magenta, breakLine: true } },
-          { text: r.role, options: { fontFace: FONT.bold, fontSize: 11, color: COLOR.ink } },
-        ],
-        { x: cx + 0.16, y: cy + 0.08, w: w - 0.26, h: ch - 0.16, margin: 0, valign: "top", isTextBox: true, objectName: `${g.name} ${r.role}` },
-      );
-    });
-    gy = cy + ch + 0.32;
-  });
-
-  // Timeline under both panels.
-  const TY = PANEL_B + 0.42;
-  const TX0 = X0 + 0.15;
-  const TX1 = X1 - 0.15;
-  slide.addShape(pres.ShapeType.line, { x: TX0, y: TY, w: TX1 - TX0, h: 0, line: { color: "D9D3E3", width: 2 }, objectName: "Timeline" });
-  const step = (TX1 - TX0) / (TEAM.timeline.length - 1);
-  TEAM.timeline.forEach((t, i) => {
-    const tx = TX0 + i * step;
-    const dot = 0.18;
-    slide.addShape(pres.ShapeType.ellipse, {
-      x: tx - dot / 2, y: TY - dot / 2, w: dot, h: dot, fill: { color: i === 0 ? COLOR.magenta : COLOR.purple }, line: { color: COLOR.white, width: 1.5 },
-      objectName: `Timeline ${t.when} dot`,
-    });
-    const align = i === 0 ? "left" : i === TEAM.timeline.length - 1 ? "right" : "center";
-    const bw = 2.6;
-    const bx = align === "left" ? tx - 0.09 : align === "right" ? tx - bw + 0.09 : tx - bw / 2;
-    slide.addText(
-      [
-        { text: t.when, options: { fontFace: FONT.black, fontSize: 11, color: i === 0 ? COLOR.magenta : COLOR.purple, breakLine: true } },
-        { text: t.what, options: { fontFace: FONT.book, fontSize: 10, color: COLOR.ink } },
-      ],
-      { x: bx, y: TY + 0.14, w: bw, h: 0.42, margin: 0, align, valign: "top", isTextBox: true, objectName: `Timeline ${t.when}` },
-    );
-  });
-
-  const roles = (g: (typeof TEAM.groups)[number]) => g.roles.map((r) => `${r.role} ${r.count}`).join(", ");
   slide.addNotes(
     [
-      `We make room in our headcount before we add to it. It starts with the Xi'an team: 8 fewer people, about $50K, and the team that stays ` +
-        `becomes one state-focused role that covers product, engineering and operations together.`,
-      ...TEAM.groups.map((g) => `${g.name}: ${g.total} roles ${g.by} (${roles(g)}).`),
-      `Commerce hiring starts in March 2027, so the core functions are in place by the second half of 2027; Concierge and Fintech follow by the first half of 2028.`,
+      `We make room in our headcount before we add to it. It starts with Xi'an: 8 fewer offshore roles, about $50K, and that work comes ` +
+        `back in-house as one role that covers product, engineering and operations together.`,
+      `That funds the Commerce core: one hire each in Finance / Controller, Operations / Transportation, HR and Purchasing / Planning, ` +
+        `four in all by the second half of 2027, with hiring starting in March.`,
+      `Then Concierge and Fintech: two in Product and two in Business Operations, four in all by the first half of 2028.`,
     ].join("\n\n"),
   );
 }
