@@ -20,7 +20,7 @@
  *   - Tobacco holds flat (it has been sliding and is not a growth lever).
  *   - Beverage fills the rest of the plan.
  */
-import { mkdirSync, readFileSync } from "node:fs";
+import { existsSync, mkdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { parse } from "csv-parse/sync";
 import pptxgenModule from "pptxgenjs";
@@ -530,8 +530,73 @@ function addFootnote(slide: Slide, text: string, y: number) {
     },
   );
 
-  // Right half: how to grow. Left for Rick to fill in.
-  panel(X0 + PW + HALF_GAP, "How to grow", "How to grow");
+  // Right half: how to grow. The four Concierge levers on the left, and the Concierge demo on a
+  // phone on the right: the screen recording plays in the slideshow, with a still as its cover.
+  // The recording and the still live in data/raw/ (gitignored); without them the phone is skipped.
+  const HX = X0 + PW + HALF_GAP;
+  panel(HX, "How to grow", "How to grow");
+  const VIDEO = join(ROOT, "data/raw/concierge.mp4");
+  const COVER = join(ROOT, "data/raw/concierge-cover.png");
+  const hasDemo = existsSync(VIDEO) && existsSync(COVER);
+  const PHONE_H = BOTTOM - TOP - 0.7;
+  const PHONE_W = PHONE_H * (632 / 1332); // the recording's aspect ratio
+  const PHONE_X = HX + PW - 0.3 - PHONE_W;
+  const LIST_W = (hasDemo ? PHONE_X - 0.3 : HX + PW - 0.3) - (HX + 0.3);
+
+  slide.addText(
+    [
+      { text: "The owner stays in control.", options: { fontFace: FONT.book, color: COLOR.ink, breakLine: true } },
+      { text: "Mercaso does the work.", options: { fontFace: FONT.black, color: COLOR.magenta } },
+    ],
+    { x: HX + 0.3, y: TOP + 0.62, w: LIST_W, h: 0.6, margin: 0, valign: "top", fontSize: 14, isTextBox: true, objectName: "How to grow tagline" },
+  );
+
+  const LEVERS = [
+    { name: "AI Ordering Agent", note: "Spots what is running low and puts it back in the cart" },
+    { name: "AI Receiving Agent", note: "Checks each delivery in against the order" },
+    { name: "AI Pricing Agent", note: "Keeps shelf prices and POS settings right" },
+    { name: "Smart Recommendations", note: "Brings in what top-quartile stores already carry" },
+  ];
+  const LIST_Y0 = TOP + 1.45;
+  const LIST_ROW = (BOTTOM - 0.3 - LIST_Y0) / LEVERS.length;
+  LEVERS.forEach((lv, i) => {
+    const y = LIST_Y0 + i * LIST_ROW;
+    if (i > 0) {
+      slide.addShape(pres.ShapeType.line, {
+        x: HX + 0.3, y, w: LIST_W, h: 0, line: { color: COLOR.line, width: 0.75 }, objectName: `Lever rule ${i}`,
+      });
+    }
+    slide.addText(String(i + 1).padStart(2, "0"), {
+      x: HX + 0.3, y, w: 0.45, h: LIST_ROW, margin: 0, valign: "middle", fontFace: FONT.black, fontSize: 20, color: COLOR.magenta,
+      isTextBox: true, objectName: `Lever ${i + 1} number`,
+    });
+    slide.addShape(pres.ShapeType.line, {
+      x: HX + 0.8, y: y + LIST_ROW * 0.3, w: 0, h: LIST_ROW * 0.4, line: { color: "B9B4C8", width: 1 }, objectName: `Lever ${i + 1} divider`,
+    });
+    slide.addText(
+      [
+        { text: lv.name, options: { fontFace: FONT.bold, fontSize: 13, color: COLOR.ink, breakLine: true } },
+        { text: lv.note, options: { fontFace: FONT.book, fontSize: 10.5, color: COLOR.muted } },
+      ],
+      { x: HX + 0.92, y, w: LIST_W - 0.62, h: LIST_ROW, margin: 0, valign: "middle", isTextBox: true, objectName: `Lever ${i + 1}` },
+    );
+  });
+
+  if (hasDemo) {
+    // A dark rounded body behind the recording reads as the phone.
+    slide.addShape(pres.ShapeType.roundRect, {
+      x: PHONE_X - 0.07, y: TOP + 0.35 - 0.07, w: PHONE_W + 0.14, h: PHONE_H + 0.14, rectRadius: 0.22,
+      fill: { color: COLOR.ink }, line: { type: "none" },
+      shadow: { type: "outer", color: "1D1B3A", opacity: 0.25, blur: 10, offset: 3, angle: 90 },
+      objectName: "Phone body",
+    });
+    slide.addMedia({
+      type: "video", path: VIDEO, x: PHONE_X, y: TOP + 0.35, w: PHONE_W, h: PHONE_H,
+      cover: `data:image/png;base64,${readFileSync(COVER).toString("base64")}`, objectName: "Mercaso Concierge demo",
+    });
+  } else {
+    console.warn("No data/raw/concierge.mp4 and concierge-cover.png: the How to grow phone is left out.");
+  }
 
   addFootnote(
     slide,
@@ -547,6 +612,10 @@ function addFootnote(slide: Slide, text: string, y: number) {
       `The room is in the rest of the store. Only about a third of orders include Grocery, and only a fifth to a quarter include Cleaning, Household, ` +
         `or Health & Beauty. Our top-quartile stores already buy these far more often. If every store bought like them, at today's ticket sizes, ` +
         `the order would be ${money(totalHeadroom)} bigger. The plan needs half of that by October.`,
+      `How we get there is Mercaso Concierge. The owner stays in control; Mercaso does the work. The AI Ordering Agent spots what is running ` +
+        `low and puts it back in the cart, the AI Receiving Agent checks deliveries in, the AI Pricing Agent keeps prices and POS settings right, ` +
+        `and Smart Recommendations bring in what top-quartile stores already carry. On the phone: Concierge greets the owner with what needs ` +
+        `attention, from a Coca-Cola reorder to a sales tax deadline, and each item is one tap.`,
       `Method: share of orders that include each department, May–Oct 2026, stores with 6+ orders. Top quartile = 75th-percentile store on that share. ` +
         `Headroom per department = (top-quartile share − average share) × average department ticket. The 12-month plan closes half of the gap.`,
     ].join("\n\n"),
