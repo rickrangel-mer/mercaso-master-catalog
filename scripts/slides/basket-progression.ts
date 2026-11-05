@@ -598,10 +598,10 @@ function addFootnote(slide: Slide, text: string, y: number) {
     // the video's edge: wide enough (and its corners round enough) to hide the video's square
     // corners, so the screen reads as rounded. A light rim, side buttons and a notch finish it.
     const around = (pad: number) => ({ x: PHONE_X - pad, y: PHONE_Y - pad, w: PHONE_W + 2 * pad, h: PHONE_H + 2 * pad });
-    const BEZEL = 0.18; // outline width, inches; half of it overlaps the screen edge
-    const BEZEL_PAD = 0.03; // the outline's centre line sits just outside the video
-    const BEZEL_R = 0.3;
-    const RIM_PAD = BEZEL_PAD + BEZEL / 2 + 0.025;
+    const BEZEL = 0.08; // outline width, inches; half of it overlaps the screen edge
+    const BEZEL_PAD = 0.02; // the outline's centre line sits just outside the video
+    const BEZEL_R = 0.16; // round enough that the outline still covers the video's square corners
+    const RIM_PAD = BEZEL_PAD + BEZEL / 2 + 0.018;
 
     // Side buttons first, so the rim covers their inner ends.
     const buttons = [
@@ -617,7 +617,7 @@ function addFootnote(slide: Slide, text: string, y: number) {
     });
     // Rim and body: a light frame with a soft shadow, filled black so nothing shows between rim and bezel.
     slide.addShape(pres.ShapeType.roundRect, {
-      ...around(RIM_PAD), rectRadius: BEZEL_R + RIM_PAD - BEZEL_PAD, fill: { color: "111111" }, line: { color: "E4E3E8", width: 2.5 },
+      ...around(RIM_PAD), rectRadius: BEZEL_R + RIM_PAD - BEZEL_PAD, fill: { color: "111111" }, line: { color: "E4E3E8", width: 1.5 },
       shadow: { type: "outer", color: "1D1B3A", opacity: 0.22, blur: 12, offset: 4, angle: 90 },
       objectName: "Phone body",
     });
