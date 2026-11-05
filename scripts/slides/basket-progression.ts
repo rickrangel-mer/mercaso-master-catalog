@@ -696,7 +696,7 @@ interface GapMap {
   stopped: number;
   market: number;
   company: { active: number; market: number };
-  legend: { label: string; color: string }[];
+  legend: { image: string; max_per_km2: number };
   places: { name: string; fx: number; fy: number }[];
   holes: { zip: string; name: string; left: number; active: number; fx: number; fy: number }[];
 }
@@ -749,22 +749,20 @@ function drawGapMap(slide: Slide, g: GapMap, x0: number, y0: number, side: numbe
     { x: cx, y, w: cw, h: 0.9, margin: 0, valign: "top", isTextBox: true, objectName: "Map totals" },
   );
   y += 0.98;
-  slide.addText("Prospect stores left per ZIP", {
+  slide.addText("Prospect stores left (density)", {
     x: cx, y, w: cw, h: 0.18, margin: 0, fontFace: FONT.bold, fontSize: 8.5, color: COLOR.muted, isTextBox: true, objectName: "Map legend title",
   });
-  y += 0.22;
-  g.legend.forEach((k, i) => {
-    const ky = y + i * 0.19;
-    slide.addShape(pres.ShapeType.rect, {
-      x: cx, y: ky + 0.02, w: 0.26, h: 0.14, fill: { color: k.color.replace("#", ""), transparency: 25 }, line: { type: "none" },
-      objectName: `Map key ${k.label}`,
-    });
-    slide.addText(k.label, {
-      x: cx + 0.34, y: ky, w: cw - 0.34, h: 0.18, margin: 0, valign: "middle", fontFace: FONT.book, fontSize: 8.5, color: COLOR.ink,
-      isTextBox: true, objectName: `Map key ${k.label} text`,
-    });
+  y += 0.23;
+  slide.addImage({ path: join(ROOT, "dist/slides", g.legend.image), x: cx, y, w: cw, h: 0.16, altText: "Colour scale from fewer to more stores left", objectName: "Map legend scale" });
+  y += 0.18;
+  slide.addText("fewer", {
+    x: cx, y, w: cw / 2, h: 0.17, margin: 0, fontFace: FONT.book, fontSize: 8.5, color: COLOR.ink, isTextBox: true, objectName: "Map legend fewer",
   });
-  y += g.legend.length * 0.19 + 0.02;
+  slide.addText("more", {
+    x: cx + cw / 2, y, w: cw / 2, h: 0.17, margin: 0, align: "right", fontFace: FONT.book, fontSize: 8.5, color: COLOR.ink, isTextBox: true,
+    objectName: "Map legend more",
+  });
+  y += 0.26;
   slide.addShape(pres.ShapeType.ellipse, {
     x: cx + 0.09, y: y + 0.05, w: 0.08, h: 0.08, fill: { color: "3B1A66" }, line: { color: COLOR.white, width: 0.5 }, objectName: "Map key store dot",
   });
@@ -787,7 +785,7 @@ function drawGapMap(slide: Slide, g: GapMap, x0: number, y0: number, side: numbe
     slide.addText(
       [
         { text: `${hole.name} ${hole.zip}`, options: { fontFace: FONT.bold, fontSize: 10.5, color: COLOR.ink, breakLine: true } },
-        { text: `${hole.left} left · ${hole.active} served`, options: { fontFace: FONT.book, fontSize: 9.5, color: COLOR.muted } },
+        { text: `${hole.left} left · ${hole.active} served within 2 km`, options: { fontFace: FONT.book, fontSize: 9.5, color: COLOR.muted } },
       ],
       { x: cx + 0.3, y: y + i * rowH, w: cw - 0.3, h: rowH, margin: 0, valign: "top", isTextBox: true, objectName: `Hole ${i + 1}` },
     );
@@ -908,7 +906,8 @@ function drawGapMap(slide: Slide, g: GapMap, x0: number, y0: number, side: numbe
   addFootnote(
     slide,
     `Market: ${NETWORK.universe.toLocaleString("en-US")} in-scope independent stores (no chains, no out-of-scope types); penetration = stores ordering ÷ market. ` +
-      `Map: Rick's market and prospect lists, deduplicated, by ZIP; stores left = churned + prospects. Map data © OpenStreetMap contributors.`,
+      `Map: Rick's market and prospect lists, deduplicated; stores left = churned (at their address) + prospects (spread over their ZIP), smoothed over ~1 km. ` +
+      `Map data © OpenStreetMap contributors.`,
     6.9,
   );
 
@@ -922,11 +921,12 @@ function drawGapMap(slide: Slide, g: GapMap, x0: number, y0: number, side: numbe
         `the whole map: we go after the holes next to where we already have density, where our routes, reps and reputation already are.`,
       ...(gapMap
         ? [
-            `The map is ${gapMap.area.name}: ${gapMap.area.span}. Each ZIP is shaded by the stores in our market there that we don't serve yet, ` +
-              `stores that stopped ordering plus prospects, visited or not; the dots are the stores we serve. Here we serve ${gapMap.active} of ` +
+            `The map is ${gapMap.area.name}: ${gapMap.area.span}. The magenta clouds are where the stores in our market that we don't serve yet ` +
+              `are densest: stores that stopped ordering (at their address) and prospects, visited or not (spread over their ZIP, since the list ` +
+              `only has a ZIP for them); the dots are the stores we serve. Here we serve ${gapMap.active} of ` +
               `${gapMap.market} stores (${pct(gapMap.active / gapMap.market)}), close to our ${pct(gapMap.company.active / gapMap.company.market)} across the mapped market, ` +
               `with ${gapMap.left} left to win right next to where we are already dense. The biggest holes: ` +
-              gapMap.holes.map((k, i) => `${i + 1}. ${k.name} (${k.zip}), ${k.left} stores left against ${k.active} we serve`).join("; ") + ".",
+              gapMap.holes.map((k, i) => `${i + 1}. ${k.name} (${k.zip}), about ${k.left} stores left within 2 km against ${k.active} we serve`).join("; ") + ".",
           ]
         : []),
     ].join("\n\n"),

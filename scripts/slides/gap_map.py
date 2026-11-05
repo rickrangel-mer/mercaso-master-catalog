@@ -1,6 +1,8 @@
 """
-The market-gaps map for slide 3: one LA area on a real street map (OpenStreetMap), each ZIP shaded by
-its prospect stores left, with Mercaso's active stores as dots on top.
+The market-gaps map for slide 3: one LA area on a real street map (OpenStreetMap) with a heat cloud of
+prospect stores left (stores per km^2, blurred over ~1 km) and Mercaso's active stores as dots on top.
+Churned stores sit at their address; prospects only have a ZIP, so each ZIP's prospects are spread
+evenly over its area before the blur.
 
     pnpm athena:export map-customers          # data/raw/map_customers.csv
     python3 scripts/slides/gap_map.py         # dist/slides/gap-map.png and gap-map.json
@@ -15,7 +17,7 @@ Inputs, all in the gitignored data/raw/:
   osm_tiles/          OpenStreetMap tiles, fetched once on first run and kept (needs
                       tile.openstreetmap.org allowed). Credit: (c) OpenStreetMap contributors.
 
-Python packages: geopandas, matplotlib, pillow (pip install geopandas matplotlib pillow).
+Python packages: geopandas, matplotlib, pillow, scipy (pip install geopandas matplotlib pillow scipy).
 
 Market per ZIP = active + churned + prospects; "stores left" = churned + prospects (everything in the
 market we don't serve today, visited or not). After deduplication the mappable market is ~11,750 stores
@@ -31,13 +33,16 @@ import urllib.request
 
 import geopandas as gpd
 import matplotlib
+import numpy as np
 import pandas as pd
+from matplotlib.path import Path as MplPath
+from scipy.ndimage import gaussian_filter
+from shapely.geometry import Point
 from PIL import Image, ImageOps
 from shapely.affinity import affine_transform
 
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt  # noqa: E402
-from matplotlib.colors import BoundaryNorm, ListedColormap  # noqa: E402
 
 ROOT = os.getcwd()
 RAW = os.path.join(ROOT, "data/raw")
@@ -65,9 +70,30 @@ PLACES = [
 ]
 UA = "mercaso-board-slides/1.0 (one-off board deck map; github.com/rickrangel-mer/mercaso-master-catalog)"
 # Stores left per ZIP: light to deep magenta.
-BINS = [0, 10, 20, 30, 10_000]
-COLORS = ["#FBE3EF", "#F7A8CF", "#ED008C", "#A3005F"]
-LABELS = ["under 10", "10–19", "20–29", "30+"]
+# Names for the holes: the nearest of these within 3 km, else the ZIP's city from the prospect list.
+HOLE_NAMES = PLACES + [
+    ("West Athens", 33.923, -118.303), ("Willowbrook", 33.917, -118.255), ("Lawndale", 33.887, -118.353),
+    ("Central Long Beach", 33.785, -118.190), ("North Long Beach", 33.875, -118.190), ("Lomita", 33.792, -118.315),
+    ("Signal Hill", 33.804, -118.168), ("Bellflower", 33.882, -118.117),
+]
+# The heat: grid cell size in pixels and the blur radius.
+CELL = 4
+BLUR_KM = 1.0
+# Heat below this share of the peak (about the median spot in the area) is left clear.
+CLOUD_FROM = 0.32
+# Colour ramp for the heat, light pink to deep magenta (alpha is set separately).
+RAMP = [(0.0, "#F9C6DF"), (0.5, "#F06BAE"), (0.8, "#ED008C"), (1.0, "#A3005F")]
+
+
+def alpha(t: np.ndarray) -> np.ndarray:
+    """Transparent below about the median density so the clouds stand apart; up to 85% opaque at the top."""
+    return np.clip((t - CLOUD_FROM) / (1 - CLOUD_FROM), 0, 1) ** 0.7 * 0.85
+
+
+def ramp(t: np.ndarray) -> np.ndarray:
+    stops = np.array([s for s, _ in RAMP])
+    cols = np.array([[int(c[i : i + 2], 16) / 255 for i in (1, 3, 5)] for _, c in RAMP])
+    return np.stack([np.interp(t, stops, cols[:, j]) for j in range(3)], axis=-1)
 
 
 def norm(name: str) -> str:
@@ -152,20 +178,53 @@ def main() -> None:
         shown.lat.between(AREA["south"], AREA["north"]) & shown.lng.between(AREA["west"], AREA["east"])
     ]
 
-    # Project to pixels: lon/lat -> web mercator -> this crop.
+    # Project ZIP shapes to pixels: lon/lat -> web mercator -> this crop.
     R = 6378137
     shown = shown.set_crs(4326, allow_override=True).to_crs(3857)
     k = 2**ZOOM * 256 / (2 * math.pi * R)
     shown["geometry"] = shown.geometry.apply(lambda g: affine_transform(g, [k, 0, 0, -k, 2**ZOOM * 128 - x0, 2**ZOOM * 128 - y0]))
+    km_per_px = 40075.016686 * math.cos(math.radians((AREA["north"] + AREA["south"]) / 2)) / (256 * 2**ZOOM)
+
+    # The heat: stores left per km^2 on a grid of CELL px. Churned stores with an address go in at
+    # that point; prospects (ZIP only) and churned stores without one are spread evenly over their
+    # ZIP's area. Then a Gaussian blur of ~1 km turns it into a cloud.
+    coords = pd.read_csv(os.path.join(RAW, "map_customers.csv")).set_index("store_id")[["lat", "lng"]]
+    churned = customers[customers.status == "churned"].join(coords, on="store_id")
+    placed = churned.dropna(subset=["lat", "lng"])
+    by_zip = pd.concat([prospects.groupby("zip").size(), churned[churned.lat.isna()].groupby("zip").size()], axis=1).fillna(0).sum(axis=1)
+    GW, GH = math.ceil(W / CELL), math.ceil(H / CELL)
+    cell_km2 = (CELL * km_per_px) ** 2
+    raw = np.zeros((GH, GW))
+    gx, gy = np.meshgrid((np.arange(GW) + 0.5) * CELL, (np.arange(GH) + 0.5) * CELL)
+    centres = np.column_stack([gx.ravel(), gy.ravel()])
+    for _, z in shown.iterrows():
+        n = by_zip.get(z.zip, 0)
+        if n <= 0:
+            continue
+        area_km2 = z.geometry.area * km_per_px**2
+        parts = list(z.geometry.geoms) if z.geometry.geom_type == "MultiPolygon" else [z.geometry]
+        mask = np.zeros(len(centres), dtype=bool)
+        for part in parts:
+            mask |= MplPath(np.asarray(part.exterior.coords)).contains_points(centres)
+        raw.ravel()[mask] += n / area_km2
+    for lat, lng in zip(placed.lat, placed.lng):
+        cx, cy = int((px_x(lng) - x0) // CELL), int((px_y(lat) - y0) // CELL)
+        if 0 <= cx < GW and 0 <= cy < GH:
+            raw[cy, cx] += 1 / cell_km2
+    heat = gaussian_filter(raw, sigma=BLUR_KM / (CELL * km_per_px))
+
+    vmax = float(np.percentile(heat, 99.5))
+    t = np.clip(heat / vmax, 0, 1)
+    rgba = np.zeros((GH, GW, 4))
+    rgba[..., :3] = ramp(t)
+    rgba[..., 3] = alpha(t)
+    layer = Image.fromarray((rgba * 255).astype(np.uint8), "RGBA").resize((W, H), Image.BILINEAR)
+    composed = Image.alpha_composite(base.convert("RGBA"), layer).convert("RGB")
 
     fig = plt.figure(figsize=(W / 100, H / 100), dpi=300)
     ax = fig.add_axes([0, 0, 1, 1])
-    ax.imshow(base)
+    ax.imshow(composed)
     ax.axis("off")
-    cmap = ListedColormap(COLORS)
-    norm = BoundaryNorm(BINS, len(COLORS))
-    shown.plot(ax=ax, column="left", cmap=cmap, norm=norm, alpha=0.58, edgecolor="white", linewidth=0.6)
-    coords = pd.read_csv(os.path.join(RAW, "map_customers.csv")).set_index("store_id")[["lat", "lng"]]
     act = customers[customers.status == "active"].join(coords, on="store_id").dropna(subset=["lat", "lng"])
     xs = act.lng.map(px_x) - x0
     ys = act.lat.map(px_y) - y0
@@ -177,31 +236,55 @@ def main() -> None:
     os.makedirs(OUT, exist_ok=True)
     fig.savefig(os.path.join(OUT, "gap-map.png"))
 
-    # The three biggest holes next to where we win: ZIPs with the most stores left that have at least
-    # 10 active stores within 3 km of their centre, kept 4 km apart.
-    def near_active(z):
-        d = ((act.lat - z.lat) * 111) ** 2 + ((act.lng - z.lng) * 111 * math.cos(math.radians(34))) ** 2
-        return int((d <= 9).sum())
+    # Legend swatch: the same ramp and transparency over white.
+    tt = np.linspace(0, 1, 256)[None, :].repeat(24, axis=0)
+    sw = np.ones((24, 256, 3))
+    a = alpha(tt)[..., None]
+    sw = sw * (1 - a) + ramp(tt) * a
+    Image.fromarray((sw * 255).astype(np.uint8), "RGB").save(os.path.join(OUT, "gap-legend.png"))
 
-    cand = inside.assign(near=inside.apply(near_active, axis=1)).query("near >= 10").sort_values("left", ascending=False)
-    holes = []
-    for _, z in cand.iterrows():
-        if any(math.hypot((z.lat - h["lat"]) * 111, (z.lng - h["lng"]) * 92) < 4 for h in holes):
+    # The three biggest holes next to where we win. Candidates are the hottest 2% of cells with at
+    # least 10 active stores within 3 km; each is scored by its net gap within 2 km (stores left minus
+    # stores served) and the best three, 4 km apart, are kept, with the ZIP each sits in.
+    act_px = np.column_stack([xs, ys])
+    cell_km = CELL * km_per_px
+    yy, xx = np.ogrid[:GH, :GW]
+    cands = []
+    for idx in np.argsort(heat.ravel())[::-1][: max(50, heat.size // 50)]:
+        cy, cx = divmod(int(idx), GW)
+        px, py = (cx + 0.5) * CELL, (cy + 0.5) * CELL
+        d_km = np.hypot(act_px[:, 0] - px, act_px[:, 1] - py) * km_per_px
+        if (d_km <= 3).sum() < 10:
             continue
+        left = raw[(np.hypot(xx - cx, yy - cy) * cell_km) <= 2].sum() * cell_km2
+        served = int((d_km <= 2).sum())
+        cands.append((left - served, left, served, px, py))
+    def hole_name(px: float, py: float, fallback: str) -> str:
+        dist, name = min((math.hypot(px_x(lng) - x0 - px, px_y(lat) - y0 - py) * km_per_px, n) for n, lat, lng in HOLE_NAMES)
+        return name if dist <= 3 else fallback
+
+    holes = []
+    for gap, left, served, px, py in sorted(cands, reverse=True):
+        if any(math.hypot(px - h["px"], py - h["py"]) * km_per_px < 4 for h in holes):
+            continue
+        hit = shown[shown.contains(Point(px, py))]
+        zip_code = hit.zip.iloc[0] if len(hit) else ""
         holes.append(
             {
-                "zip": z.zip,
-                "name": str(city.get(z.zip, z.zip)).title(),
-                "left": int(z.left),
-                "active": int(z.active),
-                "lat": float(z.lat),
-                "lng": float(z.lng),
-                "fx": float((px_x(z.lng) - x0) / W),
-                "fy": float((px_y(z.lat) - y0) / H),
+                "zip": zip_code,
+                "name": hole_name(px, py, str(city.get(zip_code, "")).title() or zip_code),
+                "left": int(round(left)),
+                "active": served,
+                "fx": px / W,
+                "fy": py / H,
+                "px": px,
+                "py": py,
             }
         )
         if len(holes) == 3:
             break
+    for h in holes:
+        h.pop("px"), h.pop("py")
 
     summary = {
         "area": AREA,
@@ -215,7 +298,7 @@ def main() -> None:
             "active": int(per_zip.active.sum()),
             "market": int(per_zip.market.sum()),
         },
-        "legend": [{"label": l, "color": c} for l, c in zip(LABELS, COLORS)],
+        "legend": {"image": "gap-legend.png", "max_per_km2": round(vmax, 1)},
         "places": [
             {"name": n, "fx": (px_x(lng) - x0) / W, "fy": (px_y(lat) - y0) / H}
             for n, lat, lng in PLACES
