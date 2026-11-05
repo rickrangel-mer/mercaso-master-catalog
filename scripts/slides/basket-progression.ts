@@ -683,113 +683,88 @@ const NETWORK = {
   ],
 } as const;
 
-// The market-gaps map: one LA area on a real street map, each ZIP shaded by its prospect stores left
-// (churned + prospects), with our active stores as dots. scripts/slides/gap_map.py renders it to
-// dist/slides/gap-map.png and writes the area's numbers and the three biggest holes to gap-map.json;
-// this places the image and draws the legend, numbers and hole badges natively.
+// The market-gaps map: one stretch of Central Long Beach at street level (OpenStreetMap) with every
+// store we can place there. scripts/slides/gap_map.py renders the street map to dist/slides/gap-map.png
+// and writes the stores' positions and counts to gap-map.json; this places the map and draws the
+// store markers, legend and scale natively, so they stay sharp and editable.
 interface GapMap {
   area: { name: string; span: string };
   aspect: number;
+  width_km: number;
+  height_km: number;
   active: number;
-  left: number;
+  churned: number;
   prospects: number;
-  stopped: number;
-  market: number;
-  company: { active: number; market: number };
-  legend: { image: string; max_per_km2: number };
-  places: { name: string; fx: number; fy: number }[];
-  holes: { zip: string; name: string; left: number; active: number; fx: number; fy: number }[];
+  prospect_source: "list" | "visits";
+  markers: { kind: "active" | "churned" | "prospect"; fx: number; fy: number }[];
 }
 const GAP_PNG = join(ROOT, "dist/slides/gap-map.png");
 const GAP_JSON = join(ROOT, "dist/slides/gap-map.json");
 const gapMap: GapMap | undefined = existsSync(GAP_JSON) && existsSync(GAP_PNG) ? JSON.parse(readFileSync(GAP_JSON, "utf8")) : undefined;
 if (!gapMap) console.warn("No dist/slides/gap-map.png: run python3 scripts/slides/gap_map.py for the slide 3 map.");
 
-function drawGapMap(slide: Slide, g: GapMap, x0: number, y0: number, side: number, xRight: number) {
-  const w = side * Math.min(1, g.aspect);
-  const h = side / Math.max(1, g.aspect);
-  slide.addImage({ path: GAP_PNG, x: x0, y: y0, w, h, altText: `Map of ${g.area.name}: stores left by ZIP and our active stores`, objectName: "Gap map" });
+const MARKER = {
+  active: { fill: COLOR.purple, line: COLOR.white, label: "stores we serve" },
+  churned: { fill: COLOR.white, line: COLOR.magenta, label: "stopped ordering" },
+  prospect: { fill: COLOR.magenta, line: COLOR.white, label: "prospects" },
+} as const;
+
+function drawGapMap(slide: Slide, g: GapMap, x0: number, y0: number, maxW: number, maxH: number) {
+  maxH -= 0.34; // room for the legend row under the map
+  const w = Math.min(maxW, maxH * g.aspect);
+  const h = w / g.aspect;
+  const mx = x0 + (maxW - w) / 2;
+  slide.addImage({ path: GAP_PNG, x: mx, y: y0, w, h, altText: `Street map of ${g.area.name}`, objectName: "Street map" });
   slide.addShape(pres.ShapeType.rect, {
-    x: x0, y: y0, w, h, fill: { type: "none" }, line: { color: "D9D3E3", width: 0.75 }, objectName: "Gap map frame",
+    x: mx, y: y0, w, h, fill: { type: "none" }, line: { color: "D9D3E3", width: 0.75 }, objectName: "Street map frame",
   });
-  // Place names on small white tags, skipped where they would sit on a hole badge.
-  for (const pl of g.places) {
-    const tw = pl.name.length * 0.062 + 0.16;
-    const px = x0 + pl.fx * w;
-    const py = y0 + pl.fy * h;
-    if (g.holes.some((hole) => Math.abs(x0 + hole.fx * w - px) < tw / 2 + 0.16 && Math.abs(y0 + hole.fy * h - py) < 0.24)) continue;
-    slide.addText(pl.name, {
-      x: px - tw / 2, y: py - 0.085, w: tw, h: 0.17, margin: 0, align: "center", valign: "middle", fontFace: FONT.bold, fontSize: 7.5,
-      color: COLOR.ink, shape: pres.ShapeType.roundRect, rectRadius: 0.05, fill: { color: COLOR.white, transparency: 15 },
-      objectName: `Map place ${pl.name}`,
-    });
-  }
-  g.holes.forEach((hole, i) => {
-    const b = 0.26;
-    slide.addText(String(i + 1), {
-      x: x0 + hole.fx * w - b / 2, y: y0 + hole.fy * h - b / 2, w: b, h: b, margin: 0, align: "center", valign: "middle",
-      shape: pres.ShapeType.ellipse, fill: { color: COLOR.white }, line: { color: COLOR.ink, width: 1.5 },
-      fontFace: FONT.black, fontSize: 10, color: COLOR.ink, objectName: `Hole ${i + 1} badge on map`,
+
+  // 1 km scale bar, bottom left, and the map credit, bottom right.
+  const km = w / g.width_km;
+  const sy = y0 + h - 0.22;
+  slide.addShape(pres.ShapeType.rect, {
+    x: mx + 0.12, y: sy - 0.04, w: km + 0.42, h: 0.2, fill: { color: COLOR.white, transparency: 15 }, line: { type: "none" }, objectName: "Scale backing",
+  });
+  slide.addShape(pres.ShapeType.line, { x: mx + 0.18, y: sy + 0.06, w: km, h: 0, line: { color: COLOR.ink, width: 2 }, objectName: "Scale bar" });
+  slide.addText("1 km", {
+    x: mx + 0.2 + km, y: sy - 0.02, w: 0.36, h: 0.16, margin: 0, valign: "middle", fontFace: FONT.bold, fontSize: 7.5, color: COLOR.ink,
+    isTextBox: true, objectName: "Scale label",
+  });
+  slide.addText("© OpenStreetMap contributors", {
+    x: mx + w - 1.65, y: y0 + h - 0.18, w: 1.6, h: 0.15, margin: 0, align: "right", valign: "middle", fontFace: FONT.book, fontSize: 6.5,
+    color: "555555", fill: { color: COLOR.white, transparency: 20 }, objectName: "Map credit",
+  });
+
+  // One marker per store; prospects first, then churned, then ours on top.
+  const d = 0.12;
+  g.markers.forEach((m, i) => {
+    const k = MARKER[m.kind];
+    slide.addShape(pres.ShapeType.ellipse, {
+      x: mx + m.fx * w - d / 2, y: y0 + m.fy * h - d / 2, w: d, h: d, fill: { color: k.fill },
+      line: { color: k.line, width: m.kind === "churned" ? 1.75 : 1 }, objectName: `Store ${i + 1} (${m.kind})`,
     });
   });
 
-  const cx = x0 + w + 0.3;
-  const cw = xRight - cx;
-  let y = y0;
-  const areaPen = g.active / g.market;
-  const companyPen = g.company.active / g.company.market;
-  slide.addText(
-    [
-      { text: g.left.toLocaleString("en-US"), options: { fontFace: FONT.black, fontSize: 18, color: COLOR.magenta } },
-      { text: " stores left to win", options: { fontFace: FONT.book, fontSize: 10, color: COLOR.ink, breakLine: true } },
-      { text: g.active.toLocaleString("en-US"), options: { fontFace: FONT.black, fontSize: 18, color: COLOR.purple } },
-      { text: " stores we serve", options: { fontFace: FONT.book, fontSize: 10, color: COLOR.ink, breakLine: true } },
-      { text: `${pct(areaPen)} served here vs ${pct(companyPen)} across our mapped market`, options: { fontFace: FONT.book, fontSize: 9, color: COLOR.muted } },
-    ],
-    { x: cx, y, w: cw, h: 0.9, margin: 0, valign: "top", isTextBox: true, objectName: "Map totals" },
-  );
-  y += 0.98;
-  slide.addText("Prospect stores left (density)", {
-    x: cx, y, w: cw, h: 0.18, margin: 0, fontFace: FONT.bold, fontSize: 8.5, color: COLOR.muted, isTextBox: true, objectName: "Map legend title",
-  });
-  y += 0.23;
-  slide.addImage({ path: join(ROOT, "dist/slides", g.legend.image), x: cx, y, w: cw, h: 0.16, altText: "Colour scale from fewer to more stores left", objectName: "Map legend scale" });
-  y += 0.18;
-  slide.addText("fewer", {
-    x: cx, y, w: cw / 2, h: 0.17, margin: 0, fontFace: FONT.book, fontSize: 8.5, color: COLOR.ink, isTextBox: true, objectName: "Map legend fewer",
-  });
-  slide.addText("more", {
-    x: cx + cw / 2, y, w: cw / 2, h: 0.17, margin: 0, align: "right", fontFace: FONT.book, fontSize: 8.5, color: COLOR.ink, isTextBox: true,
-    objectName: "Map legend more",
-  });
-  y += 0.26;
-  slide.addShape(pres.ShapeType.ellipse, {
-    x: cx + 0.09, y: y + 0.05, w: 0.08, h: 0.08, fill: { color: "3B1A66" }, line: { color: COLOR.white, width: 0.5 }, objectName: "Map key store dot",
-  });
-  slide.addText("a store we serve", {
-    x: cx + 0.34, y, w: cw - 0.34, h: 0.18, margin: 0, valign: "middle", fontFace: FONT.book, fontSize: 8.5, color: COLOR.ink,
-    isTextBox: true, objectName: "Map key store dot text",
-  });
-  y += 0.3;
-  slide.addText("Biggest holes next to where we win", {
-    x: cx, y, w: cw, h: 0.2, margin: 0, fontFace: FONT.bold, fontSize: 10, color: COLOR.purple, isTextBox: true, objectName: "Holes title",
-  });
-  y += 0.27;
-  const rowH = Math.min(0.46, (y0 + side - y) / 3);
-  g.holes.forEach((hole, i) => {
-    slide.addText(String(i + 1), {
-      x: cx, y: y + i * rowH + 0.02, w: 0.22, h: 0.22, margin: 0, align: "center", valign: "middle", shape: pres.ShapeType.ellipse,
-      fill: { color: COLOR.white }, line: { color: COLOR.ink, width: 1.25 }, fontFace: FONT.black, fontSize: 9, color: COLOR.ink,
-      objectName: `Hole ${i + 1} badge`,
+  // Legend: one row under the map.
+  const rows: [keyof typeof MARKER, number][] = [["active", g.active], ["churned", g.churned], ["prospect", g.prospects]];
+  const colW = w / rows.length;
+  rows.forEach(([kind, n], i) => {
+    const lx = mx + i * colW;
+    const ly = y0 + h + 0.1;
+    const k = MARKER[kind];
+    slide.addShape(pres.ShapeType.ellipse, {
+      x: lx, y: ly + 0.05, w: d, h: d, fill: { color: k.fill }, line: { color: kind === "churned" ? k.line : COLOR.white, width: kind === "churned" ? 1.75 : 1 },
+      objectName: `Map legend ${kind} marker`,
     });
     slide.addText(
       [
-        { text: `${hole.name} ${hole.zip}`, options: { fontFace: FONT.bold, fontSize: 10.5, color: COLOR.ink, breakLine: true } },
-        { text: `${hole.left} left · ${hole.active} served within 2 km`, options: { fontFace: FONT.book, fontSize: 9.5, color: COLOR.muted } },
+        { text: `${n}`, options: { fontFace: FONT.black, fontSize: 11, color: kind === "active" ? COLOR.purple : COLOR.magenta } },
+        { text: `  ${k.label}`, options: { fontFace: FONT.book, fontSize: 9.5, color: COLOR.ink } },
       ],
-      { x: cx + 0.3, y: y + i * rowH, w: cw - 0.3, h: rowH, margin: 0, valign: "top", isTextBox: true, objectName: `Hole ${i + 1}` },
+      { x: lx + 0.2, y: ly, w: colW - 0.2, h: 0.22, margin: 0, valign: "middle", isTextBox: true, objectName: `Map legend ${kind}` },
     );
   });
+
 }
 
 {
@@ -826,8 +801,11 @@ function drawGapMap(slide: Slide, g: GapMap, x0: number, y0: number, side: numbe
   };
 
   // Left: the map.
-  panel(X0, MW, "Where the holes are", gapMap ? `${gapMap.area.name} · ${gapMap.area.span}` : "", "Map");
-  if (gapMap) drawGapMap(slide, gapMap, X0 + 0.3, TOP + 0.95, BOTTOM - 0.22 - (TOP + 0.95), X0 + MW - 0.3);
+  panel(
+    X0, MW, "Where the holes are",
+    gapMap ? `${gapMap.area.name}, street by street · ${gapMap.area.span}` : "", "Map",
+  );
+  if (gapMap) drawGapMap(slide, gapMap, X0 + 0.3, TOP + 0.95, MW - 0.6, BOTTOM - 0.2 - (TOP + 0.95));
 
   // Right: stores served and penetration, today and the plan's two steps. Each bar is the whole
   // market; today's stores in purple, what the plan adds in magenta.
@@ -906,8 +884,10 @@ function drawGapMap(slide: Slide, g: GapMap, x0: number, y0: number, side: numbe
   addFootnote(
     slide,
     `Market: ${NETWORK.universe.toLocaleString("en-US")} in-scope independent stores (no chains, no out-of-scope types); penetration = stores ordering ÷ market. ` +
-      `Map: Rick's market and prospect lists, deduplicated; stores left = churned (at their address) + prospects (spread over their ZIP), smoothed over ~1 km. ` +
-      `Map data © OpenStreetMap contributors.`,
+      `Map: stores we serve and stores that stopped ordering at their address (Rick's market list, deduplicated); ` +
+      (gapMap?.prospect_source === "list"
+        ? `prospects from Rick's prospect list at their address.`
+        : `prospects are stores reps visited in the last 12 months that have never ordered, at the visit's GPS; prospects never visited aren't shown.`),
     6.9,
   );
 
@@ -921,12 +901,11 @@ function drawGapMap(slide: Slide, g: GapMap, x0: number, y0: number, side: numbe
         `the whole map: we go after the holes next to where we already have density, where our routes, reps and reputation already are.`,
       ...(gapMap
         ? [
-            `The map is ${gapMap.area.name}: ${gapMap.area.span}. The magenta clouds are where the stores in our market that we don't serve yet ` +
-              `are densest: stores that stopped ordering (at their address) and prospects, visited or not (spread over their ZIP, since the list ` +
-              `only has a ZIP for them); the dots are the stores we serve. Here we serve ${gapMap.active} of ` +
-              `${gapMap.market} stores (${pct(gapMap.active / gapMap.market)}), close to our ${pct(gapMap.company.active / gapMap.company.market)} across the mapped market, ` +
-              `with ${gapMap.left} left to win right next to where we are already dense. The biggest holes: ` +
-              gapMap.holes.map((k, i) => `${i + 1}. ${k.name} (${k.zip}), about ${k.left} stores left within 2 km against ${k.active} we serve`).join("; ") + ".",
+            `The map zooms into ${gapMap.area.name}, ${gapMap.width_km} by ${gapMap.height_km} km from ${gapMap.area.span}, street by street. ` +
+              `We serve ${gapMap.active} stores here (purple). ${gapMap.churned} more stopped ordering and can be won back (white with a magenta ring), ` +
+              `and ${gapMap.prospects} are prospects that don't order from us yet (magenta)` +
+              (gapMap.prospect_source === "visits" ? `, the ones our reps have already visited` : "") +
+              `. They sit on the same blocks as our stores, on the same routes: this is the hole we fill first, not a new territory.`,
           ]
         : []),
     ].join("\n\n"),
