@@ -6,7 +6,7 @@
  *   2. Where and How to Grow: where the room is (how often orders include each department, today,
  *      the 12-month plan and the top-quartile store) and, beside it, how to grow (Mercaso Concierge).
  *   3. Gaps in the Market: one stretch of Long Beach street by street, and customers against the market.
- *   4. Building the Commerce Core: the headcount we make room for (Xi'an) and the roles we hire with it,
+ *   4. Building the Org to Scale: the headcount we make room for (Xi'an, $50K a month) and the roles we hire with it,
  *      Commerce by 2H 2027 and Concierge / Fintech by 1H 2028.
  *
  *   pnpm athena:export basket-mix basket-headroom basket-store-skus
@@ -955,10 +955,10 @@ function drawGapMap(slide: Slide, g: GapMap, x0: number, y0: number, maxW: numbe
   );
 }
 
-// ---------- slide 4: building the commerce core ----------
+// ---------- slide 4: building the org to scale ----------
 
 // The headcount plan (Rick, 2026-11-05): make room in LA and abroad, starting with Xi'an (-8 offshore,
-// -$50K; what stays becomes one in-house Prod / Eng / Ops role that keeps today's systems running),
+// -$50K a month; what stays becomes one in-house Prod / Eng / Ops role that keeps today's systems running),
 // then reinvest: Commerce (+4, hiring Q2-Q3 '27 from March, in place by 2H 2027) and Concierge /
 // Fintech (+4 by 1H 2028). Three columns left to right in time, with the story line under each
 // title, and the timeline underneath.
@@ -968,7 +968,7 @@ const TEAM = [
     name: "Make room",
     why: "Free up budget in LA and abroad, starting offshore.",
     big: "−$50K",
-    caption: "headcount cost",
+    caption: "per month",
     rows: [
       { value: "−8", label: "Xi'an headcount, offshore" },
       { value: "1", label: "in-house Prod / Eng / Ops role" },
@@ -1002,14 +1002,14 @@ const TEAM = [
   },
 ] as const;
 const TIMELINE = [
-  { when: "Today", what: "Xi'an −8, −$50K" },
+  { when: "Today", what: "Xi'an −8, −$50K a month" },
   { when: "Mar '27", what: "Commerce hiring starts" },
   { when: "Q2–Q3 '27", what: "Core heads hired, +4 by 2H" },
   { when: "1H '28", what: "Concierge / Fintech +4" },
 ] as const;
 
 {
-  const slide = addFrame("Building the Commerce Core", [
+  const slide = addFrame("Building the Org to Scale", [
     { text: "The next 18 months of hires are funded by reshaping headcount, ", options: { fontFace: FONT.book } },
     { text: "not by adding to it.", options: { fontFace: FONT.bold } },
   ]);
@@ -1104,7 +1104,7 @@ const TIMELINE = [
     [
       `As we scale, the core of commerce needs investment: critical functions we have to hire over the next 12 to 18 months. ` +
         `We fund them by reshaping headcount, in LA and abroad, rather than adding to it.`,
-      `It starts with Xi'an: 8 fewer offshore roles, about $50K. What stays comes in-house as one role that covers product, engineering and ` +
+      `It starts with Xi'an: 8 fewer offshore roles, about $50K a month. What stays comes in-house as one role that covers product, engineering and ` +
         `operations, and keeps today's systems running and procured.`,
       `That funds the Commerce core: a head in Finance / Controller, Operations / Transportation, HR and Purchasing / Planning. Hiring starts ` +
         `in March and runs through Q2 and Q3, so all four are in place by the second half of 2027.`,
