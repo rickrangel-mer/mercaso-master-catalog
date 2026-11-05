@@ -1,7 +1,6 @@
 """
 The market-gaps map for slide 3: one stretch of Central Long Beach at street level (OpenStreetMap),
-with every store we can place there: the stores we serve, the ones that stopped ordering, and the
-prospects.
+with the stores we serve, the ones that stopped ordering and the prospects.
 
     pnpm athena:export map-customers map-visits   # data/raw/map_customers.csv, map_visits.csv
     python3 scripts/slides/gap_map.py             # dist/slides/gap-map.png and gap-map.json
@@ -123,13 +122,14 @@ def located_prospects(customers: pd.DataFrame, coords: pd.DataFrame) -> tuple[pd
             dy = (plat[i : i + 500, None] - ky[None, :]) * 110570
             dx = (plng[i : i + 500, None] - kx[None, :]) * 111320 * coslat
             near[i : i + 500] = ((dx**2 + dy**2) <= 30**2).any(axis=1)
-        return p[~near][["lat", "lng"]], "list"
+        p["visited"] = pd.to_numeric(p.get("visit_count", 0), errors="coerce").fillna(0) > 0
+        return p[~near][["lat", "lng", "visited"]], "list"
     v = pd.read_csv(os.path.join(RAW, "map_visits.csv"))
     v["spot"] = v.lat.round(3).astype(str) + "," + v.lng.round(3).astype(str)
     v = v[v.spot.map(v.groupby("spot").store_id.nunique()) < CROWD_STORES]
     known_ids = set(customers.store_id.dropna())
     d = v[(v.has_ordered == 0) & ~v.store_id.isin(known_ids)].groupby("store_id").agg(lat=("lat", "median"), lng=("lng", "median"))
-    return d.reset_index()[["lat", "lng"]], "visits"
+    return d.reset_index()[["lat", "lng"]].assign(visited=True), "visits"
 
 
 def main() -> None:
@@ -161,6 +161,8 @@ def main() -> None:
         pts = [((px_x(lng) - x0) / W, (px_y(lat) - y0) / H) for lat, lng in zip(d.lat, d.lng)]
         return [{"kind": kind, "fx": fx, "fy": fy} for fx, fy in pts if 0.012 <= fx <= 0.988 and 0.02 <= fy <= 0.98]
 
+    # Stores we serve, stores that stopped ordering (shown as "visited" on the slide, Rick 2026-11-05),
+    # and the prospects.
     active = placed[placed.status == "active"]
     churned = placed[placed.status == "churned"]
     summary = {

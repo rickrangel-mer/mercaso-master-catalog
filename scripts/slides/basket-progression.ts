@@ -705,7 +705,8 @@ if (!gapMap) console.warn("No dist/slides/gap-map.png: run python3 scripts/slide
 
 const MARKER = {
   active: { fill: COLOR.purple, line: COLOR.white, label: "stores we serve" },
-  churned: { fill: COLOR.white, line: COLOR.magenta, label: "stopped ordering" },
+  // Stores that stopped ordering, labelled "visited" on the slide (Rick, 2026-11-05).
+  churned: { fill: "FFC20E", line: COLOR.white, label: "visited" },
   prospect: { fill: COLOR.magenta, line: COLOR.white, label: "prospects" },
 } as const;
 
@@ -735,13 +736,13 @@ function drawGapMap(slide: Slide, g: GapMap, x0: number, y0: number, maxW: numbe
     color: "555555", fill: { color: COLOR.white, transparency: 20 }, objectName: "Map credit",
   });
 
-  // One marker per store; prospects first, then churned, then ours on top.
+  // One marker per store; prospects first, then visited (stopped ordering), then ours on top.
   const d = 0.12;
   g.markers.forEach((m, i) => {
     const k = MARKER[m.kind];
     slide.addShape(pres.ShapeType.ellipse, {
       x: mx + m.fx * w - d / 2, y: y0 + m.fy * h - d / 2, w: d, h: d, fill: { color: k.fill },
-      line: { color: k.line, width: m.kind === "churned" ? 1.75 : 1 }, objectName: `Store ${i + 1} (${m.kind})`,
+      line: { color: k.line, width: 1 }, objectName: `Store ${i + 1} (${m.kind})`,
     });
   });
 
@@ -753,12 +754,12 @@ function drawGapMap(slide: Slide, g: GapMap, x0: number, y0: number, maxW: numbe
     const ly = y0 + h + 0.1;
     const k = MARKER[kind];
     slide.addShape(pres.ShapeType.ellipse, {
-      x: lx, y: ly + 0.05, w: d, h: d, fill: { color: k.fill }, line: { color: kind === "churned" ? k.line : COLOR.white, width: kind === "churned" ? 1.75 : 1 },
+      x: lx, y: ly + 0.05, w: d, h: d, fill: { color: k.fill }, line: { color: COLOR.white, width: 1 },
       objectName: `Map legend ${kind} marker`,
     });
     slide.addText(
       [
-        { text: `${n}`, options: { fontFace: FONT.black, fontSize: 11, color: kind === "active" ? COLOR.purple : COLOR.magenta } },
+        { text: `${n}`, options: { fontFace: FONT.black, fontSize: 11, color: kind === "active" ? COLOR.purple : kind === "churned" ? "D99A00" : COLOR.magenta } },
         { text: `  ${k.label}`, options: { fontFace: FONT.book, fontSize: 9.5, color: COLOR.ink } },
       ],
       { x: lx + 0.2, y: ly, w: colW - 0.2, h: 0.22, margin: 0, valign: "middle", isTextBox: true, objectName: `Map legend ${kind}` },
@@ -884,7 +885,7 @@ function drawGapMap(slide: Slide, g: GapMap, x0: number, y0: number, maxW: numbe
   addFootnote(
     slide,
     `Market: ${NETWORK.universe.toLocaleString("en-US")} in-scope independent stores (no chains, no out-of-scope types); penetration = stores ordering ÷ market. ` +
-      `Map: stores we serve and stores that stopped ordering at their address (Rick's market list, deduplicated); ` +
+      `Map: stores we serve and visited stores (stopped ordering) at their address (Rick's market list, deduplicated); ` +
       (gapMap?.prospect_source === "list"
         ? `prospects from Rick's prospect list at their address.`
         : `prospects are stores reps visited in the last 12 months that have never ordered, at the visit's GPS; prospects never visited aren't shown.`),
@@ -902,10 +903,8 @@ function drawGapMap(slide: Slide, g: GapMap, x0: number, y0: number, maxW: numbe
       ...(gapMap
         ? [
             `The map zooms into ${gapMap.area.name}, ${gapMap.width_km} by ${gapMap.height_km} km from ${gapMap.area.span}, street by street. ` +
-              `We serve ${gapMap.active} stores here (purple). ${gapMap.churned} more stopped ordering and can be won back (white with a magenta ring), ` +
-              `and ${gapMap.prospects} are prospects that don't order from us yet (magenta)` +
-              (gapMap.prospect_source === "visits" ? `, the ones our reps have already visited` : "") +
-              `. They sit on the same blocks as our stores, on the same routes: this is the hole we fill first, not a new territory.`,
+              `We serve ${gapMap.active} stores here (purple). ${gapMap.churned} more are stores we've visited that stopped ordering (yellow), ` +
+              `and ${gapMap.prospects} are prospects that don't order from us yet (magenta). They sit on the same blocks as our stores, on the same routes: this is the hole we fill first, not a new territory.`,
           ]
         : []),
     ].join("\n\n"),
