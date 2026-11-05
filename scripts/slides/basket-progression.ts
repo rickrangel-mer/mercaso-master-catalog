@@ -508,6 +508,15 @@ function addFootnote(slide: Slide, text: string, y: number) {
       });
       x += w;
     });
+    // A dotted blue line from the end of the headroom to the end of the track: the orders even the
+    // top-quartile store does not reach yet.
+    const rest = BX + BW - x;
+    if (rest > 0.05) {
+      slide.addShape(pres.ShapeType.line, {
+        x: x + 0.04, y: y + 0.2 + BAR_H / 2, w: rest - 0.04, h: 0,
+        line: { color: COLOR.today_bar, width: 1.75, dashType: "sysDot" }, objectName: `Bar ${d} rest`,
+      });
+    }
   });
 
   const calloutY = BAR_Y0 + chartDepts.length * BAR_ROW + 0.08;
@@ -538,10 +547,12 @@ function addFootnote(slide: Slide, text: string, y: number) {
   const VIDEO = join(ROOT, "data/raw/concierge.mp4");
   const COVER = join(ROOT, "data/raw/concierge-cover.png");
   const hasDemo = existsSync(VIDEO) && existsSync(COVER);
-  const PHONE_H = BOTTOM - TOP - 0.7;
+  // The screen is the recording itself; the phone's bezel and rim are drawn around it.
+  const PHONE_H = BOTTOM - TOP - 0.86;
   const PHONE_W = PHONE_H * (632 / 1332); // the recording's aspect ratio
-  const PHONE_X = HX + PW - 0.3 - PHONE_W;
-  const LIST_W = (hasDemo ? PHONE_X - 0.3 : HX + PW - 0.3) - (HX + 0.3);
+  const PHONE_X = HX + PW - 0.45 - PHONE_W;
+  const PHONE_Y = TOP + 0.38;
+  const LIST_W = (hasDemo ? PHONE_X - 0.33 : HX + PW - 0.3) - (HX + 0.3);
 
   slide.addText(
     [
@@ -555,7 +566,7 @@ function addFootnote(slide: Slide, text: string, y: number) {
     { name: "AI Ordering Agent", note: "Spots what is running low and puts it back in the cart" },
     { name: "AI Receiving Agent", note: "Checks each delivery in against the order" },
     { name: "AI Pricing Agent", note: "Keeps shelf prices and POS settings right" },
-    { name: "Smart Recommendations", note: "Brings in what top-quartile stores already carry" },
+    { name: "Smart Recommendations", note: "Brings in the top items other stores carry" },
   ];
   const LIST_Y0 = TOP + 1.45;
   const LIST_ROW = (BOTTOM - 0.3 - LIST_Y0) / LEVERS.length;
@@ -567,32 +578,69 @@ function addFootnote(slide: Slide, text: string, y: number) {
       });
     }
     slide.addText(String(i + 1).padStart(2, "0"), {
-      x: HX + 0.3, y, w: 0.45, h: LIST_ROW, margin: 0, valign: "middle", fontFace: FONT.black, fontSize: 20, color: COLOR.magenta,
+      x: HX + 0.3, y, w: 0.42, h: LIST_ROW, margin: 0, valign: "middle", fontFace: FONT.black, fontSize: 18, color: COLOR.magenta,
       isTextBox: true, objectName: `Lever ${i + 1} number`,
     });
     slide.addShape(pres.ShapeType.line, {
-      x: HX + 0.8, y: y + LIST_ROW * 0.3, w: 0, h: LIST_ROW * 0.4, line: { color: "B9B4C8", width: 1 }, objectName: `Lever ${i + 1} divider`,
+      x: HX + 0.74, y: y + LIST_ROW * 0.3, w: 0, h: LIST_ROW * 0.4, line: { color: "B9B4C8", width: 1 }, objectName: `Lever ${i + 1} divider`,
     });
     slide.addText(
       [
         { text: lv.name, options: { fontFace: FONT.bold, fontSize: 13, color: COLOR.ink, breakLine: true } },
         { text: lv.note, options: { fontFace: FONT.book, fontSize: 10.5, color: COLOR.muted } },
       ],
-      { x: HX + 0.92, y, w: LIST_W - 0.62, h: LIST_ROW, margin: 0, valign: "middle", isTextBox: true, objectName: `Lever ${i + 1}` },
+      { x: HX + 0.86, y, w: LIST_W - 0.56, h: LIST_ROW, margin: 0, valign: "middle", isTextBox: true, objectName: `Lever ${i + 1}` },
     );
   });
 
   if (hasDemo) {
-    // A dark rounded body behind the recording reads as the phone.
+    // Phone around the recording, drawn from shapes. The bezel is a thick black outline laid over
+    // the video's edge: wide enough (and its corners round enough) to hide the video's square
+    // corners, so the screen reads as rounded. A light rim, side buttons and a notch finish it.
+    const around = (pad: number) => ({ x: PHONE_X - pad, y: PHONE_Y - pad, w: PHONE_W + 2 * pad, h: PHONE_H + 2 * pad });
+    const BEZEL = 0.18; // outline width, inches; half of it overlaps the screen edge
+    const BEZEL_PAD = 0.03; // the outline's centre line sits just outside the video
+    const BEZEL_R = 0.3;
+    const RIM_PAD = BEZEL_PAD + BEZEL / 2 + 0.025;
+
+    // Side buttons first, so the rim covers their inner ends.
+    const buttons = [
+      { x: PHONE_X - RIM_PAD - 0.035, y: PHONE_Y + 0.55, h: 0.22 },
+      { x: PHONE_X - RIM_PAD - 0.035, y: PHONE_Y + 0.9, h: 0.38 },
+      { x: PHONE_X - RIM_PAD - 0.035, y: PHONE_Y + 1.36, h: 0.38 },
+      { x: PHONE_X + PHONE_W + RIM_PAD - 0.015, y: PHONE_Y + 1.0, h: 0.55 },
+    ];
+    buttons.forEach((b, i) => {
+      slide.addShape(pres.ShapeType.roundRect, {
+        x: b.x, y: b.y, w: 0.05, h: b.h, rectRadius: 0.02, fill: { color: "C9C8CF" }, line: { type: "none" }, objectName: `Phone button ${i + 1}`,
+      });
+    });
+    // Rim and body: a light frame with a soft shadow, filled black so nothing shows between rim and bezel.
     slide.addShape(pres.ShapeType.roundRect, {
-      x: PHONE_X - 0.07, y: TOP + 0.35 - 0.07, w: PHONE_W + 0.14, h: PHONE_H + 0.14, rectRadius: 0.22,
-      fill: { color: COLOR.ink }, line: { type: "none" },
-      shadow: { type: "outer", color: "1D1B3A", opacity: 0.25, blur: 10, offset: 3, angle: 90 },
+      ...around(RIM_PAD), rectRadius: BEZEL_R + RIM_PAD - BEZEL_PAD, fill: { color: "111111" }, line: { color: "E4E3E8", width: 2.5 },
+      shadow: { type: "outer", color: "1D1B3A", opacity: 0.22, blur: 12, offset: 4, angle: 90 },
       objectName: "Phone body",
     });
     slide.addMedia({
-      type: "video", path: VIDEO, x: PHONE_X, y: TOP + 0.35, w: PHONE_W, h: PHONE_H,
+      type: "video", path: VIDEO, ...around(0),
       cover: `data:image/png;base64,${readFileSync(COVER).toString("base64")}`, objectName: "Mercaso Concierge demo",
+    });
+    slide.addShape(pres.ShapeType.roundRect, {
+      ...around(BEZEL_PAD), rectRadius: BEZEL_R, fill: { type: "none" }, line: { color: "111111", width: BEZEL * 72 },
+      objectName: "Phone bezel",
+    });
+    // Notch with speaker and camera, overlapping the top of the screen.
+    const NOTCH_W = PHONE_W * 0.38;
+    const notchX = PHONE_X + (PHONE_W - NOTCH_W) / 2;
+    slide.addShape(pres.ShapeType.roundRect, {
+      x: notchX, y: PHONE_Y - 0.06, w: NOTCH_W, h: 0.2, rectRadius: 0.09, fill: { color: "111111" }, line: { type: "none" }, objectName: "Phone notch",
+    });
+    slide.addShape(pres.ShapeType.roundRect, {
+      x: notchX + NOTCH_W * 0.3, y: PHONE_Y + 0.03, w: NOTCH_W * 0.3, h: 0.035, rectRadius: 0.017, fill: { color: "3A3A40" },
+      line: { type: "none" }, objectName: "Phone speaker",
+    });
+    slide.addShape(pres.ShapeType.ellipse, {
+      x: notchX + NOTCH_W * 0.68, y: PHONE_Y + 0.022, w: 0.05, h: 0.05, fill: { color: "3A3A40" }, line: { type: "none" }, objectName: "Phone camera",
     });
   } else {
     console.warn("No data/raw/concierge.mp4 and concierge-cover.png: the How to grow phone is left out.");
@@ -614,7 +662,7 @@ function addFootnote(slide: Slide, text: string, y: number) {
         `the order would be ${money(totalHeadroom)} bigger. The plan needs half of that by October.`,
       `How we get there is Mercaso Concierge. The owner stays in control; Mercaso does the work. The AI Ordering Agent spots what is running ` +
         `low and puts it back in the cart, the AI Receiving Agent checks deliveries in, the AI Pricing Agent keeps prices and POS settings right, ` +
-        `and Smart Recommendations bring in what top-quartile stores already carry. On the phone: Concierge greets the owner with what needs ` +
+        `and Smart Recommendations bring in the top items other stores carry. On the phone: Concierge greets the owner with what needs ` +
         `attention, from a Coca-Cola reorder to a sales tax deadline, and each item is one tap.`,
       `Method: share of orders that include each department, May–Oct 2026, stores with 6+ orders. Top quartile = 75th-percentile store on that share. ` +
         `Headroom per department = (top-quartile share − average share) × average department ticket. The 12-month plan closes half of the gap.`,
