@@ -1,6 +1,7 @@
--- Export: where Mercaso's active customers are, for the market-gaps map (scripts/slides). Save as
--- data/raw/map_customers.csv. Active = a CA store that ordered in the last 45 days, leaving out store
--- types outside the market (restaurants, hotels, miscellaneous, non-stores). Coordinates and ZIP only:
+-- Export: where Mercaso's customers are, for the market-gaps map (scripts/slides). Save as
+-- data/raw/map_customers.csv. A CA store that ordered in the last 12 months, leaving out store types
+-- outside the market (restaurants, hotels, miscellaneous, non-stores): status 'active' if it ordered
+-- in the last 45 days, else 'stopped' (still in the market, to win back). Coordinates and ZIP only:
 -- no names, no contact details.
 WITH stores AS (
   SELECT si.store_id,
@@ -23,9 +24,10 @@ recent AS (
     AND coalesce(shipping_province_code, 'CA') = 'CA'
   GROUP BY store_id
 )
-SELECT s.store_id, coalesce(s.store_type, '') AS store_type, coalesce(s.zip, '') AS zip, s.lat, s.lng
+SELECT s.store_id, coalesce(s.store_type, '') AS store_type, coalesce(s.zip, '') AS zip, s.lat, s.lng,
+       CASE WHEN r.last_at >= date_add('day', -45, current_timestamp) THEN 'active' ELSE 'stopped' END AS status
 FROM recent r
 JOIN stores s ON s.store_id = r.store_id
-WHERE r.last_at >= date_add('day', -45, current_timestamp)
+WHERE r.last_at >= date_add('month', -12, current_timestamp)
   AND coalesce(s.store_type, '') NOT IN ('Restaurant', 'Hotel', 'Miscellaneous', 'Non-store')
   AND s.lat IS NOT NULL AND s.lng IS NOT NULL;

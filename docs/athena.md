@@ -39,6 +39,7 @@ All in `scripts/athena/sql/`:
 | `basket_headroom.sql` | Same window, stores with 6+ orders, small departments folded into Other: store reach, order share (order-weighted average, store median and 75th percentile) and ticket per department | `data/raw/basket_headroom.csv` |
 | `basket_trend.sql` | Last 13 full months, all stores: revenue per order and order share by month and department | `data/raw/basket_trend.csv` |
 | `basket_store_skus.sql` | Last 12 full months and the 12 before (`period` current / prior): distinct SKUs a store buys in a year by department, averaged over all ordering stores and over stores with 12+ orders | `data/raw/basket_store_skus.csv` |
+| `map_customers.sql` | Stores that ordered in the last 12 months (no restaurants, hotels, miscellaneous or non-stores): status active (45 days) or stopped, store type, ZIP and coordinates. No names or contacts. For the slide 3 map's dots | `data/raw/map_customers.csv` |
 | `optional_checks.sql` | Attribute names and item statuses, for tuning the matcher | Not needed for the exports |
 
 `data/raw/` is gitignored, so exports never reach the repo.
@@ -54,6 +55,8 @@ pnpm athena:export liquor-sales    # or any of: products, liquor-sales, liquor-r
                                    #   basket-mix, basket-headroom, basket-trend, basket-store-skus
 pnpm slides:basket                 # two board slides on basket growth (needs basket-mix, basket-headroom, basket-store-skus), into dist/slides/
                                    #   the How to grow phone plays data/raw/concierge.mp4 with data/raw/concierge-cover.png as its still
+python3 scripts/slides/gap_map.py  # slide 3's map: Rick's market_store_list.csv + prospects.csv in data/raw, map-customers,
+                                   #   ZIP shapes and OpenStreetMap tiles (see the script's header); run before slides:basket
                                    #   --units=cases: cases per order instead of SKUs per store per year; --scale=best: bars to the top quartile
 pnpm crosscheck                    # Phase 2.5 comparison, from the two liquor exports
 ```
