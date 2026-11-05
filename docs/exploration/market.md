@@ -38,10 +38,27 @@ Started 2026-10-23 (Rick): the market side of the whiteboard. Same idea as the W
 
 ```
 pnpm athena:export market-stores market-zips   # plus pricing and lift-store-skus for margins
-pnpm market      # dist/market/market.json (gitignored) and a printout by zone
+pnpm market      # dist/market/market.json and market_store_list.csv (gitignored) and a printout by zone
 pnpm web:html    # the Market tab; the no-prices file keeps stores and penetration only
 ```
 
 - `market_stores.sql`: every CA store that ordered in the last 24 months with its ZIP, spend and dates (as `growth_stores.sql`, plus the ZIP).
 - `market_zips.sql`: each ZIP's map region.
+## The store list by area (Rick, 2026-11-05)
+
+`pnpm market` also writes **`dist/market/market_store_list.csv`** (gitignored: it has store names): one row per store the Market tab counts, in a zone. Stores in the **Unassigned** zone (the territory gap: mostly CRM prospects with no ZIP) are left out.
+
+| Column | What it holds |
+|---|---|
+| `status` | `active` (ordered in the last 45 days), `churned` (last order 46 days to a year ago) or `prospect` (from the prospect list) |
+| `store_id` | Mercaso store id (blank for prospects) |
+| `name`, `city` | Store name; city for prospects only |
+| `zip` | ZIP the area comes from |
+| `zone`, `sub_area` | Zone (`data/market/zones.yaml`) and map region, placed as in *Placing stores* above |
+| `rep` | Prospect list's salesperson; for customers, the rep with most prospects in that ZIP; `Unassigned` if none |
+| `store_type` | Type as in *Placing stores*; stores with no type and no telling name read "Spread over the types in their mix (no type set)" |
+| `first_order_date`, `last_order_date` | Customers only |
+
+On 2026-11-05: 12,419 stores (3,686 active, 1,565 churned, 7,168 prospects); 523 of them have no rep. Counts per zone match the Market tab without its Unassigned bar. Stores that last ordered over a year ago aren't in the market and aren't listed.
+
 - `scripts/market/` builds the cells (zone × sub-area × store type × rep); `apps/web/lib/market.ts` (tests beside it) is the logic the tab runs; `apps/web/components/MarketView.tsx` is the tab.

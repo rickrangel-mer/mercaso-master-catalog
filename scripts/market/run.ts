@@ -4,12 +4,14 @@
  * (the sales prospect list), data/market/zones.yaml and, for gross margin per store type,
  * pricing.csv and lift_store_skus.csv. Writes dist/market/market.json (gitignored): one cell per
  * zone × sub-area × store type × rep with its active, churned and prospect stores and their
- * yearly sales, which the site's Market tab turns into targets and dollars.
+ * yearly sales, which the site's Market tab turns into targets and dollars. Also writes
+ * dist/market/market_store_list.csv: one row per store in a zone (active, churned or prospect).
  */
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { parse } from "csv-parse/sync";
 import { parse as parseYaml } from "yaml";
+import { toCsv } from "../../apps/web/lib/exportTables.ts";
 import { churnedYear, marginRate, prospectType, statusOf, typeProfiles, type GrowthStore } from "../growth/lib.ts";
 import { areaOfZip, indexer, repsByZip, typeWeights, UNTYPED, type MarketCell } from "./lib.ts";
 
@@ -35,6 +37,7 @@ for (const r of storeRows) {
 }
 const stores = storeRows.map((r) => ({
   zip: r.postal_code ?? "",
+  name: r.store_name ?? "",
   weights: typeWeights(r.store_type ?? "", r.store_name ?? "", prospectType, customerMix),
   s: {
     id: r.store_id!,
@@ -126,11 +129,21 @@ const cellOf = (zip: string, type: string, rep: string) => {
   return c;
 };
 const repFor = (zip: string) => repOfZip.get(zip.trim().slice(0, 5)) ?? UNASSIGNED;
+// Every store the market counts in a zone, one row each, with the zone, sub-area and rep it lands in
+// (stores outside every zone, the Unassigned territory gap, are left out of the list).
+const SPREAD = "Spread over the types in their mix (no type set)";
+const listRows: string[][] = [["status", "store_id", "name", "city", "zip", "zone", "sub_area", "rep", "store_type", "first_order_date", "last_order_date"]];
+const listRow = (status: string, id: string, name: string, city: string, zip: string, rep: string, type: string, first = "", last = "") => {
+  const area = placeArea(zip);
+  const zone = zones[areaZone[area]!] ?? UNASSIGNED;
+  if (zone !== UNASSIGNED) listRows.push([status, id, name, city, zip, zone, areas[area] ?? UNASSIGNED, rep, type, first, last]);
+};
 const days = (from: string, to: string) => Math.round((Date.parse(to) - Date.parse(from)) / 86_400_000);
 
-for (const { zip, s, weights } of stores) {
+for (const { zip, name, s, weights } of stores) {
   const status = statusOf(s, asOf);
   if (status === "lapsed") continue; // last ordered over a year ago: outside the market, as in pnpm growth
+  listRow(status, s.id, name, "", zip, repFor(zip), weights.length === 1 ? weights[0]![0] : SPREAD, s.first_order_date, s.last_order_date);
   for (const [type, w] of weights) {
     const c = cellOf(zip, type, repFor(zip));
     const m = marginOf(type);
@@ -156,6 +169,7 @@ for (const { t } of typed) if (t) mix.set(t, (mix.get(t) ?? 0) + 1);
 const mixTotal = [...mix.values()].reduce((a, b) => a + b, 0);
 for (const { p, t } of typed) {
   const rep = p.zone === UNASSIGNED || !p.salesperson ? UNASSIGNED : p.salesperson;
+  listRow("prospect", "", p.name ?? "", p.city ?? "", p.zip_code ?? "", rep, t || SPREAD);
   if (t) cellOf(p.zip_code ?? "", t, rep).prospects++;
   else for (const [mt, n] of mix) cellOf(p.zip_code ?? "", mt, rep).prospects += n / mixTotal;
 }
@@ -201,6 +215,7 @@ const base = {
 
 mkdirSync(join(ROOT, "dist/market"), { recursive: true });
 writeFileSync(join(ROOT, "dist/market/market.json"), JSON.stringify(base));
+writeFileSync(join(ROOT, "dist/market/market_store_list.csv"), toCsv(listRows));
 
 // Printout: the market by zone.
 const sum = (f: (c: MarketCell) => number, keep: (c: MarketCell) => boolean = () => true) => [...cells.values()].filter(keep).reduce((a, c) => a + f(c), 0);
