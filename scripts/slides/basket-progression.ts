@@ -280,14 +280,20 @@ PLAN.forEach((p, i) => {
 
   DEPARTMENTS.forEach((d, r) => {
     const v = shown[p.key][d];
-    slide.addText(
-      [
-        { text: money(v), options: { fontFace: FONT.bold, fontSize: 14, color: fg } },
-        { text: `  ${fmtUnits(units(p.key, d))} ${UNIT.short}`, options: { fontFace: FONT.book, fontSize: 10, color: sub } },
-      ],
-      { x, y: ROW_Y0 + r * ROW_H, w: CARD_W, h: ROW_H, margin: 0, align: "center", valign: "middle", isTextBox: true,
-        objectName: `${p.sub} ${d}` },
-    );
+    // Three aligned columns inside the card: dollars and unit count right-aligned, the unit word
+    // left-aligned, all on one baseline (bottom-anchored boxes of the same height).
+    const cellH = 0.25;
+    const cellY = ROW_Y0 + r * ROW_H + (ROW_H - cellH) / 2;
+    const cell = { y: cellY, h: cellH, margin: 0, valign: "bottom" as const, isTextBox: true, wrap: false };
+    slide.addText(money(v), {
+      ...cell, x: x + 0.02, w: 0.6, align: "right", fontFace: FONT.bold, fontSize: 14, color: fg, objectName: `${p.sub} ${d} $`,
+    });
+    slide.addText(fmtUnits(units(p.key, d)), {
+      ...cell, x: x + 0.64, w: 0.3, align: "right", fontFace: FONT.book, fontSize: 10, color: sub, objectName: `${p.sub} ${d} count`,
+    });
+    slide.addText(UNIT.short, {
+      ...cell, x: x + 0.97, w: 0.4, align: "left", fontFace: FONT.book, fontSize: 10, color: sub, objectName: `${p.sub} ${d} unit`,
+    });
   });
 });
 
