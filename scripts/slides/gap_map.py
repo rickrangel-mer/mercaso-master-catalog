@@ -33,6 +33,7 @@ import ssl
 import time
 import urllib.request
 
+import numpy as np
 import pandas as pd
 from PIL import Image, ImageOps
 
@@ -99,18 +100,35 @@ def px_y(lat: float) -> float:
     return (0.5 - math.log((1 + s) / (1 - s)) / (4 * math.pi)) * 2**ZOOM * 256
 
 
-def located_prospects(prospects: pd.DataFrame, known: set) -> tuple[pd.DataFrame, str]:
-    """Prospects with coordinates: from the prospect list when it has them, else from rep visits."""
-    cols = {c.lower(): c for c in prospects.columns}
+def located_prospects(customers: pd.DataFrame, coords: pd.DataFrame) -> tuple[pd.DataFrame, str]:
+    """
+    Prospects with coordinates: from the prospect list when it has them (latitude/longitude), else
+    from rep visits. A listed prospect within 30 m of a store we serve or that stopped ordering is the
+    same store listed twice, so it is left out; so are repeats (same name, same spot).
+    """
+    p = pd.read_csv(os.path.join(RAW, "prospects.csv"), dtype=str)
+    cols = {c.lower(): c for c in p.columns}
     lat_col = cols.get("lat") or cols.get("latitude")
     lng_col = cols.get("lng") or cols.get("lon") or cols.get("longitude")
     if lat_col and lng_col:
-        d = prospects.assign(lat=pd.to_numeric(prospects[lat_col], errors="coerce"), lng=pd.to_numeric(prospects[lng_col], errors="coerce"))
-        return d.dropna(subset=["lat", "lng"])[["lat", "lng"]], "list"
+        p = p.assign(lat=pd.to_numeric(p[lat_col], errors="coerce"), lng=pd.to_numeric(p[lng_col], errors="coerce")).dropna(subset=["lat", "lng"])
+        p = p.assign(key=p["name"].map(norm) + "|" + p.lat.round(4).astype(str) + "," + p.lng.round(4).astype(str)).drop_duplicates("key")
+        known = customers.join(coords, on="store_id").dropna(subset=["lat", "lng"])
+        kx, ky = known.lng.to_numpy(), known.lat.to_numpy()
+        coslat = math.cos(math.radians(34))
+        # Distance from each prospect to the known stores, in blocks of 500.
+        near = np.zeros(len(p), dtype=bool)
+        plat, plng = p.lat.to_numpy(), p.lng.to_numpy()
+        for i in range(0, len(p), 500):
+            dy = (plat[i : i + 500, None] - ky[None, :]) * 110570
+            dx = (plng[i : i + 500, None] - kx[None, :]) * 111320 * coslat
+            near[i : i + 500] = ((dx**2 + dy**2) <= 30**2).any(axis=1)
+        return p[~near][["lat", "lng"]], "list"
     v = pd.read_csv(os.path.join(RAW, "map_visits.csv"))
     v["spot"] = v.lat.round(3).astype(str) + "," + v.lng.round(3).astype(str)
     v = v[v.spot.map(v.groupby("spot").store_id.nunique()) < CROWD_STORES]
-    d = v[(v.has_ordered == 0) & ~v.store_id.isin(known)].groupby("store_id").agg(lat=("lat", "median"), lng=("lng", "median"))
+    known_ids = set(customers.store_id.dropna())
+    d = v[(v.has_ordered == 0) & ~v.store_id.isin(known_ids)].groupby("store_id").agg(lat=("lat", "median"), lng=("lng", "median"))
     return d.reset_index()[["lat", "lng"]], "visits"
 
 
@@ -132,10 +150,10 @@ def main() -> None:
         return d[d.lat.between(AREA["south"], AREA["north"]) & d.lng.between(AREA["west"], AREA["east"])]
 
     # Our stores and the churned ones, at their address.
-    customers, prospect_list = market_lists()
+    customers, _ = market_lists()
     coords = pd.read_csv(os.path.join(RAW, "map_customers.csv")).set_index("store_id")[["lat", "lng"]]
     placed = inside(customers.join(coords, on="store_id").dropna(subset=["lat", "lng"]))
-    prospects, source = located_prospects(prospect_list, set(customers.store_id.dropna()))
+    prospects, source = located_prospects(customers, coords)
     prospects = inside(prospects)
 
     def markers(d: pd.DataFrame, kind: str) -> list[dict]:
