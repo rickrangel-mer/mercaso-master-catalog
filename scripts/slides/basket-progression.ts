@@ -4,7 +4,9 @@
  *      department, in dollars per order and SKUs a store buys a year, with the change over the last
  *      twelve months and the next twelve.
  *   2. Where and How to Grow: where the room is (how often orders include each department, today,
- *      the 12-month plan and the top-quartile store) and, beside it, how to grow (to be filled in).
+ *      the 12-month plan and the top-quartile store) and, beside it, how to grow (Mercaso Concierge).
+ *   3. Gaps in the Market: one stretch of Long Beach street by street, and customers against the market.
+ *   4. Building the Commerce Core: the headcount we make room for and the commerce roles we hire.
  *
  *   pnpm athena:export basket-mix basket-headroom basket-store-skus
  *   pnpm slides:basket            writes dist/slides/basket-progression.pptx
@@ -948,6 +950,173 @@ function drawGapMap(slide: Slide, g: GapMap, x0: number, y0: number, maxW: numbe
               `Map data © OpenStreetMap contributors.`,
           ]
         : []),
+    ].join("\n\n"),
+  );
+}
+
+// ---------- slide 4: building the commerce core ----------
+
+// The headcount plan (Rick, 2026-11-05): make room with a $50K headcount cut in LA and abroad,
+// starting in Xi'an, and reinvest it in core commerce roles over the next 12-18 months.
+const TEAM = {
+  cut: "$50K",
+  xian: { reduced: 8, remaining: "Remaining team maintains and procures our current systems" },
+  functions: ["HR", "Operations / Transportation", "Purchasing / Planning", "Finance / Controller"],
+  functionsWhen: "Q2–Q3 '27, starting March",
+  more: [
+    { role: "Product", count: "1–2", when: "2H 2027" },
+    { role: "Go-to-market / Business Operations", count: "1", when: "" },
+  ],
+  timeline: [
+    { when: "Today", what: "Xi'an −8; room in LA and abroad" },
+    { when: "Mar '27", what: "Commerce hiring starts" },
+    { when: "Q2–Q3 '27", what: "A head in each core function" },
+    { when: "2H '27", what: "1–2 product roles" },
+  ],
+} as const;
+
+{
+  const slide = addFrame("Building the Commerce Core", [
+    { text: "Commerce needs a stronger core as we scale. ", options: { fontFace: FONT.book } },
+    { text: "We fund it by reshaping headcount, not adding to it.", options: { fontFace: FONT.bold } },
+  ]);
+
+  const TOP = 1.95;
+  const PANEL_B = 5.95;
+  const LW = 3.75; // "make room" panel
+  const ARROW = 0.55;
+  const RX0 = X0 + LW + ARROW;
+  const RW = X1 - RX0;
+
+  const panel = (x: number, w: number, title: string, subtitle: string, name: string) => {
+    slide.addShape(pres.ShapeType.roundRect, {
+      x, y: TOP, w, h: PANEL_B - TOP, rectRadius: 0.12, fill: { color: COLOR.panel }, line: { color: "EFE9F5", width: 0.75 },
+      shadow: { type: "outer", color: "5C2E91", opacity: 0.08, blur: 8, offset: 2, angle: 90 },
+      objectName: `${name} panel`,
+    });
+    slide.addText(title, {
+      x: x + 0.3, y: TOP + 0.18, w: w - 0.6, h: 0.4, margin: 0, fontFace: FONT.black, fontSize: 20, color: COLOR.purple,
+      isTextBox: true, objectName: `${name} title`,
+    });
+    slide.addText(subtitle, {
+      x: x + 0.3, y: TOP + 0.58, w: w - 0.6, h: 0.26, margin: 0, valign: "top", fontFace: FONT.book, fontSize: 12, color: COLOR.muted,
+      isTextBox: true, objectName: `${name} subtitle`,
+    });
+  };
+
+  // Left: make room.
+  panel(X0, LW, "Make room", "Headcount in LA and abroad", "Make room");
+  slide.addText(
+    [
+      { text: `−${TEAM.cut}`, options: { fontFace: FONT.black, fontSize: 40, color: COLOR.magenta, breakLine: true } },
+      { text: "headcount cost cut", options: { fontFace: FONT.bold, fontSize: 12, color: COLOR.ink } },
+    ],
+    { x: X0 + 0.3, y: TOP + 0.95, w: LW - 0.6, h: 0.95, margin: 0, valign: "top", isTextBox: true, objectName: "Cut" },
+  );
+  slide.addShape(pres.ShapeType.line, { x: X0 + 0.3, y: TOP + 2.05, w: LW - 0.6, h: 0, line: { color: COLOR.line, width: 0.75 }, objectName: "Cut rule" });
+  slide.addText(
+    [
+      { text: "Starts with Xi'an", options: { fontFace: FONT.bold, fontSize: 13, color: COLOR.ink, breakLine: true } },
+      { text: `−${TEAM.xian.reduced}`, options: { fontFace: FONT.black, fontSize: 28, color: COLOR.purple } },
+      { text: "  headcount", options: { fontFace: FONT.book, fontSize: 12, color: COLOR.muted, breakLine: true } },
+      { text: TEAM.xian.remaining, options: { fontFace: FONT.book, fontSize: 11, color: COLOR.ink } },
+    ],
+    { x: X0 + 0.3, y: TOP + 2.2, w: LW - 0.6, h: 1.6, margin: 0, valign: "top", isTextBox: true, objectName: "Xi'an" },
+  );
+
+  // The arrow between the panels: what we cut funds what we hire.
+  slide.addShape(pres.ShapeType.rightArrow, {
+    x: X0 + LW + 0.1, y: TOP + (PANEL_B - TOP) / 2 - 0.22, w: ARROW - 0.2, h: 0.44, fill: { color: COLOR.magenta }, line: { type: "none" },
+    objectName: "Reinvest arrow",
+  });
+
+  // Right: reinvest in commerce.
+  panel(RX0, RW, "Reinvest in commerce", "Core roles we hire over the next 12–18 months", "Reinvest");
+  slide.addText(
+    [
+      { text: "Up-level the core", options: { fontFace: FONT.bold, fontSize: 12, color: COLOR.ink } },
+      { text: `  ·  1 head in each  ·  ${TEAM.functionsWhen}`, options: { fontFace: FONT.book, fontSize: 11, color: COLOR.muted } },
+    ],
+    { x: RX0 + 0.3, y: TOP + 0.95, w: RW - 0.6, h: 0.24, margin: 0, valign: "middle", isTextBox: true, objectName: "Core label" },
+  );
+  const CG = 0.16;
+  const CW = (RW - 0.6 - CG * (TEAM.functions.length - 1)) / TEAM.functions.length;
+  const CY = TOP + 1.28;
+  const CH = 1.05;
+  TEAM.functions.forEach((f, i) => {
+    const cx = RX0 + 0.3 + i * (CW + CG);
+    slide.addShape(pres.ShapeType.roundRect, {
+      x: cx, y: CY, w: CW, h: CH, rectRadius: 0.08, fill: { color: COLOR.white }, line: { color: "E6DDF0", width: 0.75 }, objectName: `${f} card`,
+    });
+    slide.addText(String(i + 1).padStart(2, "0"), {
+      x: cx + 0.16, y: CY + 0.12, w: 0.5, h: 0.3, margin: 0, fontFace: FONT.black, fontSize: 16, color: COLOR.magenta, isTextBox: true,
+      objectName: `${f} number`,
+    });
+    slide.addText(
+      [
+        { text: f, options: { fontFace: FONT.bold, fontSize: 12, color: COLOR.ink, breakLine: true } },
+        { text: "+1 head", options: { fontFace: FONT.book, fontSize: 10, color: COLOR.purple } },
+      ],
+      { x: cx + 0.16, y: CY + 0.42, w: CW - 0.26, h: 0.56, margin: 0, valign: "top", isTextBox: true, objectName: `${f} text` },
+    );
+  });
+  const MY = CY + CH + 0.3;
+  slide.addText("Then", {
+    x: RX0 + 0.3, y: MY, w: RW - 0.6, h: 0.22, margin: 0, fontFace: FONT.bold, fontSize: 12, color: COLOR.ink, isTextBox: true, objectName: "Then label",
+  });
+  const MW2 = (RW - 0.6 - CG) / 2;
+  TEAM.more.forEach((m, i) => {
+    const mx = RX0 + 0.3 + i * (MW2 + CG);
+    const my = MY + 0.3;
+    slide.addShape(pres.ShapeType.roundRect, {
+      x: mx, y: my, w: MW2, h: 0.7, rectRadius: 0.08, fill: { color: COLOR.white }, line: { color: "E6DDF0", width: 0.75 }, objectName: `${m.role} card`,
+    });
+    slide.addText(m.count, {
+      x: mx + 0.16, y: my, w: 0.75, h: 0.7, margin: 0, valign: "middle", fontFace: FONT.black, fontSize: 22, color: COLOR.purple, isTextBox: true,
+      objectName: `${m.role} count`,
+    });
+    slide.addText(
+      [
+        { text: m.role, options: { fontFace: FONT.bold, fontSize: 12, color: COLOR.ink, breakLine: !!m.when } },
+        ...(m.when ? [{ text: m.when, options: { fontFace: FONT.book, fontSize: 10, color: COLOR.muted } }] : []),
+      ],
+      { x: mx + 0.95, y: my, w: MW2 - 1.05, h: 0.7, margin: 0, valign: "middle", isTextBox: true, objectName: `${m.role} text` },
+    );
+  });
+
+  // Timeline under both panels.
+  const TY = PANEL_B + 0.42;
+  const TX0 = X0 + 0.15;
+  const TX1 = X1 - 0.15;
+  slide.addShape(pres.ShapeType.line, { x: TX0, y: TY, w: TX1 - TX0, h: 0, line: { color: "D9D3E3", width: 2 }, objectName: "Timeline" });
+  const step = (TX1 - TX0) / (TEAM.timeline.length - 1);
+  TEAM.timeline.forEach((t, i) => {
+    const tx = TX0 + i * step;
+    const dot = 0.18;
+    slide.addShape(pres.ShapeType.ellipse, {
+      x: tx - dot / 2, y: TY - dot / 2, w: dot, h: dot, fill: { color: i === 0 ? COLOR.magenta : COLOR.purple }, line: { color: COLOR.white, width: 1.5 },
+      objectName: `Timeline ${t.when} dot`,
+    });
+    const align = i === 0 ? "left" : i === TEAM.timeline.length - 1 ? "right" : "center";
+    const bw = 2.6;
+    const bx = align === "left" ? tx - 0.09 : align === "right" ? tx - bw + 0.09 : tx - bw / 2;
+    slide.addText(
+      [
+        { text: t.when, options: { fontFace: FONT.black, fontSize: 11, color: i === 0 ? COLOR.magenta : COLOR.purple, breakLine: true } },
+        { text: t.what, options: { fontFace: FONT.book, fontSize: 10, color: COLOR.ink } },
+      ],
+      { x: bx, y: TY + 0.14, w: bw, h: 0.42, margin: 0, align, valign: "top", isTextBox: true, objectName: `Timeline ${t.when}` },
+    );
+  });
+
+  slide.addNotes(
+    [
+      `As we scale, the core commerce functions need investment. Over the next 12 to 18 months we up-level the team in ` +
+        `${TEAM.functions.slice(0, -1).join(", ")} and ${TEAM.functions[TEAM.functions.length - 1]}, with a head in each.`,
+      `We make room for that in our headcount, in LA and abroad, rather than adding cost: a ${TEAM.cut} cut. It starts with the Xi'an team, ` +
+        `which goes down by ${TEAM.xian.reduced}; the team that stays focuses on maintaining and procuring our current systems.`,
+      `We reinvest in commerce headcount in Q2 and Q3, starting in March: the core function heads first, then ` +
+        TEAM.more.map((m) => `${m.count} in ${m.role.toLowerCase()}${m.when ? ` in ${m.when}` : ""}`).join(", and ") + ".",
     ].join("\n\n"),
   );
 }
