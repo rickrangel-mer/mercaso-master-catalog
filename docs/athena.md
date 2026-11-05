@@ -35,10 +35,10 @@ All in `scripts/athena/sql/`:
 | `pricing.sql` | Today's case price per live item (the promo price when on promo, else the regular price without CRV) and Finale's average case cost with the case CRV taken out (`average_cost - regular_crv * package_size`), for the site's price and margin columns | `data/raw/pricing.csv` |
 | `liquor_stores.sql` | One row per CA liquor store that ordered in 12 months: name, number, organization, city, ZIP, first and last order dates, orders in 12 months, 90 days and the 90 days before, 12-month spend. No contact details | `data/raw/liquor_stores.csv` |
 | `liquor_store_skus.sql` | Store × SKU for the catalog's SKUs over 12 months: orders, cases, last order date. The runner fills `{{CATALOG_SKUS}}` from the match file | `data/raw/liquor_store_skus.csv` |
-| `basket_mix.sql` | Last six full months, all stores: per department, revenue per order (rows add up to AOV), the share of orders that include it, the ticket when they do, and cases and eaches per order | `data/raw/basket_mix.csv` |
+| `basket_mix.sql` | Last six full months and the same months a year earlier (`period` current / prior), all stores: per department, revenue per order (rows add up to AOV), the share of orders that include it, the ticket when they do, and cases and eaches per order | `data/raw/basket_mix.csv` |
 | `basket_headroom.sql` | Same window, stores with 6+ orders, small departments folded into Other: store reach, order share (order-weighted average, store median and 75th percentile) and ticket per department | `data/raw/basket_headroom.csv` |
 | `basket_trend.sql` | Last 13 full months, all stores: revenue per order and order share by month and department | `data/raw/basket_trend.csv` |
-| `basket_store_skus.sql` | Last 12 full months: distinct SKUs a store buys in a year by department, averaged over all ordering stores and over stores with 12+ orders | `data/raw/basket_store_skus.csv` |
+| `basket_store_skus.sql` | Last 12 full months and the 12 before (`period` current / prior): distinct SKUs a store buys in a year by department, averaged over all ordering stores and over stores with 12+ orders | `data/raw/basket_store_skus.csv` |
 | `optional_checks.sql` | Attribute names and item statuses, for tuning the matcher | Not needed for the exports |
 
 `data/raw/` is gitignored, so exports never reach the repo.
@@ -52,7 +52,7 @@ pnpm athena:check                  # who am I, and can Athena read the item tabl
 pnpm athena:export                 # all exports into data/raw/
 pnpm athena:export liquor-sales    # or any of: products, liquor-sales, liquor-reach, pricing, liquor-stores, liquor-store-skus,
                                    #   basket-mix, basket-headroom, basket-trend, basket-store-skus
-pnpm slides:basket                 # board slide on basket growth, from the basket exports, into dist/slides/
+pnpm slides:basket                 # two board slides on basket growth (needs basket-mix, basket-headroom, basket-store-skus), into dist/slides/
                                    #   --units=cases: cases per order instead of SKUs per store per year; --scale=best: bars to the top quartile
 pnpm crosscheck                    # Phase 2.5 comparison, from the two liquor exports
 ```
