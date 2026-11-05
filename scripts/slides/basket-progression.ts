@@ -672,14 +672,14 @@ function addFootnote(slide: Slide, text: string, y: number) {
 
 // ---------- slide 3: gaps in the market ----------
 
-// The store plan (Rick, 2026-11-05): the market is Rick's cleaned store list (in-scope stores, no
-// chains), and the stores Mercaso serves today, in six months and in twelve.
+// The store plan (Rick, 2026-11-05): the market is Rick's grossed-up universe of stores, and
+// Mercaso's active and total customers today, in six months and in twelve.
 const NETWORK = {
-  universe: 12416,
+  universe: 18416,
   steps: [
-    { label: "TODAY", sub: "Oct '26", stores: 3448 },
-    { label: "6 MONTHS", sub: "Apr '27", stores: 3913 },
-    { label: "12 MONTHS", sub: "Oct '27", stores: 4416 },
+    { label: "TODAY", sub: "Oct '26", active: 3448, total: 6602 },
+    { label: "6 MONTHS", sub: "Apr '27", active: 3913, total: 7278 },
+    { label: "12 MONTHS", sub: "Oct '27", active: 4416, total: 8158 },
   ],
 } as const;
 
@@ -704,15 +704,32 @@ const GAP_JSON = join(ROOT, "dist/slides/gap-map.json");
 const gapMap: GapMap | undefined = existsSync(GAP_JSON) && existsSync(GAP_PNG) ? JSON.parse(readFileSync(GAP_JSON, "utf8")) : undefined;
 if (!gapMap) console.warn("No dist/slides/gap-map.png: run python3 scripts/slides/gap_map.py for the slide 3 map.");
 
+// Store markers (Rick, 2026-11-05): green check for active stores, yellow exclamation mark for
+// prospects visited that never ordered, red X for churned stores (icons drawn by gap_map.py), and a
+// white dot with a pink ring for prospects never visited.
 const MARKER = {
-  active: { fill: COLOR.purple, line: COLOR.white, width: 1, label: "active stores" },
-  visited: { fill: "FFC20E", line: COLOR.white, width: 1, label: "visited, never ordered" },
-  churned: { fill: COLOR.white, line: COLOR.magenta, width: 1.75, label: "churned" },
-  prospect: { fill: COLOR.magenta, line: COLOR.white, width: 1, label: "prospects, never visited" },
+  active: { icon: "icon-active.png", label: "active", color: "1FA463" },
+  visited: { icon: "icon-visited.png", label: "visited, never ordered", color: "D99A00" },
+  churned: { icon: "icon-churned.png", label: "churned", color: "E03131" },
+  prospect: { icon: "", label: "prospects, never visited", color: COLOR.magenta },
 } as const;
+type MarkerKind = keyof typeof MARKER;
+
+/** A store marker: its icon, or for a prospect never visited a white dot with a pink ring. */
+function marker(slide: Slide, kind: MarkerKind, cx: number, cy: number, d: number, name: string) {
+  const m = MARKER[kind];
+  if (m.icon) {
+    slide.addImage({ path: join(ROOT, "dist/slides", m.icon), x: cx - d / 2, y: cy - d / 2, w: d, h: d, altText: m.label, objectName: name });
+  } else {
+    const r = d * 0.82;
+    slide.addShape(pres.ShapeType.ellipse, {
+      x: cx - r / 2, y: cy - r / 2, w: r, h: r, fill: { color: COLOR.white }, line: { color: COLOR.magenta, width: 1.75 }, objectName: name,
+    });
+  }
+}
 
 function drawGapMap(slide: Slide, g: GapMap, x0: number, y0: number, maxW: number, maxH: number) {
-  maxH -= 0.34; // room for the legend row under the map
+  maxH -= 0.56; // room for the summary and legend rows under the map
   const w = Math.min(maxW, maxH * g.aspect);
   const h = w / g.aspect;
   const mx = x0 + (maxW - w) / 2;
@@ -739,36 +756,38 @@ function drawGapMap(slide: Slide, g: GapMap, x0: number, y0: number, maxW: numbe
   });
 
   // One marker per store; prospects never visited first, then visited, then churned, then ours on top.
-  const d = 0.12;
-  g.markers.forEach((m, i) => {
-    const k = MARKER[m.kind];
-    slide.addShape(pres.ShapeType.ellipse, {
-      x: mx + m.fx * w - d / 2, y: y0 + m.fy * h - d / 2, w: d, h: d, fill: { color: k.fill },
-      line: { color: k.line, width: k.width }, objectName: `Store ${i + 1} (${m.kind})`,
-    });
-  });
+  const d = 0.15;
+  g.markers.forEach((m, i) => marker(slide, m.kind, mx + m.fx * w, y0 + m.fy * h, d, `Store ${i + 1} (${m.kind})`));
 
-  // Legend: one row under the map.
-  const rows: [keyof typeof MARKER, number][] = [["active", g.active], ["visited", g.visited], ["churned", g.churned], ["prospect", g.prospects]];
+  // Under the map: the stretch's total and how much of it we serve, then each group with its share.
+  const total = g.active + g.visited + g.churned + g.prospects;
+  const share = (n: number) => `${Math.round((n / total) * 100)}%`;
+  slide.addText(
+    [
+      { text: `${total} stores`, options: { fontFace: FONT.black, fontSize: 11, color: COLOR.ink } },
+      { text: " in this stretch · we serve ", options: { fontFace: FONT.book, fontSize: 10, color: COLOR.ink } },
+      { text: share(g.active), options: { fontFace: FONT.black, fontSize: 11, color: MARKER.active.color } },
+      { text: ` · ${total - g.active} left to win (${share(total - g.active)})`, options: { fontFace: FONT.book, fontSize: 10, color: COLOR.ink } },
+    ],
+    { x: x0, y: y0 + h + 0.07, w: maxW, h: 0.22, margin: 0, valign: "middle", isTextBox: true, objectName: "Map summary" },
+  );
+  const rows: [MarkerKind, number][] = [["active", g.active], ["visited", g.visited], ["churned", g.churned], ["prospect", g.prospects]];
   // Spread across the panel's full width, each column sized to its label.
-  const need = rows.map(([kind, n]) => 0.2 + (String(n).length + MARKER[kind].label.length + 1) * 0.068);
+  const need = rows.map(([kind, n]) => 0.2 + String(n).length * 0.075 + (share(n).length + MARKER[kind].label.length + 2) * 0.054);
   const spare = (maxW - need.reduce((a, b) => a + b, 0)) / (rows.length - 1);
-  const starts = need.map((_, i) => x0 + need.slice(0, i).reduce((a, b) => a + b, 0) + i * Math.max(0.1, spare));
+  const starts = need.map((_, i) => x0 + need.slice(0, i).reduce((a, b) => a + b, 0) + i * Math.max(0.08, spare));
   rows.forEach(([kind, n], i) => {
-    const colW = need[i]! + 0.05;
     const lx = starts[i]!;
-    const ly = y0 + h + 0.1;
+    const ly = y0 + h + 0.33;
     const k = MARKER[kind];
-    slide.addShape(pres.ShapeType.ellipse, {
-      x: lx, y: ly + 0.05, w: d, h: d, fill: { color: k.fill }, line: { color: k.line, width: k.width },
-      objectName: `Map legend ${kind} marker`,
-    });
+    marker(slide, kind, lx + 0.07, ly + 0.11, 0.15, `Map legend ${kind} marker`);
     slide.addText(
       [
-        { text: `${n}`, options: { fontFace: FONT.black, fontSize: 11, color: kind === "active" ? COLOR.purple : kind === "visited" ? "D99A00" : COLOR.magenta } },
-        { text: ` ${k.label}`, options: { fontFace: FONT.book, fontSize: 9, color: COLOR.ink } },
+        { text: `${n}`, options: { fontFace: FONT.black, fontSize: 10.5, color: k.color } },
+        { text: ` ${k.label} `, options: { fontFace: FONT.book, fontSize: 8.5, color: COLOR.ink } },
+        { text: share(n), options: { fontFace: FONT.bold, fontSize: 8.5, color: COLOR.muted } },
       ],
-      { x: lx + 0.17, y: ly, w: colW - 0.2, h: 0.22, margin: 0, valign: "middle", isTextBox: true, objectName: `Map legend ${kind}` },
+      { x: lx + 0.18, y: ly, w: need[i]! - 0.1, h: 0.22, margin: 0, valign: "middle", isTextBox: true, wrap: false, objectName: `Map legend ${kind}` },
     );
   });
 
@@ -777,10 +796,11 @@ function drawGapMap(slide: Slide, g: GapMap, x0: number, y0: number, maxW: numbe
 {
   const pen = (n: number) => n / NETWORK.universe;
   const pct1 = (n: number) => `${(n * 100).toFixed(1)}%`;
-  const today = NETWORK.steps[0].stores;
-  const oct = NETWORK.steps[2].stores;
+  const now = NETWORK.steps[0];
+  const oct = NETWORK.steps[2];
+  const fmt = (n: number) => n.toLocaleString("en-US");
   const slide = addFrame("Gaps in the Market", [
-    { text: `We serve ${pct(pen(today))} of a ${NETWORK.universe.toLocaleString("en-US")}-store market. `, options: { fontFace: FONT.book } },
+    { text: `We serve ${pct(pen(now.total))} of an ${fmt(NETWORK.universe)}-store market. `, options: { fontFace: FONT.book } },
     { text: "We grow by filling the holes where we already win.", options: { fontFace: FONT.bold } },
   ]);
 
@@ -814,19 +834,28 @@ function drawGapMap(slide: Slide, g: GapMap, x0: number, y0: number, maxW: numbe
   );
   if (gapMap) drawGapMap(slide, gapMap, X0 + 0.3, TOP + 0.95, MW - 0.6, BOTTOM - 0.2 - (TOP + 0.95));
 
-  // Right: stores served and penetration, today and the plan's two steps. Each bar is the whole
-  // market; today's stores in purple, what the plan adds in magenta.
-  panel(KX, KW, "Stores we serve", `of the ${NETWORK.universe.toLocaleString("en-US")} stores in our market`, "Stores");
+  // Right: total and active customers against the market, today and the plan's two steps. Each bar
+  // is the whole market: active customers in purple, the rest of our customers in light purple.
+  const LIGHT = "C7B8E3";
+  panel(KX, KW, "Customers we serve", `of the ${fmt(NETWORK.universe)} stores in our market`, "Stores");
   const RX = KX + 0.3;
   const RW = KW - 0.6;
-  const ROW_Y0 = TOP + 1.05;
-  const ROW_H = 0.98;
+  slide.addShape(pres.ShapeType.rect, { x: RX, y: TOP + 0.9, w: 0.14, h: 0.1, fill: { color: COLOR.purple }, line: { type: "none" }, objectName: "Key active" });
+  slide.addText("active", {
+    x: RX + 0.2, y: TOP + 0.86, w: 0.6, h: 0.18, margin: 0, valign: "middle", fontFace: FONT.book, fontSize: 9, color: COLOR.ink, isTextBox: true, objectName: "Key active text",
+  });
+  slide.addShape(pres.ShapeType.rect, { x: RX + 0.8, y: TOP + 0.9, w: 0.14, h: 0.1, fill: { color: LIGHT }, line: { type: "none" }, objectName: "Key other" });
+  slide.addText("other customers", {
+    x: RX + 1.0, y: TOP + 0.86, w: 1.3, h: 0.18, margin: 0, valign: "middle", fontFace: FONT.book, fontSize: 9, color: COLOR.ink, isTextBox: true, objectName: "Key other text",
+  });
+  const ROW_Y0 = TOP + 1.18;
+  const ROW_H = 0.96;
   NETWORK.steps.forEach((s, i) => {
     const y = ROW_Y0 + i * ROW_H;
-    const added = s.stores - today;
+    const added = s.total - now.total;
     if (i > 0) {
       slide.addShape(pres.ShapeType.line, {
-        x: RX, y: y - 0.1, w: RW, h: 0, line: { color: COLOR.line, width: 0.75 }, objectName: `Stores rule ${i}`,
+        x: RX, y: y - 0.09, w: RW, h: 0, line: { color: COLOR.line, width: 0.75 }, objectName: `Stores rule ${i}`,
       });
     }
     slide.addText(
@@ -837,35 +866,36 @@ function drawGapMap(slide: Slide, g: GapMap, x0: number, y0: number, maxW: numbe
       { x: RX, y, w: RW * 0.6, h: 0.2, margin: 0, valign: "middle", isTextBox: true, objectName: `${s.sub} label` },
     );
     if (added > 0) {
-      slide.addText(`+${added.toLocaleString("en-US")} stores`, {
-        x: RX + RW * 0.5, y, w: RW * 0.5, h: 0.2, margin: 0, align: "right", valign: "middle", fontFace: FONT.bold, fontSize: 11,
+      slide.addText(`+${fmt(added)} customers`, {
+        x: RX + RW * 0.45, y, w: RW * 0.55, h: 0.2, margin: 0, align: "right", valign: "middle", fontFace: FONT.bold, fontSize: 10.5,
         color: COLOR.magenta, isTextBox: true, objectName: `${s.sub} added`,
       });
     }
     slide.addText(
       [
-        { text: s.stores.toLocaleString("en-US"), options: { fontFace: FONT.black, fontSize: 26, color: COLOR.ink } },
-        { text: "  stores", options: { fontFace: FONT.book, fontSize: 12, color: COLOR.muted } },
+        { text: fmt(s.total), options: { fontFace: FONT.black, fontSize: 24, color: COLOR.ink } },
+        { text: "  customers", options: { fontFace: FONT.book, fontSize: 11, color: COLOR.muted, breakLine: true } },
+        { text: fmt(s.active), options: { fontFace: FONT.bold, fontSize: 11, color: COLOR.purple } },
+        { text: " active", options: { fontFace: FONT.book, fontSize: 10, color: COLOR.muted } },
       ],
-      { x: RX, y: y + 0.2, w: RW * 0.7, h: 0.44, margin: 0, valign: "middle", isTextBox: true, objectName: `${s.sub} stores` },
+      { x: RX, y: y + 0.2, w: RW * 0.68, h: 0.58, margin: 0, valign: "middle", lineSpacingMultiple: 0.95, isTextBox: true, objectName: `${s.sub} customers` },
     );
-    slide.addText(pct1(pen(s.stores)), {
-      x: RX + RW * 0.5, y: y + 0.2, w: RW * 0.5, h: 0.44, margin: 0, align: "right", valign: "middle", fontFace: FONT.black, fontSize: 22,
-      color: i === 0 ? COLOR.purple : COLOR.magenta, isTextBox: true, objectName: `${s.sub} penetration`,
-    });
-    const barY = y + 0.68;
+    slide.addText(
+      [
+        { text: pct1(pen(s.total)), options: { fontFace: FONT.black, fontSize: 20, color: i === 0 ? COLOR.purple : COLOR.magenta, breakLine: true } },
+        { text: pct1(pen(s.active)), options: { fontFace: FONT.bold, fontSize: 11, color: COLOR.purple } },
+        { text: " active", options: { fontFace: FONT.book, fontSize: 10, color: COLOR.muted } },
+      ],
+      { x: RX + RW * 0.5, y: y + 0.2, w: RW * 0.5, h: 0.58, margin: 0, align: "right", valign: "middle", lineSpacingMultiple: 0.95, isTextBox: true, objectName: `${s.sub} penetration` },
+    );
+    const barY = y + 0.8;
+    slide.addShape(pres.ShapeType.rect, { x: RX, y: barY, w: RW, h: 0.1, fill: { color: COLOR.track }, line: { type: "none" }, objectName: `${s.sub} market bar` });
     slide.addShape(pres.ShapeType.rect, {
-      x: RX, y: barY, w: RW, h: 0.12, fill: { color: COLOR.track }, line: { type: "none" }, objectName: `${s.sub} market bar`,
+      x: RX, y: barY, w: RW * pen(s.total), h: 0.1, fill: { color: LIGHT }, line: { type: "none" }, objectName: `${s.sub} customers bar`,
     });
     slide.addShape(pres.ShapeType.rect, {
-      x: RX, y: barY, w: RW * pen(today), h: 0.12, fill: { color: COLOR.purple }, line: { type: "none" }, objectName: `${s.sub} today bar`,
+      x: RX, y: barY, w: RW * pen(s.active), h: 0.1, fill: { color: COLOR.purple }, line: { type: "none" }, objectName: `${s.sub} active bar`,
     });
-    if (added > 0) {
-      slide.addShape(pres.ShapeType.rect, {
-        x: RX + RW * pen(today), y: barY, w: RW * (pen(s.stores) - pen(today)), h: 0.12, fill: { color: COLOR.magenta }, line: { type: "none" },
-        objectName: `${s.sub} added bar`,
-      });
-    }
   });
 
   const calloutY = ROW_Y0 + 3 * ROW_H + 0.02;
@@ -873,14 +903,14 @@ function drawGapMap(slide: Slide, g: GapMap, x0: number, y0: number, maxW: numbe
     x: KX + 0.25, y: calloutY, w: KW - 0.5, h: BOTTOM - calloutY - 0.15, rectRadius: 0.08, fill: { color: COLOR.white },
     line: { type: "none" }, objectName: "Open market callout",
   });
-  slide.addText(pct(1 - pen(oct)), {
+  slide.addText(pct(1 - pen(oct.total)), {
     x: KX + 0.4, y: calloutY, w: 1.05, h: BOTTOM - calloutY - 0.15, margin: 0, valign: "middle", fontFace: FONT.black, fontSize: 26,
     color: COLOR.magenta, isTextBox: true, objectName: "Open market value",
   });
   slide.addText(
     [
       { text: "of the market is still open ", options: { fontFace: FONT.bold } },
-      { text: `after the plan's +${(oct - today).toLocaleString("en-US")} stores. We are far from saturated.`, options: { fontFace: FONT.book } },
+      { text: `after the plan's +${fmt(oct.total - now.total)} customers. We are far from saturated.`, options: { fontFace: FONT.book } },
     ],
     {
       x: KX + 1.5, y: calloutY, w: KW - 1.85, h: BOTTOM - calloutY - 0.15, margin: 0, valign: "middle", fontSize: 11, color: COLOR.ink,
@@ -890,7 +920,7 @@ function drawGapMap(slide: Slide, g: GapMap, x0: number, y0: number, maxW: numbe
 
   addFootnote(
     slide,
-    `Market: ${NETWORK.universe.toLocaleString("en-US")} in-scope independent stores (no chains, no out-of-scope types); penetration = stores ordering ÷ market. ` +
+    `Market: ${fmt(NETWORK.universe)} stores (Rick's universe); customers = total customers, of which active; penetration = customers ÷ market. ` +
       `Map: active and churned stores at their address (Rick's market list, deduplicated); ` +
       (gapMap?.prospect_source === "list"
         ? `prospects from Rick's prospect list at their address; visited = at least one logged rep visit.`
@@ -900,17 +930,17 @@ function drawGapMap(slide: Slide, g: GapMap, x0: number, y0: number, maxW: numbe
 
   slide.addNotes(
     [
-      `Our market is ${NETWORK.universe.toLocaleString("en-US")} independent stores, after taking out chains and store types we don't serve. ` +
-        `We serve ${today.toLocaleString("en-US")} of them today, ${pct1(pen(today))}. The plan takes that to ` +
-        `${NETWORK.steps[1].stores.toLocaleString("en-US")} by April (${pct1(pen(NETWORK.steps[1].stores))}) and ${oct.toLocaleString("en-US")} by next October ` +
-        `(${pct1(pen(oct))}): ${(oct - today).toLocaleString("en-US")} more stores and ${((pen(oct) - pen(today)) * 100).toFixed(1)} points of penetration.`,
-      `Even then, ${pct(1 - pen(oct))} of the market is still open. We are not saturated, and we are not going to spread thin across ` +
+      `Our market is ${fmt(NETWORK.universe)} stores. We have ${fmt(now.total)} customers today, ${pct1(pen(now.total))} of it, and ${fmt(now.active)} of them ` +
+        `are active (${pct1(pen(now.active))}). The plan takes customers to ${fmt(NETWORK.steps[1].total)} by April (${pct1(pen(NETWORK.steps[1].total))}) ` +
+        `and ${fmt(oct.total)} by next October (${pct1(pen(oct.total))}), with active customers going from ${fmt(now.active)} to ${fmt(oct.active)}.`,
+      `Even then, ${pct(1 - pen(oct.total))} of the market is still open. We are not saturated, and we are not going to spread thin across ` +
         `the whole map: we go after the holes next to where we already have density, where our routes, reps and reputation already are.`,
       ...(gapMap
         ? [
             `The map zooms into ${gapMap.area.name}, ${gapMap.width_km} by ${gapMap.height_km} km from ${gapMap.area.span}, street by street. ` +
-              `We serve ${gapMap.active} stores here (purple). Around them: ${gapMap.visited} prospects our reps have visited that never ordered (yellow), ` +
-              `${gapMap.churned} stores that churned (white with a pink ring), and ${gapMap.prospects} prospects nobody has visited yet (pink). They sit on the same blocks as our stores, on the same routes: this is the hole we fill first, not a new territory.`,
+              `Of the ${gapMap.active + gapMap.visited + gapMap.churned + gapMap.prospects} stores we know here, ${gapMap.active} are active (green check). ` +
+              `Around them: ${gapMap.visited} prospects our reps have visited that never ordered (yellow exclamation mark), ${gapMap.churned} stores that ` +
+              `churned (red X), and ${gapMap.prospects} prospects nobody has visited yet (pink ring). They sit on the same blocks as our stores, on the same routes: this is the hole we fill first, not a new territory.`,
           ]
         : []),
     ].join("\n\n"),

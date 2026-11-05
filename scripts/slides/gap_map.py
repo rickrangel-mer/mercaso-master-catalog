@@ -132,6 +132,40 @@ def located_prospects(customers: pd.DataFrame, coords: pd.DataFrame) -> tuple[pd
     return d.reset_index()[["lat", "lng"]].assign(visited=True), "visits"
 
 
+# Store markers on the slide (Rick, 2026-11-05): a green check for active stores, a yellow
+# exclamation mark for prospects visited that never ordered, a red X for churned stores. Drawn here
+# as small PNGs (the slide draws prospects never visited itself, as a white dot with a pink ring).
+ICONS = {
+    "active": ("#1FA463", "check", "#FFFFFF"),
+    "visited": ("#FFC20E", "exclamation", "#1D1B3A"),
+    "churned": ("#E03131", "x", "#FFFFFF"),
+}
+
+
+def draw_icons() -> None:
+    from PIL import ImageDraw
+
+    S = 256  # drawn large, then scaled down for smooth edges
+    for kind, (fill, glyph, ink) in ICONS.items():
+        im = Image.new("RGBA", (S, S), (0, 0, 0, 0))
+        d = ImageDraw.Draw(im)
+        d.ellipse((8, 8, S - 8, S - 8), fill=fill, outline="#FFFFFF", width=14)
+        w = 30
+        if glyph == "check":
+            d.line([(70, 132), (110, 172), (186, 88)], fill=ink, width=w, joint="curve")
+            for x, y in [(70, 132), (110, 172), (186, 88)]:
+                d.ellipse((x - w / 2, y - w / 2, x + w / 2, y + w / 2), fill=ink)
+        elif glyph == "x":
+            for a, b in [((84, 84), (172, 172)), ((172, 84), (84, 172))]:
+                d.line([a, b], fill=ink, width=w)
+                for x, y in (a, b):
+                    d.ellipse((x - w / 2, y - w / 2, x + w / 2, y + w / 2), fill=ink)
+        else:
+            d.rounded_rectangle((113, 58, 143, 150), radius=15, fill=ink)
+            d.ellipse((111, 168, 145, 202), fill=ink)
+        im.resize((96, 96), Image.LANCZOS).save(os.path.join(OUT, f"icon-{kind}.png"))
+
+
 def main() -> None:
     x0, y0, x1, y1 = px_x(AREA["west"]), px_y(AREA["north"]), px_x(AREA["east"]), px_y(AREA["south"])
     tx0, ty0, tx1, ty1 = int(x0 // 256), int(y0 // 256), int(x1 // 256), int(y1 // 256)
@@ -180,6 +214,7 @@ def main() -> None:
         # Drawn in this order, so our stores sit on top.
         "markers": markers(not_visited, "prospect") + markers(visited, "visited") + markers(churned, "churned") + markers(active, "active"),
     }
+    draw_icons()
     json.dump(summary, open(os.path.join(OUT, "gap-map.json"), "w"), indent=2)
     print(
         f"{AREA['name']} ({summary['width_km']} x {summary['height_km']} km, {W}x{H}px): {len(active)} active, "
