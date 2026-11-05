@@ -957,45 +957,55 @@ function drawGapMap(slide: Slide, g: GapMap, x0: number, y0: number, maxW: numbe
 
 // ---------- slide 4: building the commerce core ----------
 
-// The headcount plan (Rick, 2026-11-05): make room in Xi'an (-8 offshore headcount, -$50K; the work
-// comes back in-house as one Prod / Eng / Ops role), then reinvest in Commerce (+4 by 2H 2027) and
-// Concierge / Fintech (+4 by 1H 2028). Three columns, left to right in time, like slide 1's cards.
+// The headcount plan (Rick, 2026-11-05): make room in LA and abroad, starting with Xi'an (-8 offshore,
+// -$50K; what stays becomes one in-house Prod / Eng / Ops role that keeps today's systems running),
+// then reinvest: Commerce (+4, hiring Q2-Q3 '27 from March, in place by 2H 2027) and Concierge /
+// Fintech (+4 by 1H 2028). Three columns left to right in time, with the story line under each
+// title, and the timeline underneath.
 const TEAM = [
   {
     when: "NOW",
     name: "Make room",
+    why: "Free up budget in LA and abroad, starting offshore.",
     big: "−$50K",
     caption: "headcount cost",
     rows: [
-      { value: "−8", label: "Xi'an headcount (offshore)" },
-      { value: "1", label: "in-house role: Prod / Eng / Ops in one" },
+      { value: "−8", label: "Xi'an headcount, offshore" },
+      { value: "1", label: "in-house Prod / Eng / Ops role" },
+      { value: "", label: "Keeps today's systems running and procured" },
     ],
-    foot: "Funds the hires that follow",
   },
   {
     when: "BY 2H 2027",
     name: "Commerce",
+    why: "Up-level the critical functions commerce needs as we scale.",
     big: "+4",
-    caption: "core roles",
+    caption: "core heads",
     rows: [
       { value: "+1", label: "Finance / Controller" },
       { value: "+1", label: "Operations / Transportation" },
       { value: "+1", label: "HR" },
       { value: "+1", label: "Purchasing / Planning" },
     ],
-    foot: "Hiring starts March 2027",
   },
   {
     when: "BY 1H 2028",
     name: "Concierge / Fintech",
+    why: "Staff the team behind our next products.",
     big: "+4",
     caption: "roles",
     rows: [
       { value: "+2", label: "Product" },
       { value: "+2", label: "Business Operations" },
+      { value: "", label: "Builds on the Commerce core" },
     ],
-    foot: "Builds on the Commerce core",
   },
+] as const;
+const TIMELINE = [
+  { when: "Today", what: "Xi'an −8, −$50K" },
+  { when: "Mar '27", what: "Commerce hiring starts" },
+  { when: "Q2–Q3 '27", what: "Core heads hired, +4 by 2H" },
+  { when: "1H '28", what: "Concierge / Fintech +4" },
 ] as const;
 
 {
@@ -1005,7 +1015,7 @@ const TEAM = [
   ]);
 
   const TOP = 1.95;
-  const BOTTOM = 7.0;
+  const COL_B = 5.95;
   const GAP = 0.5; // room for the arrow between columns
   const CW = (X1 - X0 - GAP * (TEAM.length - 1)) / TEAM.length;
   const fills = [COLOR.today, COLOR.apr, COLOR.magenta];
@@ -1017,59 +1027,88 @@ const TEAM = [
     const sub = dark ? "FFD6EC" : COLOR.muted;
     const accent = dark ? COLOR.white : i === 0 ? COLOR.purple : COLOR.magenta;
     slide.addShape(pres.ShapeType.roundRect, {
-      x, y: TOP, w: CW, h: BOTTOM - TOP, rectRadius: 0.14, fill: { color: fills[i]! }, line: { type: "none" }, objectName: `${c.name} column`,
+      x, y: TOP, w: CW, h: COL_B - TOP, rectRadius: 0.14, fill: { color: fills[i]! }, line: { type: "none" }, objectName: `${c.name} column`,
     });
-    const px = x + 0.32;
-    const pw = CW - 0.64;
+    const px = x + 0.3;
+    const pw = CW - 0.6;
     slide.addText(
       [
         { text: c.when, options: { fontFace: FONT.bold, fontSize: 10, charSpacing: 1, color: dark ? COLOR.white : COLOR.magenta, breakLine: true } },
         { text: c.name, options: { fontFace: FONT.black, fontSize: 18, color: ink } },
       ],
-      { x: px, y: TOP + 0.25, w: pw, h: 0.62, margin: 0, valign: "top", isTextBox: true, objectName: `${c.name} heading` },
+      { x: px, y: TOP + 0.22, w: pw, h: 0.6, margin: 0, valign: "top", isTextBox: true, objectName: `${c.name} heading` },
     );
+    slide.addText(c.why, {
+      x: px, y: TOP + 0.86, w: pw, h: 0.44, margin: 0, valign: "top", fontFace: FONT.book, fontSize: 11.5, color: ink, isTextBox: true,
+      objectName: `${c.name} why`,
+    });
     slide.addText(
       [
-        { text: c.big, options: { fontFace: FONT.black, fontSize: 44, color: accent, breakLine: true } },
-        { text: c.caption, options: { fontFace: FONT.bold, fontSize: 11, color: sub } },
+        { text: c.big, options: { fontFace: FONT.black, fontSize: 34, color: accent } },
+        { text: `  ${c.caption}`, options: { fontFace: FONT.bold, fontSize: 11, color: sub } },
       ],
-      { x: px, y: TOP + 0.95, w: pw, h: 1.0, margin: 0, valign: "top", isTextBox: true, objectName: `${c.name} total` },
+      { x: px, y: TOP + 1.36, w: pw, h: 0.62, margin: 0, valign: "middle", isTextBox: true, objectName: `${c.name} total` },
     );
-    const ry0 = TOP + 2.1;
-    const rowH = 0.5;
+    const ry0 = TOP + 2.08;
+    const rowH = 0.45;
     c.rows.forEach((r, k) => {
       const ry = ry0 + k * rowH;
       slide.addShape(pres.ShapeType.line, {
         x: px, y: ry, w: pw, h: 0, line: { color: dark ? "F37BBE" : "DDD3EA", width: 0.75 }, objectName: `${c.name} rule ${k + 1}`,
       });
-      slide.addText(r.value, {
-        x: px, y: ry, w: 0.55, h: rowH, margin: 0, valign: "middle", fontFace: FONT.black, fontSize: 15, color: accent, isTextBox: true,
-        objectName: `${c.name} ${r.label} value`,
-      });
+      if (r.value) {
+        slide.addText(r.value, {
+          x: px, y: ry, w: 0.5, h: rowH, margin: 0, valign: "middle", fontFace: FONT.black, fontSize: 14, color: accent, isTextBox: true,
+          objectName: `${c.name} ${r.label} value`,
+        });
+      }
       slide.addText(r.label, {
-        x: px + 0.6, y: ry, w: pw - 0.6, h: rowH, margin: 0, valign: "middle", fontFace: FONT.bold, fontSize: 11.5, color: ink, isTextBox: true,
-        objectName: `${c.name} ${r.label}`,
+        x: px + (r.value ? 0.55 : 0), y: ry, w: pw - (r.value ? 0.55 : 0), h: rowH, margin: 0, valign: "middle",
+        fontFace: r.value ? FONT.bold : FONT.book, fontSize: 11, color: r.value ? ink : sub, isTextBox: true, objectName: `${c.name} ${r.label}`,
       });
-    });
-    slide.addText(c.foot, {
-      x: px, y: BOTTOM - 0.55, w: pw, h: 0.3, margin: 0, valign: "middle", fontFace: FONT.book, fontSize: 10.5, color: sub, isTextBox: true,
-      objectName: `${c.name} foot`,
     });
     if (i < TEAM.length - 1) {
       slide.addShape(pres.ShapeType.chevron, {
-        x: x + CW + GAP / 2 - 0.12, y: TOP + (BOTTOM - TOP) / 2 - 0.2, w: 0.24, h: 0.4, fill: { color: COLOR.magenta }, line: { type: "none" },
+        x: x + CW + GAP / 2 - 0.12, y: TOP + (COL_B - TOP) / 2 - 0.2, w: 0.24, h: 0.4, fill: { color: COLOR.magenta }, line: { type: "none" },
         objectName: `Arrow ${i + 1}`,
       });
     }
   });
 
+  // Timeline under the columns.
+  const TY = COL_B + 0.42;
+  const TX0 = X0 + 0.15;
+  const TX1 = X1 - 0.15;
+  slide.addShape(pres.ShapeType.line, { x: TX0, y: TY, w: TX1 - TX0, h: 0, line: { color: "D9D3E3", width: 2 }, objectName: "Timeline" });
+  const step = (TX1 - TX0) / (TIMELINE.length - 1);
+  TIMELINE.forEach((t, i) => {
+    const tx = TX0 + i * step;
+    const dot = 0.18;
+    slide.addShape(pres.ShapeType.ellipse, {
+      x: tx - dot / 2, y: TY - dot / 2, w: dot, h: dot, fill: { color: i === 0 ? COLOR.magenta : COLOR.purple }, line: { color: COLOR.white, width: 1.5 },
+      objectName: `Timeline ${t.when} dot`,
+    });
+    const align = i === 0 ? "left" : i === TIMELINE.length - 1 ? "right" : "center";
+    const bw = 2.6;
+    const bx = align === "left" ? tx - 0.09 : align === "right" ? tx - bw + 0.09 : tx - bw / 2;
+    slide.addText(
+      [
+        { text: t.when, options: { fontFace: FONT.black, fontSize: 11, color: i === 0 ? COLOR.magenta : COLOR.purple, breakLine: true } },
+        { text: t.what, options: { fontFace: FONT.book, fontSize: 10, color: COLOR.ink } },
+      ],
+      { x: bx, y: TY + 0.14, w: bw, h: 0.42, margin: 0, align, valign: "top", isTextBox: true, objectName: `Timeline ${t.when}` },
+    );
+  });
+
   slide.addNotes(
     [
-      `We make room in our headcount before we add to it. It starts with Xi'an: 8 fewer offshore roles, about $50K, and that work comes ` +
-        `back in-house as one role that covers product, engineering and operations together.`,
-      `That funds the Commerce core: one hire each in Finance / Controller, Operations / Transportation, HR and Purchasing / Planning, ` +
-        `four in all by the second half of 2027, with hiring starting in March.`,
-      `Then Concierge and Fintech: two in Product and two in Business Operations, four in all by the first half of 2028.`,
+      `As we scale, the core of commerce needs investment: critical functions we have to hire over the next 12 to 18 months. ` +
+        `We fund them by reshaping headcount, in LA and abroad, rather than adding to it.`,
+      `It starts with Xi'an: 8 fewer offshore roles, about $50K. What stays comes in-house as one role that covers product, engineering and ` +
+        `operations, and keeps today's systems running and procured.`,
+      `That funds the Commerce core: a head in Finance / Controller, Operations / Transportation, HR and Purchasing / Planning. Hiring starts ` +
+        `in March and runs through Q2 and Q3, so all four are in place by the second half of 2027.`,
+      `Then Concierge and Fintech: two in Product and two in Business Operations, four in all by the first half of 2028, building on the Commerce core.`,
     ].join("\n\n"),
   );
 }
