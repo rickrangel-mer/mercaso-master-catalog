@@ -670,6 +670,148 @@ function addFootnote(slide: Slide, text: string, y: number) {
   );
 }
 
+// ---------- slide 3: gaps in the market ----------
+
+// The store plan (Rick, 2026-11-05): the market is Rick's cleaned store list (in-scope stores, no
+// chains), and the stores Mercaso serves today, in six months and in twelve.
+const NETWORK = {
+  universe: 12416,
+  steps: [
+    { label: "TODAY", sub: "Oct '26", stores: 3448 },
+    { label: "6 MONTHS", sub: "Apr '27", stores: 3913 },
+    { label: "12 MONTHS", sub: "Oct '27", stores: 4416 },
+  ],
+} as const;
+
+{
+  const pen = (n: number) => n / NETWORK.universe;
+  const pct1 = (n: number) => `${(n * 100).toFixed(1)}%`;
+  const today = NETWORK.steps[0].stores;
+  const oct = NETWORK.steps[2].stores;
+  const slide = addFrame("Gaps in the Market", [
+    { text: `We serve ${pct(pen(today))} of a ${NETWORK.universe.toLocaleString("en-US")}-store market. `, options: { fontFace: FONT.book } },
+    { text: "We grow by filling the holes where we already win.", options: { fontFace: FONT.bold } },
+  ]);
+
+  const TOP = 1.95;
+  const BOTTOM = 6.8;
+  const GAP_X = 0.35;
+  const KW = 4.55; // the stores panel on the right
+  const MW = X1 - X0 - GAP_X - KW; // the map panel on the left
+  const KX = X0 + MW + GAP_X;
+
+  const panel = (x: number, w: number, title: string, subtitle: string, name: string) => {
+    slide.addShape(pres.ShapeType.roundRect, {
+      x, y: TOP, w, h: BOTTOM - TOP, rectRadius: 0.12, fill: { color: COLOR.panel }, line: { color: "EFE9F5", width: 0.75 },
+      shadow: { type: "outer", color: "5C2E91", opacity: 0.08, blur: 8, offset: 2, angle: 90 },
+      objectName: `${name} panel`,
+    });
+    slide.addText(title, {
+      x: x + 0.3, y: TOP + 0.18, w: w - 0.6, h: 0.4, margin: 0, fontFace: FONT.black, fontSize: 20, color: COLOR.purple,
+      isTextBox: true, objectName: `${name} title`,
+    });
+    slide.addText(subtitle, {
+      x: x + 0.3, y: TOP + 0.58, w: w - 0.6, h: 0.26, margin: 0, valign: "top", fontFace: FONT.book, fontSize: 12, color: COLOR.muted,
+      isTextBox: true, objectName: `${name} subtitle`,
+    });
+  };
+
+  // Left: the map (filled in once the store list is loaded).
+  panel(X0, MW, "Where the holes are", "Stores we serve and stores we don't, in one LA area", "Map");
+
+  // Right: stores served and penetration, today and the plan's two steps. Each bar is the whole
+  // market; today's stores in purple, what the plan adds in magenta.
+  panel(KX, KW, "Stores we serve", `of the ${NETWORK.universe.toLocaleString("en-US")} stores in our market`, "Stores");
+  const RX = KX + 0.3;
+  const RW = KW - 0.6;
+  const ROW_Y0 = TOP + 1.05;
+  const ROW_H = 0.98;
+  NETWORK.steps.forEach((s, i) => {
+    const y = ROW_Y0 + i * ROW_H;
+    const added = s.stores - today;
+    if (i > 0) {
+      slide.addShape(pres.ShapeType.line, {
+        x: RX, y: y - 0.1, w: RW, h: 0, line: { color: COLOR.line, width: 0.75 }, objectName: `Stores rule ${i}`,
+      });
+    }
+    slide.addText(
+      [
+        { text: `${s.label}  `, options: { fontFace: FONT.bold, fontSize: 10, charSpacing: 1, color: i === 2 ? COLOR.magenta : COLOR.muted } },
+        { text: s.sub, options: { fontFace: FONT.book, fontSize: 10, color: COLOR.muted } },
+      ],
+      { x: RX, y, w: RW * 0.6, h: 0.2, margin: 0, valign: "middle", isTextBox: true, objectName: `${s.sub} label` },
+    );
+    if (added > 0) {
+      slide.addText(`+${added.toLocaleString("en-US")} stores`, {
+        x: RX + RW * 0.5, y, w: RW * 0.5, h: 0.2, margin: 0, align: "right", valign: "middle", fontFace: FONT.bold, fontSize: 11,
+        color: COLOR.magenta, isTextBox: true, objectName: `${s.sub} added`,
+      });
+    }
+    slide.addText(
+      [
+        { text: s.stores.toLocaleString("en-US"), options: { fontFace: FONT.black, fontSize: 26, color: COLOR.ink } },
+        { text: "  stores", options: { fontFace: FONT.book, fontSize: 12, color: COLOR.muted } },
+      ],
+      { x: RX, y: y + 0.2, w: RW * 0.7, h: 0.44, margin: 0, valign: "middle", isTextBox: true, objectName: `${s.sub} stores` },
+    );
+    slide.addText(pct1(pen(s.stores)), {
+      x: RX + RW * 0.5, y: y + 0.2, w: RW * 0.5, h: 0.44, margin: 0, align: "right", valign: "middle", fontFace: FONT.black, fontSize: 22,
+      color: i === 0 ? COLOR.purple : COLOR.magenta, isTextBox: true, objectName: `${s.sub} penetration`,
+    });
+    const barY = y + 0.68;
+    slide.addShape(pres.ShapeType.rect, {
+      x: RX, y: barY, w: RW, h: 0.12, fill: { color: COLOR.track }, line: { type: "none" }, objectName: `${s.sub} market bar`,
+    });
+    slide.addShape(pres.ShapeType.rect, {
+      x: RX, y: barY, w: RW * pen(today), h: 0.12, fill: { color: COLOR.purple }, line: { type: "none" }, objectName: `${s.sub} today bar`,
+    });
+    if (added > 0) {
+      slide.addShape(pres.ShapeType.rect, {
+        x: RX + RW * pen(today), y: barY, w: RW * (pen(s.stores) - pen(today)), h: 0.12, fill: { color: COLOR.magenta }, line: { type: "none" },
+        objectName: `${s.sub} added bar`,
+      });
+    }
+  });
+
+  const calloutY = ROW_Y0 + 3 * ROW_H + 0.02;
+  slide.addShape(pres.ShapeType.roundRect, {
+    x: KX + 0.25, y: calloutY, w: KW - 0.5, h: BOTTOM - calloutY - 0.15, rectRadius: 0.08, fill: { color: COLOR.white },
+    line: { type: "none" }, objectName: "Open market callout",
+  });
+  slide.addText(pct(1 - pen(oct)), {
+    x: KX + 0.4, y: calloutY, w: 1.05, h: BOTTOM - calloutY - 0.15, margin: 0, valign: "middle", fontFace: FONT.black, fontSize: 26,
+    color: COLOR.magenta, isTextBox: true, objectName: "Open market value",
+  });
+  slide.addText(
+    [
+      { text: "of the market is still open ", options: { fontFace: FONT.bold } },
+      { text: `after the plan's +${(oct - today).toLocaleString("en-US")} stores. We are far from saturated.`, options: { fontFace: FONT.book } },
+    ],
+    {
+      x: KX + 1.5, y: calloutY, w: KW - 1.85, h: BOTTOM - calloutY - 0.15, margin: 0, valign: "middle", fontSize: 11, color: COLOR.ink,
+      isTextBox: true, objectName: "Open market text",
+    },
+  );
+
+  addFootnote(
+    slide,
+    `Market: ${NETWORK.universe.toLocaleString("en-US")} in-scope independent stores (cleaned list: no chains, no out-of-scope store types). ` +
+      `Penetration = stores ordering from Mercaso ÷ market.`,
+    6.95,
+  );
+
+  slide.addNotes(
+    [
+      `Our market is ${NETWORK.universe.toLocaleString("en-US")} independent stores, after taking out chains and store types we don't serve. ` +
+        `We serve ${today.toLocaleString("en-US")} of them today, ${pct1(pen(today))}. The plan takes that to ` +
+        `${NETWORK.steps[1].stores.toLocaleString("en-US")} by April (${pct1(pen(NETWORK.steps[1].stores))}) and ${oct.toLocaleString("en-US")} by next October ` +
+        `(${pct1(pen(oct))}): ${(oct - today).toLocaleString("en-US")} more stores and ${((pen(oct) - pen(today)) * 100).toFixed(1)} points of penetration.`,
+      `Even then, ${pct(1 - pen(oct))} of the market is still open. We are not saturated, and we are not going to spread thin across ` +
+        `the whole map: we go after the holes next to where we already have density, where our routes, reps and reputation already are.`,
+    ].join("\n\n"),
+  );
+}
+
 mkdirSync(join(ROOT, "dist/slides"), { recursive: true });
 await pres.writeFile({ fileName: OUT });
 console.log(`wrote ${OUT}`);
