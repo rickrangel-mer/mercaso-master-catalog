@@ -683,6 +683,243 @@ const NETWORK = {
   ],
 } as const;
 
+// The market-gaps map: one LA area on a hexagon grid. Each hexagon is shaded by the stores reps have
+// visited there that have never ordered (the holes) and carries a purple dot sized by the active
+// stores Mercaso already serves there (where we win). Built from map_customers.csv and
+// map_visits.csv (`pnpm athena:export map-customers map-visits`).
+//
+// The area was picked by scanning 24 km squares over the LA basin for the most stores served and
+// stores visited-not-ordering together (Inglewood to Downey, Compton to Koreatown). Visits carry the
+// rep's GPS, not the store's address; where visits to 4+ different stores were logged at one spot
+// (a rep logging from one place) they are left out. Checked on visits to existing customers: after
+// that, 91% land within 300 m of the store.
+const MAP = {
+  name: "South & Central LA",
+  span: "Inglewood to Downey, Compton to Koreatown",
+  north: 34.114,
+  west: -118.38,
+  sizeKm: 24,
+  hexKm: 1.4, // hexagon radius (centre to corner)
+  crowdStores: 4,
+  // Neighbourhoods to label, and to name the holes by.
+  places: [
+    { name: "Koreatown", lat: 34.058, lng: -118.3 },
+    { name: "Downtown", lat: 34.045, lng: -118.25 },
+    { name: "Hollywood", lat: 34.098, lng: -118.327 },
+    { name: "Echo Park", lat: 34.078, lng: -118.26 },
+    { name: "Boyle Heights", lat: 34.034, lng: -118.205 },
+    { name: "East LA", lat: 34.024, lng: -118.172 },
+    { name: "Commerce", lat: 34.0, lng: -118.159 },
+    { name: "Leimert Park", lat: 34.004, lng: -118.333 },
+    { name: "South LA", lat: 33.99, lng: -118.28 },
+    { name: "Huntington Park", lat: 33.982, lng: -118.225 },
+    { name: "Bell", lat: 33.977, lng: -118.187 },
+    { name: "Inglewood", lat: 33.962, lng: -118.353 },
+    { name: "Westmont", lat: 33.941, lng: -118.302 },
+    { name: "Watts", lat: 33.94, lng: -118.24 },
+    { name: "South Gate", lat: 33.955, lng: -118.212 },
+    { name: "Downey", lat: 33.94, lng: -118.133 },
+    { name: "Hawthorne", lat: 33.916, lng: -118.352 },
+    { name: "Compton", lat: 33.905, lng: -118.22 },
+    { name: "Lynwood", lat: 33.93, lng: -118.205 },
+  ],
+} as const;
+
+const MAP_LABELS = new Set(["Hollywood", "Koreatown", "Downtown", "Boyle Heights", "South LA", "Huntington Park", "Inglewood", "Watts", "Compton", "Downey"]);
+
+function drawGapMap(slide: Slide, x0: number, y0: number, side: number, xRight: number) {
+  const KM_LAT = 111;
+  const KM_LNG = 111 * Math.cos((34 * Math.PI) / 180);
+  const toKm = (lat: number, lng: number) => ({ x: (lng - MAP.west) * KM_LNG, y: (MAP.north - lat) * KM_LAT });
+  const inside = (p: { x: number; y: number }) => p.x >= 0 && p.x < MAP.sizeKm && p.y >= 0 && p.y < MAP.sizeKm;
+
+  // Points: active stores at their address; never-ordered visited stores at the median of their
+  // visits' GPS, after dropping crowded logging spots.
+  const customers = csv("map_customers.csv").map((r) => ({ id: r.store_id ?? "", lat: Number(r.lat), lng: Number(r.lng) }));
+  const active = new Set(customers.map((c) => c.id));
+  const visits = csv("map_visits.csv").map((r) => ({ id: r.store_id ?? "", ordered: r.has_ordered === "1", lat: Number(r.lat), lng: Number(r.lng) }));
+  const spot = (v: { lat: number; lng: number }) => `${v.lat.toFixed(3)},${v.lng.toFixed(3)}`;
+  const storesAt = new Map<string, Set<string>>();
+  for (const v of visits) (storesAt.get(spot(v)) ?? storesAt.set(spot(v), new Set()).get(spot(v))!).add(v.id);
+  const byStore = new Map<string, { lat: number[]; lng: number[] }>();
+  for (const v of visits) {
+    if (v.ordered || active.has(v.id) || storesAt.get(spot(v))!.size >= MAP.crowdStores) continue;
+    const s = byStore.get(v.id) ?? byStore.set(v.id, { lat: [], lng: [] }).get(v.id)!;
+    s.lat.push(v.lat);
+    s.lng.push(v.lng);
+  }
+  const median = (a: number[]) => [...a].sort((p, q) => p - q)[Math.floor(a.length / 2)]!;
+  const open = [...byStore.values()].map((s) => toKm(median(s.lat), median(s.lng))).filter(inside);
+  const served = customers.map((c) => toKm(c.lat, c.lng)).filter(inside);
+
+  // Flat-top hexagon grid over the square.
+  const R = MAP.hexKm;
+  const H = Math.sqrt(3) * R;
+  const hexes: { x: number; y: number; open: number; served: number }[] = [];
+  for (let i = 0; i * 1.5 * R <= MAP.sizeKm; i++) {
+    for (let j = 0; j * H + (i % 2 ? H / 2 : 0) <= MAP.sizeKm; j++) {
+      hexes.push({ x: i * 1.5 * R, y: j * H + (i % 2 ? H / 2 : 0), open: 0, served: 0 });
+    }
+  }
+  const nearest = (p: { x: number; y: number }) =>
+    hexes.reduce((best, h) => ((h.x - p.x) ** 2 + (h.y - p.y) ** 2 < (best.x - p.x) ** 2 + (best.y - p.y) ** 2 ? h : best));
+  for (const p of open) nearest(p).open++;
+  for (const p of served) nearest(p).served++;
+
+  // The three biggest holes next to where we already win: hexagon neighbourhoods (a hexagon and the
+  // six around it) with the most open stores beyond the ones we serve, kept 5 km apart.
+  const around = (h: (typeof hexes)[number]) => hexes.filter((o) => (o.x - h.x) ** 2 + (o.y - h.y) ** 2 <= (H * 1.05) ** 2);
+  const pockets: { x: number; y: number; open: number; served: number; name: string }[] = [];
+  // "Next to where we win": at least 15 stores served within two rings. Ranked by the gap, open minus served.
+  const near = (h: (typeof hexes)[number]) => hexes.filter((o) => (o.x - h.x) ** 2 + (o.y - h.y) ** 2 <= (2 * H * 1.05) ** 2);
+  const ranked = hexes
+    .map((h) => ({ h, open: around(h).reduce((s, o) => s + o.open, 0), served: around(h).reduce((s, o) => s + o.served, 0), nearServed: near(h).reduce((s, o) => s + o.served, 0) }))
+    .filter((n) => n.nearServed >= 15 && n.open > n.served)
+    .sort((a, b) => b.open - b.served - (a.open - a.served));
+  for (const n of ranked) {
+    if (pockets.length === 3) break;
+    if (pockets.some((p) => Math.hypot(p.x - n.h.x, p.y - n.h.y) < 5)) continue;
+    const place = [...MAP.places].sort((a, b) => {
+      const pa = toKm(a.lat, a.lng);
+      const pb = toKm(b.lat, b.lng);
+      return Math.hypot(pa.x - n.h.x, pa.y - n.h.y) - Math.hypot(pb.x - n.h.x, pb.y - n.h.y);
+    })[0]!;
+    pockets.push({ x: n.h.x, y: n.h.y, open: n.open, served: n.served, name: place.name });
+  }
+
+  // Draw. Each hexagon is coloured by the share of its known stores (served + visited, never
+  // ordered) that we serve: purple where we win, magenta where the holes are, grey where reps have
+  // found fewer than 3 stores. Then labels and the rings round the three holes.
+  const s = side / (MAP.sizeKm + 2 * R); // inches per km, with room for the edge hexagons
+  const ox = x0 + R * s;
+  const oy = y0 + (H / 2) * s;
+  const SHARE = [
+    { min: 0.6, color: COLOR.purple, label: "60%+" },
+    { min: 0.5, color: "AE9FD0", label: "50–60%" },
+    { min: 0.4, color: "F57DB8", label: "40–50%" },
+    { min: 0, color: COLOR.magenta, label: "under 40%" },
+  ];
+  const FEW = { color: "E9E5EF", label: "under 3 stores" };
+  // Smoothed like a heatmap: a hexagon's share counts the six around it at half weight, so the holes
+  // read as areas rather than single cells.
+  const smooth = (h: (typeof hexes)[number]) => {
+    const ring = around(h).filter((o) => o !== h);
+    return {
+      open: h.open + 0.5 * ring.reduce((t, o) => t + o.open, 0),
+      served: h.served + 0.5 * ring.reduce((t, o) => t + o.served, 0),
+    };
+  };
+  const shade = (h: (typeof hexes)[number]) => {
+    const m = smooth(h);
+    return h.open + h.served === 0 && m.open + m.served < 3 ? FEW.color : m.open + m.served < 3 ? FEW.color : SHARE.find((b) => m.served / (m.served + m.open) >= b.min)!.color;
+  };
+  hexes.forEach((h, k) => {
+    slide.addShape(pres.ShapeType.hexagon, {
+      x: ox + (h.x - R) * s, y: oy + (h.y - H / 2) * s, w: 2 * R * s, h: H * s,
+      fill: { color: shade(h) }, line: { color: COLOR.panel, width: 1 }, objectName: `Hex ${k}`,
+    });
+  });
+  // Rings round the three holes, each with a number badge (upper right) and its name on a tag
+  // across the ring's bottom edge. Anchor neighbourhood labels go on small white tags, skipped where
+  // they would sit on a badge or a hole's tag.
+  type Box = { x: number; y: number; w: number; h: number };
+  const hit = (a: Box, b: Box) => a.x < b.x + b.w && b.x < a.x + a.w && a.y < b.y + b.h && b.y < a.y + a.h;
+  const tagW = (name: string) => name.length * 0.062 + 0.16;
+  const TAG_H = 0.17;
+  const taken: Box[] = [];
+  pockets.forEach((p, i) => {
+    const rr = 1.9 * R * s;
+    const cx0 = ox + p.x * s;
+    const cy0 = oy + p.y * s;
+    slide.addShape(pres.ShapeType.ellipse, {
+      x: cx0 - rr, y: cy0 - rr, w: 2 * rr, h: 2 * rr, fill: { type: "none" },
+      line: { color: COLOR.ink, width: 1.75, dashType: "dash" }, objectName: `Pocket ${i + 1} ring`,
+    });
+    const b = 0.24;
+    const badge = { x: cx0 + rr * 0.62, y: cy0 - rr * 0.62 - b, w: b, h: b };
+    slide.addText(String(i + 1), {
+      ...badge, margin: 0, align: "center", valign: "middle", shape: pres.ShapeType.ellipse, fill: { color: COLOR.ink },
+      fontFace: FONT.black, fontSize: 10, color: COLOR.white, objectName: `Pocket ${i + 1} badge`,
+    });
+    const w = tagW(p.name);
+    const tag = { x: cx0 - w / 2, y: cy0 + rr - TAG_H / 2, w, h: TAG_H };
+    slide.addText(p.name, {
+      ...tag, margin: 0, align: "center", valign: "middle", fontFace: FONT.bold, fontSize: 7.5, color: COLOR.white,
+      shape: pres.ShapeType.roundRect, rectRadius: 0.05, fill: { color: COLOR.ink }, objectName: `Pocket ${i + 1} name`,
+    });
+    taken.push(badge, tag);
+  });
+  for (const p of MAP.places) {
+    const q = toKm(p.lat, p.lng);
+    if (!inside(q) || !MAP_LABELS.has(p.name) || pockets.some((k) => k.name === p.name)) continue;
+    const w = tagW(p.name);
+    const box = { x: ox + q.x * s - w / 2, y: oy + q.y * s - TAG_H / 2, w, h: TAG_H };
+    if (taken.some((t) => hit(t, box))) continue;
+    taken.push(box);
+    slide.addText(p.name, {
+      ...box, margin: 0, align: "center", valign: "middle", fontFace: FONT.bold, fontSize: 7.5, color: COLOR.ink,
+      shape: pres.ShapeType.roundRect, rectRadius: 0.05, fill: { color: COLOR.white, transparency: 10 }, objectName: `Place ${p.name}`,
+    });
+  }
+
+  // Side column: totals, legend and the three holes.
+  const cx = x0 + side + 0.3;
+  const cw = xRight - cx;
+  let y = y0;
+  slide.addText(
+    [
+      { text: served.length.toLocaleString("en-US"), options: { fontFace: FONT.black, fontSize: 16, color: COLOR.purple } },
+      { text: " stores we serve", options: { fontFace: FONT.book, fontSize: 10, color: COLOR.ink, breakLine: true } },
+      { text: open.length.toLocaleString("en-US"), options: { fontFace: FONT.black, fontSize: 16, color: COLOR.magenta } },
+      { text: " visited, never ordered", options: { fontFace: FONT.book, fontSize: 10, color: COLOR.ink } },
+    ],
+    { x: cx, y, w: cw, h: 0.62, margin: 0, valign: "top", isTextBox: true, objectName: "Map totals" },
+  );
+  y += 0.74;
+  slide.addText("Share of known stores we serve", {
+    x: cx, y, w: cw, h: 0.18, margin: 0, fontFace: FONT.bold, fontSize: 8.5, color: COLOR.muted, isTextBox: true, objectName: "Share legend title",
+  });
+  y += 0.24;
+  [...SHARE, FEW].forEach((b, i) => {
+    const ky = y + i * 0.22;
+    slide.addShape(pres.ShapeType.hexagon, {
+      x: cx, y: ky, w: 0.2, h: 0.173, fill: { color: b.color }, line: { type: "none" }, objectName: `Share key ${b.label}`,
+    });
+    const note = i === 0 ? "  where we win" : i === 3 ? "  the holes" : "";
+    slide.addText(
+      [
+        { text: b.label, options: { fontFace: FONT.book, color: COLOR.ink } },
+        { text: note, options: { fontFace: FONT.bold, color: i === 0 ? COLOR.purple : COLOR.magenta } },
+      ],
+      { x: cx + 0.28, y: ky - 0.01, w: cw - 0.28, h: 0.19, margin: 0, valign: "middle", fontSize: 8.5, isTextBox: true, objectName: `Share key ${b.label} text` },
+    );
+  });
+  y += 5 * 0.22 + 0.16;
+  slide.addText("Biggest holes next to where we win", {
+    x: cx, y, w: cw, h: 0.2, margin: 0, fontFace: FONT.bold, fontSize: 10, color: COLOR.purple, isTextBox: true, objectName: "Holes title",
+  });
+  y += 0.27;
+  const rowH = (y0 + side - y) / 3;
+  pockets.forEach((p, i) => {
+    slide.addText(String(i + 1), {
+      x: cx, y: y + i * rowH + 0.03, w: 0.22, h: 0.22, margin: 0, align: "center", valign: "middle", shape: pres.ShapeType.ellipse,
+      fill: { color: COLOR.ink }, fontFace: FONT.black, fontSize: 9, color: COLOR.white, objectName: `Hole ${i + 1} badge`,
+    });
+    slide.addText(
+      [
+        { text: p.name, options: { fontFace: FONT.bold, fontSize: 10.5, color: COLOR.ink, breakLine: true } },
+        { text: `${p.open} open · ${p.served} served`, options: { fontFace: FONT.book, fontSize: 9.5, color: COLOR.muted } },
+      ],
+      { x: cx + 0.3, y: y + i * rowH, w: cw - 0.3, h: Math.min(rowH, 0.42), margin: 0, valign: "top", isTextBox: true, objectName: `Hole ${i + 1}` },
+    );
+  });
+  console.log(
+    `Map ${MAP.name}: ${served.length} served, ${open.length} visited never ordered; holes: ` +
+      pockets.map((p) => `${p.name} ${p.open} open / ${p.served} served`).join("; "),
+  );
+  return { served: served.length, open: open.length, pockets };
+}
+
 {
   const pen = (n: number) => n / NETWORK.universe;
   const pct1 = (n: number) => `${(n * 100).toFixed(1)}%`;
@@ -716,8 +953,9 @@ const NETWORK = {
     });
   };
 
-  // Left: the map (filled in once the store list is loaded).
-  panel(X0, MW, "Where the holes are", "Stores we serve and stores we don't, in one LA area", "Map");
+  // Left: the map.
+  panel(X0, MW, "Where the holes are", `${MAP.name} · ${MAP.span}`, "Map");
+  const gap = drawGapMap(slide, X0 + 0.3, TOP + 0.95, BOTTOM - 0.22 - (TOP + 0.95), X0 + MW - 0.3);
 
   // Right: stores served and penetration, today and the plan's two steps. Each bar is the whole
   // market; today's stores in purple, what the plan adds in magenta.
@@ -795,9 +1033,10 @@ const NETWORK = {
 
   addFootnote(
     slide,
-    `Market: ${NETWORK.universe.toLocaleString("en-US")} in-scope independent stores (cleaned list: no chains, no out-of-scope store types). ` +
-      `Penetration = stores ordering from Mercaso ÷ market.`,
-    6.95,
+    `Market: ${NETWORK.universe.toLocaleString("en-US")} in-scope independent stores (no chains, no out-of-scope types); penetration = stores ordering ÷ market. ` +
+      `Map: active stores (ordered in 45 days) and stores reps visited in the last 12 months that have never ordered, placed by the visit's GPS ` +
+      `(points where 4+ different stores were logged left out).`,
+    6.9,
   );
 
   slide.addNotes(
@@ -808,6 +1047,10 @@ const NETWORK = {
         `(${pct1(pen(oct))}): ${(oct - today).toLocaleString("en-US")} more stores and ${((pen(oct) - pen(today)) * 100).toFixed(1)} points of penetration.`,
       `Even then, ${pct(1 - pen(oct))} of the market is still open. We are not saturated, and we are not going to spread thin across ` +
         `the whole map: we go after the holes next to where we already have density, where our routes, reps and reputation already are.`,
+      `The map is ${MAP.name}, ${MAP.span}. Each hexagon is about 2.5 km across and is coloured by the share of the stores we know there ` +
+        `that we serve: our ${gap.served} active stores, plus the ${gap.open} stores our reps visited in the last 12 months that have never ordered. ` +
+        `Purple is where we win; magenta is where we don't yet. The holes sit right next to our density. The three biggest: ` +
+        gap.pockets.map((k, i) => `${i + 1}. ${k.name}, ${k.open} stores open against ${k.served} we serve`).join("; ") + ".",
     ].join("\n\n"),
   );
 }
