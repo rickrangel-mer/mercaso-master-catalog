@@ -721,15 +721,16 @@ function drawGapMap(slide: Slide, g: GapMap, x0: number, y0: number, maxW: numbe
     x: mx, y: y0, w, h, fill: { type: "none" }, line: { color: "D9D3E3", width: 0.75 }, objectName: "Street map frame",
   });
 
-  // 1 km scale bar, bottom left, and the map credit, bottom right.
+  // 1 km scale bar, top right, and the map credit, bottom right.
   const km = w / g.width_km;
-  const sy = y0 + h - 0.22;
+  const sy = y0 + 0.12;
+  const sx = mx + w - 0.12 - (km + 0.42); // left edge of the backing
   slide.addShape(pres.ShapeType.rect, {
-    x: mx + 0.12, y: sy - 0.04, w: km + 0.42, h: 0.2, fill: { color: COLOR.white, transparency: 15 }, line: { type: "none" }, objectName: "Scale backing",
+    x: sx, y: sy - 0.04, w: km + 0.42, h: 0.2, fill: { color: COLOR.white, transparency: 15 }, line: { type: "none" }, objectName: "Scale backing",
   });
-  slide.addShape(pres.ShapeType.line, { x: mx + 0.18, y: sy + 0.06, w: km, h: 0, line: { color: COLOR.ink, width: 2 }, objectName: "Scale bar" });
+  slide.addShape(pres.ShapeType.line, { x: sx + 0.06, y: sy + 0.06, w: km, h: 0, line: { color: COLOR.ink, width: 2 }, objectName: "Scale bar" });
   slide.addText("1 km", {
-    x: mx + 0.2 + km, y: sy - 0.02, w: 0.36, h: 0.16, margin: 0, valign: "middle", fontFace: FONT.bold, fontSize: 7.5, color: COLOR.ink,
+    x: sx + 0.08 + km, y: sy - 0.02, w: 0.32, h: 0.16, margin: 0, valign: "middle", fontFace: FONT.bold, fontSize: 7.5, color: COLOR.ink,
     isTextBox: true, objectName: "Scale label",
   });
   slide.addText("© OpenStreetMap contributors", {
