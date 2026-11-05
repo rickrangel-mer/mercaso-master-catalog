@@ -1,6 +1,6 @@
 """
 The market-gaps map for slide 3: one stretch of Central Long Beach at street level (OpenStreetMap),
-with the stores we serve, the ones that stopped ordering and the prospects.
+with the stores we serve, the ones that churned, and the prospects, split by whether a rep has visited them.
 
     pnpm athena:export map-customers map-visits   # data/raw/map_customers.csv, map_visits.csv
     python3 scripts/slides/gap_map.py             # dist/slides/gap-map.png and gap-map.json
@@ -161,26 +161,29 @@ def main() -> None:
         pts = [((px_x(lng) - x0) / W, (px_y(lat) - y0) / H) for lat, lng in zip(d.lat, d.lng)]
         return [{"kind": kind, "fx": fx, "fy": fy} for fx, fy in pts if 0.012 <= fx <= 0.988 and 0.02 <= fy <= 0.98]
 
-    # Stores we serve, stores that stopped ordering (shown as "visited" on the slide, Rick 2026-11-05),
-    # and the prospects.
+    # Four groups (Rick, 2026-11-05): active stores; churned stores; prospects a rep has visited that
+    # never ordered; prospects never visited.
     active = placed[placed.status == "active"]
     churned = placed[placed.status == "churned"]
+    visited = prospects[prospects.visited]
+    not_visited = prospects[~prospects.visited]
     summary = {
         "area": AREA,
         "aspect": W / H,
         "width_km": round((AREA["east"] - AREA["west"]) * 111.32 * math.cos(math.radians((AREA["north"] + AREA["south"]) / 2)), 1),
         "height_km": round((AREA["north"] - AREA["south"]) * 110.57, 1),
         "active": len(active),
+        "visited": len(visited),
         "churned": len(churned),
-        "prospects": len(prospects),
+        "prospects": len(not_visited),
         "prospect_source": source,
         # Drawn in this order, so our stores sit on top.
-        "markers": markers(prospects, "prospect") + markers(churned, "churned") + markers(active, "active"),
+        "markers": markers(not_visited, "prospect") + markers(visited, "visited") + markers(churned, "churned") + markers(active, "active"),
     }
     json.dump(summary, open(os.path.join(OUT, "gap-map.json"), "w"), indent=2)
     print(
         f"{AREA['name']} ({summary['width_km']} x {summary['height_km']} km, {W}x{H}px): {len(active)} active, "
-        f"{len(churned)} churned, {len(prospects)} prospects (placed from {source})"
+        f"{len(visited)} visited never ordered, {len(churned)} churned, {len(not_visited)} prospects never visited (placed from {source})"
     )
 
 

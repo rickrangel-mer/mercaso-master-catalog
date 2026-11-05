@@ -693,10 +693,11 @@ interface GapMap {
   width_km: number;
   height_km: number;
   active: number;
+  visited: number;
   churned: number;
   prospects: number;
   prospect_source: "list" | "visits";
-  markers: { kind: "active" | "churned" | "prospect"; fx: number; fy: number }[];
+  markers: { kind: "active" | "visited" | "churned" | "prospect"; fx: number; fy: number }[];
 }
 const GAP_PNG = join(ROOT, "dist/slides/gap-map.png");
 const GAP_JSON = join(ROOT, "dist/slides/gap-map.json");
@@ -704,10 +705,10 @@ const gapMap: GapMap | undefined = existsSync(GAP_JSON) && existsSync(GAP_PNG) ?
 if (!gapMap) console.warn("No dist/slides/gap-map.png: run python3 scripts/slides/gap_map.py for the slide 3 map.");
 
 const MARKER = {
-  active: { fill: COLOR.purple, line: COLOR.white, label: "stores we serve" },
-  // Stores that stopped ordering, labelled "visited" on the slide (Rick, 2026-11-05).
-  churned: { fill: "FFC20E", line: COLOR.white, label: "visited" },
-  prospect: { fill: COLOR.magenta, line: COLOR.white, label: "prospects" },
+  active: { fill: COLOR.purple, line: COLOR.white, width: 1, label: "active stores" },
+  visited: { fill: "FFC20E", line: COLOR.white, width: 1, label: "visited, never ordered" },
+  churned: { fill: COLOR.white, line: COLOR.magenta, width: 1.75, label: "churned" },
+  prospect: { fill: COLOR.magenta, line: COLOR.white, width: 1, label: "prospects, never visited" },
 } as const;
 
 function drawGapMap(slide: Slide, g: GapMap, x0: number, y0: number, maxW: number, maxH: number) {
@@ -736,33 +737,37 @@ function drawGapMap(slide: Slide, g: GapMap, x0: number, y0: number, maxW: numbe
     color: "555555", fill: { color: COLOR.white, transparency: 20 }, objectName: "Map credit",
   });
 
-  // One marker per store; prospects first, then visited (stopped ordering), then ours on top.
+  // One marker per store; prospects never visited first, then visited, then churned, then ours on top.
   const d = 0.12;
   g.markers.forEach((m, i) => {
     const k = MARKER[m.kind];
     slide.addShape(pres.ShapeType.ellipse, {
       x: mx + m.fx * w - d / 2, y: y0 + m.fy * h - d / 2, w: d, h: d, fill: { color: k.fill },
-      line: { color: k.line, width: 1 }, objectName: `Store ${i + 1} (${m.kind})`,
+      line: { color: k.line, width: k.width }, objectName: `Store ${i + 1} (${m.kind})`,
     });
   });
 
   // Legend: one row under the map.
-  const rows: [keyof typeof MARKER, number][] = [["active", g.active], ["churned", g.churned], ["prospect", g.prospects]];
-  const colW = w / rows.length;
+  const rows: [keyof typeof MARKER, number][] = [["active", g.active], ["visited", g.visited], ["churned", g.churned], ["prospect", g.prospects]];
+  // Spread across the panel's full width, each column sized to its label.
+  const need = rows.map(([kind, n]) => 0.2 + (String(n).length + MARKER[kind].label.length + 1) * 0.068);
+  const spare = (maxW - need.reduce((a, b) => a + b, 0)) / (rows.length - 1);
+  const starts = need.map((_, i) => x0 + need.slice(0, i).reduce((a, b) => a + b, 0) + i * Math.max(0.1, spare));
   rows.forEach(([kind, n], i) => {
-    const lx = mx + i * colW;
+    const colW = need[i]! + 0.05;
+    const lx = starts[i]!;
     const ly = y0 + h + 0.1;
     const k = MARKER[kind];
     slide.addShape(pres.ShapeType.ellipse, {
-      x: lx, y: ly + 0.05, w: d, h: d, fill: { color: k.fill }, line: { color: COLOR.white, width: 1 },
+      x: lx, y: ly + 0.05, w: d, h: d, fill: { color: k.fill }, line: { color: k.line, width: k.width },
       objectName: `Map legend ${kind} marker`,
     });
     slide.addText(
       [
-        { text: `${n}`, options: { fontFace: FONT.black, fontSize: 11, color: kind === "active" ? COLOR.purple : kind === "churned" ? "D99A00" : COLOR.magenta } },
-        { text: `  ${k.label}`, options: { fontFace: FONT.book, fontSize: 9.5, color: COLOR.ink } },
+        { text: `${n}`, options: { fontFace: FONT.black, fontSize: 11, color: kind === "active" ? COLOR.purple : kind === "visited" ? "D99A00" : COLOR.magenta } },
+        { text: ` ${k.label}`, options: { fontFace: FONT.book, fontSize: 9, color: COLOR.ink } },
       ],
-      { x: lx + 0.2, y: ly, w: colW - 0.2, h: 0.22, margin: 0, valign: "middle", isTextBox: true, objectName: `Map legend ${kind}` },
+      { x: lx + 0.17, y: ly, w: colW - 0.2, h: 0.22, margin: 0, valign: "middle", isTextBox: true, objectName: `Map legend ${kind}` },
     );
   });
 
@@ -885,9 +890,9 @@ function drawGapMap(slide: Slide, g: GapMap, x0: number, y0: number, maxW: numbe
   addFootnote(
     slide,
     `Market: ${NETWORK.universe.toLocaleString("en-US")} in-scope independent stores (no chains, no out-of-scope types); penetration = stores ordering ÷ market. ` +
-      `Map: stores we serve and visited stores (stopped ordering) at their address (Rick's market list, deduplicated); ` +
+      `Map: active and churned stores at their address (Rick's market list, deduplicated); ` +
       (gapMap?.prospect_source === "list"
-        ? `prospects from Rick's prospect list at their address.`
+        ? `prospects from Rick's prospect list at their address; visited = at least one logged rep visit.`
         : `prospects are stores reps visited in the last 12 months that have never ordered, at the visit's GPS; prospects never visited aren't shown.`),
     6.9,
   );
@@ -903,8 +908,8 @@ function drawGapMap(slide: Slide, g: GapMap, x0: number, y0: number, maxW: numbe
       ...(gapMap
         ? [
             `The map zooms into ${gapMap.area.name}, ${gapMap.width_km} by ${gapMap.height_km} km from ${gapMap.area.span}, street by street. ` +
-              `We serve ${gapMap.active} stores here (purple). ${gapMap.churned} more are stores we've visited that stopped ordering (yellow), ` +
-              `and ${gapMap.prospects} are prospects that don't order from us yet (magenta). They sit on the same blocks as our stores, on the same routes: this is the hole we fill first, not a new territory.`,
+              `We serve ${gapMap.active} stores here (purple). Around them: ${gapMap.visited} prospects our reps have visited that never ordered (yellow), ` +
+              `${gapMap.churned} stores that churned (white with a pink ring), and ${gapMap.prospects} prospects nobody has visited yet (pink). They sit on the same blocks as our stores, on the same routes: this is the hole we fill first, not a new territory.`,
           ]
         : []),
     ].join("\n\n"),
