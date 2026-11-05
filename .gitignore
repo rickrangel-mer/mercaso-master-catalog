@@ -6,3 +6,4 @@ data/raw/
 *.log
 .DS_Store
 .adhoc/
+__pycache__/
