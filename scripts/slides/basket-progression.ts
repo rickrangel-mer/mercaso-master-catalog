@@ -805,7 +805,7 @@ function drawGapMap(slide: Slide, g: GapMap, x0: number, y0: number, maxW: numbe
   ]);
 
   const TOP = 1.95;
-  const BOTTOM = 6.8;
+  const BOTTOM = 7.0; // no footnote on this slide (Rick, 2026-11-05)
   const GAP_X = 0.35;
   const KW = 4.55; // the stores panel on the right
   const MW = X1 - X0 - GAP_X - KW; // the map panel on the left
@@ -845,7 +845,7 @@ function drawGapMap(slide: Slide, g: GapMap, x0: number, y0: number, maxW: numbe
     x: RX + 0.2, y: TOP + 0.86, w: 0.6, h: 0.18, margin: 0, valign: "middle", fontFace: FONT.book, fontSize: 9, color: COLOR.ink, isTextBox: true, objectName: "Key active text",
   });
   slide.addShape(pres.ShapeType.rect, { x: RX + 0.8, y: TOP + 0.9, w: 0.14, h: 0.1, fill: { color: LIGHT }, line: { type: "none" }, objectName: "Key other" });
-  slide.addText("other customers", {
+  slide.addText("gross customers", {
     x: RX + 1.0, y: TOP + 0.86, w: 1.3, h: 0.18, margin: 0, valign: "middle", fontFace: FONT.book, fontSize: 9, color: COLOR.ink, isTextBox: true, objectName: "Key other text",
   });
   const ROW_Y0 = TOP + 1.18;
@@ -898,49 +898,54 @@ function drawGapMap(slide: Slide, g: GapMap, x0: number, y0: number, maxW: numbe
     });
   });
 
+  // Bottom callout, two numbers from today: the share of the market that isn't a customer yet, and the
+  // share that isn't an active customer yet (Rick, 2026-11-05).
   const calloutY = ROW_Y0 + 3 * ROW_H + 0.02;
+  const cH = BOTTOM - calloutY - 0.15;
   slide.addShape(pres.ShapeType.roundRect, {
-    x: KX + 0.25, y: calloutY, w: KW - 0.5, h: BOTTOM - calloutY - 0.15, rectRadius: 0.08, fill: { color: COLOR.white },
+    x: KX + 0.25, y: calloutY, w: KW - 0.5, h: cH, rectRadius: 0.08, fill: { color: COLOR.white },
     line: { type: "none" }, objectName: "Open market callout",
   });
-  slide.addText(pct(1 - pen(oct.total)), {
-    x: KX + 0.4, y: calloutY, w: 1.05, h: BOTTOM - calloutY - 0.15, margin: 0, valign: "middle", fontFace: FONT.black, fontSize: 26,
-    color: COLOR.magenta, isTextBox: true, objectName: "Open market value",
+  const halfW = (KW - 0.5) / 2;
+  [
+    { value: pct(1 - pen(now.total)), text: "of the market is still open", color: COLOR.magenta, name: "Still open" },
+    { value: pct(1 - pen(now.active)), text: "still left to be active", color: COLOR.purple, name: "Still to activate" },
+  ].forEach((c, i) => {
+    const cx = KX + 0.25 + i * halfW;
+    if (i > 0) {
+      slide.addShape(pres.ShapeType.line, {
+        x: cx, y: calloutY + 0.12, w: 0, h: cH - 0.24, line: { color: COLOR.line, width: 0.75 }, objectName: "Callout divider",
+      });
+    }
+    slide.addText(
+      [
+        { text: c.value, options: { fontFace: FONT.black, fontSize: 24, color: c.color, breakLine: true } },
+        { text: c.text, options: { fontFace: FONT.bold, fontSize: 10, color: COLOR.ink } },
+      ],
+      { x: cx + 0.18, y: calloutY, w: halfW - 0.3, h: cH, margin: 0, valign: "middle", lineSpacingMultiple: 0.95, isTextBox: true, objectName: `${c.name} callout` },
+    );
   });
-  slide.addText(
-    [
-      { text: "of the market is still open ", options: { fontFace: FONT.bold } },
-      { text: `after the plan's +${fmt(oct.total - now.total)} customers. We are far from saturated.`, options: { fontFace: FONT.book } },
-    ],
-    {
-      x: KX + 1.5, y: calloutY, w: KW - 1.85, h: BOTTOM - calloutY - 0.15, margin: 0, valign: "middle", fontSize: 11, color: COLOR.ink,
-      isTextBox: true, objectName: "Open market text",
-    },
-  );
-
-  addFootnote(
-    slide,
-    `Market: ${fmt(NETWORK.universe)} stores (Rick's universe); customers = total customers, of which active; penetration = customers ÷ market. ` +
-      `Map: active and churned stores at their address (Rick's market list, deduplicated); ` +
-      (gapMap?.prospect_source === "list"
-        ? `prospects from Rick's prospect list at their address; visited = at least one logged rep visit.`
-        : `prospects are stores reps visited in the last 12 months that have never ordered, at the visit's GPS; prospects never visited aren't shown.`),
-    6.9,
-  );
 
   slide.addNotes(
     [
       `Our market is ${fmt(NETWORK.universe)} stores. We have ${fmt(now.total)} customers today, ${pct1(pen(now.total))} of it, and ${fmt(now.active)} of them ` +
         `are active (${pct1(pen(now.active))}). The plan takes customers to ${fmt(NETWORK.steps[1].total)} by April (${pct1(pen(NETWORK.steps[1].total))}) ` +
         `and ${fmt(oct.total)} by next October (${pct1(pen(oct.total))}), with active customers going from ${fmt(now.active)} to ${fmt(oct.active)}.`,
-      `Even then, ${pct(1 - pen(oct.total))} of the market is still open. We are not saturated, and we are not going to spread thin across ` +
-        `the whole map: we go after the holes next to where we already have density, where our routes, reps and reputation already are.`,
+      `Today ${pct(1 - pen(now.total))} of the market is still open, and ${pct(1 - pen(now.active))} is still left to be an active customer; even after ` +
+        `the plan, ${pct(1 - pen(oct.total))} is still open. We are not saturated, and we are not going to spread thin across the whole map: we go ` +
+        `after the holes next to where we already have density, where our routes, reps and reputation already are.`,
       ...(gapMap
         ? [
             `The map zooms into ${gapMap.area.name}, ${gapMap.width_km} by ${gapMap.height_km} km from ${gapMap.area.span}, street by street. ` +
               `Of the ${gapMap.active + gapMap.visited + gapMap.churned + gapMap.prospects} stores we know here, ${gapMap.active} are active (green check). ` +
               `Around them: ${gapMap.visited} prospects our reps have visited that never ordered (yellow exclamation mark), ${gapMap.churned} stores that ` +
               `churned (red X), and ${gapMap.prospects} prospects nobody has visited yet (pink ring). They sit on the same blocks as our stores, on the same routes: this is the hole we fill first, not a new territory.`,
+            `Sources: market ${fmt(NETWORK.universe)} stores (Rick's universe); customers are total customers, of which active; penetration = customers ÷ market. ` +
+              `Map: active and churned stores at their address (Rick's market list, deduplicated); ` +
+              (gapMap.prospect_source === "list"
+                ? `prospects from Rick's prospect list at their address; visited = at least one logged rep visit. `
+                : `prospects are stores reps visited in the last 12 months that have never ordered, at the visit's GPS. `) +
+              `Map data © OpenStreetMap contributors.`,
           ]
         : []),
     ].join("\n\n"),
